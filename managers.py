@@ -43,8 +43,7 @@ class InviteManager(object):
         ndb.put_multi(db_invite_contacts)
 
     def send(self, invite_dict):
-        #self._post_invite(invite_dict)
-        pass
+        self._post_invite(invite_dict)
 
     def _post_invite(self,invite):
         url = config.voiceflows_url
