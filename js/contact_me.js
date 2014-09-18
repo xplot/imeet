@@ -98,18 +98,22 @@ $(function() {
     $('.send').click(function(){
         var $rows = $('.contact-row');
 
-        var contacts = [];
+        var event = {
+            'title': $('.event-name').val(),
+            'when':$('.event-date').val(),
+            'contacts': []
+        };
 
         $rows.each(function() {
             var dataContact = $( this ).data( "contact" );
 
-            contacts.push(dataContact.split(','));
+            event.contacts.push(dataContact.split(','));
         });
 
         $.ajax({
                 url: "/send",
                 type: "POST",
-                data: JSON.stringify(contacts),
+                data: JSON.stringify(event),
                 cache: false,
                 success: function() {
                     $('.contacts-modal').modal('hide');

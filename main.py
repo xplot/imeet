@@ -1,15 +1,17 @@
-import webapp2
-import json
-import os
 import datetime
-import urllib
-from google.appengine.ext import ndb
+import json
 import jinja2
 import logging
-from webapp2 import Route
+import os,sys
+import uuid
+import webapp2
+
+from datetime import time
 from google.appengine.api import mail
-import datetime
-import os, sys
+from google.appengine.ext import ndb
+from webapp2 import Route
+
+from models import Invite,Contact, ContactInvite, data_type_handler
 
 here = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(here, 'lib'))
@@ -83,22 +85,42 @@ class InviteHandler(webapp2.RequestHandler):
     def send(self):
         logging.info(self.request.body)
         data = json.loads(self.request.body)
-        invite = {
-            'title': 'whatever_title',
-            'when': '02/02/2014',
-            'contacts': []
-        }
-        for x in data:
-            invite['contacts'].append({
-                'name':x[0],
-                'phone':x[1],
-                'email':x[2]
-            })
 
+        invite = Invite()
+        invite.unique_id = str(uuid.uuid4()).replace('-', '')
+        invite.title = data['title']
+        invite.when = datetime.datetime.strptime(data['when'], "%m/%d/%Y")
+        invite.put()
+
+        invite_dict = invite.to_dict()
+        invite_dict['contacts'] = []
+
+        db_contacts = []
+        for x in data:
+            contact = Contact()
+            contact.name = x[0]
+            contact.phone = x[1]
+            contact.email = x[2]
+            invite_dict['contacts'].append(contact)
+            db_contacts.append(contact)
+
+        ndb.put_multi(db_contacts)
+
+        self._post_invite(invite_dict)
+
+
+    def _post_invite(self,invite):
         url = "http://www.voiceflows.com/api/invite"
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        r = requests.post(url, data=json.dumps(invite), headers=headers)
-        logging.info(r)
+        r = requests.post(
+            url,
+            data=json.dumps(
+                invite,
+                default=data_type_handler,
+                indent = 4
+            ),
+            headers=headers
+        )
 
 class EmailHandler(webapp2.RequestHandler):
     def send(self):
@@ -109,8 +131,8 @@ class EmailHandler(webapp2.RequestHandler):
 
         if email is not None:
             mail.send_mail(
-                sender="Support VoiceFlows <support@voiceflows.com>",
-                to="support@voiceflows.com",
+                sender="Support VoiceFlows <javi830810@gmail.com>",
+                to="invite@voiceflows.com",
                 subject="New Contact Request",
                 body="""
                 	From %s
