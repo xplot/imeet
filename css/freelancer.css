@@ -376,3 +376,12 @@ footer .footer-below {
 .portfolio-modal .container .input-row {
   margin: 10px;
 }
+.line {
+  height: 1px;
+}
+.small-margin {
+  margin: 5px;
+}
+.medium-margin {
+  margin: 15px;
+}

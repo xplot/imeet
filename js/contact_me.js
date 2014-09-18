@@ -1,5 +1,18 @@
 $(function() {
 
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+      String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+          return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+          ;
+        });
+      };
+    }
+
     $("input,textarea").jqBootstrapValidation({
         preventSubmit: true,
         submitError: function($form, event, errors) {
@@ -71,17 +84,27 @@ $(function() {
 
     var i = 0;
     $('.new-contact').click(function(){
-
         if($new_email.val() == '' && $new_phone.val() == '')
             return;
 
-        var new_contact = "<tr class='contact-row'"
-                        + "data-contact='" + $new_name.val() + "," + $new_phone.val() + "," + $new_email.val() + "' >"
-                        + "<td>" + $new_name.val()  + "</td>"
-                        + "<td>" + $new_phone.val() + "</td>"
-                        + "<td>" + $new_email.val() + "</td>"
-                        + "<td><button type='button' class='btn btn-danger form-control remove-contact'>-</button>" + "</td>"
-                        + "</tr>";
+        if(!$new_email[0].checkValidity() ||
+            !$new_phone[0].checkValidity())
+            return;
+
+        var new_contact = "\
+            <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
+                    <div class='col-sm-3'> {0} </div> \
+                    <div class='col-sm-3'>  {1} </div> \
+                    <div class='col-sm-3'> {2}</div> \
+                    <div class='col-sm-3'>\
+                    <div class='row'> \
+                        <div class='col-sm-4'></div>\
+                        <div class='col-sm-4'>\
+                            <button type='button' class='btn btn-danger form-control remove-contact' data-row='{3}'>-</button>\
+                        </div> \
+                        <div class='col-sm-4'></div>\
+                    </div>\
+            </div> ".format($new_name.val(),$new_phone.val(),$new_email.val(),i);
 
         $new_name.val('');
         $new_email.val('');
@@ -90,17 +113,26 @@ $(function() {
         $table.append(new_contact);
 
         $table.find('.remove-contact').click(function(){
-            $(this).parent().parent().remove();
+            var dataId = "#contact"+$(this).data('row');
+            $(dataId).remove();
         });
         i++;
+
+        return false;
     });
 
     $('.send').click(function(){
-        var $rows = $('.contact-row');
+        var $event_name = $('.event-name');
+        var $event_date = $('.event-date');
 
+        if(!$event_name[0].checkValidity() ||
+            !$event_date[0].checkValidity())
+            return;
+
+        var $rows = $('.contact-row');
         var event = {
-            'title': $('.event-name').val(),
-            'when':$('.event-date').val(),
+            'title': $event_name.val(),
+            'when':$event_date.val(),
             'contacts': []
         };
 
@@ -118,7 +150,9 @@ $(function() {
                 success: function() {
                     $('.contacts-modal').modal('hide');
                 }
-            })
+            });
+
+        event.preventDefault();
     });
 
 });

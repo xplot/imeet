@@ -1,9 +1,7 @@
-import datetime
 import json
 import jinja2
 import logging
 import os,sys
-import uuid
 import webapp2
 
 from datetime import time
@@ -12,9 +10,7 @@ from google.appengine.ext import ndb
 from webapp2 import Route
 
 from models import Invite,Contact, ContactInvite, data_type_handler
-
-here = os.path.abspath(os.path.dirname(__file__))
-sys.path.insert(0, os.path.join(here, 'lib'))
+from managers import InviteManager
 
 import requests
 
@@ -80,47 +76,15 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
-class InviteHandler(webapp2.RequestHandler):
+class InviteHandler(JsonHandler):
 
     def send(self):
-        logging.info(self.request.body)
-        data = json.loads(self.request.body)
+        data = self._data()
 
-        invite = Invite()
-        invite.unique_id = str(uuid.uuid4()).replace('-', '')
-        invite.title = data['title']
-        invite.when = datetime.datetime.strptime(data['when'], "%m/%d/%Y")
-        invite.put()
-
-        invite_dict = invite.to_dict()
-        invite_dict['contacts'] = []
-
-        db_contacts = []
-        for x in data:
-            contact = Contact()
-            contact.name = x[0]
-            contact.phone = x[1]
-            contact.email = x[2]
-            invite_dict['contacts'].append(contact)
-            db_contacts.append(contact)
-
-        ndb.put_multi(db_contacts)
-
-        self._post_invite(invite_dict)
-
-
-    def _post_invite(self,invite):
-        url = "http://www.voiceflows.com/api/invite"
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        r = requests.post(
-            url,
-            data=json.dumps(
-                invite,
-                default=data_type_handler,
-                indent = 4
-            ),
-            headers=headers
-        )
+        invite_manager = InviteManager()
+        invite_manager.create(data)
+        invite_manager.send(data)
+        return True
 
 class EmailHandler(webapp2.RequestHandler):
     def send(self):
