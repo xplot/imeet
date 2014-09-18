@@ -92,7 +92,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+                    <a style="cursor: pointer" class="portfolio-link" data-action="modal" data-where="new">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x">Create</i>
@@ -102,7 +102,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
+                    <a style="cursor: pointer" class="portfolio-link" data-action="modal" data-where="search">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x">Edit</i>
@@ -112,7 +112,7 @@
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
+                    <a style="cursor: pointer" class="portfolio-link" data-action="modal" data-where="view">
                         <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x">View</i>
@@ -235,63 +235,96 @@
         </div>
     </footer>
 
-    <!-- Portfolio Modals -->
-    <div class="portfolio-modal modal fade contacts-modal" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- Portfolio Modals -->
+        <div class="portfolio-modal modal fade contacts-modal" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-action="dismiss">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container contact-table">
+                    <form id="invite_validator">
+                    <div class="row controls">
+                        <div class="col-sm-6">
+                            <input required type="text" class="form-control event-name" placeholder="Event">
+                        </div>
+                        <div class="col-sm-3">
+                            <input required type="date" class="form-control event-date" placeholder="when...">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-success form-control send">Create Invite</button>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="row medium-margin line"></div>
+
+                    <h4>Attendees</h4>
+
+                    <div class="row">
+                        <form id="attendee_validator">
+                            <div class="col-sm-3">
+                                <input type="text" class="new-contact-name form-control" placeholder="Name">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="new-contact-phone form-control"
+                                       pattern="\d{3}[\-]\d{3}[\-]\d{4}" value="" placeholder="Phone Number">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="email"
+                                       class="new-contact-email form-control" placeholder="Email">
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="submit" class="btn btn-info new-contact form-control">+</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row medium-margin line"></div>
+                </div>
+            </div>
+        </div>
+
+    <div class="portfolio-modal modal fade contacts-modal" id="searchModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
+            <div class="close-modal" data-action="dismiss">
                 <div class="lr">
                     <div class="rl">
                     </div>
                 </div>
             </div>
-
-
             <div class="container contact-table">
-                <form id="invite_validator">
                 <div class="row controls">
-                    <div class="col-sm-6">
-                        <input required type="text" class="form-control event-name" placeholder="Event">
+                    <div class="col-sm-10">
+                        <input required type="text" class="form-control event-name" placeholder="Invite Title">
                     </div>
-                    <div class="col-sm-3">
-                        <input required type="date" class="form-control event-date" placeholder="when...">
-                    </div>
-                    <div class="col-sm-3">
-                        <button type="submit" class="btn btn-success form-control send">Create Invite</button>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-success form-control search">Go</button>
                     </div>
                 </div>
-                </form>
-                <div class="row medium-margin line"></div>
-
-                <h4>Attendees</h4>
-
-                <div class="row">
-                    <form id="attendee_validator">
-                        <div class="col-sm-3">
-                            <input type="text" class="new-contact-name form-control" placeholder="Name">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="new-contact-phone form-control"
-                                   pattern="\d{3}[\-]\d{3}[\-]\d{4}" value="" placeholder="Phone Number">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="email"
-                                   class="new-contact-email form-control" placeholder="Email">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-info new-contact form-control">+</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="row medium-margin line"></div>
             </div>
         </div>
     </div>
 
-
+        <div class="portfolio-modal modal fade contacts-modal" id="viewModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-action="dismiss">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container contact-table">
+               Dead end Johnny!
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery Version 1.11.0 -->
+    <script src="js/underscore.min.js"></script>
     <script src="js/jquery-1.11.0.js"></script>
+    <script src="js/backbone.min.js"></script>
+
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>

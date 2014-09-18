@@ -75,6 +75,18 @@ class MainHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render())
 
+    def new(self):
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render())
+
+    def search(self):
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render())
+
+    def view(self):
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render())
+
 
 class InviteHandler(JsonHandler):
 
@@ -85,6 +97,7 @@ class InviteHandler(JsonHandler):
         invite_manager.create(data)
         invite_manager.send(data)
         return True
+
 
 class EmailHandler(webapp2.RequestHandler):
     def send(self):
@@ -106,12 +119,17 @@ class EmailHandler(webapp2.RequestHandler):
                 	""".format(name, phone, message)
             )
         else:
-        	self.error(400)
-        	self.response.write('invalid email')
+            self.error(400)
+            self.response.write('invalid email')
 
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+
+    Route('/new', MainHandler, handler_method='new', ),
+    Route('/search', MainHandler, handler_method='search', ),
+    Route('/view', MainHandler, handler_method='view'),
+
     Route('/contact_form', EmailHandler, name='contact',
           handler_method='send', methods=['POST']),
     Route('/send', InviteHandler, name='send',

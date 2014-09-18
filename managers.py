@@ -28,9 +28,9 @@ class InviteManager(object):
         for x in invite_dict['contacts']:
             contact = Contact()
             contact.unique_id = str(uuid.uuid4()).replace('-', '')
-            contact.name = x[0]
-            contact.phone = x[1]
-            contact.email = x[2]
+            contact.name = x['name']
+            contact.phone = x['phone']
+            contact.email = x['email']
 
             db_contacts.append(contact)
             db_invite_contacts.append(
@@ -48,6 +48,14 @@ class InviteManager(object):
     def _post_invite(self,invite):
         url = config.voiceflows_url
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+
+        logging.info(json.dumps(
+                invite,
+                default=data_type_handler,
+                indent = 4
+            )
+        )
+
         r = requests.post(
             url,
             data=json.dumps(

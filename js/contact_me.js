@@ -70,12 +70,6 @@ $(function() {
         }
     });
 
-    $("a[data-toggle=\"tab\"]").click(function(e) {
-        e.preventDefault();
-        $(this).tab("show");
-    });
-
-
     var $table = $('.contact-table');
 
     var $new_name = $('.new-contact-name');
@@ -139,7 +133,13 @@ $(function() {
         $rows.each(function() {
             var dataContact = $( this ).data( "contact" );
 
-            event.contacts.push(dataContact.split(','));
+            var contactArray = dataContact.split(',');
+
+            event.contacts.push({
+                'name':contactArray[0],
+                'email':contactArray[2],
+                'phone':contactArray[1]
+            });
         });
 
         $.ajax({
@@ -162,3 +162,62 @@ $(function() {
 $('#name').focus(function() {
     $('#success').html('');
 });
+
+var $newModal = $('#portfolioModal1');
+var $searchModal = $('#searchModal');
+var $viewModal = $('#viewModal');
+
+(function(){
+
+window.App = {
+    Models: {},
+    Collections: {},
+    Views: {},
+    Router: {}
+};
+App.Router = Backbone.Router.extend({
+    routes: {
+        '': 'index',
+        'new': 'new',
+        'search': 'search',
+        'view': 'view'
+    },
+    index: function(){
+        $("a[data-action=\"modal\"]").click(function(e) {
+            Backbone.history.navigate($(this).data('where'),true);
+        });
+
+
+    },
+    new: function(){
+        $newModal.modal('show');
+
+        $(".close-modal").click(function(e) {
+            $newModal.modal('hide');
+            Backbone.history.navigate('',true);
+        });
+    },
+    search: function(){
+        $searchModal.modal('show');
+
+        $(".close-modal").click(function(e) {
+            $searchModal.modal('hide');
+            Backbone.history.navigate('',true);
+        });
+    },
+    view: function(){
+        $viewModal.modal('show');
+
+        $(".close-modal").click(function(e) {
+            $viewModal.modal('hide');
+            Backbone.history.navigate('',true);
+        });
+    }
+});
+
+new App.Router;
+Backbone.history.start({pushState: true});
+
+
+
+})();
