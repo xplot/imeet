@@ -75,19 +75,13 @@ $(function() {
         if($new_email.val() == '' && $new_phone.val() == '')
             return;
 
-        var row_class = (false)?"info":"";
-
-        var new_contact = "<tr class='"+ row_class + "'>"
+        var new_contact = "<tr class='contact-row'"
+                        + "data-contact='" + $new_name.val() + "," + $new_phone.val() + "," + $new_email.val() + "' >"
                         + "<td>" + $new_name.val()  + "</td>"
                         + "<td>" + $new_phone.val() + "</td>"
                         + "<td>" + $new_email.val() + "</td>"
                         + "<td><button type='button' class='btn btn-danger form-control remove-contact'>-</button>" + "</td>"
                         + "</tr>";
-
-        $(new_contact).find('.remove-contact').click(function(){
-            console.log('happened');
-            $(this).remove();
-        });
 
         $new_name.val('');
         $new_email.val('');
@@ -95,7 +89,32 @@ $(function() {
 
         $table.append(new_contact);
 
+        $table.find('.remove-contact').click(function(){
+            $(this).parent().parent().remove();
+        });
         i++;
+    });
+
+    $('.send').click(function(){
+        var $rows = $('.contact-row');
+
+        var contacts = [];
+
+        $rows.each(function() {
+            var dataContact = $( this ).data( "contact" );
+
+            contacts.push(dataContact.split(','));
+        });
+
+        $.ajax({
+                url: "/send",
+                type: "POST",
+                data: JSON.stringify(contacts),
+                cache: false,
+                success: function() {
+                    $('.contacts-modal').modal('hide');
+                }
+            })
     });
 
 });

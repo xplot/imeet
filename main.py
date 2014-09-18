@@ -8,6 +8,13 @@ import jinja2
 import logging
 from webapp2 import Route
 from google.appengine.api import mail
+import datetime
+import os, sys
+
+here = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(here, 'lib'))
+
+import requests
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -71,6 +78,28 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class InviteHandler(webapp2.RequestHandler):
+
+    def send(self):
+        logging.info(self.request.body)
+        data = json.loads(self.request.body)
+        invite = {
+            'title': 'whatever_title',
+            'when': '02/02/2014',
+            'contacts': []
+        }
+        for x in data:
+            invite['contacts'].append({
+                'name':x[0],
+                'phone':x[1],
+                'email':x[2]
+            })
+
+        url = "http://www.voiceflows.com/api/invite"
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(invite), headers=headers)
+        logging.info(r)
+
 class EmailHandler(webapp2.RequestHandler):
     def send(self):
         email = self.request.get('email')
@@ -98,5 +127,7 @@ class EmailHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     Route('/contact_form', EmailHandler, name='contact',
+          handler_method='send', methods=['POST']),
+    Route('/send', InviteHandler, name='send',
           handler_method='send', methods=['POST']),
 ], debug=True)
