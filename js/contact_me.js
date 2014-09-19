@@ -149,6 +149,7 @@ $(function() {
                 cache: false,
                 success: function() {
                     $('.contacts-modal').modal('hide');
+                    Backbone.history.navigate('',true);
                 }
             });
 
@@ -157,8 +158,6 @@ $(function() {
 
 });
 
-
-/*When clicking on Full hide fail/success boxes */
 $('#name').focus(function() {
     $('#success').html('');
 });
@@ -175,6 +174,29 @@ window.App = {
     Views: {},
     Router: {}
 };
+
+ModalView = Backbone.View.extend({
+    initialize: function(options){
+        this.options = options || {};
+        this.render();
+    },
+    render: function(){
+        var this_el = this.$el;
+
+        var template = _.template( $(this.options.templateId).html(), {} );
+        // Load the compiled HTML into the Backbone "el"
+        this.$el.html(template);
+
+        this.$el.find(".close-modal").click(function(e) {
+            this_el.modal('hide');
+            Backbone.history.navigate('',true);
+        });
+
+        //Finally we show it
+        this.$el.modal('show');
+    }
+});
+
 App.Router = Backbone.Router.extend({
     routes: {
         '': 'index',
@@ -186,31 +208,23 @@ App.Router = Backbone.Router.extend({
         $("a[data-action=\"modal\"]").click(function(e) {
             Backbone.history.navigate($(this).data('where'),true);
         });
-
-
     },
     new: function(){
-        $newModal.modal('show');
-
-        $(".close-modal").click(function(e) {
-            $newModal.modal('hide');
-            Backbone.history.navigate('',true);
+         mv = new ModalView({
+            el: $("#modal_container"),
+            templateId: '#new_template'
         });
     },
     search: function(){
-        $searchModal.modal('show');
-
-        $(".close-modal").click(function(e) {
-            $searchModal.modal('hide');
-            Backbone.history.navigate('',true);
+        sv = new ModalView({
+            el: $("#modal_container"),
+            templateId: '#search_template'
         });
     },
     view: function(){
-        $viewModal.modal('show');
-
-        $(".close-modal").click(function(e) {
-            $viewModal.modal('hide');
-            Backbone.history.navigate('',true);
+         sv = new ModalView({
+            el: $("#modal_container"),
+            templateId: '#view_template'
         });
     }
 });

@@ -93,6 +93,8 @@ class InviteHandler(JsonHandler):
     def send(self):
         data = self._data()
 
+        logging.info(data)
+
         invite_manager = InviteManager()
         invite_manager.create(data)
         invite_manager.send(data)

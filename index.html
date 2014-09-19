@@ -236,7 +236,7 @@
     </footer>
 
         <!-- Portfolio Modals -->
-        <div class="portfolio-modal modal fade contacts-modal" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <script type="text/template" id="new_template">
             <div class="modal-content">
                 <div class="close-modal" data-action="dismiss">
                     <div class="lr">
@@ -283,9 +283,11 @@
                     <div class="row medium-margin line"></div>
                 </div>
             </div>
-        </div>
+        </script>
 
-    <div class="portfolio-modal modal fade contacts-modal" id="searchModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+
+    <script type="text/template" id="view_template">
         <div class="modal-content">
             <div class="close-modal" data-action="dismiss">
                 <div class="lr">
@@ -293,32 +295,34 @@
                     </div>
                 </div>
             </div>
-            <div class="container contact-table">
-                <div class="row controls">
-                    <div class="col-sm-10">
-                        <input required type="text" class="form-control event-name" placeholder="Invite Title">
-                    </div>
-                    <div class="col-sm-2">
-                        <button type="button" class="btn btn-success form-control search">Go</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <div class="portfolio-modal modal fade contacts-modal" id="viewModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-action="dismiss">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container contact-table">
+            <div class="container">
                Dead end Johnny!
             </div>
         </div>
-    </div>
+    </script>
+
+    <script type="text/template" id="search_template">
+            <div class="modal-content">
+                <div class="close-modal" data-action="dismiss">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row controls">
+                        <div class="col-sm-10">
+                            <input required type="text" class="form-control event-name" placeholder="Invite Title">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-success form-control search">Go</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </script>
+
+    <div id="modal_container" class="portfolio-modal modal fade contacts-modal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
     <!-- jQuery Version 1.11.0 -->
     <script src="js/underscore.min.js"></script>
