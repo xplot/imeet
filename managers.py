@@ -45,6 +45,32 @@ class InviteManager(object):
     def send(self, invite_dict):
         self._post_invite(invite_dict)
 
+    def get(self, id):
+        invite = Invite.query(Invite.unique_id == id).get()
+
+        if invite is None:
+            raise Exception('Invite not found with id: ' + id)
+
+        #contacts
+        contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == id).fetch()}
+        contacts = []
+        if contacts_invites:
+            contacts = Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
+
+        return {
+            'title':invite.title,
+            'when': invite.when.strftime("%Y-%m-%d %H:%M"),
+            'contacts':[{
+                'name':x.name,
+                'phone': x.phone,
+                'email':x.email,
+                'sms_response': contacts_invites[x.unique_id].sms_response,
+                'voice_response': contacts_invites[x.unique_id].voice_response,
+                'email_response': contacts_invites[x.unique_id].email_response,
+            } for x in contacts]
+        }
+
+
     def _post_invite(self,invite):
         url = config.voiceflows_url
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}

@@ -13,6 +13,13 @@ $(function() {
       };
     }
 
+    jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+        phone_number = phone_number.replace(/\s+/g, "");
+        return this.optional(element) || phone_number.length > 9 &&
+            phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+    }, "Please specify a valid phone number");
+
+    /*
     $("input,textarea").jqBootstrapValidation({
         preventSubmit: true,
         submitError: function($form, event, errors) {
@@ -69,9 +76,10 @@ $(function() {
             return $(this).is(":visible");
         }
     });
-
+    */
     var $table = $('.contact-table');
-
+    var $contactForm = $('#newContactForm');
+    var $inviteForm = $('#newInviteForm');
     var $new_name = $('.new-contact-name');
     var $new_phone = $('.new-contact-phone');
     var $new_email = $('.new-contact-email');
@@ -81,8 +89,15 @@ $(function() {
         if($new_email.val() == '' && $new_phone.val() == '')
             return;
 
-        if(!$new_email[0].checkValidity() ||
-            !$new_phone[0].checkValidity())
+        $contactForm.validate({
+            rules: {
+                newPhone: {
+                    phoneUS: true
+                }
+            }
+        });
+
+        if(!$contactForm.valid())
             return;
 
         var new_contact = "\
@@ -116,11 +131,20 @@ $(function() {
     });
 
     $('.send').click(function(){
+
         var $event_name = $('.event-name');
         var $event_date = $('.event-date');
 
-        if(!$event_name[0].checkValidity() ||
-            !$event_date[0].checkValidity())
+        $inviteForm.validate({
+            rules: {
+                when: {
+                  required: true,
+                  date: true
+                }
+            }
+        });
+
+        if(!$inviteForm.valid())
             return;
 
         var $rows = $('.contact-row');
@@ -131,8 +155,7 @@ $(function() {
         };
 
         $rows.each(function() {
-            var dataContact = $( this ).data( "contact" );
-
+            var dataContact = $(this).data("contact");
             var contactArray = dataContact.split(',');
 
             event.contacts.push({
@@ -143,17 +166,15 @@ $(function() {
         });
 
         $.ajax({
-                url: "/send",
-                type: "POST",
-                data: JSON.stringify(event),
-                cache: false,
-                success: function() {
-                    $('.contacts-modal').modal('hide');
-                    Backbone.history.navigate('',true);
-                }
-            });
-
-        event.preventDefault();
+            url: "/api/invite",
+            type: "POST",
+            data: JSON.stringify(event),
+            cache: false,
+            success: function() {
+                $('.contacts-modal').modal('hide');
+                Backbone.history.navigate('',true);
+            }
+        });
     });
 
 });
@@ -176,16 +197,27 @@ window.App = {
 };
 
 ModalView = Backbone.View.extend({
+    childView: null,
+
     initialize: function(options){
         this.options = options || {};
+        this.childView = this.options.childView;
+
         this.render();
     },
     render: function(){
         var this_el = this.$el;
 
-        var template = _.template( $(this.options.templateId).html(), {} );
-        // Load the compiled HTML into the Backbone "el"
-        this.$el.html(template);
+        if(this.options.templateId != null){
+            var template = _.template( $(this.options.templateId).html(), {} );
+            // Load the compiled HTML into the Backbone "el"
+            this.$el.html(template);
+        }
+
+        if(this.childView != null){
+            this.childView.render();
+            this.$el.html(this.childView.$el.html());
+        }
 
         this.$el.find(".close-modal").click(function(e) {
             this_el.modal('hide');
@@ -197,12 +229,68 @@ ModalView = Backbone.View.extend({
     }
 });
 
+
+InviteView = Backbone.View.extend({
+    inviteId:null,
+
+    initialize: function(options){
+        this.options = options || {};
+        this.inviteId = this.options.id;
+    },
+    render: function(){
+
+        if(this.options.templateId != null){
+            var template = _.template( $(this.options.templateId).html(), {} );
+            // Load the compiled HTML into the Backbone "el"
+            this.$el.html(template);
+        }
+
+        $.ajax({
+            url: "/api/invite/" + this.inviteId,
+            type: "GET",
+            cache: false,
+            success: function(data) {
+                var inviteTitle = $('.invite-title');
+                var inviteDate = $('.invite-date');
+                var inviteTable = $('.invite-table');
+
+                inviteTitle.html(data.title);
+                inviteDate.html(data.when);
+
+                var contact_html = "\
+            <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
+                    <div class='col-sm-2'> {0} </div> \
+                    <div class='col-sm-2'>  {1} </div> \
+                    <div class='col-sm-2'> {2}</div> \
+                    <div class='col-sm-2'> {3}</div> \
+                    <div class='col-sm-2'> {4}</div> \
+                    <div class='col-sm-2'> {5}</div> \
+            </div> ";
+
+                data.contacts.forEach(function(contact){
+                    inviteTable.append(contact_html.format(
+                        contact.name || 'N/A',
+                        contact.phone || 'N/A',
+                        contact.email || 'N/A',
+                        contact.sms_response || 'N/A',
+                        contact.voice_response || 'N/A',
+                        contact.email_response || 'N/A'
+                    ));
+                })
+
+            }
+        });
+
+    }
+});
+
 App.Router = Backbone.Router.extend({
     routes: {
+        'view/:id': 'view',
         '': 'index',
         'new': 'new',
-        'search': 'search',
-        'view': 'view'
+        'search': 'search'
+
     },
     index: function(){
         $("a[data-action=\"modal\"]").click(function(e) {
@@ -221,11 +309,17 @@ App.Router = Backbone.Router.extend({
             templateId: '#search_template'
         });
     },
-    view: function(){
-         sv = new ModalView({
-            el: $("#modal_container"),
-            templateId: '#view_template'
+    view: function(id){
+        iv = new InviteView({
+            id:id,
+            templateId: "#view_template"
         });
+
+        sv = new ModalView({
+            el: $("#modal_container"),
+            childView: iv
+        });
+
     }
 });
 

@@ -12,13 +12,13 @@
     <title>Invite - Demo</title>
 
     <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/freelancer.css" rel="stylesheet">
+    <link href="/css/freelancer.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
@@ -70,7 +70,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <img class="img-responsive" src="img/invitation.png" alt="">
+                    <img class="img-responsive" src="/img/invitation.png" alt="">
                     <div class="intro-text">
                         <span class="name startinvitation">Communicate</span>
                         <hr class="star-light">
@@ -98,7 +98,7 @@
                                 <i class="fa fa-search-plus fa-3x">Create</i>
                             </div>
                         </div>
-                        <img src="img/portfolio/cabin.png" class="img-responsive">
+                        <img src="/img/portfolio/cabin.png" class="img-responsive">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -108,7 +108,7 @@
                                 <i class="fa fa-search-plus fa-3x">Edit</i>
                             </div>
                         </div>
-                        <img src="img/portfolio/cake.png" class="img-responsive" alt="">
+                        <img src="/img/portfolio/cake.png" class="img-responsive" alt="">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -118,7 +118,7 @@
                                 <i class="fa fa-search-plus fa-3x">View</i>
                             </div>
                         </div>
-                        <img src="img/portfolio/circus.png" class="img-responsive" alt="">
+                        <img src="/img/portfolio/circus.png" class="img-responsive" alt="">
                     </a>
                 </div>
             </div>
@@ -244,61 +244,85 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="container contact-table">
-                    <form id="invite_validator">
-                    <div class="row controls">
-                        <div class="col-sm-6">
-                            <input required type="text" class="form-control event-name" placeholder="Event">
+                    <form id="newInviteForm">
+                        <div class="row controls">
+                            <div class="col-sm-6">
+                                <input required type="text" class="form-control event-name" placeholder="Event" required>
+                            </div>
+                            <div class="col-sm-3">
+                                <input required type="date" class="form-control event-date" placeholder="when..." required name="when" id="when">
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-success form-control send">Create Invite</button>
+                            </div>
                         </div>
-                        <div class="col-sm-3">
-                            <input required type="date" class="form-control event-date" placeholder="when...">
-                        </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-success form-control send">Create Invite</button>
-                        </div>
-                    </div>
                     </form>
                     <div class="row medium-margin line"></div>
 
                     <h4>Attendees</h4>
-
-                    <div class="row">
-                        <form id="attendee_validator">
-                            <div class="col-sm-3">
-                                <input type="text" class="new-contact-name form-control" placeholder="Name">
-                            </div>
-                            <div class="col-sm-3">
-                                <input type="text" class="new-contact-phone form-control"
-                                       pattern="\d{3}[\-]\d{3}[\-]\d{4}" value="" placeholder="Phone Number">
-                            </div>
-                            <div class="col-sm-3">
-                                <input type="email"
-                                       class="new-contact-email form-control" placeholder="Email">
-                            </div>
-                            <div class="col-sm-3">
-                                <button type="submit" class="btn btn-info new-contact form-control">+</button>
-                            </div>
-                        </form>
-                    </div>
+                    <form id="newContactForm">
+                        <div class="row">
+                                <div class="col-sm-3">
+                                    <input type="text" class="new-contact-name form-control" placeholder="Name">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" class="new-contact-phone form-control"
+                                           placeholder="Phone Number" name="newPhone" id="newPhone">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="email"
+                                           class="new-contact-email form-control" placeholder="Email">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-info new-contact form-control">+</button>
+                                </div>
+                        </div>
+                    </form>
                     <div class="row medium-margin line"></div>
                 </div>
+
             </div>
         </script>
 
-
-
     <script type="text/template" id="view_template">
         <div class="modal-content">
-            <div class="close-modal" data-action="dismiss">
-                <div class="lr">
-                    <div class="rl">
+                <div class="close-modal" data-action="dismiss">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
                     </div>
                 </div>
+                <div class="container invite-table">
+                    <div class="row controls">
+                        <div class="col-sm-6">
+                            <h4>Event</h4>
+                            <div class="invite-title"></div>
+                        </div>
+                        <div class="col-sm-6 ">
+                            <h4>When</h4>
+                            <div class="invite-date"></div>
+                        </div>
+                    </div>
+
+                    <div class="row medium-margin line"></div>
+
+                    <h4>Attendees</h4>
+                    <div class="row medium-margin line"></div>
+                    <div class="row medium-margin line"></div>
+                    <div class='row contact-row small-margin'>
+                        <div class='col-sm-2'> <strong>Name</strong></div>
+                        <div class='col-sm-2'>  <strong>Phone</strong> </div>
+                        <div class='col-sm-2'> <strong>Email</strong></div>
+                        <div class='col-sm-2'> <strong>Sms Response</strong></div>
+                        <div class='col-sm-2'> <strong>Voice Response</strong></div>
+                        <div class='col-sm-2'> <strong>Email Response</strong></div>
+                    </div>
+                    <!--<div class="row medium-margin line"></div>-->
+                </div>
             </div>
-            <div class="container">
-               Dead end Johnny!
-            </div>
-        </div>
     </script>
 
     <script type="text/template" id="search_template">
@@ -325,26 +349,25 @@
     <div id="modal_container" class="portfolio-modal modal fade contacts-modal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
     <!-- jQuery Version 1.11.0 -->
-    <script src="js/underscore.min.js"></script>
-    <script src="js/jquery-1.11.0.js"></script>
-    <script src="js/backbone.min.js"></script>
-
+    <script src="/js/underscore.min.js"></script>
+    <script src="/js/jquery-1.11.0.js"></script>
+    <script src="/js/backbone.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
+    <script src="/js/classie.js"></script>
+    <script src="/js/cbpAnimatedHeader.js"></script>
 
     <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+    <script src="/js/contact_me.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="js/freelancer.js"></script>
+    <script src="/js/freelancer.js"></script>
 
+    <script src="/js/jquery.validate.min.js"></script>
 </body>
 
 </html>
