@@ -104,6 +104,15 @@ class InviteHandler(JsonHandler):
         invite_manager = InviteManager()
         return invite_manager.get(id)
 
+    def accept_response(self,invite_id, contact_id):
+        data = self._data()
+        invite_manager = InviteManager()
+        return invite_manager.accept(
+            invite_id,
+            contact_id,
+            data['channel'],
+            data['response']
+        )
 
 class EmailHandler(webapp2.RequestHandler):
     def send(self):
@@ -145,4 +154,7 @@ app = webapp2.WSGIApplication([
 
     Route('/api/invite/<id>', InviteHandler, name='view',
           handler_method='view', methods=['GET']),
+
+    Route('/api/<invite_id>/contact/<contact_id>/response', InviteHandler, name='accept_response',
+          handler_method='accept_response', methods=['POST']),
 ], debug=True)

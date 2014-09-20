@@ -272,9 +272,9 @@ InviteView = Backbone.View.extend({
                         contact.name || 'N/A',
                         contact.phone || 'N/A',
                         contact.email || 'N/A',
-                        contact.sms_response || 'N/A',
-                        contact.voice_response || 'N/A',
-                        contact.email_response || 'N/A'
+                        contact.sms_response || '<span class="text-danger">N/A</span>',
+                        contact.voice_response || '<span class="text-danger">N/A</span>',
+                        contact.email_response || '<span class="text-danger">N/A</span>'
                     ));
                 })
 

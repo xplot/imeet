@@ -19,6 +19,7 @@ class InviteManager(object):
 
         invite = Invite()
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
+        invite_dict['inviteId'] = invite.unique_id
         invite.title = invite_dict['title']
         invite.when = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%d")
         invite.put()
@@ -28,6 +29,7 @@ class InviteManager(object):
         for x in invite_dict['contacts']:
             contact = Contact()
             contact.unique_id = str(uuid.uuid4()).replace('-', '')
+            x['contactId'] = contact.unique_id
             contact.name = x['name']
             contact.phone = x['phone']
             contact.email = x['email']
@@ -70,6 +72,25 @@ class InviteManager(object):
             } for x in contacts]
         }
 
+    def accept(self, invite_id, contact_id, channel, response):
+        contact_invite = ContactInvite.query(
+            ndb.AND(
+                ContactInvite.invite_id == invite_id,
+                ContactInvite.contact_id == contact_id
+            )
+        ).get()
+
+        if contact_invite is None:
+            raise Exception('No contact was found with the following id: ' + contact_id)
+
+        if channel == 'sms':
+            contact_invite.sms_response = response
+        elif channel == 'voice':
+            contact_invite.voice_response = response
+        elif channel == 'email':
+            contact_invite.email_response = response
+
+        contact_invite.put()
 
     def _post_invite(self,invite):
         url = config.voiceflows_url
