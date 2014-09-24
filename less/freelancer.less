@@ -28,53 +28,10 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 700;
 }
 
-hr.star-light,
-hr.star-primary {
-    padding: 0;
-    border: none;
-    border-top: solid 5px;
-    text-align: center;
-    max-width: 250px;
-    margin: 25px auto 30px;
-}
-
-hr.star-light:after,
-hr.star-primary:after {
-    content: "\f005";
-    font-family: FontAwesome;
-    display: inline-block;
-    position: relative; 
-    top: -0.8em;  
-    font-size: 2em;
-    padding: 0 0.25em;
-}
-
-hr.star-light {
-    border-color: white;
-}
-
-hr.star-light:after {
-    background-color: @brand-success;
-    color: white;
-}
-
-hr.star-primary {
-    border-color: @brand-primary;
-}
-
-hr.star-primary:after {
-    background-color: white;
-    color: @brand-primary;
-}
-
-.img-centered {
-	margin: 0 auto;
-}
-
 header {
 	text-align: center;
-	background: @brand-success;
-	color: white;
+	background: @body-frame;
+	color: @nav-color;
 	.container {
 		padding-top: 100px;
 		padding-bottom: 50px;
@@ -138,6 +95,7 @@ header {
 
 .navbar {
 	font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 	text-transform: uppercase;
 	font-weight: 700;
 	a:focus {
@@ -155,7 +113,9 @@ header {
 
 .navbar-default,
 .navbar-inverse {
+    color: @light-text !important;
 	border: none;
+    background-color: @nav-color;
 }
 
 section {
@@ -437,4 +397,8 @@ footer {
 
 .medium-margin{
   margin: 15px;
+}
+
+.fa-10x {
+  font-size: 10em;
 }
