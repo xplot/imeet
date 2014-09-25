@@ -35,3 +35,11 @@
 		background-color: @color;
 	}
 }
+
+.animate(@time) {
+  -webkit-transition: all @time ease-in-out;
+  -moz-transition: all @time ease-in-out;
+  -ms-transition: all @time ease-in-out;
+  -o-transition: all @time ease-in-out;
+  transition: all @time ease-in-out;
+}
