@@ -1,4 +1,5 @@
 body {
+  color: red;
   overflow-x: hidden;
   font-family: 'Lato', sans-serif;
   font-weight: 400;
@@ -92,6 +93,29 @@ header .intro-text .skills {
 }
 .navbar .navbar-nav li a:focus {
   outline: none;
+}
+.navbar .navbar-nav li .dropdown .btn:focus {
+  border-color: transparent;
+  outline: none;
+}
+.navbar .navbar-nav li .dropdown .dropdown-menu {
+  background-color: #262937;
+  border: none !important;
+  border-radius: 0px;
+}
+.navbar .navbar-nav li .dropdown .dropdown-menu li a {
+  color: #ffffff !important;
+}
+.navbar .navbar-nav li .dropdown button {
+  padding-top: 19.5px;
+  padding-bottom: 19.5px;
+  background-color: transparent;
+  border: none !important;
+  text-transform: uppercase;
+}
+.navbar .navbar-nav li .dropdown button:active {
+  border: none;
+  border-color: transparent;
 }
 .navbar-default,
 .navbar-inverse {
@@ -191,20 +215,22 @@ section.success {
   padding-bottom: 0.5em;
   border-bottom: 1px solid #eeeeee;
 }
+.floating-label-form-group div,
 .floating-label-form-group input,
 .floating-label-form-group textarea {
   z-index: 1;
   position: relative;
-  padding-right: 0;
-  padding-left: 0;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
   border: none;
   border-radius: 0;
-  font-size: 1.5em;
   background: none;
   box-shadow: none !important;
   resize: none;
+  outline: 0px !important;
+  -webkit-appearance: none;
 }
-.floating-label-form-group label {
+.floating-label-form-group label:not(.error) {
   display: block;
   z-index: 0;
   position: relative;
@@ -226,7 +252,7 @@ section.success {
 }
 .floating-label-form-group-with-value label {
   top: 0;
-  opacity: 1;
+  opacity: 1 !important;
 }
 .floating-label-form-group-with-focus label {
   color: #262937;
@@ -357,4 +383,17 @@ footer .footer-below {
 }
 .fa-2x {
   font-size: 2em;
+}
+.social-login-icons {
+  margin: 0;
+  list-style: none;
+  padding-left: 0;
+}
+.social-login-icons li {
+  width: 30px;
+  float: left;
+  margin-right: 0.4em;
+}
+.social-login-icons li a {
+  text-decoration: none;
 }

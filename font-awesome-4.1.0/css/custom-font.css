@@ -62,3 +62,15 @@
 .fa-sign-in:before {
   content: "i";
 }
+.fa-twitter:before {
+  content: "g";
+}
+.fa-facebook:before {
+  content: "k";
+}
+.fa-linkedin:before {
+  content: "j";
+}
+.fa-google:before {
+  content: "m";
+}
