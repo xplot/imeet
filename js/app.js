@@ -32,11 +32,16 @@ function init_app() {
             new_view.render();
         },
         search: function () {
-            search_view = new ModalView({
+            search_view = new SearchView({
                 el: "#modal_container",
                 templateId: '#search_template'
             });
-            search_view.render();
+
+            new_view = new ModalView({
+                el: "#modal_container",
+                childView: search_view
+            });
+            new_view.render();
         },
         view: function (id) {
             iv = new InviteView({

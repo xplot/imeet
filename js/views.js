@@ -180,7 +180,7 @@ CreateView = Backbone.View.extend({
         };
 
         $rows.each(function() {
-            var dataContact = that.$table.find(this).data("contact");
+            var dataContact = $(this).data("contact");
             var contactArray = dataContact.split(',');
 
             event.contacts.push({
@@ -190,8 +190,6 @@ CreateView = Backbone.View.extend({
             });
         });
 
-
-
         $.ajax({
             url: "/api/invite",
             type: "POST",
@@ -200,6 +198,40 @@ CreateView = Backbone.View.extend({
             success: function() {
                 that.$el.modal('hide');
                 Backbone.history.navigate('',true);
+            }
+        });
+    }
+});
+
+SearchView = Backbone.View.extend({
+    initialize: function(options){
+        this.options = options || {};
+    },
+    events: {
+       'click .search' : 'search'
+    },
+
+    render: function() {
+        if(this.options.templateId != null){
+            var template = _.template( $(this.options.templateId).html(), {} );
+            // Load the compiled HTML into the Backbone "el"
+            this.$el.html(template);
+        }
+        this.$searchForm = this.$el.find('#searchForm');
+        this.$searchBox = this.$el.find('#searchBox');
+    },
+    search: function(){
+        this.$searchForm.validate();
+        if(!this.$searchForm.valid())
+            return;
+
+        $.ajax({
+            url: "/api/invite/search/"+this.$searchBox.val(),
+            type: "POST",
+            data: JSON.stringify(event),
+            cache: false,
+            success: function(data) {
+                console.log(data);
             }
         });
     }

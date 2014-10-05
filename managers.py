@@ -72,6 +72,10 @@ class InviteManager(object):
             } for x in contacts]
         }
 
+    def search(self, term):
+        self._post_invite(invite_dict)
+
+
     def accept(self, invite_id, contact_id, channel, response):
         contact_invite = ContactInvite.query(
             ndb.AND(

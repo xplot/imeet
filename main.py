@@ -61,9 +61,13 @@ class JsonHandler(webapp2.RequestHandler):
         self.__render_json__(exception.message)
 
     def _data(self):
-        if self.request_data is None:
-            data_string = self.request.body
-            self.request_data = json.loads(data_string)
+        try:
+            if self.request_data is None:
+                data_string = self.request.body
+                self.request_data = json.loads(data_string)
+        except:
+            logging.info(self.request)
+            logging.info(self.request.body)
         return self.request_data
 
     def get_response(self):
@@ -103,6 +107,10 @@ class InviteHandler(JsonHandler):
     def view(self, id=0):
         invite_manager = InviteManager()
         return invite_manager.get(id)
+
+    def search(self, term):
+        invite_manager = InviteManager()
+        return invite_manager.search(term)
 
     def accept_response(self,invite_id, contact_id):
         data = self._data()
@@ -151,6 +159,9 @@ app = webapp2.WSGIApplication([
 
     Route('/api/invite', InviteHandler, name='send',
           handler_method='send', methods=['POST']),
+
+    Route('/api/invite/search/<term>', InviteHandler, name='search',
+          handler_method='search', methods=['GET']),
 
     Route('/api/invite/<id>', InviteHandler, name='view',
           handler_method='view', methods=['GET']),
