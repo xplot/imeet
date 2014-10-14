@@ -5,9 +5,13 @@ ModalView = Backbone.View.extend({
     initialize: function(options){
         this.options = options || {};
         this.childView = this.options.childView;
+
+        if(Backbone.pubSub._events == null || Backbone.pubSub._events['childClose'] == null)
+            Backbone.pubSub.on('childClose', this.onChildClose, this);
     },
-    render: function(){
+    render: function(data){
         var this_el = this.$el;
+        var that = this;
 
         if(this.options.templateId != null){
             var template = _.template( $(this.options.templateId).html(), {} );
@@ -16,17 +20,26 @@ ModalView = Backbone.View.extend({
         }
 
         if(this.childView != null){
-            this.childView.render();
+            this.childView.render(data);
         }
 
+
         this.$el.find(".close-modal").click(function(e) {
-            this_el.modal('hide');
-            Backbone.history.navigate('',true);
+            that.onChildClose({
+                'view': that.childView
+            });
         });
 
         //Finally we show it
         this.$el.modal('show');
+    },
+
+    onChildClose:function(data){
+        console.log('Got to the closing trigger');
+        this.$el.modal('hide');
+        Backbone.history.navigate('',true);
     }
+
 });
 
 
@@ -37,7 +50,11 @@ InviteView = Backbone.View.extend({
         this.options = options || {};
         this.inviteId = this.options.id;
     },
-    render: function(){
+    render: function(data){
+        this.inviteId = data.invite_id;
+
+        if(this.inviteId == null)
+            console.error('Invite Id is null, check routing');
 
         if(this.options.templateId != null){
             var template = _.template( $(this.options.templateId).html(), {} );
@@ -241,5 +258,127 @@ SearchView = Backbone.View.extend({
                 console.log(data);
             }
         });
+    }
+});
+
+
+UserRegisterView = Backbone.View.extend({
+    initialize: function(options){
+        this.options = options || {};
+    },
+    events: {
+       'click .submit-register' : 'registerEmail'
+    },
+
+    render: function() {
+        if(this.options.templateId != null){
+            var template = _.template( $(this.options.templateId).html(), {} );
+            this.$el.html(template);
+
+            this.$registerForm = this.$el.find('#registerForm');
+            this.$email = this.$el.find('.register-email');
+        }
+    },
+
+    registerEmail: function(){
+        this.$registerForm.validate();
+        if(!this.$registerForm.valid())
+            return;
+
+        var that = this;
+        $.ajax({
+            url: "/register/email/"+ this.$email.val(),
+            type: "POST",
+            cache: false,
+            success: function() {
+                console.log('closing child');
+                Backbone.pubSub.trigger('childClose', { 'view' : that } );
+            }
+        });
+
+    }
+});
+
+UserProfileView = Backbone.View.extend({
+    initialize: function(options){
+        this.options = options || {};
+    },
+    events: {
+       'click .save-profile' : 'save'
+    },
+
+    render: function() {
+        if(this.options.templateId != null){
+            var template = _.template( $(this.options.templateId).html(), {} );
+            // Load the compiled HTML into the Backbone "el"
+            this.$el.html(template);
+
+            this.$editProfileForm = this.$el.find('#editProfileForm');
+            this.$name = this.$el.find('#edit-profile-name');
+            this.$username = this.$el.find('#edit-profile-username');
+            this.$password = this.$el.find('#edit_profile_password');
+            this.$email = this.$el.find('#edit-profile-email');
+        }
+
+        var that = this;
+        $.ajax({
+            url: "/api/profile/"+ currentUser.id,
+            type: "GET",
+            cache: false,
+            success: function(data) {
+                if(data.email != null){
+                    that.$email.html(data.email);
+                    that.$email.parent().addClass('floating-label-form-group-with-value');
+                }
+
+                if(data.username != null){
+                    that.$username.val(data.username);
+                    that.$username.parent().addClass('floating-label-form-group-with-value');
+                }
+
+                if(data.name != null){
+                    that.$name.val(data.name + " " + data.last_name);
+                    that.$name.parent().addClass('floating-label-form-group-with-value');
+                }
+            }
+        });
+
+    },
+
+    save: function(){
+        this.$editProfileForm.validate({
+            rules: {
+                edit_profile_password: {
+                    minlength: 5
+                },
+                edit_profile_password_confirm: {
+                    minlength: 5,
+                    equalTo: "#edit_profile_password"
+                }
+            }
+        });
+        if(!this.$editProfileForm.valid())
+            return;
+        var user = {
+          'username':   this.$username.val(),
+          'password':   this.$password.val()
+        };
+
+        if(this.$name.val() != null) {
+            user.name = this.$name.val().split(' ')[0];
+            user.last_name = this.$name.val().split(' ')[1];
+        }
+
+        var that = this;
+        $.ajax({
+            url: "/api/profile/"+ currentUser.id,
+            type: "POST",
+            data: JSON.stringify(user),
+            cache: false,
+            success: function(data) {
+                Backbone.pubSub.trigger('childClose', { 'view' : that } );
+            }
+        });
+
     }
 });
