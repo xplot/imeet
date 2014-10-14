@@ -37,5 +37,7 @@ config = {
     'email_sender':'javi830810@gmail.com',
 
     'salt': 's3l3ct3d_s41t',
-    'aes_key':'s3l3ct3d_43s_k3y'
+    'aes_key':'s3l3ct3d_43s_k3y',
+
+    'api_url': "http://www.voiceflows.com/api/invite"
 }

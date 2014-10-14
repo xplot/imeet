@@ -10,18 +10,41 @@ from google.appengine.ext import ndb
 from webapp2 import Route
 
 from models import Invite,Contact, ContactInvite, data_type_handler
-import config
+from boilerplate.models import User
+from config import config
 import logging
 
 class InviteManager(object):
 
     def create(self, invite_dict):
-
+        """
+        Creates an invitation out of the supplied dictionary
+        This is a valid data-format:
+        {
+            'contacts': [
+                {
+                    'phone': '',
+                    'email': 'javi@javi.com',
+                    'name': u''
+                }
+            ],
+            'when': u'2014-10-06',
+            'title': 'Candle',
+            'user_id': u'5302669702856704' #Not mandatory, could be anonymous
+        }
+        """
         invite = Invite()
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
         invite_dict['inviteId'] = invite.unique_id
         invite.title = invite_dict['title']
         invite.when = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%d")
+
+        user_id = invite_dict.get('user_id', None)
+
+        if user_id is not None:
+            user = User.get_by_id(long(user_id))
+            invite.user = user.key
+
         invite.put()
 
         db_contacts = []
@@ -97,7 +120,7 @@ class InviteManager(object):
         contact_invite.put()
 
     def _post_invite(self,invite):
-        url = config.voiceflows_url
+        url = config.get('api_url')
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
         logging.info(json.dumps(

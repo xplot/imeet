@@ -507,9 +507,15 @@
     <script src="/js/jquery.validate.min.js"></script>
 
     <script>
-        var currentUser = {
+
+        var currentUser =
+        {% if username %}
+        {
           'id': '{{user_id}}',
         };
+        {%else %}
+            null;
+        {%endif %}
     </script>
 </body>
 

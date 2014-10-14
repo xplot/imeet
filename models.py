@@ -6,6 +6,8 @@ from datetime import time
 from google.appengine.api import memcache
 from google.appengine.ext import ndb, db
 
+from boilerplate.models import User
+
 def data_type_handler(obj):
         if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date):
             return obj.strftime("%m/%d/%y HH:MM:SS")
@@ -46,10 +48,6 @@ class BaseModel(ndb.Model):
         return result
 
 
-class User(BaseModel):
-    unique_id = ndb.StringProperty()
-
-
 class ContactInvite(ndb.Model):
     contact_id = ndb.StringProperty()
     invite_id = ndb.StringProperty()
@@ -57,12 +55,11 @@ class ContactInvite(ndb.Model):
     sms_response = ndb.StringProperty()
     email_response = ndb.StringProperty()
 
-
 class Invite(BaseModel):
     unique_id = ndb.StringProperty()
     when = ndb.DateTimeProperty(auto_now_add=True)
     title = ndb.StringProperty()
-
+    user = ndb.KeyProperty(kind=User)
 
 class Contact(BaseModel):
     unique_id = ndb.StringProperty()

@@ -200,6 +200,7 @@ CreateView = Backbone.View.extend({
         var event = {
             'title': this.$event_name.val(),
             'when':this.$event_date.val(),
+            'user_id': (currentUser!=null)?currentUser.id: null,
             'contacts': []
         };
 
@@ -213,7 +214,7 @@ CreateView = Backbone.View.extend({
                 'phone':contactArray[1]
             });
         });
-
+        console.log(event);
         $.ajax({
             url: "/api/invite",
             type: "POST",
