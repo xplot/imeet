@@ -29,6 +29,11 @@ config = {
     'linkedin_api' : '75m75jtnf78lh6',
     'linkedin_secret' : 'VV695Pgu8v1eEYFi',
 
+
+    'google-client-id': '921099581765-61jepjttsm2440fv5tkkeigftcjnpoee.apps.googleusercontent.com',
+    'google-client-secret' : 'zWpySCh5FQfGTb06D_9YJI-a',
+    'google-client-scope' : 'https://www.googleapis.com/auth/calendar',
+
     'email_sender':'javi830810@gmail.com',
 
     'salt': 's3l3ct3d_s41t',

@@ -31,6 +31,10 @@ config = {
 
     'email_sender':'javi830810@gmail.com',
 
+    'google-client-id': '921099581765-83enr5i4mr56qhmjbjdaro8o83698h6a.apps.googleusercontent.com',
+    'google-client-secret' : 'XasYbdcjb5q207RhvsxlUrHa',
+    'google-client-scope' : 'https://www.googleapis.com/auth/calendar',
+
     'salt': 's3l3ct3d_s41t',
     'aes_key':'s3l3ct3d_43s_k3y'
 }

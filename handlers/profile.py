@@ -22,6 +22,7 @@ from google.appengine.api import taskqueue
 from google.appengine.api import users
 from google.appengine.api.datastore_errors import BadValueError
 from google.appengine.runtime import apiproxy_errors
+
 from github import github
 from linkedin import linkedin
 
@@ -238,8 +239,6 @@ class SocialLoginHandler(BaseHandler):
     def get(self, provider_name):
         provider = self.provider_info[provider_name]
 
-        logging.info("Hello Social")
-
         if not self.app.config.get('enable_federated_login'):
             message = _('Federated login is disabled.')
             self.add_message(message, 'warning')
@@ -273,21 +272,19 @@ class SocialLoginHandler(BaseHandler):
                                               self.app.config.get('github_redirect_uri'), scope)
             self.redirect(github_helper.get_authorize_url())
 
-        elif provider_name in models.SocialUser.open_id_providers():
+        elif provider_name == "google":
+
+            user = users.get_current_user()
+
             continue_url = self.request.get('continue_url')
+            dest_url = dest_url = self.uri_for('social-login-complete', provider_name=provider_name)
             if continue_url:
                 dest_url = self.uri_for('social-login-complete', provider_name=provider_name, continue_url=continue_url)
-            else:
-                dest_url = self.uri_for('social-login-complete', provider_name=provider_name)
-            try:
-                login_url = users.create_login_url(federated_identity=provider['uri'], dest_url=dest_url)
-                self.redirect(login_url)
-            except users.NotAllowedError:
-                self.add_message('You must enable Federated Login Before for this application.<br> '
-                                 '<a href="http://appengine.google.com" target="_blank">Google App Engine Control Panel</a> -> '
-                                 'Administration -> Application Settings -> Authentication Options', 'danger')
-                self.redirect_to('login')
 
+            if user:
+                self.redirect(dest_url)
+            else:
+                self.redirect(users.create_login_url(dest_url))
         else:
             message = _('%s authentication is not yet implemented.' % provider.get('label'))
             self.add_message(message, 'warning')
@@ -301,10 +298,6 @@ class CallbackSocialLoginHandler(BaseHandler):
 
     def get(self, provider_name):
 
-        if not self.app.config.get('enable_federated_login'):
-            message = _('Federated login is disabled.')
-            self.add_message(message, 'warning')
-            return self.redirect_to('login')
         continue_url = self.request.get('continue_url')
         if provider_name == "twitter":
             oauth_token = self.request.get('oauth_token')
@@ -557,13 +550,14 @@ class CallbackSocialLoginHandler(BaseHandler):
 
                     #end linkedin
 
-        # google, myopenid, yahoo OpenID Providers
-        elif provider_name in models.SocialUser.open_id_providers():
-            provider_display_name = models.SocialUser.PROVIDERS_INFO[provider_name]['label']
+        # google
+        elif provider_name == 'google':
+            provider_display_name = 'google'
             # get info passed from OpenID Provider
             from google.appengine.api import users
 
             current_user = users.get_current_user()
+
             if current_user:
                 if current_user.federated_identity():
                     uid = current_user.federated_identity()
@@ -572,7 +566,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                 email = current_user.email()
             else:
                 message = _('No user authentication information received from %s. '
-                            'Please ensure you are logging in from an authorized OpenID Provider (OP).'
+                            'Please ensure you are logging in from Google, and authorized the application.'
                             % provider_display_name)
                 self.add_message(message, 'danger')
                 return self.redirect_to('login', continue_url=continue_url) if continue_url else self.redirect_to(
