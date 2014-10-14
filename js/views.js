@@ -85,7 +85,7 @@ InviteView = Backbone.View.extend({
 });
 
 CreateView = Backbone.View.extend({
-
+    el: '#header-container',
     initialize: function(options){
         this.options = options || {};
     },
@@ -95,13 +95,18 @@ CreateView = Backbone.View.extend({
        'click .send': 'submitNew'
     },
 
-    render: function() {
+    template: JST['../views/invite.html'],
 
-        if(this.options.templateId != null){
+    render: function(options) {
+
+        /*if(this.options.templateId != null){
             var template = _.template( $(this.options.templateId).html(), {} );
             // Load the compiled HTML into the Backbone "el"
             this.$el.html(template);
-        }
+        }*/
+
+        this.$el.html(this.template());
+        //this.$el.html(this.template(options));
 
         this.$table = this.$el.find('.contact-table');
         this.$contactForm = this.$el.find('#newContactForm');
@@ -112,6 +117,8 @@ CreateView = Backbone.View.extend({
         this.$event_name = this.$el.find('.event-name');
         this.$event_date = this.$el.find('.event-date');
         this.i = 0;
+
+        return this;
     },
     newContact: function(){
          if(this.$new_email.val() == '' && this.$new_phone.val() == '')

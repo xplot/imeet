@@ -237,57 +237,6 @@
     </footer>
 
         <!-- Portfolio Modals -->
-        <script type="text/template" id="new_template">
-            <div class="modal-content">
-                <div class="close-modal" data-action="dismiss">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="container contact-table">
-                    <form id="newInviteForm">
-                        <div class="row controls">
-                            <div class="col-sm-6">
-                                <input required type="text" class="form-control event-name" placeholder="Event" required>
-                            </div>
-                            <div class="col-sm-3">
-                                <input required type="date" class="form-control event-date" placeholder="when..." required name="when" id="when">
-                            </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-success form-control send">Create Invite</button>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="row medium-margin line"></div>
-
-                    <h4>Attendees</h4>
-                    <form id="newContactForm">
-                        <div class="row">
-                                <div class="col-sm-3">
-                                    <input type="text" class="new-contact-name form-control" placeholder="Name">
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="text" class="new-contact-phone form-control"
-                                           placeholder="Phone Number" name="newPhone" id="newPhone">
-                                </div>
-                                <div class="col-sm-3">
-                                    <input type="email"
-                                           class="new-contact-email form-control" placeholder="Email">
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-info new-contact form-control">+</button>
-                                </div>
-                        </div>
-                    </form>
-                    <div class="row medium-margin line"></div>
-                </div>
-
-            </div>
-        </script>
-
     <script type="text/template" id="view_template">
         <div class="modal-content">
                 <div class="close-modal" data-action="dismiss">
@@ -364,8 +313,13 @@
     <script src="/js/classie.js"></script>
     <script src="/js/cbpAnimatedHeader.js"></script>
 
+    <script src="/js/templates.js"></script>
+
     <script src="/js/views.js"></script>
+
     <script src="/js/app.js"></script>
+
+
 
     <!-- Contact Form JavaScript -->
     <script src="/js/contact_me.js"></script>
@@ -374,7 +328,6 @@
     <script src="/js/freelancer.js"></script>
 
     <script src="/js/jquery.validate.min.js"></script>
-
 
 
 </body>

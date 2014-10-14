@@ -1,1 +1,3 @@
 *.pyc
+tools\node_modules
+tools\tmp
