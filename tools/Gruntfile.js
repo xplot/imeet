@@ -129,7 +129,10 @@ module.exports = function (grunt) {
 				options: {
 					templateSettings: {
 						interpolate : /\{\{(.+?)\}\}/g
-					}
+					},
+					processName: function(filepath) {
+						return filepath.substring(filepath.lastIndexOf("/") + 1);
+  				}
 				},
 				files: {
 					"../js/templates.js": ["../views/**/*.html"]
@@ -158,7 +161,7 @@ module.exports = function (grunt) {
 						'uglify:application_scripts']
 			},
 			jst: {
-				files: ['../templates/**/*.html'],
+				files: ['../views/**/*.html'],
 				tasks: ['jst']
 			}
 		}

@@ -95,7 +95,7 @@ CreateView = Backbone.View.extend({
        'click .send': 'submitNew'
     },
 
-    template: JST['../views/invite.html'],
+    template: JST['invite.html'],
 
     render: function(options) {
 
