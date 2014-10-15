@@ -233,7 +233,8 @@ SearchView = Backbone.View.extend({
         this.options = options || {};
     },
     events: {
-       'click .search' : 'search'
+       'click .search' : 'search',
+       'keypress #searchBox' : 'type_key'
     },
 
     render: function() {
@@ -244,6 +245,16 @@ SearchView = Backbone.View.extend({
         }
         this.$searchForm = this.$el.find('#searchForm');
         this.$searchBox = this.$el.find('#searchBox');
+
+        this.search();
+    },
+
+    type_key: function(e){
+        if (e.keyCode == 13) {
+            this.search();
+            e.preventDefault();
+            return false;
+        }
     },
     search: function(){
         this.$searchForm.validate();
@@ -251,12 +262,24 @@ SearchView = Backbone.View.extend({
             return;
 
         $.ajax({
-            url: "/api/invite/search/"+this.$searchBox.val(),
-            type: "POST",
-            data: JSON.stringify(event),
+            url: "/api/invite/search/"+ currentUser.id + "?term=" + this.$searchBox.val(),
+            type: "GET",
             cache: false,
             success: function(data) {
-                console.log(data);
+                if(data!=null){
+                    var results = $('.search-result');
+                    results.empty();
+                    data.forEach(function(invite){
+                        var invite_row = "\
+                            <div class='row'>\
+                            <a href='/view/{0}'>{1}</a> \
+                            </div>".format(
+                            invite.unique_id,
+                            invite.title
+                        );
+                        results.append(invite_row);
+                    });
+                }
             }
         });
     }

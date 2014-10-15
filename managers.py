@@ -6,15 +6,17 @@ import uuid
 import webapp2
 
 from google.appengine.api import mail
+from google.appengine.api import search
 from google.appengine.ext import ndb
 from webapp2 import Route
 
-from models import Invite,Contact, ContactInvite, data_type_handler
+from models import Invite,Contact, ContactInvite, data_type_handler, InviteIndex
 from boilerplate.models import User
 from config import config
 import logging
 
 class InviteManager(object):
+    invite_index = 'invite_index'
 
     def create(self, invite_dict):
         """
@@ -67,37 +69,69 @@ class InviteManager(object):
         ndb.put_multi(db_contacts)
         ndb.put_multi(db_invite_contacts)
 
+        #Finally we index the Document
+        self._index_document(invite)
+
+    def _index_document(self, invite):
+        """
+        Stores the document in the datastore index
+        Search can only be performed word by word
+        """
+        index = search.Index(name=self.invite_index)
+        inviteSearch = search.Document(
+            doc_id=invite.unique_id,
+            fields=[
+                search.TextField(name='title', value=invite.title),
+                search.DateField(name='when', value=invite.when),
+            ],
+            language='en'
+        )
+        index.put(inviteSearch)
+
     def send(self, invite_dict):
+        """Send the invite out"""
         self._post_invite(invite_dict)
 
     def get(self, id):
+        """Get the invite by id"""
         invite = Invite.query(Invite.unique_id == id).get()
-
         if invite is None:
             raise Exception('Invite not found with id: ' + id)
+        return self._build(invite)
 
-        #contacts
-        contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == id).fetch()}
-        contacts = []
-        if contacts_invites:
-            contacts = Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
+    def get_by_user_id(self, user_id):
+        """Search all the invites by user_id"""
+        user = User.get_by_id(long(user_id))
+        invites = Invite.query(
+            Invite.user == user.key
+        ).fetch() or []
+        return [self._build(x) for x in invites]
 
-        return {
-            'title':invite.title,
-            'when': invite.when.strftime("%Y-%m-%d %H:%M"),
-            'contacts':[{
-                'name':x.name,
-                'phone': x.phone,
-                'email':x.email,
-                'sms_response': contacts_invites[x.unique_id].sms_response,
-                'voice_response': contacts_invites[x.unique_id].voice_response,
-                'email_response': contacts_invites[x.unique_id].email_response,
-            } for x in contacts]
-        }
+    def search(self, user_id, term=None):
+        """Search all the invites with the given term in the title"""
 
-    def search(self, term):
-        self._post_invite(invite_dict)
+        if term is None:
+            return self.get_by_user_id(user_id)
 
+        user = User.get_by_id(long(user_id))
+        if user is None:
+            raise Exception("Please provide a valid user")
+
+        index = search.Index(name=self.invite_index)
+        invite_query = index.search(term)
+        invite_ids = [x.doc_id for x in invite_query]
+
+        if not invite_ids:
+            return []
+
+        invites = Invite.query(
+            ndb.AND(
+                Invite.unique_id.IN(invite_ids),
+                Invite.user == user.key
+            )
+        ).fetch() or []
+
+        return [self._build(x) for x in invites]
 
     def accept(self, invite_id, contact_id, channel, response):
         contact_invite = ContactInvite.query(
@@ -139,3 +173,26 @@ class InviteManager(object):
             ),
             headers=headers
         )
+
+    def _build(self, invite):
+        #contacts
+        contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == invite.unique_id).fetch()}
+        contacts = []
+        if contacts_invites:
+            contacts = Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
+        return self._to_dict(invite, contacts_invites, contacts)
+
+    def _to_dict(self, invite, contacts_invites, contacts):
+        return {
+            'unique_id':invite.unique_id,
+            'title':invite.title,
+            'when': invite.when.strftime("%Y-%m-%d %H:%M"),
+            'contacts':[{
+                'name':x.name,
+                'phone': x.phone,
+                'email':x.email,
+                'sms_response': contacts_invites[x.unique_id].sms_response,
+                'voice_response': contacts_invites[x.unique_id].voice_response,
+                'email_response': contacts_invites[x.unique_id].email_response,
+            } for x in contacts]
+        }

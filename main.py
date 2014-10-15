@@ -21,7 +21,7 @@ app = webapp2.WSGIApplication([
     Route('/new', base.MainHandler, handler_method='new', ),
     Route('/search', base.MainHandler, handler_method='search', ),
     Route('/view', base.MainHandler, handler_method='view'),
-    Route('/view/<id>', base.MainHandler, handler_method='view'),
+    Route('/view/<id>', base.MainHandler, handler_method='view_invite'),
 
     #User Profile
     Route('/register', base.MainHandler, name='register'),
@@ -47,8 +47,9 @@ app = webapp2.WSGIApplication([
     #Invite
     Route('/api/invite', invite.InviteHandler, name='send',
           handler_method='send', methods=['POST']),
-    Route('/api/invite/search/<term>', invite.InviteHandler, name='search',
-          handler_method='search', methods=['GET']),
+    Route('/api/invite/search/<user_id>', invite.InviteHandler, name='search',
+          handler_method='search'),
+
     Route('/api/invite/<id>', invite.InviteHandler, name='view',
           handler_method='view', methods=['GET']),
     Route('/api/<invite_id>/contact/<contact_id>/response', invite.InviteHandler, name='accept_response',

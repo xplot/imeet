@@ -15,9 +15,10 @@ class InviteHandler(JsonHandler):
         invite_manager = InviteManager()
         return invite_manager.get(id)
 
-    def search(self, term):
+    def search(self, user_id):
+        term = self.request.get('term', None)
         invite_manager = InviteManager()
-        return invite_manager.search(term)
+        return invite_manager.search(user_id, term)
 
     def accept_response(self,invite_id, contact_id):
         data = self._data()

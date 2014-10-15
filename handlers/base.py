@@ -41,6 +41,7 @@ class JsonHandler(RequestHandler):
 
             self.api_success(result)
         except Exception, e:
+            lo
             if not self.response.status:
                 self.error(500)
             self.handle_exception(e, False)
@@ -135,47 +136,13 @@ class MainHandler(BaseHandler):
         return self.render_template('index.html')
 
     def new(self):
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render())
+        return self.render_template('index.html')
 
     def search(self):
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render())
+        return self.render_template('index.html')
 
-    def view(self, id=0):
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render())
-
-
-class InviteHandler(JsonHandler):
-
-    def send(self):
-        data = self._data()
-
-        logging.info(data)
-
-        invite_manager = InviteManager()
-        invite_manager.create(data)
-        invite_manager.send(data)
-        return True
-
-    def view(self, id=0):
-        invite_manager = InviteManager()
-        return invite_manager.get(id)
-
-    def search(self, term):
-        invite_manager = InviteManager()
-        return invite_manager.search(term)
-
-    def accept_response(self,invite_id, contact_id):
-        data = self._data()
-        invite_manager = InviteManager()
-        return invite_manager.accept(
-            invite_id,
-            contact_id,
-            data['channel'],
-            data['response']
-        )
+    def view_invite(self, id=0):
+        return self.render_template('index.html')
 
 class EmailHandler(webapp2.RequestHandler):
     def send(self):

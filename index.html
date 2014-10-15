@@ -291,7 +291,7 @@
 
     <script type="text/template" id="search_template">
         <div class="modal-content">
-            <form id="searchForm">
+            <form id="searchForm" onsubmit="return false;">
                 <div class="close-modal" data-action="dismiss">
                     <div class="lr">
                         <div class="rl">
@@ -306,6 +306,9 @@
                         <div class="col-sm-2">
                             <button type="button" class="btn btn-success form-control search">Go</button>
                         </div>
+                    </div>
+                    <div class="row" style="height: 50px"></div>
+                    <div class="row search-result">
                     </div>
                 </div>
             </form>
@@ -511,7 +514,7 @@
         var currentUser =
         {% if username %}
         {
-          'id': '{{user_id}}',
+          id: '{{user_id}}',
         };
         {%else %}
             null;

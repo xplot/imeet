@@ -61,6 +61,13 @@ class Invite(BaseModel):
     title = ndb.StringProperty()
     user = ndb.KeyProperty(kind=User)
 
+class InviteIndex(ndb.Model):
+    doc_id = ndb.StringProperty()
+    title = ndb.StringProperty()
+    invite_id = ndb.StringProperty()
+    when = ndb.DateTimeProperty()
+    language = ndb.StringProperty()
+
 class Contact(BaseModel):
     unique_id = ndb.StringProperty()
     name = ndb.StringProperty()
