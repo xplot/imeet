@@ -272,7 +272,7 @@ SearchView = Backbone.View.extend({
                     data.forEach(function(invite){
                         var invite_row = "\
                             <div class='row'>\
-                            <a href='/view/{0}'>{1}</a> \
+                                <a href='#' class='navigate' data-action='modal' data-where='view/{0}'>{1}</a> \
                             </div>".format(
                             invite.unique_id,
                             invite.title

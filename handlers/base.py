@@ -41,7 +41,6 @@ class JsonHandler(RequestHandler):
 
             self.api_success(result)
         except Exception, e:
-            lo
             if not self.response.status:
                 self.error(500)
             self.handle_exception(e, False)

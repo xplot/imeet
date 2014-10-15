@@ -13,9 +13,6 @@ function init_app() {
     Backbone.pubSub.subscribe   = Backbone.pubSub.bind;
     Backbone.pubSub.unsubscribe = Backbone.pubSub.unbind;
 
-
-
-
     //Views
 
     //Login
@@ -89,9 +86,7 @@ function init_app() {
             'view/:id': 'view'
         },
         index: function () {
-            $("a[data-action=\"modal\"]").click(function (e) {
-                Backbone.history.navigate($(this).data('where'), true);
-            });
+
         },
 
         //User Profile
@@ -120,4 +115,8 @@ function init_app() {
     new App.Router;
     Backbone.history.start({pushState: true});
 
+    $("body").on('click', ".navigate", function (e) {
+        console.log('executing');
+        Backbone.history.navigate($(this).data('where'), true);
+    });
 }
