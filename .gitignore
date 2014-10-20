@@ -1,4 +1,4 @@
 *.pyc
-tools\node_modules
-tools\tmp
+tools/node_modules
+tools/tmp
 npm-debug.log
