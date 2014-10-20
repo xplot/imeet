@@ -18,7 +18,8 @@ app = webapp2.WSGIApplication([
     Route('/', base.MainHandler, name='home'),
 
 
-    Route('/new', base.MainHandler, handler_method='new', ),
+    Route('/new', base.MainHandler),
+    Route('/new/<invite_name>', base.MainHandler),
     Route('/search', base.MainHandler, handler_method='search', ),
     Route('/view', base.MainHandler, handler_method='view'),
     Route('/view/<id>', base.MainHandler, handler_method='view_invite'),
@@ -47,6 +48,8 @@ app = webapp2.WSGIApplication([
     #Invite
     Route('/api/invite', invite.InviteHandler, name='send',
           handler_method='send', methods=['POST']),
+    Route('/api/invite/post', invite.InviteHandler, name='post_to_voiceflows',
+          handler_method='post_to_voiceflows', methods=['POST']),
     Route('/api/invite/search/<user_id>', invite.InviteHandler, name='search',
           handler_method='search'),
 
