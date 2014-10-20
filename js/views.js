@@ -128,6 +128,7 @@ CreateView = Backbone.View.extend({
         //this.$el.html(this.template(options));
 
         this.$table = this.$el.find('.contact-table');
+        this.$btSend = this.$el.find('.send');
         this.$contactForm = this.$el.find('#newContactForm');
         this.$inviteForm = this.$el.find('#newInviteForm');
         this.$new_name = this.$el.find('.new-contact-name');
@@ -177,26 +178,38 @@ CreateView = Backbone.View.extend({
 
             this.i++;
 
+            //enabling send button
+            this.$btSend.removeAttr("disabled");
+
             return false;
     },
     removeContact: function (e) {
         var dataId = "#contact"+ $(e.currentTarget).data('row');
         this.$table.find(dataId).remove();
+
+        //disabling send button
+        var $rows = this.$el.find('.contact-row');
+        if($rows == null || $rows.length == 0)
+          this.$btSend.attr("disabled", "disabled");
     },
     submitNew:function(e){
         var that = this;
 
-        this.$inviteForm.validate({
+        /*this.$inviteForm.validate({
             rules: {
                 when: {
                   required: true,
                   date: true
                 }
             }
-        });
+        });*/
 
         if(!this.$inviteForm.valid())
+          {
             return;
+          }
+
+          return;
 
         var $rows = this.$el.find('.contact-row');
         var event = {
