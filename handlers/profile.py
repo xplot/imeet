@@ -27,6 +27,7 @@ from github import github
 from linkedin import linkedin
 
 # local application/library specific imports
+import main
 import models
 #import forms as forms
 from boilerplate import utils, captcha, twitter
@@ -757,7 +758,7 @@ class RegisterHandler(JsonHandler):
             )
             raise Exception
 
-        subject = _("%s Account Verification" % self.app.config.get('app_name'))
+        subject = "iMeet - Account Verification"
         confirmation_url = self.uri_for(
             "account-activation",
             user_id=user[1].get_id(),
@@ -773,12 +774,12 @@ class RegisterHandler(JsonHandler):
         # load email's template
         template_val = {
             "app_name": self.app.config.get('app_name'),
-            "username": email,
-            "confirmation_url": confirmation_url,
+            "fullname": email,
+            "activation_url": confirmation_url,
             "support_url": self.uri_for("contact", _full=True)
         }
         body_path = "emails/account_activation.html"
-        body = self.render_template(body_path, **template_val)
+        body = self.get_template_rendered(body_path, **template_val)
         #
         email_url = self.uri_for('taskqueue-send-email')
         taskqueue.add(url=email_url, params={

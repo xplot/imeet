@@ -5,8 +5,13 @@ import webapp2
 from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 
+import logging
+logging.info(os.path.join(os.path.dirname(__file__), "emails"))
+
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    loader=jinja2.FileSystemLoader(
+        [os.path.dirname(__file__),
+         os.path.join(os.path.dirname(__file__), "emails")]),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
