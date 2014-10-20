@@ -1,13 +1,15 @@
 
 ModalView = Backbone.View.extend({
     childView: null,
+    template: null,
 
     initialize: function(options){
         this.options = options || {};
         this.childView = this.options.childView;
+        this.template = this.options.template;
 
-        if(Backbone.pubSub._events == null || Backbone.pubSub._events['childClose'] == null)
-            Backbone.pubSub.on('childClose', this.onChildClose, this);
+        /*if(Backbone.pubSub._events == null || Backbone.pubSub._events['childClose'] == null)
+            Backbone.pubSub.on('childClose', this.onChildClose, this);*/
     },
     render: function(data){
         var this_el = this.$el;
@@ -18,6 +20,8 @@ ModalView = Backbone.View.extend({
             // Load the compiled HTML into the Backbone "el"
             this.$el.html(template);
         }
+        else if(this.template != null)
+          this.$el.html(this.template());
 
         if(this.childView != null){
             this.childView.render(data);
@@ -32,6 +36,7 @@ ModalView = Backbone.View.extend({
 
         //Finally we show it
         this.$el.modal('show');
+        return this;
     },
 
     onChildClose:function(data){
@@ -44,6 +49,7 @@ ModalView = Backbone.View.extend({
 
 
 InviteView = Backbone.View.extend({
+    template: JST['inviteReport.html'],
     inviteId:null,
 
     initialize: function(options){
@@ -56,11 +62,7 @@ InviteView = Backbone.View.extend({
         if(this.inviteId == null)
             console.error('Invite Id is null, check routing');
 
-        if(this.options.templateId != null){
-            var template = _.template( $(this.options.templateId).html(), {} );
-            // Load the compiled HTML into the Backbone "el"
-            this.$el.html(template);
-        }
+        this.$el.html(this.template());
 
         $.ajax({
             url: "/api/invite/" + this.inviteId,
@@ -229,6 +231,7 @@ CreateView = Backbone.View.extend({
 });
 
 SearchView = Backbone.View.extend({
+    template: JST['search.html'],
     initialize: function(options){
         this.options = options || {};
     },
@@ -238,11 +241,7 @@ SearchView = Backbone.View.extend({
     },
 
     render: function() {
-        if(this.options.templateId != null){
-            var template = _.template( $(this.options.templateId).html(), {} );
-            // Load the compiled HTML into the Backbone "el"
-            this.$el.html(template);
-        }
+        this.$el.html(this.template());
         this.$searchForm = this.$el.find('#searchForm');
         this.$searchBox = this.$el.find('#searchBox');
 
@@ -287,6 +286,7 @@ SearchView = Backbone.View.extend({
 
 
 UserRegisterView = Backbone.View.extend({
+    template: JST['register.html'],
     initialize: function(options){
         this.options = options || {};
     },
@@ -295,13 +295,10 @@ UserRegisterView = Backbone.View.extend({
     },
 
     render: function() {
-        if(this.options.templateId != null){
-            var template = _.template( $(this.options.templateId).html(), {} );
-            this.$el.html(template);
+        this.$el.html(this.template());
 
-            this.$registerForm = this.$el.find('#registerForm');
-            this.$email = this.$el.find('.register-email');
-        }
+        this.$registerForm = this.$el.find('#registerForm');
+        this.$email = this.$el.find('.register-email');
     },
 
     registerEmail: function(){
@@ -324,6 +321,7 @@ UserRegisterView = Backbone.View.extend({
 });
 
 UserProfileView = Backbone.View.extend({
+    template: JST['editProfile.html'],
     initialize: function(options){
         this.options = options || {};
     },
@@ -332,17 +330,13 @@ UserProfileView = Backbone.View.extend({
     },
 
     render: function() {
-        if(this.options.templateId != null){
-            var template = _.template( $(this.options.templateId).html(), {} );
-            // Load the compiled HTML into the Backbone "el"
-            this.$el.html(template);
+        this.$el.html(this.template());
 
-            this.$editProfileForm = this.$el.find('#editProfileForm');
-            this.$name = this.$el.find('#edit-profile-name');
-            this.$username = this.$el.find('#edit-profile-username');
-            this.$password = this.$el.find('#edit_profile_password');
-            this.$email = this.$el.find('#edit-profile-email');
-        }
+        this.$editProfileForm = this.$el.find('#editProfileForm');
+        this.$name = this.$el.find('#edit-profile-name');
+        this.$username = this.$el.find('#edit-profile-username');
+        this.$password = this.$el.find('#edit_profile_password');
+        this.$email = this.$el.find('#edit-profile-email');
 
         var that = this;
         $.ajax({

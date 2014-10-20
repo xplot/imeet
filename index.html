@@ -220,6 +220,97 @@
         </div>
     </section>
 
+    <script type="text/template" id="login">
+      <div class="modal-content">
+          <form id="loginForm" action="/login" method="post">
+              <div class="close-modal" data-action="dismiss">
+                  <div class="lr">
+                      <div class="rl">
+                      </div>
+                  </div>
+              </div>
+              <div class="container">
+                  <div class="row controls">
+                      <div class="col-sm-4"></div>
+                      <div class="col-sm-4">
+                            <div class="row">
+                                {% if messages|safe %}
+                                    {% for message in messages %}
+                                    <div class="alert alert-{{ message[1]|safe }}">
+                                        <a class="close" data-dismiss="alert">x</a>
+                                        {{ message[0]|safe }}
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                          <fieldset>
+                              <div class="row">
+                                  <input id="username" name="username" required type="text" class="form-control small-margin" placeholder="Username">
+                                  <input id="password" name="password" required type="password" class="form-control small-margin" placeholder="Password">
+                              </div>
+                              <div class="row">
+                                  <label class="remember pull-right" style="padding: 10px">
+                                      Remember me?
+                                      <input type="checkbox" name="remember_me" id="remember_me" value="on">
+                                  </label>
+                              </div>
+                              <div class="row">
+                                  <button type="submit" class="btn btn-success form-control pull-right">Login</button>
+                              </div>
+
+                              <div class="row" style="margin-top: 20px">
+                                  <div id="third_party_login">
+                                      <ul class="social-login-icons">
+                                          <li style="width: auto">
+
+                                          </li>
+                                          <li>
+                                              <a href="/social_login/google">
+                                                  <i class="fa fa-google fa-2x"></i>
+                                              </a>
+                                          </li>
+                                          <li>
+
+                                              <a href="/social_login/facebook">
+                                                  <i class="fa fa-facebook fa-2x"></i>
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a href="/social_login/twitter">
+                                                  <i class="fa fa-twitter fa-2x"></i>
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a href="/social_login/linkedin">
+                                                  <i class="fa fa-linkedin fa-2x"></i>
+                                              </a>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+
+                              <div class="row" style="margin-top: 20px">
+                                  <label class="remember pull-right">
+                                      <a href='/password-forgot'>Forgot your password?</a>
+                                  </label>
+                              </div>
+
+                              <div class="row">
+                                  <label class="remember pull-right">
+                                      Don't have an account?
+                                      <a href="/register" class="">Sign Up</a>
+                                  </label>
+                              </div>
+                          </fieldset>
+                      </div>
+                      <div class="col-sm-4"></div>
+                  </div>
+              </div>
+          </form>
+      </div>
+
+    </script>
+
     <!-- Footer -->
     <footer class="text-center">
         <div class="footer-above">
@@ -250,234 +341,6 @@
         </div>
     </footer>
 
-        <!-- Portfolio Modals -->
-    <script type="text/template" id="view_template">
-        <div class="modal-content">
-                <div class="close-modal" data-action="dismiss">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container invite-table">
-                    <div class="row controls">
-                        <div class="col-sm-6">
-                            <h4>Event</h4>
-                            <div class="invite-title"></div>
-                        </div>
-                        <div class="col-sm-6 ">
-                            <h4>When</h4>
-                            <div class="invite-date"></div>
-                        </div>
-                    </div>
-
-                    <div class="row medium-margin line"></div>
-
-                    <h4>Attendees</h4>
-                    <div class="row medium-margin line"></div>
-                    <div class="row medium-margin line"></div>
-                    <div class='row contact-row small-margin'>
-                        <div class='col-sm-2'> <strong>Name</strong></div>
-                        <div class='col-sm-2'>  <strong>Phone</strong> </div>
-                        <div class='col-sm-2'> <strong>Email</strong></div>
-                        <div class='col-sm-2'> <strong>Sms Response</strong></div>
-                        <div class='col-sm-2'> <strong>Voice Response</strong></div>
-                        <div class='col-sm-2'> <strong>Email Response</strong></div>
-                    </div>
-                    <!--<div class="row medium-margin line"></div>-->
-                </div>
-            </div>
-    </script>
-
-    <script type="text/template" id="search_template">
-        <div class="modal-content">
-            <form id="searchForm" onsubmit="return false;">
-                <div class="close-modal" data-action="dismiss">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row controls">
-                        <div class="col-sm-10">
-                            <input id="searchBox" required type="text" class="form-control event-name" placeholder="Invite Title" required>
-                        </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-success form-control search">Go</button>
-                        </div>
-                    </div>
-                    <div class="row" style="height: 50px"></div>
-                    <div class="row search-result">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </script>
-
-    <script type="text/template" id="login">
-        <div class="modal-content">
-            <form id="loginForm" action="/login" method="post">
-                <div class="close-modal" data-action="dismiss">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row controls">
-                        <div class="col-sm-4"></div>
-                        <div class="col-sm-4">
-                            <div class="row">
-                                {% if messages|safe %}
-                                    {% for message in messages %}
-                                    <div class="alert alert-{{ message[1]|safe }}">
-                                        <a class="close" data-dismiss="alert">x</a>
-                                        {{ message[0]|safe }}
-                                    </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                            <fieldset>
-                                <div class="row">
-                                    <input id="username" name="username" required type="text" class="form-control small-margin" placeholder="Username">
-                                    <input id="password" name="password" required type="password" class="form-control small-margin" placeholder="Password">
-                                </div>
-                                <div class="row">
-                                    <label class="remember pull-right" style="padding: 10px">
-                                        Remember me?
-                                        <input type="checkbox" name="remember_me" id="remember_me" value="on">
-                                    </label>
-                                </div>
-                                <div class="row">
-                                    <button type="submit" class="btn btn-success form-control pull-right">Login</button>
-                                </div>
-
-                                <div class="row" style="margin-top: 20px">
-                                    <div id="third_party_login">
-                                        <ul class="social-login-icons">
-                                            <li style="width: auto">
-
-                                            </li>
-                                            <li>
-                                                <a href="/social_login/google">
-                                                    <i class="fa fa-google fa-2x"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-
-                                                <a href="/social_login/facebook">
-                                                    <i class="fa fa-facebook fa-2x"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/social_login/twitter">
-                                                    <i class="fa fa-twitter fa-2x"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="/social_login/linkedin">
-                                                    <i class="fa fa-linkedin fa-2x"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="row" style="margin-top: 20px">
-                                    <label class="remember pull-right">
-                                        <a href='/password-forgot'>Forgot your password?</a>
-                                    </label>
-                                </div>
-
-                                <div class="row">
-                                    <label class="remember pull-right">
-                                        Don't have an account?
-                                        <a href="/register" class="">Sign Up</a>
-                                    </label>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="col-sm-4"></div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </script>
-
-    <script type="text/template" id="register">
-        <div class="modal-content">
-            <form id="registerForm">
-                <div class="close-modal" data-action="dismiss">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <h4>I want in!</h4>
-                   <div class="row controls">
-                       <div class="col-sm-3"></div>
-                        <div class="col-sm-6">
-                            <div class="col-sm-9">
-                                <input required type="email" class="form-control register-email" placeholder="Enter email...">
-                            </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-success form-control submit-register">Go</button>
-                            </div>
-                        </div>
-                        <div class="col-sm-3"></div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </script>
-
-    <script type="text/template" id="edit-profile">
-        <div class="modal-content">
-            <form id="editProfileForm">
-                <div class="close-modal" data-action="dismiss">
-                    <div class="lr">
-                        <div class="rl">
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <h4>Edit your profile</h4>
-                   <div class="row controls">
-                       <div class="col-sm-3"></div>
-                        <div class="col-sm-6">
-                            <br/><br/>
-                            <div class="floating-label-form-group">
-                                <div id="edit-profile-email">Email</div>
-                            </div>
-                            <br/><br/>
-                            <div class="floating-label-form-group">
-                                <label for="edit-profile-name" class="fl">Full Name</label>
-                                <input required id="edit-profile-name" type="text" class="form-control" placeholder="John Smith..." >
-                            </div>
-                            <div class="floating-label-form-group">
-                                <label for="edit-profile-username" class="fl">Username</label>
-                                <input required id="edit-profile-username" type="text" class="form-control" placeholder="username...">
-                            </div>
-                            <div class="floating-label-form-group">
-                                <label for="edit-profile-username" class="fl">Pasword</label>
-                                <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control" placeholder="password...">
-                            </div>
-                            <div class="floating-label-form-group">
-                                <label for="edit-profile-username" class="fl">Pasword Confirm</label>
-                                <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control" placeholder=" confirm password...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-xs-9 medium-margin">
-                        <a class="btn btn-primary btn-lg save-profile pull-right" role="button">Save</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </script>
-
     <div id="modal_container" class="portfolio-modal modal fade contacts-modal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
     <!-- jQuery Version 1.11.0 -->
@@ -495,9 +358,9 @@
 
     <script src="/js/templates.js"></script>
 
-    <script src="/js/views.min.js"></script>
+    <script src="/js/views.js"></script>
 
-    <script src="/js/app.min.js"></script>
+    <script src="/js/app.js"></script>
 
 
 
