@@ -23,8 +23,7 @@ function init_app() {
 
     //Register
     user_register_view = new UserRegisterView({
-        el: "#modal_container",
-        templateId: "#register"
+        el: "#modal_container"
     });
     register_view = new ModalView({
         el: "#modal_container",
@@ -33,8 +32,7 @@ function init_app() {
 
     //Edit Profile
     user_profile_view = new UserProfileView({
-        el: "#modal_container",
-        templateId: "#edit-profile"
+        el: "#modal_container"
     });
 
     profile_view = new ModalView({
@@ -44,8 +42,7 @@ function init_app() {
 
     //Create Invite
     create_invite_view = new CreateView({
-        el: "#modal_container",
-        templateId: "#new_template"
+        el: "#modal_container"
     });
 
     create_invite = new ModalView({
@@ -55,8 +52,7 @@ function init_app() {
 
     //Search
     search_view = new SearchView({
-        el: "#modal_container",
-        templateId: '#search_template'
+        el: "#modal_container"
     });
 
     search_view_modal = new ModalView({
@@ -66,8 +62,7 @@ function init_app() {
 
     //Report
     invite_view = new InviteView({
-        el: "#modal_container",
-        templateId: "#view_template"
+        el: "#modal_container"
     });
 
     invite_view_modal = new ModalView({
@@ -116,7 +111,6 @@ function init_app() {
     Backbone.history.start({pushState: true});
 
     $("body").on('click', ".navigate", function (e) {
-        console.log('executing');
         Backbone.history.navigate($(this).data('where'), true);
     });
 }
