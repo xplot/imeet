@@ -6,7 +6,7 @@ import uuid
 import webapp2
 
 from google.appengine.api import mail
-from google.appengine.api import search
+from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
 from webapp2 import Route
 
@@ -90,7 +90,9 @@ class InviteManager(object):
 
     def send(self, invite_dict):
         """Send the invite out"""
-        self._post_invite(invite_dict)
+        taskqueue.add(url='/api/invite/post', params={
+            'invite': json.dumps(invite_dict)
+        })
 
     def get(self, id):
         """Get the invite by id"""
@@ -152,27 +154,6 @@ class InviteManager(object):
             contact_invite.email_response = response
 
         contact_invite.put()
-
-    def _post_invite(self,invite):
-        url = config.get('api_url')
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-
-        logging.info(json.dumps(
-                invite,
-                default=data_type_handler,
-                indent = 4
-            )
-        )
-
-        r = requests.post(
-            url,
-            data=json.dumps(
-                invite,
-                default=data_type_handler,
-                indent = 4
-            ),
-            headers=headers
-        )
 
     def _build(self, invite):
         #contacts

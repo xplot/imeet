@@ -1,5 +1,9 @@
+import logging
+import requests
+
 from base import JsonHandler
 from managers import InviteManager
+from config import config
 
 
 class InviteHandler(JsonHandler):
@@ -28,4 +32,18 @@ class InviteHandler(JsonHandler):
             contact_id,
             data['channel'],
             data['response']
+        )
+
+    def post_to_voiceflows(self):
+        url = config.get('api_url')
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+
+        invite_json = self.request.get('invite')
+
+        logging.info(invite_json)
+
+        r = requests.post(
+            url,
+            data=invite_json,
+            headers=headers
         )

@@ -47,6 +47,44 @@ ModalView = Backbone.View.extend({
 
 });
 
+IndexView = Backbone.View.extend({
+    initialize: function (options) {
+        this.options = options || {};
+    },
+    events: {
+       'click .imeet-btn' : 'createNew',
+       'keypress .invite-title-input' : 'type_key'
+    },
+
+    type_key: function(e){
+        if (e.keyCode == 13) {
+            this.createNew();
+            e.preventDefault();
+            return false;
+        }
+    },
+
+    render: function (data) {
+        if (this.options.templateId != null) {
+            var template = _.template($(this.options.templateId).html(), {});
+            // Load the compiled HTML into the Backbone "el"
+            this.$el.html(template);
+        }
+
+        this.$inviteTitle = this.$el.find('.invite-title-input');
+        this.$headerImage = this.$el.find('.header-section');
+
+    },
+
+    createNew: function(){
+
+        var viewName = this.$inviteTitle.val();
+        if(viewName != null && viewName != '')
+            Backbone.history.navigate('/new/'+ viewName, true);
+        else
+            alert('type a title!');
+    }
+});
 
 InviteView = Backbone.View.extend({
     template: JST['inviteReport.html'],
@@ -135,7 +173,11 @@ CreateView = Backbone.View.extend({
         this.$new_email = this.$el.find('.new-contact-email');
         this.$event_name = this.$el.find('.event-name');
         this.$event_date = this.$el.find('.event-date');
+        this.$btSend = this.$el.find('.send');
         this.i = 0;
+
+        if(options.title != null)
+            this.$event_name.val(options.title);
 
         return this;
     },
@@ -177,15 +219,24 @@ CreateView = Backbone.View.extend({
 
             this.i++;
 
+            //enabling send button
+            this.$btSend.removeAttr("disabled");
+
             return false;
     },
     removeContact: function (e) {
         var dataId = "#contact"+ $(e.currentTarget).data('row');
         this.$table.find(dataId).remove();
+
+        //disabling send button
+        var $rows = this.$el.find('.contact-row');
+        if($rows == null || $rows.length == 0)
+          this.$btSend.attr("disabled", "disabled");
+
     },
     submitNew:function(e){
         var that = this;
-
+        /*
         this.$inviteForm.validate({
             rules: {
                 when: {
@@ -194,7 +245,7 @@ CreateView = Backbone.View.extend({
                 }
             }
         });
-
+        */
         if(!this.$inviteForm.valid())
             return;
 

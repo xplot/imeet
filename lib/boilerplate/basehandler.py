@@ -1,6 +1,7 @@
 # *-* coding: UTF-8 *-*
 
 # standard library imports
+
 import logging
 import re
 import pytz
@@ -15,6 +16,7 @@ from boilerplate import models
 from boilerplate import utils, i18n, jinja_bootstrap
 from babel import Locale
 from main import JINJA_ENVIRONMENT
+
 class ViewClass:
     """
         ViewClass to insert variables into the template.
@@ -241,6 +243,7 @@ class BaseHandler(webapp2.RequestHandler):
 
     @webapp2.cached_property
     def jinja2(self):
+        logging.info(JINJA_ENVIRONMENT)
         return JINJA_ENVIRONMENT
 
     @webapp2.cached_property
