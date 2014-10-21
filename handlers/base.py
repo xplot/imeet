@@ -30,10 +30,6 @@ class JsonHandler(RequestHandler):
         self.request_data = None
         super(JsonHandler, self).__init__(request, response)
 
-    @webapp2.cached_property
-    def jinja2(self):
-        return JINJA_ENVIRONMENT
-
     def dispatch(self):
         try:
             self.response.content_type = 'application/json'
@@ -72,15 +68,15 @@ class JsonHandler(RequestHandler):
     def get_response(self):
         raise Exception("hello world")
 
-    def render_template(self, filename, **kwargs):
+    def get_template_rendered(self, filename, **kwargs):
         # set or overwrite special vars for jinja templates
         kwargs.update({
             'google_analytics_code': self.app.config.get('google_analytics_code'),
             'app_name': self.app.config.get('app_name'),
             'url': self.request.url,
         })
-        template = self.jinja2.get_template(filename)
-        self.response.write(template.render(**kwargs))
+        template = JINJA_ENVIRONMENT.get_template(filename)
+        return template.render(**kwargs)
 
 class SendEmailHandler(BaseHandler):
     """
@@ -131,7 +127,7 @@ class SendEmailHandler(BaseHandler):
             raise
 
 class MainHandler(BaseHandler):
-    def get(self):
+    def get(self, invite_name=None):
         return self.render_template('index.html')
 
     def new(self):

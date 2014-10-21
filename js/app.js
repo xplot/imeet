@@ -15,6 +15,11 @@ function init_app() {
 
     //Views
 
+    index_view = new IndexView({
+        el: "#body-container",
+        templateId: "#body-template"
+    });
+
     //Login
     login_view = new ModalView({
         el: "#modal_container",
@@ -74,6 +79,7 @@ function init_app() {
         routes: {
             '': 'index',
             'new': 'new',
+            'new/:title': 'new',
             'search': 'search',
             'login': 'login',
             'profile/edit': 'edit_profile',
@@ -81,9 +87,9 @@ function init_app() {
             'view/:id': 'view'
         },
         index: function () {
+            index_view.render();
 
         },
-
         //User Profile
         login: function () {
             login_view.render();
@@ -96,8 +102,8 @@ function init_app() {
         },
 
         //Invite
-        new: function () {
-            create_invite.render();
+        new: function (title) {
+            create_invite.render({'title':title});
         },
         search: function () {
             search_view_modal.render();
@@ -110,7 +116,8 @@ function init_app() {
     new App.Router;
     Backbone.history.start({pushState: true});
 
-    $("body").on('click', ".navigate", function (e) {
+     $("body").on('click', ".navigate", function (e) {
+        console.log('executing');
         Backbone.history.navigate($(this).data('where'), true);
     });
 }

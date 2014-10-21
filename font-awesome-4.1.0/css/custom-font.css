@@ -74,3 +74,12 @@
 .fa-google:before {
   content: "m";
 }
+.fa-happy-face:before {
+  content: "l";
+}
+.fa-truck:before {
+  content: "n";
+}
+.fa-arrow-right:before {
+  content: "o";
+}
