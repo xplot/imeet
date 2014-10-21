@@ -233,7 +233,6 @@ CreateView = Backbone.View.extend({
         var $rows = this.$el.find('.contact-row');
         if($rows == null || $rows.length == 0)
           this.$btSend.attr("disabled", "disabled");
-<<<<<<< HEAD
     },
     submitNew:function(e){
         var that = this;
