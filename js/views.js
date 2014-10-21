@@ -238,42 +238,25 @@ CreateView = Backbone.View.extend({
     submitNew:function(e){
         var that = this;
 
-        /*this.$inviteForm.validate({
-=======
+         this.$inviteForm.validate({
+             rules: {
+                 when: {
+                   required: true,
+                   date: true
+                 }
+             }
+         });
 
-    },
-    submitNew:function(e){
-        var that = this;
-        /*
-        this.$inviteForm.validate({
->>>>>>> fa539278c779e6cf86787a85a7a9cb71662a3ddc
-            rules: {
-                when: {
-                  required: true,
-                  date: true
-                }
-            }
-<<<<<<< HEAD
-        });*/
+         if(!this.$inviteForm.valid())
+             return;
 
-=======
-        });
-        */
->>>>>>> fa539278c779e6cf86787a85a7a9cb71662a3ddc
-        if(!this.$inviteForm.valid())
-          {
-            return;
-          }
-
-          return;
-
-        var $rows = this.$el.find('.contact-row');
-        var event = {
-            'title': this.$event_name.val(),
-            'when':this.$event_date.val(),
-            'user_id': (currentUser!=null)?currentUser.id: null,
-            'contacts': []
-        };
+         var $rows = this.$el.find('.contact-row');
+         var event = {
+             'title': this.$event_name.val(),
+             'when':this.$event_date.val(),
+             'user_id': (currentUser!=null)?currentUser.id: null,
+             'contacts': []
+         };
 
         $rows.each(function() {
             var dataContact = $(this).data("contact");
