@@ -4,6 +4,7 @@ config = {
     'environment': "production",
     'enable_federated_login' : True,
     'log_visit' : False,
+    'log_email' : True,
 
     # ----> ADD MORE CONFIGURATION OPTIONS HERE <----
     'captcha_public_key': "6Ldi0u4SAAAAAC8pjDop1aDdmeiVrUOU2M4i23tT",

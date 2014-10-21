@@ -8,8 +8,8 @@ ModalView = Backbone.View.extend({
         this.childView = this.options.childView;
         this.template = this.options.template;
 
-        /*if(Backbone.pubSub._events == null || Backbone.pubSub._events['childClose'] == null)
-            Backbone.pubSub.on('childClose', this.onChildClose, this);*/
+        if(Backbone.pubSub._events == null || Backbone.pubSub._events['childClose'] == null)
+            Backbone.pubSub.on('childClose', this.onChildClose, this);
     },
     render: function(data){
         var this_el = this.$el;
@@ -363,7 +363,6 @@ UserRegisterView = Backbone.View.extend({
             type: "POST",
             cache: false,
             success: function() {
-                console.log('closing child');
                 Backbone.pubSub.trigger('childClose', { 'view' : that } );
             }
         });

@@ -53,54 +53,6 @@ class RegisterBaseHandler(BaseHandler):
     def form(self):
         return forms.RegisterForm(self)
 
-
-class SendEmailHandler(BaseHandler):
-    """
-    Core Handler for sending Emails
-    Use with TaskQueue
-    """
-
-    @taskqueue_method
-    def post(self):
-
-        from google.appengine.api import mail, app_identity
-
-        to = self.request.get("to")
-        subject = self.request.get("subject")
-        body = self.request.get("body")
-        sender = self.request.get("sender")
-
-        if sender != '' or not utils.is_email_valid(sender):
-            if utils.is_email_valid(self.app.config.get('contact_sender')):
-                sender = self.app.config.get('contact_sender')
-            else:
-                app_id = app_identity.get_application_id()
-                sender = "%s <no-reply@%s.appspotmail.com>" % (app_id, app_id)
-
-        if self.app.config['log_email']:
-            try:
-                logEmail = models.LogEmail(
-                    sender=sender,
-                    to=to,
-                    subject=subject,
-                    body=body,
-                    when=utils.get_date_time("datetimeProperty")
-                )
-                logEmail.put()
-            except (apiproxy_errors.OverQuotaError, BadValueError):
-                logging.error("Error saving Email Log in datastore")
-
-        try:
-            message = mail.EmailMessage()
-            message.sender = sender
-            message.to = to
-            message.subject = subject
-            message.html = body
-            message.send()
-        except Exception, e:
-            logging.error("Error sending email: %s" % e)
-
-
 class LoginHandler(BaseHandler):
     """
     Handler for authentication
@@ -768,9 +720,6 @@ class RegisterHandler(JsonHandler):
             _full=True
         )
 
-        logging.info('Activation URL')
-        logging.info(confirmation_url)
-
         # load email's template
         template_val = {
             "app_name": self.app.config.get('app_name'),
@@ -780,6 +729,7 @@ class RegisterHandler(JsonHandler):
         }
         body_path = "emails/account_activation.html"
         body = self.get_template_rendered(body_path, **template_val)
+
         #
         email_url = self.uri_for('taskqueue-send-email')
         taskqueue.add(url=email_url, params={

@@ -7,6 +7,7 @@ body {
   position: absolute;
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
 p {
   font-size: 20px;
@@ -394,7 +395,7 @@ form .row:first-child .floating-label-form-group {
   min-height: 50% ;
   position: absolute;
   margin-left: 10%;
-  top: 25% ;
+  top: 5% ;
 }
 .portfolio-modal .close-modal {
   position: absolute;
@@ -442,6 +443,9 @@ form .row:first-child .floating-label-form-group {
 }
 .medium-margin {
   margin: 15px;
+}
+.small-margin-top {
+  margin-top: 100px;
 }
 .medium-margin-top {
   margin-top: 100px;

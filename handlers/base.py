@@ -78,6 +78,7 @@ class JsonHandler(RequestHandler):
         template = JINJA_ENVIRONMENT.get_template(filename)
         return template.render(**kwargs)
 
+
 class SendEmailHandler(BaseHandler):
     """
     Core Handler for sending Emails
@@ -102,18 +103,19 @@ class SendEmailHandler(BaseHandler):
             if not sender:
                 sender = self.app.config.get('email_sender')
 
-            if self.app.config.get('log_email',False):
+            if self.app.config.get('log_email', False):
                 try:
                     log_email = boilerplate.models.LogEmail(
                         sender=sender,
                         to=to,
                         subject=subject,
                         body=body,
-                        when=boilerplate.lib.utils.get_date_time("datetimeProperty")
+                        when=boilerplate.utils.get_date_time("datetimeProperty")
                     )
                     log_email.put()
-                except:
+                except Exception,ex:
                     logging.error("Error saving Email Log in datastore")
+                    logging.exception(ex)
 
             message = mail.EmailMessage()
             message.sender = sender
