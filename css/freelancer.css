@@ -97,13 +97,8 @@ h6 {
 .section {
   width: 100%;
 }
-.section .section-container {
-  width: 100%;
-}
 .section .section-container .section-item {
   text-align: center;
-  margin: 0 0 15px;
-  right: 0;
 }
 .section .section-container .section-item .arrow {
   color: #262937;
@@ -155,17 +150,26 @@ h6 {
   margin-left: 10%;
   margin-right: 10%;
 }
-.body-section .about {
-  font-size: 120%;
+.body-section #marketing {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 80px;
 }
-.body-section .about .divider-line {
-  width: 1px;
-  display: block;
-  margin-left: 50%;
-  height: 200px;
-}
-.body-section .about .caption {
+.body-section #about {
+  background-color: #ecf4f9;
+  padding-bottom: 50px;
   padding-top: 20px;
+}
+.body-section #about .caption {
+  padding-top: 20px;
+  text-align: center;
+}
+.body-section #imeetPlus {
+  padding-bottom: 80px;
+  padding-top: 40px;
+}
+.body-section #imeetPlus .caption {
+  padding-top: 20px;
+  text-align: center;
 }
 .header-section {
   text-align: center;
@@ -484,11 +488,6 @@ form .row:first-child .floating-label-form-group {
 .social-login-icons li a {
   text-decoration: none;
 }
-@media (min-width: 767px) {
-  .section .section-item {
-    margin: 0 0 30px;
-  }
-}
 @media (max-width: 1024px) {
   .section .section-container .section-item .arrow {
     display: none;
@@ -522,4 +521,8 @@ form .row:first-child .floating-label-form-group {
     width: 100%;
     margin-left: 0%;
   }
+}
+.quiet {
+  font-size: 8px;
+  color: gray;
 }
