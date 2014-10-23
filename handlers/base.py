@@ -37,8 +37,7 @@ class JsonHandler(RequestHandler):
 
             self.api_success(result)
         except Exception, e:
-            if not self.response.status:
-                self.error(500)
+            self.error(500)
             self.handle_exception(e, False)
 
     def __render_json__(self, data):
