@@ -67,10 +67,6 @@ module.exports = function (grunt) {
 			views: {
 				src:  '../js/views.js',
 				dest: 'tmp/views.js'
-			},
-			contact_me: {
-				src:  '../js/contact_me.js',
-				dest: 'tmp/contact_me.js'
 			}
 		},
 	//
@@ -80,9 +76,7 @@ module.exports = function (grunt) {
 		less: {
 			styles: {
 				files: {
-					'../css/freelancer.css': '../less/freelancer.less',
-					'../css/mixins.css': '../less/mixins.less',
-					'../css/variables.css': '../less/variables.less'
+					'../css/ugly/imeet.css': '../less/imeet.less'
 				}
 			}
 		},
@@ -96,15 +90,13 @@ module.exports = function (grunt) {
 			},
 			external: {
 				files: {
-					'../js/freelancer.min.js': '../js/freelancer.js',
-					'../js/classie.min.js': '../js/classie.js'
+
 				}
 			},
 			application_scripts: {
 				files: {
 					'../js/app.min.js': 'tmp/app.js',
 					'../js/views.min.js': 'tmp/views.js',
-					'../js/contact_me.min.js': 'tmp/contact_me.js'
 				}
 			}
 		},
@@ -114,9 +106,9 @@ module.exports = function (grunt) {
 		cssmin: {
 			all: {
 				files: {
-					'../css/freelancer.min.css': '../css/freelancer.css',
-					'../css/mixins.min.css': '../css/mixins.less',
-					'../css/variables.min.css': '../css/variables.less'
+					'../css/imeet.min.css': [
+                        '../css/ugly/*.css'
+                    ]
 				}
 			}
 		},
