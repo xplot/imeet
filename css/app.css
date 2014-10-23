@@ -3,7 +3,8 @@ body {
   font-family: 'Lato', sans-serif;
   font-weight: 400;
 }
-#body-container {
+#body-container,
+#view-container {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -52,6 +53,7 @@ h6 {
     font-size: 1.5em;
   }
 }
+/*Responsive CSS triangles. Resize the Result section to see the triangles in action.*/
 .navbar {
   text-transform: uppercase;
   font-weight: 700;
@@ -59,32 +61,50 @@ h6 {
 .navbar a:focus {
   outline: none;
 }
+.navbar .navbar-header .beta {
+  position: absolute;
+  left: 20px;
+  margin: -14px -20px;
+  font-weight: bold;
+  color: #262937;
+  font-size: 10px;
+  margin-top: -3px;
+  margin-left: -100px;
+  text-align: center;
+  width: 190px;
+  height: 20px;
+  -ms-transform: rotate(-45deg);
+  /* IE 9 */
+  -webkit-transform: rotate(-45deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(-45deg);
+  background-color: #71b7cc;
+}
 .navbar .navbar-nav {
   letter-spacing: 1px;
 }
 .navbar .navbar-nav li a:focus {
   outline: none;
 }
-.navbar .navbar-nav li .dropdown .btn:focus {
-  border-color: transparent;
-  outline: none;
-}
-.navbar .navbar-nav li .dropdown .dropdown-menu {
+.navbar .navbar-nav li .dropdown-menu {
   background-color: #262937;
   border: none !important;
   border-radius: 0px;
 }
-.navbar .navbar-nav li .dropdown .dropdown-menu li a {
+.navbar .navbar-nav li .dropdown-menu li a {
   color: #ffffff !important;
 }
-.navbar .navbar-nav li .dropdown button {
+.navbar .navbar-nav li .dropdown-menu li a:hover {
+  color: #ffffff !important;
+}
+.navbar .navbar-nav li button {
   padding-top: 19.5px;
   padding-bottom: 19.5px;
   background-color: transparent;
   border: none !important;
   text-transform: uppercase;
 }
-.navbar .navbar-nav li .dropdown button:active {
+.navbar .navbar-nav li button:active {
   border: none;
   border-color: transparent;
 }
@@ -93,11 +113,6 @@ h6 {
   color: #ff0000;
   border: none;
   background-color: #262937;
-}
-.beta {
-  width: 50px;
-  height: 51px;
-  margin: -14px -20px;
 }
 .section {
   width: 100%;
@@ -175,6 +190,9 @@ h6 {
 .body-section #imeetPlus .caption {
   padding-top: 20px;
   text-align: center;
+}
+.view-section {
+  margin-top: 10%;
 }
 .header-section {
   text-align: center;
@@ -499,6 +517,9 @@ form .row:first-child .floating-label-form-group {
   }
 }
 @media (max-width: 768px) {
+  .view-section {
+    margin-top: 20%;
+  }
   .header-section {
     height: 100%;
     position: relative;
@@ -530,4 +551,26 @@ form .row:first-child .floating-label-form-group {
 .quiet {
   font-size: 8px;
   color: gray;
+}
+.alert-close {
+  float: right;
+}
+.flyover {
+  left: 150%;
+  overflow: hidden;
+  position: fixed;
+  width: 50%;
+  opacity: 0.9;
+  z-index: 1051;
+  transition: left 0.6s ease-out 0s;
+}
+.flyover.in {
+  left: 50%;
+}
+.flyover-centered {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.flyover-bottom {
+  bottom: 10px;
 }

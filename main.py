@@ -22,7 +22,6 @@ from config import config
 app = webapp2.WSGIApplication([
     Route('/', base.MainHandler, name='home'),
 
-
     Route('/new', base.MainHandler),
     Route('/new/<invite_name>', base.MainHandler),
     Route('/search', base.MainHandler, handler_method='search', ),

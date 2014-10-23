@@ -7,7 +7,8 @@ body {
     font-weight: 400;
 }
 
-#body-container{
+#body-container,
+#view-container{
   position: absolute;
   height: 100%;
   width: 100%;
@@ -58,33 +59,51 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
+/*Responsive CSS triangles. Resize the Result section to see the triangles in action.*/
+
 .navbar {
 	text-transform: uppercase;
 	font-weight: 700;
 	a:focus {
 		outline: none;
 	}
+
+    .navbar-header{
+      .beta {
+          position: absolute;
+          left:20px;
+	      margin: -14px -20px;
+          font-weight: bold;
+          color: @nav-color;
+          font-size: 10px;
+          margin-top:-3px;
+          margin-left:-100px;
+          text-align:center;
+          width: 190px;
+          height: 20px;
+         -ms-transform: rotate(-45deg); /* IE 9 */
+          -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+          transform: rotate(-45deg);
+          background-color: @body-frame;
+      }
+    }
+
 	.navbar-nav {
 		letter-spacing: 1px;
 		li {
 			a:focus {
 				outline: none;
 			}
-
-            .dropdown{
-
-              .btn:focus{
-                border-color: transparent;
-                outline: none;
-              }
-
-              .dropdown-menu{
+            .dropdown-menu{
                 background-color: @nav-color;
                 border:none !important;
                 border-radius: 0px;
                 li{
                   a {
                     color: #ffffff !important;
+                  }
+                  a:hover {
+                      color: #ffffff !important;
                   }
                 }
 
@@ -101,7 +120,6 @@ h1, h2, h3, h4, h5, h6 {
                 border: none;
                 border-color: transparent;
               }
-            }
 		}
 	}
 } 
@@ -111,12 +129,6 @@ h1, h2, h3, h4, h5, h6 {
     color: @nav-text;
 	border: none;
     background-color: @nav-bg-color;
-}
-
-.beta{
-	width: 50px;
-	height: 51px;
-	margin: -14px -20px;
 }
 
 .section {
@@ -176,9 +188,6 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .body-section {
-
-
-
   .horizontal-divider{
       background-color: @nav-color;
       height: 1px;
@@ -213,6 +222,10 @@ h1, h2, h3, h4, h5, h6 {
 		}
 	}
 
+}
+
+.view-section{
+  margin-top: 10%;
 }
 
 .header-section {
@@ -605,6 +618,9 @@ form .row:first-child .floating-label-form-group {
 }
 
 @media(max-width:768px) {
+    .view-section{
+      margin-top: 20%;
+    }
 	.header-section {
       height: 100%;
       position: relative;
@@ -653,4 +669,30 @@ form .row:first-child .floating-label-form-group {
 .quiet{
 	font-size:8px;
 	color:gray;
+}
+
+.alert-close{
+  float: right;
+
+}
+
+.flyover {
+   left: 150%;
+   overflow: hidden;
+   position: fixed;
+   width: 50%;
+   opacity: 0.9;
+   z-index: 1051;
+   transition: left 0.6s ease-out 0s;
+}
+.flyover.in {
+   left: 50%;
+}
+.flyover-centered {
+   top: 50%;
+   transform: translate(-50%, -50%);
+}
+
+.flyover-bottom {
+   bottom: 10px;
 }

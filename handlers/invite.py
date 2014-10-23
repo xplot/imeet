@@ -10,6 +10,13 @@ class InviteHandler(JsonHandler):
 
     def send(self):
         data = self._data()
+
+        email_template = {
+            'Url': "http://imeet.io/template/default_invite_template.html"
+        }
+
+        data['EmailTemplate'] = email_template
+
         invite_manager = InviteManager()
         invite_manager.create(data)
         invite_manager.send(data)
@@ -47,3 +54,5 @@ class InviteHandler(JsonHandler):
             data=invite_json,
             headers=headers
         )
+
+        r.raise_for_status()

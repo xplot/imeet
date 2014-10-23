@@ -13,7 +13,8 @@ handlers:
   static_dir: img
 - url: /font-awesome-4.1.0
   static_dir: font-awesome-4.1.0
-
+- url: /template
+  static_dir: emails/
 
 - url: .*
   script: main.app

@@ -243,7 +243,6 @@ class BaseHandler(webapp2.RequestHandler):
 
     @webapp2.cached_property
     def jinja2(self):
-        logging.info(JINJA_ENVIRONMENT)
         return JINJA_ENVIRONMENT
 
     @webapp2.cached_property
