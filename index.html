@@ -85,9 +85,7 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <div id="body-container"></div>
-
-    <script type="text/template" id="body-template">
+    <div id="body-container" class="view-container">
         <section class="section header-section">
             <div class="header-container">
                 <div class="row">
@@ -96,7 +94,6 @@
                                 <input type="text" class="invite-title-input" placeholder="Event Name...">
                                 <button class="imeet-btn" data-action="modal" data-where="new"><span>Create</span></button>
                             </div>
-                        </div>
                     </div>
                     <div class="row">
                         <br/>
@@ -209,6 +206,12 @@
                 </div>
             </div>
         </section>
+    </div>
+
+    <div id="view-container"></div>
+
+    <script type="text/template" id="body-template">
+
     </script>
 
     <script type="text/template" id="login">

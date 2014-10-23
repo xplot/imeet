@@ -67,6 +67,24 @@ ModalView = Backbone.View.extend({
 
 });
 
+SimpleView = Backbone.View.extend({
+    initialize: function (options) {
+        this.options = options || {};
+    },
+
+    render: function (data) {
+        //We hide all view containers
+        $('#body-container').hide();
+
+        if (this.options.templateId != null) {
+            var template = _.template($(this.options.templateId).html(), {});
+            // Load the compiled HTML into the Backbone "el"
+            this.$el.html(template);
+            this.$el.show();
+        }
+    }
+});
+
 IndexView = Backbone.View.extend({
     initialize: function (options) {
         this.options = options || {};
@@ -85,15 +103,11 @@ IndexView = Backbone.View.extend({
     },
 
     render: function (data) {
-        if (this.options.templateId != null) {
-            var template = _.template($(this.options.templateId).html(), {});
-            // Load the compiled HTML into the Backbone "el"
-            this.$el.html(template);
-        }
+        $('#view-container').hide();
+        this.$el.show();
 
         this.$inviteTitle = this.$el.find('.invite-title-input');
         this.$headerImage = this.$el.find('.header-section');
-
     },
 
     createNew: function(){

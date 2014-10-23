@@ -3,7 +3,8 @@ body {
   font-family: 'Lato', sans-serif;
   font-weight: 400;
 }
-#body-container {
+#body-container,
+#view-container {
   position: absolute;
   height: 100%;
   width: 100%;

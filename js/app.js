@@ -17,12 +17,11 @@ function init_app() {
 
     index_view = new IndexView({
         el: "#body-container",
-        templateId: "#body-template"
     });
 
     //Login
-    login_view = new IndexView({
-        el: "#body-container",
+    login_view = new SimpleView({
+        el: "#view-container",
         templateId: "#login"
     });
 
