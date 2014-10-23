@@ -48,13 +48,13 @@ h1, h2, h3, h4, h5, h6 {
 	        -webkit-transition: all 0.3s;
 	        -moz-transition: all 0.3s;
 	        transition: all 0.3s;
-	    }        
+	    }
     }
     .navbar-fixed-top.navbar-shrink {
         padding: 10px 0;
 		.navbar-brand {
 	        font-size: 1.5em;
-	    }    
+	    }
 	}
 }
 
@@ -113,16 +113,22 @@ h1, h2, h3, h4, h5, h6 {
     background-color: @nav-bg-color;
 }
 
+.beta{
+	width: 50px;
+	height: 51px;
+	margin: -14px -20px;
+}
+
 .section {
     width: 100%;
 
     .section-container {
 
-      width: 100%;
+      //width: 100%;
       .section-item {
         text-align: center;
-        margin: 0 0 15px;
-        right: 0;
+        //margin: 0 0 15px;
+        //right: 0;
 
         .arrow {
           color: @nav-color;
@@ -171,6 +177,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .body-section {
 
+
+
   .horizontal-divider{
       background-color: @nav-color;
       height: 1px;
@@ -178,20 +186,32 @@ h1, h2, h3, h4, h5, h6 {
       margin-right: 10%;
   }
 
-  .about{
-      font-size: 120%;
+	#marketing{
+		border-bottom: 1px solid #e5e5e5;
+		padding-bottom: 80px;
+	}
 
-      .divider-line{
-          width: 1px;
-          display: block;
-          margin-left: 50%;
-          height:200px;
-      }
+  #about{
+			background-color: #ecf4f9;
+			padding-bottom: 50px;
+			padding-top: 20px;
+
       .caption{
         padding-top: 20px;
-
+				text-align: center;
       }
   }
+
+	#imeetPlus{
+		//background-color: #576a75;
+		padding-bottom: 80px;
+		padding-top: 40px;
+
+		.caption{
+			padding-top: 20px;
+			text-align: center;
+		}
+	}
 
 }
 
@@ -199,15 +219,15 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 
 	color: @nav-color;
-    background-color: @body-frame;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    top: 0;
-    left: 0;
-    height: 60%;
-    width: 100%;
+  background-color: @body-frame;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  top: 0;
+  left: 0;
+  height: 60%;
+  width: 100%;
 
     .header-container{
       top: 50%;
@@ -486,7 +506,7 @@ form .row:first-child .floating-label-form-group {
                 -webkit-transform: rotate(90deg);
                 /* Safari and Chrome */
                 z-index:1052;
-            }            
+            }
         }
     }
     .container{
@@ -565,7 +585,7 @@ form .row:first-child .floating-label-form-group {
 @media(min-width:767px) {
     .section {
         .section-item {
-            margin: 0 0 30px;
+            //margin: 0 0 30px;
         }
     }
 }
@@ -582,8 +602,6 @@ form .row:first-child .floating-label-form-group {
         }
       }
     }
-
-
 }
 
 @media(max-width:768px) {
@@ -629,4 +647,10 @@ form .row:first-child .floating-label-form-group {
       margin-left:0%;
     }
   }
+}
+
+
+.quiet{
+	font-size:8px;
+	color:gray;
 }
