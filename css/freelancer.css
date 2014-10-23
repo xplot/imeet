@@ -94,6 +94,11 @@ h6 {
   border: none;
   background-color: #262937;
 }
+.beta {
+  width: 50px;
+  height: 51px;
+  margin: -14px -20px;
+}
 .section {
   width: 100%;
 }
