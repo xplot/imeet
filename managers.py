@@ -30,6 +30,9 @@ class InviteManager(object):
                     'name': u''
                 }
             ],
+            'EmailTemplate':{
+                'Url': self.host_url + "/template/default_invite_template.html"
+            },
             'when': u'2014-10-06',
             'title': 'Candle',
             'user_id': u'5302669702856704' #Not mandatory, could be anonymous
@@ -166,6 +169,7 @@ class InviteManager(object):
     def _to_dict(self, invite, contacts_invites, contacts):
         return {
             'unique_id':invite.unique_id,
+
             'title':invite.title,
             'when': invite.when.strftime("%Y-%m-%d %H:%M"),
             'contacts':[{
