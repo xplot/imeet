@@ -80,7 +80,7 @@ module.exports = function (grunt) {
 		less: {
 			styles: {
 				files: {
-					'../css/freelancer.css': '../less/freelancer.less',
+					'../css/app.css': '../less/app.less',
 					'../css/mixins.css': '../less/mixins.less',
 					'../css/variables.css': '../less/variables.less'
 				}
@@ -114,7 +114,7 @@ module.exports = function (grunt) {
 		cssmin: {
 			all: {
 				files: {
-					'../css/freelancer.min.css': '../css/freelancer.css',
+					'../css/app.min.css': '../css/app.css',
 					'../css/mixins.min.css': '../css/mixins.less',
 					'../css/variables.min.css': '../css/variables.less'
 				}
