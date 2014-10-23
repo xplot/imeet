@@ -45,13 +45,8 @@ function init_app() {
     });
 
     //Create Invite
-    create_invite_view = new CreateView({
+    create_invite = new CreateView({
         el: "#modal_container"
-    });
-
-    create_invite = new ModalView({
-        el: "#modal_container",
-        childView: create_invite_view
     });
 
     //Search
