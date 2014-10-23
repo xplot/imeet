@@ -59,7 +59,6 @@ ModalView = Backbone.View.extend({
     },
 
     onChildClose:function(data){
-        console.log('Got to the closing trigger');
         if(this.$el != null)
             this.$el.modal('hide');
         Backbone.history.navigate('',true);

@@ -14,9 +14,8 @@ function init_app() {
     Backbone.pubSub.unsubscribe = Backbone.pubSub.unbind;
 
     //Views
-
     index_view = new IndexView({
-        el: "#body-container",
+        el: "#body-container"
     });
 
     //Login

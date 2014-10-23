@@ -149,7 +149,6 @@ module.exports = function (grunt) {
 				tasks: [
 						'directives:app',
 						'directives:views',
-						'directives:contact_me',
 						'uglify:application_scripts']
 			},
 			jst: {
