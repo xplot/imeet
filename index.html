@@ -29,20 +29,33 @@
 
 <body id="page-top" class="index">
 
+{% if messages|safe %}
+    <div id="notification-alerts" class="jumbotron flyover flyover-bottom">
+
+           {% for message in messages %}
+                <div class="alert alert-{{ message[1]|safe }}">
+                    {{ message[0]|safe }}
+                </div>
+           {% endfor %}
+        <button class="btn btn-primary alert-close" data-dismiss="alert">X</button>
+    </div>
+{% endif %}
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
+            <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top"><img class="beta" src="img/beta.png"></img> <i class="fa fa-paper-plane fa-1x small-margin"></i>iMeet</a>
+                <a class="navbar-brand" href="/">
+                    <div class="beta">BETA</div>
+                    <i class="fa fa-paper-plane fa-1x small-margin"></i>iMeet
+                </a>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -50,24 +63,20 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        {% if username %}
-                            <div class="dropdown  pull-right">
-                              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                                {{email}}
-                                <span class="small-margin caret"></span>
-                              </button>
-                              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="navigate" data-action="modal" data-where="search">Search iMeet</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="navigate" data-action="modal" data-where="profile/edit">Edit Profile</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout">Logout</a></li>
-                              </ul>
-                            </div>
-                        {%else %}
-                            <a href="#login" class="navigate" data-action="modal" data-where="login">Login</a>
-                        {% endif %}
+                      {% if username %}
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{email}} <span class="caret"></span></a>
+                          <ul class="dropdown-menu " role="menu">
+                            <li><a role="menuitem" tabindex="-1" href="#" class="end-click navigate" data-action="modal" data-where="search">Search iMeet</a></li>
+                            <li><a role="menuitem" tabindex="-1" href="#" class="end-click navigate" data-action="modal" data-where="profile/edit">Edit Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a role="menuitem" class="end-click" tabindex="-1" href="/logout">Logout</a></li>
+                          </ul>
+                      {%else %}
+                            <a href="#login" class="end-click navigate" data-action="modal" data-where="login">Login</a>
+                      {% endif %}
                     </li>
-                    <li class="page-scroll">
-                        <a href="#about">About</a>
+                    <li>
+                        <a href="#about" class="end-click">About</a>
                     </li>
                 </ul>
             </div>
@@ -203,28 +212,14 @@
     </script>
 
     <script type="text/template" id="login">
-      <div class="modal-content medium-modal">
           <form id="loginForm" action="/login" method="post">
-              <div class="close-modal" data-action="dismiss">
-                  <div class="lr">
-                      <div class="rl">
-                      </div>
-                  </div>
-              </div>
-              <div class="container">
+              <section class="section view-section">
+                  <div class="row"></div>
+                  <div class="row"></div>
+                  <div class="row"></div>
                   <div class="row controls">
                       <div class="col-sm-4"></div>
-                      <div class="col-sm-4">
-                            <div class="row">
-                                {% if messages|safe %}
-                                    {% for message in messages %}
-                                    <div class="alert alert-{{ message[1]|safe }}">
-                                        <a class="close" data-dismiss="alert">x</a>
-                                        {{ message[0]|safe }}
-                                    </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
+                      <div class="col-sm-4 medium-margin">
                           <h4>Login</h4>
                           <fieldset>
                               <div class="row">
@@ -311,9 +306,29 @@
                       </div>
                       <div class="col-sm-4"></div>
                   </div>
-              </div>
+              </section>
+
           </form>
-      </div>
+
+        <!-- Footer -->
+            <div class="footer navbar-fixed-bottom">
+                <div class="footer-below">
+                    <div class="container">
+                      <div class="row">
+                          <div class="col-lg-12">
+                              Miami, FL<br/>
+                              Copyright 2014 &copy; iMeet Inc. All rights reserved.
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 quiet">
+                            <br/>Built with love, Internet style
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </script>
 
@@ -342,9 +357,6 @@
 
     <!-- Contact Form JavaScript -->
     <script src="/js/contact_me.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="/js/freelancer.min.js"></script>
 
     <script src="/js/jquery.validate.min.js"></script>
 

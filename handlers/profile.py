@@ -206,7 +206,9 @@ class SocialLoginHandler(BaseHandler):
 
             self.session['linkedin'] = None
             perms = ['email', 'publish_stream']
-            self.redirect(facebook.auth_url(self.app.config.get('fb_api_key'), callback_url, perms))
+            fb_url = facebook.auth_url(self.app.config.get('fb_api_key'), callback_url, perms)
+            logging.info(fb_url)
+            self.redirect(fb_url)
 
         elif provider_name == 'linkedin':
             self.session['facebook'] = None
@@ -252,6 +254,7 @@ class CallbackSocialLoginHandler(BaseHandler):
     def get(self, provider_name):
 
         continue_url = self.request.get('continue_url')
+
         if provider_name == "twitter":
             oauth_token = self.request.get('oauth_token')
             oauth_verifier = self.request.get('oauth_verifier')
@@ -704,11 +707,9 @@ class RegisterHandler(JsonHandler):
         )
 
         if not user[0]:
-            logging.info(
-                'Sorry, Couldnt register the email <strong>%s</strong>'
-                % email
-            )
-            raise Exception
+            message = 'Sorry, Couldnt register the email <strong>%s</strong>' % email
+            logging.info(message)
+            raise Exception(message)
 
         subject = "iMeet - Account Verification"
         confirmation_url = self.uri_for(
@@ -719,6 +720,8 @@ class RegisterHandler(JsonHandler):
             ),
             _full=True
         )
+
+        logging.info(confirmation_url)
 
         # load email's template
         template_val = {

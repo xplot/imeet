@@ -1,4 +1,23 @@
 
+function alert_notification(alerts){
+    var $alertDiv = $('#notification-alerts');
+
+    if(!$alertDiv.length){
+        $alertDiv = $('<div id="notification-alerts" class="jumbotron flyover flyover-bottom"><button class="btn btn-primary alert-close" data-dismiss="alert">X</button></div>');
+        $('body').append($alertDiv);
+    }
+
+    alerts.forEach(function(alert){
+        $alertDiv.prepend("\
+            <div class='alert alert-" + alert.alertType + "'>" +
+            alert.message +
+            "</div>");
+    });
+
+    if(alerts.length > 0)
+        $alertDiv.toggleClass('in');
+}
+
 ModalView = Backbone.View.extend({
     childView: null,
     template: null,
@@ -27,7 +46,6 @@ ModalView = Backbone.View.extend({
             this.childView.render(data);
         }
 
-
         this.$el.find(".close-modal").click(function(e) {
             that.onChildClose({
                 'view': that.childView
@@ -36,12 +54,14 @@ ModalView = Backbone.View.extend({
 
         //Finally we show it
         this.$el.modal('show');
+        this.$el.on('hidden.bs.modal', this.onChildClose);
         return this;
     },
 
     onChildClose:function(data){
         console.log('Got to the closing trigger');
-        this.$el.modal('hide');
+        if(this.$el != null)
+            this.$el.modal('hide');
         Backbone.history.navigate('',true);
     }
 
@@ -364,6 +384,12 @@ UserRegisterView = Backbone.View.extend({
             cache: false,
             success: function() {
                 Backbone.pubSub.trigger('childClose', { 'view' : that } );
+            },
+            error:function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
             }
         });
 

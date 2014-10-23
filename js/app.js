@@ -21,8 +21,8 @@ function init_app() {
     });
 
     //Login
-    login_view = new ModalView({
-        el: "#modal_container",
+    login_view = new IndexView({
+        el: "#body-container",
         templateId: "#login"
     });
 
@@ -78,6 +78,7 @@ function init_app() {
     App.Router = Backbone.Router.extend({
         routes: {
             '': 'index',
+            '_=_':'index',
             'new': 'new',
             'new/:title': 'new',
             'search': 'search',
@@ -88,7 +89,6 @@ function init_app() {
         },
         index: function () {
             index_view.render();
-
         },
         //User Profile
         login: function () {
@@ -113,11 +113,39 @@ function init_app() {
         }
     });
 
+    //Stupid Facebook Login Bug
+    //http://stackoverflow.com/questions/7485111/weird-url-appended
+    if (window.location.hash && window.location.hash == '#_=_') {
+        window.location.hash = '';
+    }
+
     new App.Router;
     Backbone.history.start({pushState: true});
 
+    //Notifications
+    $('#notification-alerts').toggleClass('in');
+
+    //Navigation Links
      $("body").on('click', ".navigate", function (e) {
-        console.log('executing');
-        Backbone.history.navigate($(this).data('where'), true);
+         console.log('executing');
+        var where = $(this).data('where');
+        if(where != null)
+            Backbone.history.navigate(where, true);
+        else
+            Backbone.history.navigate("/", true);
     });
+
+    // Closes the Responsive Menu on Menu Item Click
+    $('.end-click').click(function() {
+        $('.navbar-toggle:visible').click();
+    });
+
+    $("body").on("input propertychange", ".floating-label-form-group", function(e) {
+        $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
+    }).on("focus", ".floating-label-form-group", function() {
+        $(this).addClass("floating-label-form-group-with-focus");
+    }).on("blur", ".floating-label-form-group", function() {
+        $(this).removeClass("floating-label-form-group-with-focus");
+    });
+
 }
