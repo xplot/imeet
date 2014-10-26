@@ -45,14 +45,8 @@ function init_app() {
 
     //Create Invite
     create_invite_view = new CreateView({
-        el: "#modal_container"
+        el: "#view-container",
     });
-
-    create_invite = new ModalView({
-        el: "#modal_container",
-        childView: create_invite_view
-    });
-
 
     //Search
     search_view = new SearchView({
@@ -102,7 +96,7 @@ function init_app() {
 
         //Invite
         new: function (title) {
-            create_invite.render({'title':title});
+            create_invite_view.render({'title':title});
         },
         search: function () {
             search_view_modal.render();

@@ -188,12 +188,8 @@ CreateView = Backbone.View.extend({
     template: JST['invite.html'],
 
     render: function(options) {
-
-        /*if(this.options.templateId != null){
-            var template = _.template( $(this.options.templateId).html(), {} );
-            // Load the compiled HTML into the Backbone "el"
-            this.$el.html(template);
-        }*/
+        //We hide body-container
+        $('#body-container').hide();
 
         this.$el.html(this.template());
         //this.$el.html(this.template(options));
@@ -216,34 +212,35 @@ CreateView = Backbone.View.extend({
         return this;
     },
     newContact: function(){
-         if(this.$new_email.val() == '' && this.$new_phone.val() == '')
-                return;
 
-            this.$contactForm.validate({
-                rules: {
-                    newPhone: {
-                        phoneUS: true
-                    }
+        if(this.$new_email.val() == '' && this.$new_phone.val() == '')
+            return;
+
+        this.$contactForm.validate({
+            rules: {
+                newPhone: {
+                    phoneUS: true
                 }
-            });
+            }
+        });
 
-            if(!this.$contactForm.valid())
-                return;
+        if(!this.$contactForm.valid())
+            return;
 
-            var new_contact = "\
-                <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
-                        <div class='col-sm-3'> {0} </div> \
-                        <div class='col-sm-3'>  {1} </div> \
-                        <div class='col-sm-3'> {2}</div> \
-                        <div class='col-sm-3'>\
-                        <div class='row'> \
-                            <div class='col-sm-4'></div>\
-                            <div class='col-sm-4'>\
-                                <button type='button' class='btn btn-danger form-control remove-contact' data-row='{3}'>-</button>\
-                            </div> \
-                            <div class='col-sm-4'></div>\
-                        </div>\
-                </div> ".format(this.$new_name.val(),this.$new_phone.val(), this.$new_email.val(),this.i);
+        var new_contact = "\
+            <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
+                    <div class='col-sm-3'> {0} </div> \
+                    <div class='col-sm-3'>  {1} </div> \
+                    <div class='col-sm-3'> {2}</div> \
+                    <div class='col-sm-3'>\
+                    <div class='row'> \
+                        <div class='col-sm-4'></div>\
+                        <div class='col-sm-4'>\
+                            <button type='button' class='btn btn-danger form-control remove-contact' data-row='{3}'>-</button>\
+                        </div> \
+                        <div class='col-sm-4'></div>\
+                    </div>\
+            </div> ".format(this.$new_name.val(),this.$new_phone.val(), this.$new_email.val(),this.i);
 
             this.$new_name.val('');
             this.$new_email.val('');
