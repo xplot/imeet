@@ -190,6 +190,7 @@ CreateView = Backbone.View.extend({
     render: function(options) {
         //We hide body-container
         $('#body-container').hide();
+        $('#view-container').show();
 
         this.$el.html(this.template());
         //this.$el.html(this.template(options));

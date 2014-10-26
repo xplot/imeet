@@ -120,7 +120,6 @@ function init_app() {
 
     //Navigation Links
      $("body").on('click', ".navigate", function (e) {
-         console.log('executing');
         var where = $(this).data('where');
         if(where != null)
             Backbone.history.navigate(where, true);
