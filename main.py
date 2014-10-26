@@ -24,6 +24,8 @@ app = webapp2.WSGIApplication([
 
     Route('/new', base.MainHandler),
     Route('/new/<invite_name>', base.MainHandler),
+    Route('/new/from/<source_invite_id>', base.MainHandler),
+    Route('/new/<invite_name>/from/<source_invite_id>', base.MainHandler),
     Route('/search', base.MainHandler, handler_method='search', ),
     Route('/view', base.MainHandler, handler_method='view'),
     Route('/view/<id>', base.MainHandler, handler_method='view_invite'),

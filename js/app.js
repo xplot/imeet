@@ -72,8 +72,12 @@ function init_app() {
         routes: {
             '': 'index',
             '_=_':'index',
+
             'new': 'new',
             'new/:title': 'new',
+            'new/:title/from/:id': 'new',
+            'new/from/:id': 'new_no_title',
+
             'search': 'search',
             'login': 'login',
             'profile/edit': 'edit_profile',
@@ -95,8 +99,11 @@ function init_app() {
         },
 
         //Invite
-        new: function (title) {
-            create_invite_view.render({'title':title});
+        new: function (title,id) {
+            create_invite_view.render({'title':title,'id':id});
+        },
+        new_no_title: function (id) {
+            this.new(null, id);
         },
         search: function () {
             search_view_modal.render();

@@ -191,9 +191,6 @@ h6 {
   padding-top: 20px;
   text-align: center;
 }
-.view-section {
-  margin-top: 10%;
-}
 .header-section {
   text-align: center;
   color: #262937;
@@ -517,8 +514,9 @@ form .row:first-child .floating-label-form-group {
   }
 }
 @media (max-width: 768px) {
-  .view-section {
-    margin-top: 20%;
+  .equidistant {
+    margin-left: 5%;
+    margin-right: 5%;
   }
   .header-section {
     height: 100%;

@@ -54,14 +54,14 @@ ModalView = Backbone.View.extend({
 
         //Finally we show it
         this.$el.modal('show');
-        this.$el.on('hidden.bs.modal', this.onChildClose);
+        //this.$el.on('hidden.bs.modal', this.onChildClose);
         return this;
     },
 
     onChildClose:function(data){
         if(this.$el != null)
             this.$el.modal('hide');
-        Backbone.history.navigate('',true);
+        //Backbone.history.navigate('',true);
     }
 
 });
@@ -176,6 +176,21 @@ InviteView = Backbone.View.extend({
 
 CreateView = Backbone.View.extend({
     el: '#header-container',
+    new_contact_string: "\
+            <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
+                    <div class='col-sm-3'> {0} </div> \
+                    <div class='col-sm-3'>  {1} </div> \
+                    <div class='col-sm-3'> {2}</div> \
+                    <div class='col-sm-3'>\
+                    <div class='row'> \
+                        <div class='col-sm-4'></div>\
+                        <div class='col-sm-4'>\
+                            <button type='button' class='btn btn-danger form-control remove-contact' data-row='{3}'>-</button>\
+                        </div> \
+                        <div class='col-sm-4'></div>\
+                    </div>\
+            </div> ",
+
     initialize: function(options){
         this.options = options || {};
     },
@@ -188,12 +203,11 @@ CreateView = Backbone.View.extend({
     template: JST['invite.html'],
 
     render: function(options) {
-        //We hide body-container
         $('#body-container').hide();
         $('#view-container').show();
+        $('#modal_container').modal('hide');
 
         this.$el.html(this.template());
-        //this.$el.html(this.template(options));
 
         this.$table = this.$el.find('.contact-table');
         this.$btSend = this.$el.find('.send');
@@ -210,10 +224,40 @@ CreateView = Backbone.View.extend({
         if(options.title != null)
             this.$event_name.val(options.title);
 
+        if(options.id != null)
+            this.createFromInvite(options.id);
         return this;
     },
-    newContact: function(){
+    createFromInvite: function(source_invite_id){
+        var that = this;
+        $.ajax({
+            url: "/api/invite/" + source_invite_id,
+            type: "GET",
+            cache: false,
+            success: function(data) {
+                data.contacts.forEach(function(contact){
+                    that.$table.append(
+                        that.new_contact_string.format(
+                            contact.name || '',
+                            contact.phone || '',
+                            contact.email || '',
+                            this.i
+                        )
+                    );
+                    this.i++;
+                });
 
+                that.$btSend.removeAttr('disabled');
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+    newContact: function(){
         if(this.$new_email.val() == '' && this.$new_phone.val() == '')
             return;
 
@@ -228,33 +272,16 @@ CreateView = Backbone.View.extend({
         if(!this.$contactForm.valid())
             return;
 
-        var new_contact = "\
-            <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
-                    <div class='col-sm-3'> {0} </div> \
-                    <div class='col-sm-3'>  {1} </div> \
-                    <div class='col-sm-3'> {2}</div> \
-                    <div class='col-sm-3'>\
-                    <div class='row'> \
-                        <div class='col-sm-4'></div>\
-                        <div class='col-sm-4'>\
-                            <button type='button' class='btn btn-danger form-control remove-contact' data-row='{3}'>-</button>\
-                        </div> \
-                        <div class='col-sm-4'></div>\
-                    </div>\
-            </div> ".format(this.$new_name.val(),this.$new_phone.val(), this.$new_email.val(),this.i);
+        var new_contact = this.new_contact_string.format(this.$new_name.val(),this.$new_phone.val(), this.$new_email.val(),this.i);
+        this.$new_name.val(''),this.$new_email.val(''), this.$new_phone.val('');
+        this.$table.append(new_contact);
 
-            this.$new_name.val('');
-            this.$new_email.val('');
-            this.$new_phone.val('');
+        this.i++;
 
-            this.$table.append(new_contact);
+        //enabling send button
+        this.$btSend.removeAttr("disabled");
 
-            this.i++;
-
-            //enabling send button
-            this.$btSend.removeAttr("disabled");
-
-            return false;
+        return false;
     },
     removeContact: function (e) {
         var dataId = "#contact"+ $(e.currentTarget).data('row');
@@ -298,7 +325,6 @@ CreateView = Backbone.View.extend({
                 'phone':contactArray[1]
             });
         });
-        console.log(event);
         $.ajax({
             url: "/api/invite",
             type: "POST",
@@ -314,6 +340,12 @@ CreateView = Backbone.View.extend({
 
 SearchView = Backbone.View.extend({
     template: JST['search.html'],
+    invite_string: "\
+            <div class='row'> \
+                    <div class='col-sm-3 col-md-offset-2'>  <a href='#' class='navigate' data-action='modal' data-where='view/{0}'>{1}</a> </div> \
+                    <div class='col-sm-3'>  {2} </div> \
+                    <div class='col-sm-1'> <button type='button' class='navigate btn btn-info form-control' data-where='new/from/{0}'>Copy</button></div> \
+            </div> ",
     initialize: function(options){
         this.options = options || {};
     },
@@ -341,7 +373,7 @@ SearchView = Backbone.View.extend({
         this.$searchForm.validate();
         if(!this.$searchForm.valid())
             return;
-
+        var that = this;
         $.ajax({
             url: "/api/invite/search/"+ currentUser.id + "?term=" + this.$searchBox.val(),
             type: "GET",
@@ -351,14 +383,11 @@ SearchView = Backbone.View.extend({
                     var results = $('.search-result');
                     results.empty();
                     data.forEach(function(invite){
-                        var invite_row = "\
-                            <div class='row'>\
-                                <a href='#' class='navigate' data-action='modal' data-where='view/{0}'>{1}</a> \
-                            </div>".format(
+                        results.append(that.invite_string.format(
                             invite.unique_id,
-                            invite.title
-                        );
-                        results.append(invite_row);
+                            invite.title,
+                            invite.when
+                        ));
                     });
                 }
             }

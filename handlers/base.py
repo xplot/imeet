@@ -128,7 +128,7 @@ class SendEmailHandler(BaseHandler):
             raise
 
 class MainHandler(BaseHandler):
-    def get(self, invite_name=None):
+    def get(self, invite_name=None,source_invite_id=None):
         return self.render_template('index.html')
 
     def new(self):

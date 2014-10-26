@@ -209,108 +209,104 @@
 
     <div id="view-container"></div>
 
-    <script type="text/template" id="body-template">
-
-    </script>
-
     <script type="text/template" id="login">
-          <form id="loginForm" action="/login" method="post">
-              <section class="section view-section">
-                  <div class="row"></div>
-                  <div class="row"></div>
-                  <div class="row"></div>
-                  <div class="row controls">
-                      <div class="col-sm-4"></div>
-                      <div class="col-sm-4 medium-margin">
-                          <h4>Login</h4>
-                          <fieldset>
-                              <div class="row">
-                                  <div class="col-sm-1"></div>
-                                  <div class="col-sm-10">
-                                      <input id="username" name="username" required type="text" class="form-control small-margin" placeholder="Username">
-                                      <input id="password" name="password" required type="password" class="form-control small-margin" placeholder="Password">
-                                  </div>
-                                  <div class="col-sm-1"></div>
-
-                              </div>
-                              <div class="row">
-                                  <div class="col-sm-1"></div>
-                                  <div class="col-sm-10">
-                                      <label class="remember pull-right" style="padding: 10px">
-                                        Remember me?
-                                        <input type="checkbox" name="remember_me" id="remember_me" value="on">
-                                      </label>
-                                  </div>
-                                  <div class="col-sm-1"></div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-sm-1"></div>
-                                  <div class="col-sm-10"><button type="submit" class="btn btn-success form-control pull-right">Login</button></div>
-                                  <div class="col-sm-1"></div>
-                              </div>
-
-                              <div class="row" style="margin-top: 20px">
-                                  <div class="col-sm-1"></div>
-                                  <div class="col-sm-10">
-                                      <div id="third_party_login">
-                                          <ul class="social-login-icons">
-                                              <li style="width: auto">
-
-                                              </li>
-                                              <li>
-                                                  <a href="/social_login/google">
-                                                      <i class="fa fa-google fa-2x"></i>
-                                                  </a>
-                                              </li>
-                                              <li>
-
-                                                  <a href="/social_login/facebook">
-                                                      <i class="fa fa-facebook fa-2x"></i>
-                                                  </a>
-                                              </li>
-                                              <li>
-                                                  <a href="/social_login/twitter">
-                                                      <i class="fa fa-twitter fa-2x"></i>
-                                                  </a>
-                                              </li>
-                                              <li>
-                                                  <a href="/social_login/linkedin">
-                                                      <i class="fa fa-linkedin fa-2x"></i>
-                                                  </a>
-                                              </li>
-                                          </ul>
+        <div class="row medium-margin-top">
+           <div class="col-md-12 section-item contact-table equidistant">
+              <form id="loginForm" action="/login" method="post">
+                  <section class="section">
+                      <div class="row controls">
+                          <div class="col-sm-4"></div>
+                          <div class="col-sm-4 medium-margin">
+                              <h4>Login</h4>
+                              <fieldset>
+                                  <div class="row">
+                                      <div class="col-sm-1"></div>
+                                      <div class="col-sm-10">
+                                          <input id="username" name="username" required type="text" class="form-control small-margin" placeholder="Username">
+                                          <input id="password" name="password" required type="password" class="form-control small-margin" placeholder="Password">
                                       </div>
-                                  </div>
-                                  <div class="col-sm-1"></div>
-                              </div>
+                                      <div class="col-sm-1"></div>
 
-                              <div class="row" style="margin-top: 20px">
-                                  <div class="col-sm-1"></div>
-                                  <div class="col-sm-10">
-                                      <label class="remember pull-right">
-                                          <a href='/password-forgot'>Forgot your password?</a>
-                                      </label>
                                   </div>
-                                  <div class="col-sm-1"></div>
-                              </div>
+                                  <div class="row">
+                                      <div class="col-sm-1"></div>
+                                      <div class="col-sm-10">
+                                          <label class="remember pull-right" style="padding: 10px">
+                                            Remember me?
+                                            <input type="checkbox" name="remember_me" id="remember_me" value="on">
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-1"></div>
+                                  </div>
+                                  <div class="row">
+                                      <div class="col-sm-1"></div>
+                                      <div class="col-sm-10"><button type="submit" class="btn btn-success form-control pull-right">Login</button></div>
+                                      <div class="col-sm-1"></div>
+                                  </div>
 
-                              <div class="row">
-                                  <div class="col-sm-1"></div>
-                                  <div class="col-sm-10">
-                                      <label class="remember pull-right">
-                                          Don't have an account?
-                                          <a href="/register" class="">Sign Up - It's Free.</a>
-                                      </label>
+                                  <div class="row" style="margin-top: 20px">
+                                      <div class="col-sm-1"></div>
+                                      <div class="col-sm-10">
+                                          <div id="third_party_login">
+                                              <ul class="social-login-icons">
+                                                  <li style="width: auto">
+
+                                                  </li>
+                                                  <li>
+                                                      <a href="/social_login/google">
+                                                          <i class="fa fa-google fa-2x"></i>
+                                                      </a>
+                                                  </li>
+                                                  <li>
+
+                                                      <a href="/social_login/facebook">
+                                                          <i class="fa fa-facebook fa-2x"></i>
+                                                      </a>
+                                                  </li>
+                                                  <li>
+                                                      <a href="/social_login/twitter">
+                                                          <i class="fa fa-twitter fa-2x"></i>
+                                                      </a>
+                                                  </li>
+                                                  <li>
+                                                      <a href="/social_login/linkedin">
+                                                          <i class="fa fa-linkedin fa-2x"></i>
+                                                      </a>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      <div class="col-sm-1"></div>
                                   </div>
-                                  <div class="col-sm-1"></div>
-                              </div>
-                          </fieldset>
+
+                                  <div class="row" style="margin-top: 20px">
+                                      <div class="col-sm-1"></div>
+                                      <div class="col-sm-10">
+                                          <label class="remember pull-right">
+                                              <a href='/password-forgot'>Forgot your password?</a>
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-1"></div>
+                                  </div>
+
+                                  <div class="row">
+                                      <div class="col-sm-1"></div>
+                                      <div class="col-sm-10">
+                                          <label class="remember pull-right">
+                                              Don't have an account?
+                                              <a href="/register" class="">Sign Up - It's Free.</a>
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-1"></div>
+                                  </div>
+                              </fieldset>
+                          </div>
+                          <div class="col-sm-4"></div>
                       </div>
-                      <div class="col-sm-4"></div>
-                  </div>
-              </section>
-
-          </form>
+                  </section>
+                </form>
+            </div>
+        </div>
     </script>
 
     <div id="modal_container" class="portfolio-modal modal fade contacts-modal" tabindex="-1" role="dialog" aria-hidden="true"></div>
