@@ -4,33 +4,37 @@
             <div class="row"></div>
             <h4>Create your event</h4>
             <div class="row controls">
-                <div class="col-sm-6 form-group">
+                <div class="col-sm-5 form-group">
                     <input required type="text" class="form-control event-name" placeholder="Event" autofocus >
                 </div>
                 <div class="col-sm-3">
                     <input required type="date" class="form-control event-date" placeholder="when..." name="when" id="when">
                 </div>
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-success form-control send" disabled>Create Invite</button>
-                </div>
             </div>
         </form>
         <div class="row medium-margin line"></div>
 
-        <h4>Attendees</h4>
+        <h4>Who is invited?</h4>
         <form id="newContactForm">
             <div class="row">
-                    <div class="col-sm-6">
-                        <input type="text" class="new-contact-name form-control" placeholder="Name">
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="new-contact-phone form-control"
-                               placeholder="Phone Number or Email Address" name="newPhone" id="newPhone">
-                    </div>
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-info new-contact form-control">+</button>
-                    </div>
+                <div class="col-sm-5">
+                    <input type="text" class="new-contact-name form-control" placeholder="Name">
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="new-contact-phone form-control"
+                           placeholder="Phone Number or Email Address" name="newPhone" id="newPhone">
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-info new-contact form-control">+</button>
+                </div>
             </div>
         </form>
-    </div>
+      </div>
+
+      <div class="row medium-margin line"/>
+
+      <div class="row col-md-3 col-md-offset-4 col-xs-11 equidistant">
+          <button type="button" class="btn btn-success form-control send" disabled form="newInviteForm">Create Invite</button>
+      </div>
+
 </div>
