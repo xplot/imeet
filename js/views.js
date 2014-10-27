@@ -215,7 +215,7 @@ CreateView = Backbone.View.extend({
         this.$inviteForm = this.$el.find('#newInviteForm');
         this.$new_name = this.$el.find('.new-contact-name');
         this.$new_phone = this.$el.find('.new-contact-phone');
-        this.$new_email = this.$el.find('.new-contact-email');
+        //this.$new_email = this.$el.find('.new-contact-email');
         this.$event_name = this.$el.find('.event-name');
         this.$event_date = this.$el.find('.event-date');
         this.$btSend = this.$el.find('.send');
@@ -258,22 +258,23 @@ CreateView = Backbone.View.extend({
         });
     },
     newContact: function(){
-        if(this.$new_email.val() == '' && this.$new_phone.val() == '')
+        if(this.$new_phone.val() == '')
             return;
 
-        this.$contactForm.validate({
+        /*this.$contactForm.validate({
             rules: {
                 newPhone: {
                     phoneUS: true
                 }
             }
-        });
+        });*/
 
         if(!this.$contactForm.valid())
             return;
 
-        var new_contact = this.new_contact_string.format(this.$new_name.val(),this.$new_phone.val(), this.$new_email.val(),this.i);
-        this.$new_name.val(''),this.$new_email.val(''), this.$new_phone.val('');
+        var new_contact = this.new_contact_string.format(this.$new_name.val(),this.$new_phone.val(),this.i);
+        this.$new_name.val('');
+        this.$new_phone.val('');
         this.$table.append(new_contact);
 
         this.i++;
@@ -319,10 +320,12 @@ CreateView = Backbone.View.extend({
             var dataContact = $(this).data("contact");
             var contactArray = dataContact.split(',');
 
+            var attendeeAddresses = that.parsePhoneAndEmail(contactArray[1]);
+
             event.contacts.push({
-                'name':contactArray[0],
-                'email':contactArray[2],
-                'phone':contactArray[1]
+                'name': contactArray[0],
+                'email': attendeeAddresses.email,
+                'phone': attendeeAddresses.phone,
             });
         });
         $.ajax({
@@ -335,6 +338,29 @@ CreateView = Backbone.View.extend({
                 Backbone.history.navigate('',true);
             }
         });
+    },
+    function parsePhoneAndEmail(addressString){
+      var trimmedAddressString = addressString.trim();
+      var addresses = addressString.split(';');
+      if(addresses.length == 1)
+        addresses = addressString.split(',');
+
+      for(var i=0; i < addresses.length; i++)
+        addresses[i] = addresses[i].trim();
+
+      //only 1 address (phone or email)
+      if(addresses.length == 1){
+        if(IsNumeric(addresses[0][0]))
+          return {phone = addresses[0]}
+        else
+          return {email = addresses[0]}
+      }
+      else{ //phone and email at the same time.
+        if(IsNumeric(addresses[0][0]))
+          return {phone = addresses[0], email = addresses[1]}
+        else
+          return {email = addresses[0], phone = addresses[1]}
+      }
     }
 });
 
