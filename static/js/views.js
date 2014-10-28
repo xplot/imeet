@@ -254,14 +254,6 @@ CreateView = Backbone.View.extend({
         if(this.$new_phone.val() == '')
             return;
 
-        /*this.$contactForm.validate({
-            rules: {
-                newPhone: {
-                    phoneUS: true
-                }
-            }
-        });*/
-
         if(!this.$contactForm.valid())
             return;
 

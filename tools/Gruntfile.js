@@ -61,13 +61,28 @@ module.exports = function (grunt) {
 	//
 		directives: {
 			app: {
-				src:  '../js/app.js',
-				dest: 'tmp/app.js'
+				src:  '../static/js/app.js',
+				dest: 'tmp/js/app.js'
 			},
 			views: {
-				src:  '../js/views.js',
-				dest: 'tmp/views.js'
-			}
+				src:  '../static/js/views.js',
+				dest: 'tmp/js/views.js'
+			},
+            external: {
+              // Grunt will search for "**/*.js" under "lib/" when the "uglify" task
+              // runs and build the appropriate src-dest file mappings then, so you
+              // don't need to update the Gruntfile when files are added or removed.
+              files: [
+                  {
+                      expand: true,     // Enable dynamic expansion.
+                      cwd: '../static/js/external/',      // Src matches are relative to this path.
+                      src: ['**/*.js'], // Actual pattern(s) to match.
+                      dest: 'tmp/js/external/',   // Destination path prefix.
+                      ext: '.min.js',   // Dest filepaths will have this extension.
+                      extDot: 'first'   // Extensions in filenames begin after the first dot
+                  }
+              ]
+            }
 		},
 	//
 	//	LESS is used to parse our scss files, and we have two files that need
@@ -76,7 +91,7 @@ module.exports = function (grunt) {
 		less: {
 			styles: {
 				files: {
-					'../css/ugly/imeet.css': '../less/imeet.less'
+					'tmp/css/imeet.css': '../static/less/imeet.less'
 				}
 			}
 		},
@@ -86,17 +101,20 @@ module.exports = function (grunt) {
 	//
 		uglify: {
 			options: {
-
 			},
 			external: {
-				files: {
-
-				}
+				files: [{
+                    expand: true,     // Enable dynamic expansion.
+                    cwd: 'tmp/js/external/',      // Src matches are relative to this path.
+                    src: ['**/*.js'], // Actual pattern(s) to match.
+                    dest: '../static/js/',   // Destination path prefix.
+                }
+              ]
 			},
 			application_scripts: {
 				files: {
-					'../js/app.min.js': 'tmp/app.js',
-					'../js/views.min.js': 'tmp/views.js',
+					'../static/js/app.min.js': 'tmp/js/app.js',
+					'../static/js/views.min.js': 'tmp/js/views.js'
 				}
 			}
 		},
@@ -106,8 +124,9 @@ module.exports = function (grunt) {
 		cssmin: {
 			all: {
 				files: {
-					'../css/imeet.min.css': [
-                        '../css/ugly/*.css'
+					'../static/css/imeet.min.css': [
+                        '../static/less/external/bootstrapp.css',
+                        'tmp/css/*.css'
                     ]
 				}
 			}
@@ -127,7 +146,7 @@ module.exports = function (grunt) {
   				}
 				},
 				files: {
-					"../js/templates.js": ["../views/**/*.html"]
+					"../static/js/templates.js": ["../views/**/*.html"]
 				}
 			}
 		},
@@ -137,15 +156,18 @@ module.exports = function (grunt) {
 		//
 		watch: {
 			less: {
-				files: ['../less/*.less'],
+				files: ['../static/less/*.less'],
 				tasks: ['less', 'cssmin']
 			},
 			libs: {
-				files: ['../js/*.js'],
-				tasks: ['uglify:external']
+				files: ['../static/js/external/*.js'],
+				tasks: [
+                    'directives:external',
+                    'uglify:external'
+                ]
 			},
 			application_scripts: {
-				files: ['../js/*.js'],
+				files: ['../static/js/*.js','!../static/js/*.min.js'],
 				tasks: [
 						'directives:app',
 						'directives:views',
