@@ -18,6 +18,98 @@ function alert_notification(alerts){
         $alertDiv.toggleClass('in');
 }
 
+var validator = {
+    digitsRegex: new RegExp("^[0-9]*$"),
+    charsRegex: new RegExp(".*"),
+    emailRegex:/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+
+    validateItems: function(selector){
+        var result = true;
+        var $elements_to_validate = $(selector);
+        $elements_to_validate.each(function(index){
+            var $item = $($elements_to_validate[index]);
+            result = validator.validateItem($item) && result ;
+        });
+        return result;
+    },
+
+    validateString:function(fieldValue, validation){
+        var passed = false;
+        switch(validation){
+            case "required":
+                passed = fieldValue.length > 0;
+                break;
+            case "digits":
+                passed = validator.digitsRegex.test(fieldValue);
+                break;
+            case "non_numerics":
+                passed = validator.charsRegex.test(fieldValue);
+                break;
+            case "email":
+                passed = fieldValue.length == 0 ||  validator.emailRegex.test(fieldValue);
+                break;
+            case "phone":
+                passed = validator.digitsRegex.test(fieldValue) && (fieldValue.length == 10 || fieldValue.length == 0) ;
+                break;
+            case "date":
+                var date = new Date(fieldValue);
+                passed = date instanceof Date && !isNaN(date.valueOf());
+                break;
+        }
+
+        return passed;
+    },
+    validateItem:function($item){
+        var totalResult = true;
+
+        var validations = $item.data('validation');
+        validations.split(',').forEach(function(validation){
+            var length = -1;
+            if(validation.indexOf(':')>=0){
+                var split = validation.split(':');
+                validation = split[0];
+                length = parseInt(split[1]);
+            }
+
+            var passed;
+            try
+            {
+                var fieldValue = $item.val();
+                if($item.is(':checkbox')){
+                    if(!$item.is(':checked'))
+                        fieldValue = "";
+                }
+
+                if(validation.indexOf('|') == -1)
+                    passed = validator.validateString(fieldValue, validation);
+                else {
+                    passed = validator.validateString(fieldValue, validation.split('|')[0]) ||
+                        validator.validateString(fieldValue, validation.split('|')[1]);
+                }
+
+                if(length != -1)
+                    passed = passed && fieldValue.length == length;
+            }
+            catch(err){
+                passed = false
+            }
+            totalResult = passed && totalResult;
+        });
+
+        if($item.is(':checkbox')){
+            $item = $item.parent();
+        }
+
+        if(!totalResult)
+                $item.addClass('failed-validation');
+            else
+                $item.removeClass('failed-validation');
+
+        return totalResult;
+    }
+}
+
+
 ModalView = Backbone.View.extend({
     childView: null,
     template: null,
@@ -61,7 +153,7 @@ ModalView = Backbone.View.extend({
     onChildClose:function(data){
         if(this.$el != null)
             this.$el.modal('hide');
-        //Backbone.history.navigate('',true);
+        Backbone.history.navigate('',true);
     }
 
 });
@@ -170,19 +262,19 @@ InviteView = Backbone.View.extend({
 
             }
         });
-
     }
 });
 
 CreateView = Backbone.View.extend({
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact{3}' class='row contact-row' data-contact='{0},{1},{2}' > \
-              <div class='col-xs-2'> \
-                  <button type='button' class='btn btn-danger form-control remove-contact' data-row='{3}'>-</button>              \
-              </div> \
-              <div class='col-xs-9'> {0} [{1}] </div> \
-            </div> ",
+            <div id='contact{2}'  class='row controls' data-contact='{0},{1},{2}'>\
+                <div class='col-sm-5 form-group'> {0}</div>\
+                <div class='col-sm-5 form-group'> {1}</div>\
+                <div class='col-sm-2 form-group'> \
+                    <button type='button' class='btn btn-danger remove-contact form-control' data-row='{2}'>-</button>              \
+                </div> \
+            </div>",
 
     initialize: function(options){
         this.options = options || {};
@@ -229,7 +321,7 @@ CreateView = Backbone.View.extend({
             cache: false,
             success: function(data) {
                 data.contacts.forEach(function(contact){
-                    that.$table.append(
+                    that.$table.prepend(
                         that.new_contact_string.format(
                             contact.name || '',
                             contact.phone || '',
@@ -251,10 +343,7 @@ CreateView = Backbone.View.extend({
         });
     },
     newContact: function(){
-        if(this.$new_phone.val() == '')
-            return;
-
-        if(!this.$contactForm.valid())
+        if(!validator.validateItem(this.$new_phone))
             return;
 
         var new_contact = this.new_contact_string.format(this.$new_name.val(),this.$new_phone.val(),this.i);
@@ -281,25 +370,16 @@ CreateView = Backbone.View.extend({
     submitNew:function(e){
         var that = this;
 
-         this.$inviteForm.validate({
-             rules: {
-                 when: {
-                   required: true,
-                   date: true
-                 }
-             }
-         });
+        if(!validator.validateItems('.valid-before-submit'))
+            return;
 
-         if(!this.$inviteForm.valid())
-             return;
-
-         var $rows = this.$el.find('.contact-row');
-         var event = {
-             'title': this.$event_name.val(),
-             'when':this.$event_date.val(),
-             'user_id': (currentUser!=null)?currentUser.id: null,
-             'contacts': []
-         };
+        var $rows = this.$el.find('.contact-row');
+        var event = {
+            'title': this.$event_name.val(),
+            'when':this.$event_date.val(),
+            'user_id': (currentUser!=null)?currentUser.id: null,
+            'contacts': []
+        };
 
         $rows.each(function() {
             var dataContact = $(this).data("contact");
@@ -367,9 +447,7 @@ SearchView = Backbone.View.extend({
 
     render: function() {
         this.$el.html(this.template());
-        this.$searchForm = this.$el.find('#searchForm');
         this.$searchBox = this.$el.find('#searchBox');
-
         this.search();
     },
 
@@ -381,9 +459,6 @@ SearchView = Backbone.View.extend({
         }
     },
     search: function(){
-        this.$searchForm.validate();
-        if(!this.$searchForm.valid())
-            return;
         var that = this;
         $.ajax({
             url: "/api/invite/search/"+ currentUser.id + "?term=" + this.$searchBox.val(),

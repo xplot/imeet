@@ -1,40 +1,50 @@
-<div class="row medium-margin-top">
-    <div class="col-md-8 col-md-offset-2 section-item contact-table equidistant">
-        <form id="newInviteForm">
-            <div class="row"></div>
-            <h4>Create your event</h4>
-            <div class="row controls">
-                <div class="col-sm-5 form-group">
-                    <input required type="text" class="form-control event-name" placeholder="Event" autofocus >
-                </div>
-                <div class="col-sm-3">
-                    <input required type="date" class="form-control event-date" placeholder="when..." name="when" id="when">
-                </div>
+<div class="section section-item controls">
+        <div class="row medium-margin-top">
+            <div class="col-md-8 col-md-offset-2 equidistant">
+                    <div class="row"></div>
+                    <h4>Create your event</h4>
+                    <div class="row controls">
+                        <div class="col-sm-7 form-group">
+                            <input required type="text" class="form-control event-name valid-before-submit" placeholder="Event" autofocus data-validation="required" >
+                        </div>
+                        <div class="col-sm-5">
+                            <input required type="date" class="form-control event-date valid-before-submit" placeholder="when..." name="when" id="when" data-validation="required,date">
+                        </div>
+                    </div>
             </div>
-        </form>
-        <div class="row medium-margin line"></div>
+        </div>
 
-        <h4>Who is invited?</h4>
-        <form id="newContactForm">
-            <div class="row">
-                <div class="col-sm-5">
-                    <input type="text" class="new-contact-name form-control" placeholder="Name">
-                </div>
-                <div class="col-sm-5">
-                    <input type="text" class="new-contact-phone form-control"
-                           placeholder="Phone Number or Email Address" name="newPhone" id="newPhone">
-                </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn btn-info new-contact form-control">+</button>
-                </div>
+        <div class="row small-margin-top equidistant">
+            <div class="row col-md-8 col-md-offset-2">
+                <div class="line nav-color-bg"></div>
             </div>
-        </form>
-      </div>
+        </div>
 
-      <div class="row medium-margin line"/>
+        <div class="row small-margin-top equidistant">
+            <div class="row col-md-8 col-md-offset-2">
+                <h4>Who is invited?</h4>
+                    <div class="row controls">
+                        <div class="col-sm-5 form-group">
+                            <input type="text" class="new-contact-name form-control" placeholder="Name">
+                        </div>
+                        <div class="col-sm-5 form-group">
+                            <input type="text" class="new-contact-phone form-control" data-validation="required,email|phone"
+                                   placeholder="Phone Number or Email Address" name="newPhone" id="newPhone">
+                        </div>
+                        <div class="col-sm-2 form-group">
+                            <button type="button" class="btn btn-info new-contact form-control">+</button>
+                        </div>
+                    </div>
+            </div>
 
-      <div class="row col-md-3 col-md-offset-4 col-xs-11 equidistant">
-          <button type="button" class="btn btn-success form-control send" disabled form="newInviteForm">Create Invite</button>
-      </div>
+            <!--Attendees-->
+            <div class="row contact-table col-md-8 col-md-offset-2"></div>
+        </div>
 
+        <div class="row text-center small-margin-top col-md-4 col-md-offset-4">
+            <button type="button" class="btn form-control btn-success send" disabled>Create Invite</button>
+        </div>
+
+
+    </div>
 </div>
