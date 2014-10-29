@@ -587,6 +587,18 @@ form .row:first-child .floating-label-form-group {
   }
 }
 
+.desktop,
+.mobile,
+.tablet{
+  display: none;
+}
+
+@media(min-width:1024px) {
+  .desktop{
+    display: block;
+  }
+}
+
 @media(max-width:1024px) {
     .section {
       .section-container {
@@ -603,6 +615,10 @@ form .row:first-child .floating-label-form-group {
       margin-left: 5%;
       margin-right: 5%;
     }
+
+    .tablet{
+      display: block;
+    }
 }
 
 @media(max-width:768px) {
@@ -610,6 +626,18 @@ form .row:first-child .floating-label-form-group {
     .equidistant{
       margin-left: 5%;
       margin-right: 5%;
+    }
+
+    .small-margin-top{
+      margin-top: 0px;
+    }
+
+    .medium-margin-top{
+      margin-top: 50px;
+    }
+
+    .mobile{
+      display: block;
     }
 
 	.header-section {
