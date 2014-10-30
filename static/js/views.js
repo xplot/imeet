@@ -268,7 +268,7 @@ InviteView = Backbone.View.extend({
 CreateView = Backbone.View.extend({
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact{2}'  class='row controls' data-contact='{0},{1},{2}'>\
+            <div id='contact{2}'  class='row controls contact-row' data-contact='{0},{1},{2}'>\
                 <div class='col-sm-5 form-group'> {0}</div>\
                 <div class='col-sm-5 form-group'> {1}</div>\
                 <div class='col-sm-2 form-group'> \
@@ -390,17 +390,21 @@ CreateView = Backbone.View.extend({
             event.contacts.push({
                 'name': contactArray[0],
                 'email': attendeeAddresses.email,
-                'phone': attendeeAddresses.phone,
+                'phone': attendeeAddresses.phone
             });
         });
+
         $.ajax({
             url: "/api/invite",
             type: "POST",
             data: JSON.stringify(event),
             cache: false,
             success: function() {
-                that.$el.modal('hide');
-                Backbone.history.navigate('',true);
+                alert_notification([{
+                    alertType:'success',
+                    message: 'Event sent!'
+                }]);
+                Backbone.history.navigate('', true);
             }
         });
     },
@@ -416,9 +420,9 @@ CreateView = Backbone.View.extend({
       //only 1 address (phone or email)
       if(addresses.length == 1){
         if(isNaN(addresses[0][0]))
-          return {email: addresses[0]};
+          return {email: addresses[0], phone: ''};
         else
-          return {phone: addresses[0]};
+          return {phone: addresses[0], email: ''};
       }
       else{ //phone and email at the same time.
         if(!isNaN(addresses[0][0]))
