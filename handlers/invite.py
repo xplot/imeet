@@ -14,7 +14,7 @@ class InviteHandler(JsonHandler):
         email_template = {
             'Url': "http://imeet.io/template/default_invite_template.html"
         }
-
+        logging.info(data)
         data['EmailTemplate'] = email_template
 
         invite_manager = InviteManager()
