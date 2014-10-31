@@ -80,12 +80,33 @@ var validator = {
                         fieldValue = "";
                 }
 
-                if(validation.indexOf('|') == -1)
-                    passed = validator.validateString(fieldValue, validation);
-                else {
-                    passed = validator.validateString(fieldValue, validation.split('|')[0]) ||
-                        validator.validateString(fieldValue, validation.split('|')[1]);
+                //Composed Validations
+                if(validation.indexOf('|') != -1 ){
+
+                    var composedValidation = function(values, validations){
+                        var validations = validation.split('|');
+                        var valueList = values.split(',');
+                        if(valueList.length == 0 || validations.length == 0)
+                            return true;
+
+                        var allValuesGood = true;
+                        valueList.forEach(function(value){
+                            value = value.trim();
+                            var atLeastOne = false;
+                            validations.forEach(function(validation){
+                                atLeastOne = validator.validateString(value, validation) || atLeastOne;
+                            });
+
+                            allValuesGood = allValuesGood && atLeastOne;
+                        });
+
+                        return allValuesGood;
+                    };
+
+                    passed = composedValidation(fieldValue, validation)
                 }
+                else
+                    passed = validator.validateString(fieldValue, validation);
 
                 if(length != -1)
                     passed = passed && fieldValue.length == length;
@@ -268,7 +289,7 @@ InviteView = Backbone.View.extend({
 CreateView = Backbone.View.extend({
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact{2}'  class='row controls contact-row' data-contact='{0},{1},{2}'>\
+            <div id='contact{2}'  class='row controls contact-row' data-contact='{0};{1};{2}'>\
                 <div class='col-sm-5 form-group'> {0}</div>\
                 <div class='col-sm-5 form-group'> {1}</div>\
                 <div class='col-sm-2 form-group'> \
@@ -383,7 +404,7 @@ CreateView = Backbone.View.extend({
 
         $rows.each(function() {
             var dataContact = $(this).data("contact");
-            var contactArray = dataContact.split(',');
+            var contactArray = dataContact.trim().split(';');
 
             var attendeeAddresses = that.parsePhoneAndEmail(contactArray[1]);
 
@@ -419,13 +440,13 @@ CreateView = Backbone.View.extend({
 
       //only 1 address (phone or email)
       if(addresses.length == 1){
-        if(isNaN(addresses[0][0]))
+        if(isNaN(addresses[0]))
           return {email: addresses[0], phone: ''};
         else
           return {phone: addresses[0], email: ''};
       }
       else{ //phone and email at the same time.
-        if(!isNaN(addresses[0][0]))
+        if(isNaN(addresses[0]))
           return {email: addresses[0], phone: addresses[1]};
         else
           return {phone: addresses[0], email: addresses[1]};
