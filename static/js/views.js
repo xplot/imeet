@@ -9,9 +9,7 @@ function alert_notification(alerts){
 
     alerts.forEach(function(alert){
         $alertDiv.prepend("\
-            <div class='alert alert-" + alert.alertType + "'>" +
-            alert.message +
-            "</div>");
+            <div class='alert alert-" + alert.alertType + "'>" + alert.message + "</div>");
     });
 
     if(alerts.length > 0)
@@ -128,7 +126,7 @@ var validator = {
 
         return totalResult;
     }
-}
+};
 
 
 ModalView = Backbone.View.extend({
@@ -418,6 +416,7 @@ CreateView = Backbone.View.extend({
         $.ajax({
             url: "/api/invite",
             type: "POST",
+            contentType: "application/json",
             data: JSON.stringify(event),
             cache: false,
             success: function() {
@@ -426,6 +425,12 @@ CreateView = Backbone.View.extend({
                     message: 'Event sent!'
                 }]);
                 Backbone.history.navigate('', true);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
             }
         });
     },

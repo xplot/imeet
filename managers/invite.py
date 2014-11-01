@@ -1,22 +1,20 @@
 __author__ = 'javi830810'
 import datetime
 import json
-import requests
 import uuid
-import webapp2
 
-from google.appengine.api import mail
 from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
-from webapp2 import Route
 
-from models import Invite,Contact, ContactInvite, data_type_handler, InviteIndex
+from models.models import Invite,Contact, ContactInvite
 from boilerplate.models import User
-from config import config
-import logging
+
 
 class InviteManager(object):
     invite_index = 'invite_index'
+
+    def __init__(self, user=None):
+        self.user = user
 
     def create(self, invite_dict):
         """
@@ -44,11 +42,8 @@ class InviteManager(object):
         invite.title = invite_dict['title']
         invite.when = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%d")
 
-        user_id = invite_dict.get('user_id', None)
-
-        if user_id is not None:
-            user = User.get_by_id(long(user_id))
-            invite.user = user.key
+        if self.user:
+            invite.user = self.user.key
 
         invite.put()
 
@@ -93,13 +88,15 @@ class InviteManager(object):
 
     def send(self, invite_dict):
         """Send the invite out"""
-        taskqueue.add(url='/api/invite/post',
-                      headers={
-                        'Date':'test'
-                      },
-                      params={
-                        'invite': json.dumps(invite_dict)
-        })
+        taskqueue.add(
+            url='/api/invite/post',
+            headers={
+                'Date':'test'
+            },
+            params={
+                'invite': json.dumps(invite_dict)
+            }
+        )
 
     def get(self, id):
         """Get the invite by id"""
