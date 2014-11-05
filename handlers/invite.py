@@ -1,4 +1,5 @@
 import logging
+
 import requests
 import hmac
 import hashlib
@@ -6,12 +7,15 @@ import base64
 
 from datetime import datetime
 from base import JsonHandler
-from managers import InviteManager
+from managers.invite import InviteManager
 from config import config
+from managers.auth import user_context, request_with_subscription
 
 
 class InviteHandler(JsonHandler):
 
+    @user_context
+    @request_with_subscription
     def send(self):
         data = self._data()
 
@@ -21,7 +25,7 @@ class InviteHandler(JsonHandler):
         logging.info(data)
         data['EmailTemplate'] = email_template
 
-        invite_manager = InviteManager()
+        invite_manager = InviteManager(self.user)
         invite_manager.create(data)
         invite_manager.send(data)
         return True
@@ -54,10 +58,12 @@ class InviteHandler(JsonHandler):
 
         logging.info(authToken)
 
-        headers = {'Content-type': 'application/json',
-                   'Accept': 'text/plain',
-                   'Date' : now,
-                   'Authorization': authToken}
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'text/plain',
+            'Date': now,
+            'Authorization': authToken
+        }
 
         invite_json = self.request.get('invite')
 
@@ -69,6 +75,6 @@ class InviteHandler(JsonHandler):
             headers=headers
         )
 
-        if r.status_code != 200 :
+        if r.status_code != 200:
             logging.error(r.text)
         r.raise_for_status()

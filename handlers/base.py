@@ -1,20 +1,15 @@
 import json
-import jinja2
 import logging
-import os,sys
-import webapp2
 
-from datetime import time
+import webapp2
 from google.appengine.api import mail
 from google.appengine.ext import ndb
-from webapp2 import Route, RequestHandler
+from webapp2 import RequestHandler
 
-import config
 import boilerplate
 from main import JINJA_ENVIRONMENT
-from models import Invite,Contact, ContactInvite, data_type_handler
-from managers import InviteManager
 from boilerplate.basehandler import BaseHandler
+
 
 class Request(ndb.Model):
     request = ndb.TextProperty()
@@ -34,34 +29,35 @@ class JsonHandler(RequestHandler):
         try:
             self.response.content_type = 'application/json'
             result = super(JsonHandler, self).dispatch()
-
             self.api_success(result)
         except Exception, e:
             self.error(500)
-            self.handle_exception(e, False)
+            self.json_handle_exception(e, False)
 
     def __render_json__(self, data):
-        self.response.write(json.dumps(data))
+        if data is not None:
+            self.response.write(json.dumps(data))
 
     def api_success(self, data=None):
-        self.response.status = 200
+        #self.response.status = 200
         self.__render_json__(data)
 
     def set_location_header(self, model):
         self.response.headers["Location"] = "{0}/{1}".format(self.request.path, model.key().id())
 
-    def handle_exception(self, exception, debug):
+    def json_handle_exception(self, exception, debug):
+        logging.info(self.request.body)
         logging.exception(exception)
-        self.__render_json__(exception.message)
+        if exception is not None and exception.message is not None:
+            self.__render_json__(exception.message)
 
     def _data(self):
         try:
             if self.request_data is None:
                 data_string = self.request.body
                 self.request_data = json.loads(data_string)
-        except:
-            logging.info(self.request)
-            logging.info(self.request.body)
+        except Exception,e:
+            raise e
         return self.request_data
 
     def get_response(self):

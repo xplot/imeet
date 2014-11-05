@@ -27,16 +27,14 @@ from github import github
 from linkedin import linkedin
 
 # local application/library specific imports
-import main
-import models
 #import forms as forms
 from boilerplate import utils, captcha, twitter
 from boilerplate.basehandler import BaseHandler
 from boilerplate.decorators import user_required
-from boilerplate.decorators import taskqueue_method
-from boilerplate import models
 from boilerplate import facebook
 from base import JsonHandler
+from boilerplate import models
+
 
 class LoginRequiredHandler(BaseHandler):
     def get(self):
@@ -285,90 +283,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                     self.redirect_to('edit-profile')
             else:
                 # login with twitter
-                social_user = models.SocialUser.get_by_provider_and_uid('twitter',
-                                                                        str(user_data['user_id']))
-                if social_user:
-                    # Social user exists. Need authenticate related site account
-                    user = social_user.user.get()
-                    self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
-                    if self.app.config['log_visit']:
-                        try:
-                            logVisit = models.LogVisit(
-                                user=user.key,
-                                uastring=self.request.user_agent,
-                                ip=self.request.remote_addr,
-                                timestamp=utils.get_date_time()
-                            )
-                            logVisit.put()
-                        except (apiproxy_errors.OverQuotaError, BadValueError):
-                            logging.error("Error saving Visit Log in datastore")
-                    if continue_url:
-                        self.redirect(continue_url)
-                    else:
-                        self.redirect_to('home')
-                else:
-                    uid = str(user_data['user_id'])
-                    email = str(user_data.get('email'))
-                    self.create_account_from_social_provider(provider_name, uid, email, continue_url, user_data)
-
-        # github association
-        elif provider_name == "github":
-            # get our request code back from the social login handler above
-            code = self.request.get('code')
-
-            # create our github auth object
-            scope = 'gist'
-            github_helper = github.GithubAuth(self.app.config.get('github_server'),
-                                              self.app.config.get('github_client_id'), \
-                                              self.app.config.get('github_client_secret'),
-                                              self.app.config.get('github_redirect_uri'), scope)
-
-            # retrieve the access token using the code and auth object
-            access_token = github_helper.get_access_token(code)
-            user_data = github_helper.get_user_info(access_token)
-            logging.info('github user_data: ' + str(user_data))
-            if self.user:
-                # user is already logged in so we set a new association with twitter
-                user_info = self.user_model.get_by_id(long(self.user_id))
-                if models.SocialUser.check_unique(user_info.key, 'github', str(user_data['login'])):
-                    social_user = models.SocialUser(
-                        user=user_info.key,
-                        provider='github',
-                        uid=str(user_data['login']),
-                        extra_data=user_data
-                    )
-                    social_user.put()
-
-                    message = _('Github association added.')
-                    self.add_message(message, 'success')
-                else:
-                    message = _('This Github account is already in use.')
-                    self.add_message(message, 'danger')
-                self.redirect_to('edit-profile')
-            else:
-                # user is not logged in, but is trying to log in via github
-                social_user = models.SocialUser.get_by_provider_and_uid('github', str(user_data['login']))
-                if social_user:
-                    # Social user exists. Need authenticate related site account
-                    user = social_user.user.get()
-                    self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
-                    if self.app.config['log_visit']:
-                        try:
-                            logVisit = models.LogVisit(
-                                user=user.key,
-                                uastring=self.request.user_agent,
-                                ip=self.request.remote_addr,
-                                timestamp=utils.get_date_time()
-                            )
-                            logVisit.put()
-                        except (apiproxy_errors.OverQuotaError, BadValueError):
-                            logging.error("Error saving Visit Log in datastore")
-                    self.redirect_to('home')
-                else:
-                    uid = str(user_data['id'])
-                    email = str(user_data.get('email'))
-                    self.create_account_from_social_provider(provider_name, uid, email, continue_url, user_data)
-        #end github
+                pass
 
         # facebook association
         elif provider_name == "facebook":
@@ -434,77 +349,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                     # end facebook
         # association with linkedin
         elif provider_name == "linkedin":
-            callback_url = "%s/social_login/%s/complete" % (self.request.host_url, provider_name)
-            authentication = linkedin.LinkedInAuthentication(
-                self.app.config.get('linkedin_api'),
-                self.app.config.get('linkedin_secret'),
-                callback_url,
-                [linkedin.PERMISSIONS.BASIC_PROFILE, linkedin.PERMISSIONS.EMAIL_ADDRESS])
-            authentication.authorization_code = self.request.get('code')
-            access_token = authentication.get_access_token()
-            link = linkedin.LinkedInApplication(authentication)
-            u_data = link.get_profile(selectors=['id', 'first-name', 'last-name', 'email-address'])
-            user_data = {
-                'first_name': u_data.get('firstName'),
-                'last_name': u_data.get('lastName'),
-                'id': u_data.get('id'),
-                'email': u_data.get('emailAddress')}
-            self.session['linkedin'] = json.dumps(user_data)
-            logging.info('linkedin user_data: ' + str(user_data))
-
-            if self.user:
-                # new association with linkedin
-                user_info = self.user_model.get_by_id(long(self.user_id))
-                if models.SocialUser.check_unique(user_info.key, 'linkedin', str(user_data['id'])):
-                    social_user = models.SocialUser(
-                        user=user_info.key,
-                        provider='linkedin',
-                        uid=str(user_data['id']),
-                        extra_data=user_data
-                    )
-                    social_user.put()
-
-                    user_info.username = user_data.get('email')
-                    user_info.put()
-
-                    message = _('Linkedin association added!')
-                    self.add_message(message, 'success')
-                else:
-                    message = _('This Linkedin account is already in use!')
-                    self.add_message(message, 'danger')
-                if continue_url:
-                    self.redirect(continue_url)
-                else:
-                    self.redirect_to('edit-profile')
-            else:
-                # login with Linkedin
-                social_user = models.SocialUser.get_by_provider_and_uid('linkedin',
-                                                                        str(user_data['id']))
-                if social_user:
-                    # Social user exists. Need authenticate related site account
-                    user = social_user.user.get()
-                    self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
-                    if self.app.config['log_visit']:
-                        try:
-                            logVisit = models.LogVisit(
-                                user=user.key,
-                                uastring=self.request.user_agent,
-                                ip=self.request.remote_addr,
-                                timestamp=utils.get_date_time()
-                            )
-                            logVisit.put()
-                        except (apiproxy_errors.OverQuotaError, BadValueError):
-                            logging.error("Error saving Visit Log in datastore")
-                    if continue_url:
-                        self.redirect(continue_url)
-                    else:
-                        self.redirect_to('home')
-                else:
-                    uid = str(user_data['id'])
-                    email = str(user_data.get('email'))
-                    self.create_account_from_social_provider(provider_name, uid, email, continue_url, user_data)
-
-                    #end linkedin
+            pass
 
         # google
         elif provider_name == 'google':
@@ -548,7 +393,6 @@ class CallbackSocialLoginHandler(BaseHandler):
                 else:
                     self.redirect_to('edit-profile')
             else:
-                # login with OpenID Provider
                 social_user = models.SocialUser.get_by_provider_and_uid(provider_name, uid)
                 if social_user:
                     # Social user found. Authenticate the user

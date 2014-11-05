@@ -28,8 +28,13 @@
                             <input type="text" class="new-contact-name form-control" placeholder="Name">
                         </div>
                         <div class="col-sm-5 form-group">
-                            <input type="text" class="new-contact-phone form-control" data-validation="required,email|phone"
-                                   placeholder="Phone Number or Email Address" name="newPhone" id="newPhone">
+                            <input type="text" class="new-contact-phone form-control"
+                                <%  if( features.indexOf('voice') != -1 )  { %>
+                                    data-validation='required,email|phone' placeholder='Phone Number or Email Address'
+                                <% } else { %>
+                                    data-validation='required,email' placeholder='Email Address'
+                                <% } %>
+                                name="newPhone" id="newPhone">
                         </div>
                         <div class="col-sm-2 form-group">
                             <button type="button" class="btn btn-info new-contact form-control">+</button>

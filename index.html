@@ -32,7 +32,6 @@
 
 {% if messages|safe %}
     <div id="notification-alerts" class="jumbotron flyover flyover-bottom">
-
            {% for message in messages %}
                 <div class="alert alert-{{ message[1]|safe }}">
                     {{ message[0]|safe }}
@@ -41,6 +40,7 @@
         <button class="btn btn-primary alert-close" data-dismiss="alert">X</button>
     </div>
 {% endif %}
+
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -267,16 +267,6 @@
                                                           <i class="fa fa-facebook fa-2x"></i>
                                                       </a>
                                                   </li>
-                                                  <li>
-                                                      <a href="/social_login/twitter">
-                                                          <i class="fa fa-twitter fa-2x"></i>
-                                                      </a>
-                                                  </li>
-                                                  <li>
-                                                      <a href="/social_login/linkedin">
-                                                          <i class="fa fa-linkedin fa-2x"></i>
-                                                      </a>
-                                                  </li>
                                               </ul>
                                           </div>
                                       </div>
@@ -338,6 +328,13 @@
         {%else %}
             null;
         {%endif %}
+
+        var features = [
+               {% for item in subscription_features %}
+                    '{{ item }}',
+                {% endfor %}
+        ];
+
     </script>
 
     <script>

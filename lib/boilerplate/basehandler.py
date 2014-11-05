@@ -16,7 +16,7 @@ from boilerplate import models
 from boilerplate import utils, i18n, jinja_bootstrap
 from babel import Locale
 from main import JINJA_ENVIRONMENT
-
+from managers.subscriptions import SubscriptionManager
 class ViewClass:
     """
         ViewClass to insert variables into the template.
@@ -261,17 +261,8 @@ class BaseHandler(webapp2.RequestHandler):
 
     def render_template(self, filename, **kwargs):
         locales = self.app.config.get('locales') or []
-        locale_iso = None
-        language = ''
-        territory = ''
-        language_id = self.app.config.get('app_lang')
 
-        if self.locale and len(locales) > 1:
-            locale_iso = Locale.parse(self.locale)
-            language_id = locale_iso.language
-            territory_id = locale_iso.territory
-            language = locale_iso.languages[language_id]
-            territory = locale_iso.territories[territory_id]
+        subscription_manager = SubscriptionManager(user=self.user)
 
         # make all self.view variables available in jinja2 templates
         if hasattr(self, 'view'):
@@ -286,18 +277,8 @@ class BaseHandler(webapp2.RequestHandler):
             'username': self.username,
             'email': self.email,
             'url': self.request.url,
-            'path': self.request.path,
-            'query_string': self.request.query_string,
-            'path_for_language': self.path_for_language,
             'is_mobile': self.is_mobile,
-            'locale_iso': locale_iso, # babel locale object
-            'locale_language': language.capitalize() + " (" + territory.capitalize() + ")", # babel locale object
-            'locale_language_id': language_id, # babel locale object
-            'locales': self.locales,
-            'provider_uris': self.provider_uris,
-            'provider_info': self.provider_info,
-            'enable_federated_login': self.app.config.get('enable_federated_login'),
-            'base_layout': self.get_base_layout
+            'subscription_features': subscription_manager.get_features_for_user()
         })
         #kwargs.update(self.auth_config)
         if hasattr(self, 'form'):

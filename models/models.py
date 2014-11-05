@@ -8,25 +8,27 @@ from google.appengine.ext import ndb, db
 
 from boilerplate.models import User
 
+
 def data_type_handler(obj):
-        if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date):
-            return obj.strftime("%m/%d/%y HH:MM:SS")
-        elif isinstance(obj, ndb.IntegerProperty):
-            return str(obj) if obj != None else "0"
-        elif isinstance(obj, ndb.FloatProperty):
-            return str(obj) if obj != None else "0"
-        elif isinstance(obj, ndb.Key):
-            child = obj.get()
-            if child:
-                if obj.kind() == "User":
-                    return ""
-            return {"id": obj.id()}
-        elif isinstance(obj, ndb.BlobKey):
-            return str(obj)
-        # elif isinstance(obj, ndb.Blob):
-            # return obj
-        else:
-            return None
+    if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date):
+        return obj.strftime("%m/%d/%y HH:MM:SS")
+    elif isinstance(obj, ndb.IntegerProperty):
+        return str(obj) if obj != None else "0"
+    elif isinstance(obj, ndb.FloatProperty):
+        return str(obj) if obj != None else "0"
+    elif isinstance(obj, ndb.Key):
+        child = obj.get()
+        if child:
+            if obj.kind() == "User":
+                return ""
+        return {"id": obj.id()}
+    elif isinstance(obj, ndb.BlobKey):
+        return str(obj)
+    # elif isinstance(obj, ndb.Blob):
+        # return obj
+    else:
+        return None
+
 
 class BaseModel(ndb.Model):
     created_at = ndb.DateTimeProperty(auto_now_add=True)
@@ -55,11 +57,13 @@ class ContactInvite(ndb.Model):
     sms_response = ndb.StringProperty()
     email_response = ndb.StringProperty()
 
+
 class Invite(BaseModel):
     unique_id = ndb.StringProperty()
     when = ndb.DateTimeProperty(auto_now_add=True)
     title = ndb.StringProperty()
     user = ndb.KeyProperty(kind=User)
+
 
 class InviteIndex(ndb.Model):
     doc_id = ndb.StringProperty()
@@ -68,8 +72,28 @@ class InviteIndex(ndb.Model):
     when = ndb.DateTimeProperty()
     language = ndb.StringProperty()
 
+
 class Contact(BaseModel):
     unique_id = ndb.StringProperty()
     name = ndb.StringProperty()
     phone = ndb.StringProperty()
     email = ndb.StringProperty()
+
+
+class Subscription(BaseModel):
+    unique_id = ndb.StringProperty(required=True)
+    name = ndb.StringProperty(required=True)
+    price = ndb.FloatProperty(required=True)
+
+
+class UserSubscription(BaseModel):
+    user = ndb.KeyProperty(kind=User, required=True)
+    subscription = ndb.StringProperty(required=True)
+    started_on = ndb.DateTimeProperty(required=True)
+    is_trial = ndb.BooleanProperty(required=True)
+
+
+class Feature(BaseModel):
+    unique_id = ndb.StringProperty(required=True)
+    name = ndb.StringProperty(required=True)
+    Subscription = ndb.KeyProperty(kind=Subscription,required=True)
