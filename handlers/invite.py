@@ -1,6 +1,10 @@
 import logging
 import requests
+import hmac
+import hashlib
+import base64
 
+from datetime import datetime
 from base import JsonHandler
 from managers import InviteManager
 from config import config
@@ -43,7 +47,17 @@ class InviteHandler(JsonHandler):
 
     def post_to_voiceflows(self):
         url = config.get('api_url')
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        now = datetime.utcnow().strftime("%a, %d %b %Y %H:%M:00 GMT")
+        secret = '8\x0c7_\x01\t/{C)6V`\x1c!'
+        dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
+        authToken = "Voiceflows " + base64.b64encode(dig).decode()
+
+        logging.info(authToken)
+
+        headers = {'Content-type': 'application/json',
+                   'Accept': 'text/plain',
+                   'Date' : now,
+                   'Authorization': authToken}
 
         invite_json = self.request.get('invite')
 
@@ -55,4 +69,6 @@ class InviteHandler(JsonHandler):
             headers=headers
         )
 
+        if r.status_code != 200 :
+            logging.error(r.text)
         r.raise_for_status()

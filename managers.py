@@ -93,8 +93,12 @@ class InviteManager(object):
 
     def send(self, invite_dict):
         """Send the invite out"""
-        taskqueue.add(url='/api/invite/post', params={
-            'invite': json.dumps(invite_dict)
+        taskqueue.add(url='/api/invite/post',
+                      headers={
+                        'Date':'test'
+                      },
+                      params={
+                        'invite': json.dumps(invite_dict)
         })
 
     def get(self, id):
