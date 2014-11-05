@@ -325,6 +325,32 @@ CreateView = Backbone.View.extend({
         this.$btSend = this.$el.find('.send');
         this.i = 0;
 
+        var $last_item = $("a .active");
+        this.$el.panelSnap({
+            menuSelector: 'a',
+//            panelSelector: 'section',
+//            namespace: '.panelSnap',
+            onSnapStart: function($target){
+
+            },
+            onSnapFinish: function($target){
+                var menuItem = $target.data('panel');
+                $last_item.removeClass('active');
+                $last_item = $("a[data-panel='"+ menuItem + "']");
+                $last_item.addClass('active');
+            },
+            onActivate: function(){},
+            directionThreshold: 50,
+            slideSpeed: 200,
+            $menu: this.$el.find('.menu'),
+          keyboardNavigation: {
+            enabled: true,
+            nextPanelKey: 40,
+            previousPanelKey: 38,
+            wrapAround: false
+          }
+        });
+
         if(options.title != null)
             this.$event_name.val(options.title);
 

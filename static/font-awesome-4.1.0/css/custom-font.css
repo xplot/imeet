@@ -83,3 +83,15 @@
 .fa-arrow-right:before {
   content: "o";
 }
+.fa-angle-down:before {
+  content: "p";
+}
+.fa-circle:before {
+  content: "q";
+}
+.fa-circle-line:before {
+  content: "s";
+}
+.fa-angle-up:before {
+  content: "r";
+}

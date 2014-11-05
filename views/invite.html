@@ -1,4 +1,6 @@
-<div class="section section-item controls">
+
+    <section data-panel="first">
+
         <div class="row medium-margin-top">
             <div class="col-md-8 col-md-offset-2 equidistant">
                     <div class="row"></div>
@@ -14,13 +16,46 @@
             </div>
         </div>
 
-        <div class="row small-margin-top equidistant desktop">
-            <div class="row col-md-8 col-md-offset-2">
-                <div class="line nav-color-bg"></div>
+
+    </section>
+    <section data-panel="second">
+        <div class="row medium-margin-top">
+            <div class="col-md-8 col-md-offset-2 equidistant">
+                    <div class="row"></div>
+                    <h4>Where</h4>
+                    <div class="row controls">
+                        <div class="col-sm-9 form-group">
+                            <input type="text" class="form-control" placeholder="Address..."  >
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" placeholder="Apt"  >
+                        </div>
+                    </div>
+                    <div class="row controls">
+                        <div class="col-sm-5 form-group">
+                            <input type="text" class="form-control" placeholder="City..."  >
+                        </div>
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <select class="form-control">
+                                <option value=""></option>
+                              <option value="volvo">Volvo</option>
+                              <option value="saab">Saab</option>
+                              <option value="mercedes">Mercedes</option>
+                              <option value="audi">Audi</option>
+                            </select>
+
+                        </div>
+                        <div class="col-sm-3">
+                            <input required type="text" class="form-control" placeholder="Zip"  >
+                        </div>
+                    </div>
             </div>
         </div>
+    </section>
 
-        <div class="row small-margin-top equidistant">
+    <section data-panel="third">
+      <div class="row small-margin-top equidistant">
             <div class="row col-md-8 col-md-offset-2">
                 <h4>Who is invited?</h4>
                     <div class="row controls">
@@ -45,14 +80,18 @@
             <!--Attendees-->
             <div class="row contact-table col-md-8 col-md-offset-2"></div>
         </div>
+    </section>
 
-        <div class="row small-margin-top equidistant">
-            <div class="row col-md-8 col-md-offset-2">
-                <button type="button" class="btn form-control btn-success send" disabled>Create Invite</button>
-            </div>
+    <section data-panel="fourth">
+    <div class="row small-margin-top equidistant">
+        <div class="row col-md-8 col-md-offset-2">
+            Here goes the summary
+            <div style="width: 80%;height: 200px;border: solid blue 1px"></div>
+            <br/><br/>
+            <button type="button" class="btn form-control btn-success send" disabled>Create Invite</button>
         </div>
     </div>
-</div>
+    </section>
 
 <!-- Footer -->
 <div class="section-container footer desktop navbar-fixed-bottom">
@@ -72,3 +111,19 @@
         </div>
     </div>
 </div>
+
+
+<ul class="menu">
+    <li>
+        <a href="" data-panel="first" class="active"><i class="fa fa-circle-line fa-1x"></i></a>
+    </li>
+    <li>
+        <a href="" data-panel="second"><i class="fa fa-circle-line fa-1x"></i></a>
+    </li>
+    <li>
+        <a href="" data-panel="third"><i class="fa fa-circle-line fa-1x"></i></a>
+    </li>
+    <li>
+        <a href="" data-panel="fourth"><i class="fa fa-circle-line fa-1x"></i></a>
+    </li>
+</ul>

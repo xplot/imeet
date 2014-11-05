@@ -1,7 +1,8 @@
 @import "variables";
 @import "mixins";
-
+html,
 body {
+    height: 100%;
 	overflow-x: hidden;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
@@ -721,4 +722,36 @@ form .row:first-child .floating-label-form-group {
 
 .failed-validation{
   border: solid 1px red;
+}
+
+
+#view-container{
+  overflow: auto;
+
+  .menu{
+    text-align: right;
+    list-style: none;
+    position: fixed;
+    right: 4%;
+    top: 50%;
+    z-index: 1001;
+
+    .active{
+      .fa-circle-line:before{
+        content: "q";
+      }
+    }
+  }
+
+  section{
+    padding:10%;
+    position: relative;
+    /*overflow: auto;*/
+    width: 100%;
+    height: 100%;
+  }
+
+//  section:nth-child(2n) {
+//    background: @body-frame;
+//  }
 }
