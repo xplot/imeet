@@ -564,9 +564,6 @@ class RegisterHandler(JsonHandler):
             ),
             _full=True
         )
-
-        logging.info(confirmation_url)
-
         # load email's template
         template_val = {
             "app_name": self.app.config.get('app_name'),
@@ -574,7 +571,7 @@ class RegisterHandler(JsonHandler):
             "activation_url": confirmation_url,
             "support_url": self.uri_for("contact", _full=True)
         }
-        body_path = "emails/account_activation.html"
+        body_path = "account_activation.html"
         body = self.get_template_rendered(body_path, **template_val)
 
         #
@@ -584,8 +581,7 @@ class RegisterHandler(JsonHandler):
             'subject': subject,
             'body': body,
         })
-
-        self.response.clear()
+        return "Activation Email Sent"
 
 class AccountActivationHandler(BaseHandler):
     """

@@ -14,7 +14,7 @@ handlers:
 - url: /font-awesome-4.1.0
   static_dir: static/font-awesome-4.1.0
 - url: /template
-  static_dir: emails/
+  static_dir: templates/
 
 - url: .*
   script: main.app

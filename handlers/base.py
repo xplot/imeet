@@ -39,14 +39,13 @@ class JsonHandler(RequestHandler):
             self.response.write(json.dumps(data))
 
     def api_success(self, data=None):
-        #self.response.status = 200
+        self.response.status = 200
         self.__render_json__(data)
 
     def set_location_header(self, model):
         self.response.headers["Location"] = "{0}/{1}".format(self.request.path, model.key().id())
 
     def json_handle_exception(self, exception, debug):
-        logging.info(self.request.body)
         logging.exception(exception)
         if exception is not None and exception.message is not None:
             self.__render_json__(exception.message)
@@ -70,6 +69,7 @@ class JsonHandler(RequestHandler):
             'app_name': self.app.config.get('app_name'),
             'url': self.request.url,
         })
+        logging.info(filename)
         template = JINJA_ENVIRONMENT.get_template(filename)
         return template.render(**kwargs)
 

@@ -1,5 +1,4 @@
 <div class="modal-content">
-    <form id="editProfileForm">
         <div class="close-modal" data-action="dismiss">
             <div class="lr">
                 <div class="rl">
@@ -18,19 +17,20 @@
                     <br/><br/>
                     <div class="floating-label-form-group">
                         <label for="edit-profile-name" class="fl">Full Name</label>
-                        <input required id="edit-profile-name" type="text" class="form-control" placeholder="John Smith..." >
+                        <input id="edit-profile-name" type="text" class="form-control valid-before-submit" placeholder="John Smith..."
+                                data-validation="required">
                     </div>
                     <div class="floating-label-form-group">
-                        <label for="edit-profile-username" class="fl">Username</label>
-                        <input required id="edit-profile-username" type="text" class="form-control" placeholder="username...">
+                        <label for="edit-profile-username" class="fl" data-validation="required">Username</label>
+                        <input id="edit-profile-username" type="text" class="form-control valid-before-submit" placeholder="username..." data-validation="required">
                     </div>
                     <div class="floating-label-form-group">
-                        <label for="edit-profile-username" class="fl">Pasword</label>
-                        <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control" placeholder="password...">
+                        <label for="edit-profile-username" class="fl" data-validation="required">Pasword</label>
+                        <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control valid-before-submit" placeholder="password..." data-validation="required">
                     </div>
                     <div class="floating-label-form-group">
                         <label for="edit-profile-username" class="fl">Pasword Confirm</label>
-                        <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control" placeholder=" confirm password...">
+                        <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control valid-before-submit" placeholder=" confirm password..." data-validation="required">
                     </div>
                 </div>
             </div>
@@ -38,5 +38,4 @@
                 <a class="btn btn-primary btn-lg save-profile pull-right" role="button">Save</a>
             </div>
         </div>
-    </form>
 </div>

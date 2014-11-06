@@ -523,25 +523,28 @@ UserRegisterView = Backbone.View.extend({
 
     render: function() {
         this.$el.html(this.template());
-
-        this.$registerForm = this.$el.find('#registerForm');
         this.$email = this.$el.find('.register-email');
     },
 
     registerEmail: function(){
-        this.$registerForm.validate();
-        if(!this.$registerForm.valid())
+        if(!validator.validateItem(this.$email))
             return;
 
         var that = this;
         $.ajax({
             url: "/register/email/"+ this.$email.val(),
             type: "POST",
+            contentType: "application/json",
             cache: false,
-            success: function() {
+            success:function(result) {
+                alert_notification([{
+                    alertType:'success',
+                    message: result
+                }]);
+
                 Backbone.pubSub.trigger('childClose', { 'view' : that } );
             },
-            error:function(data) {
+            error:function(data){
                 alert_notification([{
                     alertType:'danger',
                     message: data.responseText
@@ -564,10 +567,10 @@ UserProfileView = Backbone.View.extend({
     render: function() {
         this.$el.html(this.template());
 
-        this.$editProfileForm = this.$el.find('#editProfileForm');
         this.$name = this.$el.find('#edit-profile-name');
         this.$username = this.$el.find('#edit-profile-username');
         this.$password = this.$el.find('#edit_profile_password');
+        this.$password_confirm = this.$el.find('#edit_profile_password_confirm');
         this.$email = this.$el.find('#edit-profile-email');
 
         var that = this;
@@ -596,19 +599,10 @@ UserProfileView = Backbone.View.extend({
     },
 
     save: function(){
-        this.$editProfileForm.validate({
-            rules: {
-                edit_profile_password: {
-                    minlength: 5
-                },
-                edit_profile_password_confirm: {
-                    minlength: 5,
-                    equalTo: "#edit_profile_password"
-                }
-            }
-        });
-        if(!this.$editProfileForm.valid())
+        if(!validator.validateItems('.valid-before-submit')
+            || this.$password.val() != this.$password_confirm.val())
             return;
+
         var user = {
           'username':   this.$username.val(),
           'password':   this.$password.val()
