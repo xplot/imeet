@@ -287,10 +287,10 @@ InviteView = Backbone.View.extend({
 CreateView = Backbone.View.extend({
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact{2}'  class='row controls contact-row' data-contact='{0};{1};{2}'>\
-                <div class='col-sm-5 form-group'> {0}</div>\
-                <div class='col-sm-5 form-group'> {1}</div>\
-                <div class='col-sm-2 form-group'> \
+            <div id='contact{2}'  class='row contact-row equidistant' data-contact='{0};{1};{2}'>\
+                <div class='col-md-4 col-md-offset-2'> {0}</div>\
+                <div class='col-md-3'> {1}</div>\
+                <div class='col-md-1'> \
                     <button type='button' class='btn btn-danger remove-contact form-control' data-row='{2}'>-</button>              \
                 </div> \
             </div>",

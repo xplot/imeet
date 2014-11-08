@@ -1,85 +1,117 @@
 
-    <section data-panel="first">
-
-        <div class="row medium-margin-top">
-            <div class="col-md-8 col-md-offset-2 equidistant">
-                    <div class="row"></div>
-                    <h4>Create your event</h4>
-                    <div class="row controls">
-                        <div class="col-sm-7 form-group">
-                            <input required type="text" class="form-control event-name valid-before-submit" placeholder="Event" autofocus data-validation="required" >
-                        </div>
-                        <div class="col-sm-5">
-                            <input required type="date" class="form-control event-date valid-before-submit" placeholder="when..." name="when" id="when" data-validation="required,date">
-                        </div>
-                    </div>
+    <section data-panel="first" class="container invite">
+        <div class="row text-center">
+            <h4>Event</h4>
+        </div>
+        <div class="row  equidistant">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <input required type="text" class="form-control event-name valid-before-submit" placeholder="Event" autofocus data-validation="required" >
             </div>
         </div>
 
-
-    </section>
-    <section data-panel="second">
-        <div class="row medium-margin-top">
-            <div class="col-md-8 col-md-offset-2 equidistant">
-                    <div class="row"></div>
-                    <h4>Where</h4>
-                    <div class="row controls">
-                        <div class="col-sm-9 form-group">
-                            <input type="text" class="form-control" placeholder="Address..."  >
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" placeholder="Apt"  >
-                        </div>
-                    </div>
-                    <div class="row controls">
-                        <div class="col-sm-5 form-group">
-                            <input type="text" class="form-control" placeholder="City..."  >
-                        </div>
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-3">
-                            <select class="form-control">
-                                <option value=""></option>
-                              <option value="volvo">Volvo</option>
-                              <option value="saab">Saab</option>
-                              <option value="mercedes">Mercedes</option>
-                              <option value="audi">Audi</option>
-                            </select>
-
-                        </div>
-                        <div class="col-sm-3">
-                            <input required type="text" class="form-control" placeholder="Zip"  >
-                        </div>
-                    </div>
+        <div class="row equidistant">
+            <div class="col-xs-7  col-md-4 col-md-offset-2">
+                <input required type="text" class="form-control event-date valid-before-submit" placeholder="Date" data-validation="required" >
+            </div>
+            <div class="col-xs-5  col-md-2">
+                <input required type="text" class="form-control event-name valid-before-submit" placeholder="Start" autofocus data-validation="required" >
+            </div>
+            <div class="desktop equidistant col-md-2">
+                <input required type="text" class="form-control event-name valid-before-submit" placeholder="End" autofocus data-validation="required" >
+            </div>
+        </div>
+        <div class="row equidistant">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+              <textarea class="form-control" rows="3"></textarea>
             </div>
         </div>
     </section>
 
-    <section data-panel="third">
-      <div class="row small-margin-top equidistant">
-            <div class="row col-md-8 col-md-offset-2">
-                <h4>Who is invited?</h4>
-                    <div class="row controls">
-                        <div class="col-sm-5 form-group">
-                            <input type="text" class="new-contact-name form-control" placeholder="Name">
-                        </div>
-                        <div class="col-sm-5 form-group">
-                            <input type="text" class="new-contact-phone form-control"
-                                <%  if( features.indexOf('voice') != -1 )  { %>
-                                    data-validation='required,email|phone' placeholder='Phone Number or Email Address'
-                                <% } else { %>
-                                    data-validation='required,email' placeholder='Email Address'
-                                <% } %>
-                                name="newPhone" id="newPhone">
-                        </div>
-                        <div class="col-sm-2 form-group">
-                            <button type="button" class="btn btn-info new-contact form-control">+</button>
-                        </div>
-                    </div>
+    <section data-panel="second" class="container invite">
+        <div class="row text-center">
+            <h4>Where</h4>
+        </div>
+
+        <div class="row equidistant">
+            <div class="col-xs-8 col-md-6 col-md-offset-2">
+                <input type="text" class="form-control" placeholder="Address"  >
+            </div>
+            <div class="col-xs-4 col-md-2">
+                <input type="text" class="form-control" placeholder="Apt"  >
+            </div>
+        </div>
+        <div class="row equidistant">
+            <div class="col-xs-12 col-md-4 col-md-offset-2">
+                <input type="text" class="form-control" placeholder="City"  >
             </div>
 
-            <!--Attendees-->
-            <div class="row contact-table col-md-8 col-md-offset-2"></div>
+            <div class="col-xs-8 col-md-2">
+                <select class="form-control" placeholder="State">
+                    <option value=""></option>
+                  <option value="volvo">Volvo</option>
+                  <option value="saab">Saab</option>
+                  <option value="mercedes">Mercedes</option>
+                  <option value="audi">Audi</option>
+                </select>
+            </div>
+            <div class="col-xs-4 col-md-2">
+                <input type="text" class="form-control" placeholder="Zip"  >
+            </div>
         </div>
+
+    </section>
+
+    <section data-panel="third" class="container invite">
+
+        <div class="row text-center">
+            <h4>Who is invited?</h4>
+        </div>
+
+        <div class="row equidistant">
+            <div class="col-md-4 col-md-offset-2">
+                <input type="text" class="new-contact-name form-control" placeholder="Name">
+            </div>
+
+            <div class="col-md-3">
+                <input type="text" class="new-contact-phone form-control"
+                    <%  if( features.indexOf('voice') != -1 )  { %>
+                        data-validation='required,email|phone' placeholder='Phone Number or Email Address'
+                    <% } else { %>
+                        data-validation='required,email' placeholder='Email Address'
+                    <% } %>
+                    name="newPhone" id="newPhone">
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-info new-contact form-control">+</button>
+            </div>
+        </div>
+        <div class="contact-table equidistant">
+        </div>
+      <!--<div class="row small-margin-top equidistant">-->
+            <!--<div class="row col-md-8 col-md-offset-2">-->
+                <!--<h4>Who is invited?</h4>-->
+                    <!--<div class="row controls">-->
+                        <!--<div class="col-sm-5 form-group">-->
+                            <!--<input type="text" class="new-contact-name form-control" placeholder="Name">-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-5 form-group">-->
+                            <!--<input type="text" class="new-contact-phone form-control"-->
+                                <!--<%  if( features.indexOf('voice') != -1 )  { %>-->
+                                    <!--data-validation='required,email|phone' placeholder='Phone Number or Email Address'-->
+                                <!--<% } else { %>-->
+                                    <!--data-validation='required,email' placeholder='Email Address'-->
+                                <!--<% } %>-->
+                                <!--name="newPhone" id="newPhone">-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-2 form-group">-->
+                            <!--<button type="button" class="btn btn-info new-contact form-control">+</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+            <!--</div>-->
+
+            <!--<!--Attendees-->
+            <!--<div class="row contact-table col-md-8 col-md-offset-2"></div>-->
+        <!--</div>-->
     </section>
 
     <section data-panel="fourth">
@@ -115,13 +147,13 @@
 
 <ul class="menu">
     <li>
-        <a href="" data-panel="first" class="active"><i class="fa fa-circle-line fa-1x"></i></a>
+        <a href="" data-panel="first" ><i class="fa fa-circle-line fa-1x"></i></a>
     </li>
     <li>
         <a href="" data-panel="second"><i class="fa fa-circle-line fa-1x"></i></a>
     </li>
     <li>
-        <a href="" data-panel="third"><i class="fa fa-circle-line fa-1x"></i></a>
+        <a href="" data-panel="third" class="active"><i class="fa fa-circle-line fa-1x"></i></a>
     </li>
     <li>
         <a href="" data-panel="fourth"><i class="fa fa-circle-line fa-1x"></i></a>

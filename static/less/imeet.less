@@ -10,10 +10,20 @@ body {
 
 #body-container,
 #view-container{
-  position: absolute;
-  height: 100%;
+
   width: 100%;
   overflow-x: hidden;
+
+  .invite{
+    input,textarea,select,button{
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+  section{
+    margin-top: 10%;
+  }
 }
 
 p {
@@ -624,8 +634,8 @@ form .row:first-child .floating-label-form-group {
 
 @media(max-width:768px) {
     .equidistant{
-      margin-left: 5%;
-      margin-right: 5%;
+      margin-left: 1%;
+      margin-right: 1%;
     }
 
     .small-margin-top{
@@ -726,7 +736,8 @@ form .row:first-child .floating-label-form-group {
 
 
 #view-container{
-  overflow: auto;
+  overflow: hidden;
+  height: 100%;
 
   .menu{
     text-align: right;
@@ -744,7 +755,7 @@ form .row:first-child .floating-label-form-group {
   }
 
   section{
-    padding:10%;
+    margin-top: 80px;
     position: relative;
     /*overflow: auto;*/
     width: 100%;

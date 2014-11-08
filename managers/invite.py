@@ -6,7 +6,7 @@ import uuid
 from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
 
-from models.models import Invite,Contact, ContactInvite
+from models.models import Invite, Contact, ContactInvite, Location
 from boilerplate.models import User
 
 
@@ -31,8 +31,16 @@ class InviteManager(object):
             'EmailTemplate':{
                 'Url': self.host_url + "/template/default_invite_template.html"
             },
-            'when': u'2014-10-06',
+            'when': '2014-10-06T04:01AM',
+            'where': {
+                'address':  'some street',
+                'suite':    '18',
+                'city':     'Honolulu',
+                'state':    'HI',
+                'zip':      '12313'
+            },
             'title': 'Candle',
+
             'user_id': u'5302669702856704' #Not mandatory, could be anonymous
         }
         """
@@ -40,7 +48,19 @@ class InviteManager(object):
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
         invite_dict['inviteId'] = invite.unique_id
         invite.title = invite_dict['title']
-        invite.when = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%d")
+        invite.when = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%dT%H:%M%p")
+
+        where_dict = invite_dict.get('where', None)
+        if where_dict is not None:
+            where = Location()
+            where.unique_id = str(uuid.uuid4()).replace('-', '')
+            where.address = where_dict['address']
+            where.suite = where_dict['suite']
+            where.city = where_dict['city']
+            where.state = where_dict['state']
+            where.zip = where_dict['zip']
+            where.put()
+            invite.where = where.key
 
         if self.user:
             invite.user = self.user.key
