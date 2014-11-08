@@ -101,7 +101,7 @@ module.exports = function (grunt) {
 			all: {
 				files: {
 					'../static/css/imeet.min.css': [
-                        '../static/less/external/bootstrapp.css',
+                        '../static/less/external/*.css',
                         'tmp/css/*.css'
                     ]
 				}

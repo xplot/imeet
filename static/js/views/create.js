@@ -35,10 +35,35 @@ CreateView = Backbone.View.extend({
         this.$new_phone = this.$el.find('.new-contact-phone');
         //this.$new_email = this.$el.find('.new-contact-email');
         this.$event_name = this.$el.find('.event-name');
-        this.$event_date = this.$el.find('.event-date');
+        this.$event_start_date = this.$el.find('.event-start-date');
+        this.$event_start_time = this.$el.find('.event-start-time');
+        this.$event_end_date = this.$el.find('.event-end-date');
+        this.$event_end_time = this.$el.find('.event-end-time');
+
         this.$btSend = this.$el.find('.send');
         this.i = 0;
 
+        //DatePicker
+        this.$event_start_date.datepicker({});
+        this.$event_start_time.timepicker({
+                minuteStep: 5,
+                template: false,
+                appendWidgetTo: 'body',
+                showSeconds: false,
+                showMeridian: true,
+                defaultTime: false
+        });
+        this.$event_end_date.datepicker({});
+        this.$event_end_time.timepicker({
+                minuteStep: 1,
+                template: false,
+                appendWidgetTo: 'body',
+                showSeconds: false,
+                showMeridian: true,
+                defaultTime: false
+        });
+
+        //Snap Panel
         var $last_item = $("a .active");
         this.$el.panelSnap({
             menuSelector: 'a',

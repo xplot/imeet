@@ -9,14 +9,20 @@
         </div>
 
         <div class="row equidistant">
-            <div class="col-xs-7  col-md-4 col-md-offset-2">
-                <input required type="text" class="form-control event-date valid-before-submit" placeholder="Date" data-validation="required" >
+            <div class="col-xs-6  col-md-3 col-md-offset-2">
+                <div class="date-group">
+                    <input required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required" >
+                    <input required type="int" class="time event-start-time valid-before-submit" placeholder="00:00 AM" data-validation="required" >
+                </div>
             </div>
-            <div class="col-xs-5  col-md-2">
-                <input required type="text" class="form-control event-start valid-before-submit" placeholder="Start" autofocus data-validation="required" >
+            <div class="desktop col-md-2 text-center" style="padding-top: 10px">
+                To
             </div>
-            <div class="desktop equidistant col-md-2">
-                <input required type="text" class="form-control event-end valid-before-submit" placeholder="End" autofocus data-validation="required" >
+            <div class="col-xs-6 col-md-3">
+                <div class="date-group">
+                    <input required type="text" class="date event-end-date valid-before-submit" placeholder="01/01/2000" data-validation="required" >
+                    <input required type="text" class="time event-end-time valid-before-submit" placeholder="00:00 AM" data-validation="required" >
+                </div>
             </div>
         </div>
         <div class="row equidistant">

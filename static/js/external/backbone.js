@@ -1558,7 +1558,7 @@
     var child;
 
     // The constructor function for the new subclass is either defined by you
-    // (the "constructor" property in your `extend` definition), or defaulted
+    // (the "constructor" property in your `exte nd` definition), or defaulted
     // by us to simply call the parent's constructor.
     if (protoProps && _.has(protoProps, 'constructor')) {
       child = protoProps.constructor;
