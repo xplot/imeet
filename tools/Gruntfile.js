@@ -71,7 +71,8 @@ module.exports = function (grunt) {
 	//
 		uglify: {
 			options: {
-                beautify: true
+                compress:true,
+                beautify:false
 			},
             external: {
 				src: [

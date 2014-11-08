@@ -33,14 +33,15 @@ ModalView = Backbone.View.extend({
         });
 
         //Finally we show it
-        this.$el.modal('show');
+        console.log(this.$el);
+        this.$el.show();
         //this.$el.on('hidden.bs.modal', this.onChildClose);
         return this;
     },
 
     onChildClose:function(data){
         if(this.$el != null)
-            this.$el.modal('hide');
+            this.$el.hide();
         Backbone.history.navigate('',true);
     }
 
