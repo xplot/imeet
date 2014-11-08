@@ -1,5 +1,4 @@
-
-    <section data-panel="first" class="container invite">
+    <section data-panel="first" class="container invite top-separator">
         <div class="row text-center">
             <h4>Event</h4>
         </div>
@@ -14,10 +13,10 @@
                 <input required type="text" class="form-control event-date valid-before-submit" placeholder="Date" data-validation="required" >
             </div>
             <div class="col-xs-5  col-md-2">
-                <input required type="text" class="form-control event-name valid-before-submit" placeholder="Start" autofocus data-validation="required" >
+                <input required type="text" class="form-control event-start valid-before-submit" placeholder="Start" autofocus data-validation="required" >
             </div>
             <div class="desktop equidistant col-md-2">
-                <input required type="text" class="form-control event-name valid-before-submit" placeholder="End" autofocus data-validation="required" >
+                <input required type="text" class="form-control event-end valid-before-submit" placeholder="End" autofocus data-validation="required" >
             </div>
         </div>
         <div class="row equidistant">
@@ -27,7 +26,7 @@
         </div>
     </section>
 
-    <section data-panel="second" class="container invite">
+    <section data-panel="second" class="container invite top-separator">
         <div class="row text-center">
             <h4>Where</h4>
         </div>
@@ -61,7 +60,7 @@
 
     </section>
 
-    <section data-panel="third" class="container invite">
+    <section data-panel="third" class="container invite top-separator">
 
         <div class="row text-center">
             <h4>Who is invited?</h4>
@@ -87,42 +86,20 @@
         </div>
         <div class="contact-table equidistant">
         </div>
-      <!--<div class="row small-margin-top equidistant">-->
-            <!--<div class="row col-md-8 col-md-offset-2">-->
-                <!--<h4>Who is invited?</h4>-->
-                    <!--<div class="row controls">-->
-                        <!--<div class="col-sm-5 form-group">-->
-                            <!--<input type="text" class="new-contact-name form-control" placeholder="Name">-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-5 form-group">-->
-                            <!--<input type="text" class="new-contact-phone form-control"-->
-                                <!--<%  if( features.indexOf('voice') != -1 )  { %>-->
-                                    <!--data-validation='required,email|phone' placeholder='Phone Number or Email Address'-->
-                                <!--<% } else { %>-->
-                                    <!--data-validation='required,email' placeholder='Email Address'-->
-                                <!--<% } %>-->
-                                <!--name="newPhone" id="newPhone">-->
-                        <!--</div>-->
-                        <!--<div class="col-sm-2 form-group">-->
-                            <!--<button type="button" class="btn btn-info new-contact form-control">+</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-            <!--</div>-->
-
-            <!--<!--Attendees-->
-            <!--<div class="row contact-table col-md-8 col-md-offset-2"></div>-->
-        <!--</div>-->
     </section>
 
-    <section data-panel="fourth">
-    <div class="row small-margin-top equidistant">
-        <div class="row col-md-8 col-md-offset-2">
-            Here goes the summary
-            <div style="width: 80%;height: 200px;border: solid blue 1px"></div>
-            <br/><br/>
-            <button type="button" class="btn form-control btn-success send" disabled>Create Invite</button>
+    <section data-panel="fourth" class="top-separator">
+        <div class="row equidistant">
+            <div class="col-md-8 col-md-offset-2">
+                Here goes the summary
+                <br/><br/>
+            </div>
         </div>
-    </div>
+        <div class="row equidistant">
+            <div class="col-md-8 col-md-offset-2">
+                <button type="button" class="btn form-control btn-success send" disabled>Create Invite</button>
+            </div>
+        </div>
     </section>
 
 <!-- Footer -->
@@ -147,13 +124,13 @@
 
 <ul class="menu">
     <li>
-        <a href="" data-panel="first" ><i class="fa fa-circle-line fa-1x"></i></a>
+        <a href="" data-panel="first" class="active"><i class="fa fa-circle-line fa-1x"></i></a>
     </li>
     <li>
         <a href="" data-panel="second"><i class="fa fa-circle-line fa-1x"></i></a>
     </li>
     <li>
-        <a href="" data-panel="third" class="active"><i class="fa fa-circle-line fa-1x"></i></a>
+        <a href="" data-panel="third" ><i class="fa fa-circle-line fa-1x"></i></a>
     </li>
     <li>
         <a href="" data-panel="fourth"><i class="fa fa-circle-line fa-1x"></i></a>

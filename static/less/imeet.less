@@ -8,9 +8,13 @@ body {
     font-weight: 400;
 }
 
+#body-container{
+//This class will be different from view-container until we put all views under the same parent
+  height: 100%;
+}
+
 #body-container,
 #view-container{
-
   width: 100%;
   overflow-x: hidden;
 
@@ -21,7 +25,7 @@ body {
     }
   }
 
-  section{
+  .top-separator{
     margin-top: 10%;
   }
 }
@@ -755,7 +759,6 @@ form .row:first-child .floating-label-form-group {
   }
 
   section{
-    margin-top: 80px;
     position: relative;
     /*overflow: auto;*/
     width: 100%;
