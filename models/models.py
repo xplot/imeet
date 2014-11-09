@@ -69,9 +69,11 @@ class Location(BaseModel):
 
 
 class Invite(BaseModel):
-    unique_id = ndb.StringProperty()
-    when = ndb.DateTimeProperty(auto_now_add=True)
-    title = ndb.StringProperty()
+    unique_id = ndb.StringProperty(required=True)
+    start = ndb.DateTimeProperty(required=True)
+    end = ndb.DateTimeProperty()
+    title = ndb.StringProperty(required=True)
+    description = ndb.StringProperty(required=True)
     user = ndb.KeyProperty(kind=User)
     address = ndb.KeyProperty(kind=Location)
 

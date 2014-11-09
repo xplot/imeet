@@ -48,7 +48,7 @@ class InviteManager(object):
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
         invite_dict['inviteId'] = invite.unique_id
         invite.title = invite_dict['title']
-        invite.when = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%dT%H:%M%p")
+        invite.start = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%dT%H:%M%p")
 
         where_dict = invite_dict.get('where', None)
         if where_dict is not None:
@@ -100,7 +100,7 @@ class InviteManager(object):
             doc_id=invite.unique_id,
             fields=[
                 search.TextField(name='title', value=invite.title),
-                search.DateField(name='when', value=invite.when),
+                search.DateField(name='start', value=invite.when),
             ],
             language='en'
         )
@@ -192,7 +192,8 @@ class InviteManager(object):
             'unique_id':invite.unique_id,
 
             'title':invite.title,
-            'when': invite.when.strftime("%Y-%m-%d %H:%M"),
+            'start': invite.start.strftime("%Y-%m-%d %H:%M"),
+            'end': invite.end.strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',
             'contacts':[{
                 'name':x.name,
                 'phone': x.phone,
@@ -202,3 +203,4 @@ class InviteManager(object):
                 'email_response': contacts_invites[x.unique_id].email_response,
             } for x in contacts]
         }
+
