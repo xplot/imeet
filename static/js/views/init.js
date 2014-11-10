@@ -52,6 +52,9 @@ var validator = {
                 var date = new Date(fieldValue);
                 passed = date instanceof Date && !isNaN(date.valueOf());
                 break;
+            case "time":
+                passed = true;
+                break;
         }
 
         return passed;

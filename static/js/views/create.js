@@ -1,4 +1,5 @@
 CreateView = Backbone.View.extend({
+
     el: '#header-container',
     new_contact_string: "\
             <div id='contact{2}'  class='row contact-row equidistant' data-contact='{0};{1};{2}'>\
@@ -21,6 +22,8 @@ CreateView = Backbone.View.extend({
     template: JST['invite.html'],
 
     render: function(options) {
+        this.bindings = inviteBindings;
+
         $('#body-container').hide();
         $('#view-container').show();
         $('#modal_container').modal('hide');
@@ -90,11 +93,18 @@ CreateView = Backbone.View.extend({
           }
         });
 
-        if(options.title != null)
-            this.$event_name.val(options.title);
-
         if(options.id != null)
             this.createFromInvite(options.id);
+        else
+            this.model = new InviteModel();
+
+        if(options.title != null)
+            this.model.set('title', options.title);
+
+        var reportView = new ReportView({model:this.model, el: '#reportXXX'});
+        reportView.render();
+
+        this.stickit();
         return this;
     },
     createFromInvite: function(source_invite_id){
