@@ -203,4 +203,3 @@ class InviteManager(object):
                 'email_response': contacts_invites[x.unique_id].email_response,
             } for x in contacts]
         }
-

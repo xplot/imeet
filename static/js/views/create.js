@@ -96,7 +96,7 @@ CreateView = Backbone.View.extend({
         if(options.id != null)
             this.createFromInvite(options.id);
         else
-            this.model = new InviteModel();
+            this.model = testModel;
 
         if(options.title != null)
             this.model.set('title', options.title);
