@@ -1,39 +1,3 @@
-InviteModel = Backbone.Model.extend({
-  defaults: {
-        'title': '',
-        'start-date': '',
-        'start-time': '',
-        'end-date': '',
-        'end-time': '',
-        'description': '',
-        'address': {
-            'street': '',
-            'suite':'',
-            'city': '',
-            'state': '',
-            'zip': ''
-        },
-        'contacts': [],
-    }
-});
-
-testModel = new InviteModel({
-    'title': 'WHATEVER',
-    'start-date': '03/02/2014',
-    'start-time': '2:05 AM',
-    'end-date': '03/02/2014',
-    'end-time': '2:05 AM',
-    'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    'address': {
-        'street': '29 Navarre Ave',
-        'suite':'7',
-        'city': 'Miami',
-        'state': 'FL',
-        'zip': '33125'
-    },
-    'contacts': [],
-});
-
 var inviteBindings = {
     '.event-name': 'title',
 
@@ -100,21 +64,3 @@ var inviteBindings = {
         }
     }
 };
-
-
-ReportView = Backbone.View.extend({
-    bindings: inviteBindings,
-
-    initialize: function(options){
-        this.options = options || {};
-        this.model = this.options.model;
-    },
-
-    template: JST['invite_report.html'],
-
-    render: function() {
-        this.$el.html(this.template());
-        this.stickit();
-        return this;
-    }
-});
