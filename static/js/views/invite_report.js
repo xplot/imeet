@@ -23,7 +23,7 @@ testModel = new InviteModel({
     'start-time': '2:05 AM',
     'end-date': '03/02/2014',
     'end-time': '2:05 AM',
-    'description': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+    'description': 'Lorem Ipsum',
     'address': {
         'street': '29 Navarre Ave',
         'suite':'7',
@@ -104,7 +104,10 @@ var inviteBindings = {
 
 ReportView = Backbone.View.extend({
     bindings: inviteBindings,
-
+    new_contact_string: "\
+            <li id='contact{2}' class='contact-row' data-contact='{0};{1};{2}'>\
+                {0} - {1} \
+            </li>",
     initialize: function(options){
         this.options = options || {};
         this.model = this.options.model;
@@ -114,7 +117,16 @@ ReportView = Backbone.View.extend({
 
     render: function() {
         this.$el.html(this.template());
+        this.$report_table = this.$el.find(".contact-read-table");
         this.stickit();
         return this;
+    },
+
+    addContact: function(contact){
+        this.$report_table.append(this.new_contact_string.format(contact.name, contact.address, contact.index));
+    },
+    removeContact: function(dataId){
+        this.$report_table.find(dataId).remove();
+
     }
 });

@@ -1,3 +1,10 @@
+CreateContactView = Backbone.View.extend({
+    //Will have to do it
+});
+ReadContactView = Backbone.View.extend({
+    //Will have to do it, ugly and quick for now
+});
+
 CreateView = Backbone.View.extend({
 
     el: '#header-container',
@@ -9,7 +16,7 @@ CreateView = Backbone.View.extend({
                     <button type='button' class='btn btn-danger remove-contact form-control' data-row='{2}'>-</button>              \
                 </div> \
             </div>",
-
+    reportView: null,
     initialize: function(options){
         this.options = options || {};
     },
@@ -31,12 +38,13 @@ CreateView = Backbone.View.extend({
         this.$el.html(this.template());
 
         this.$table = this.$el.find('.contact-table');
+        this.$table = this.$el.find('.contact-table');
         this.$btSend = this.$el.find('.send');
         this.$contactForm = this.$el.find('#newContactForm');
         this.$inviteForm = this.$el.find('#newInviteForm');
         this.$new_name = this.$el.find('.new-contact-name');
         this.$new_phone = this.$el.find('.new-contact-phone');
-        //this.$new_email = this.$el.find('.new-contact-email');
+
         this.$event_name = this.$el.find('.event-name');
         this.$event_start_date = this.$el.find('.event-start-date');
         this.$event_start_time = this.$el.find('.event-start-time');
@@ -101,8 +109,8 @@ CreateView = Backbone.View.extend({
         if(options.title != null)
             this.model.set('title', options.title);
 
-        var reportView = new ReportView({model:this.model, el: '#reportXXX'});
-        reportView.render();
+        this.reportView = new ReportView({model:this.model, el: '#reportXXX'});
+        this.reportView.render();
 
         this.stickit();
         return this;
@@ -141,11 +149,17 @@ CreateView = Backbone.View.extend({
             return;
 
         var new_contact = this.new_contact_string.format(this.$new_name.val(),this.$new_phone.val(),this.i);
-        this.$new_name.val('');
-        this.$new_phone.val('');
+
         this.$table.append(new_contact);
+        this.reportView.addContact({
+            name:this.$new_name.val(),
+            address: this.$new_phone.val(),
+            index:this.i
+        });
 
         this.i++;
+        this.$new_name.val('');
+        this.$new_phone.val('');
 
         //enabling send button
         this.$btSend.removeAttr("disabled");
@@ -155,6 +169,8 @@ CreateView = Backbone.View.extend({
     removeContact: function (e) {
         var dataId = "#contact"+ $(e.currentTarget).data('row');
         this.$table.find(dataId).remove();
+
+        this.reportView.removeContact(dataId);
 
         //disabling send button
         var $rows = this.$el.find('.contact-row');
