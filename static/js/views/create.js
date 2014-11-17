@@ -21,7 +21,7 @@ CreateView = Backbone.View.extend({
         this.options = options || {};
     },
     events: {
-       'click .new-contact' : 'newContact',
+       'click .new-contact' : 'newContact_button',
        'click .remove-contact': 'removeContact',
        'click .send': 'submitNew'
     },
@@ -74,43 +74,17 @@ CreateView = Backbone.View.extend({
                 defaultTime: false
         });
 
-        //Snap Panel
-        var $last_item = $("a .active");
-//        this.$el.panelSnap({
-//            menuSelector: 'a',
-////            panelSelector: 'section',
-////            namespace: '.panelSnap',
-//            onSnapStart: function($target){
-//
-//            },
-//            onSnapFinish: function($target){
-//                var menuItem = $target.data('panel');
-//                $last_item.removeClass('active');
-//                $last_item = $("a[data-panel='"+ menuItem + "']");
-//                $last_item.addClass('active');
-//            },
-//            onActivate: function(){},
-//            directionThreshold: 50,
-//            slideSpeed: 200,
-//            $menu: this.$el.find('.menu'),
-//          keyboardNavigation: {
-//            enabled: true,
-//            nextPanelKey: 40,
-//            previousPanelKey: 38,
-//            wrapAround: false
-//          }
-//        });
-
         if(options.id != null)
             this.createFromInvite(options.id);
         else
-            this.model = testModel;
+            this.model = new InviteModel();
 
         if(options.title != null)
             this.model.set('title', options.title);
 
+        //No Report VIew for now
         this.reportView = new ReportView({model:this.model, el: '#reportXXX'});
-        this.reportView.render();
+        //this.reportView.render();
 
         this.stickit();
         return this;
@@ -122,16 +96,11 @@ CreateView = Backbone.View.extend({
             type: "GET",
             cache: false,
             success: function(data) {
+                this.model.set('title', data.title);
+                this.model.set('where', data.where);
+
                 data.contacts.forEach(function(contact){
-                    that.$table.prepend(
-                        that.new_contact_string.format(
-                            contact.name || '',
-                            contact.phone || '',
-                            contact.email || '',
-                            this.i
-                        )
-                    );
-                    this.i++;
+                    this.new_contact(contact);
                 });
 
                 that.$btSend.removeAttr('disabled');
@@ -144,29 +113,41 @@ CreateView = Backbone.View.extend({
             }
         });
     },
-    newContact: function(){
+    newContact_button: function(){
         if(!validator.validateItem(this.$new_phone))
             return;
 
-        var new_contact = this.new_contact_string.format(this.$new_name.val(),this.$new_phone.val(),this.i);
+        var attendeeAddresses = this.parsePhoneAndEmail(this.$new_phone.val());
 
-        this.$table.append(new_contact);
-        this.reportView.addContact({
-            name:this.$new_name.val(),
-            address: this.$new_phone.val(),
-            index:this.i
+        this.newContact({
+           name:this.$new_name.val(),
+           email: attendeeAddresses.email,
+            phone: attendeeAddresses.phone
         });
 
-        this.i++;
         this.$new_name.val('');
         this.$new_phone.val('');
 
         //enabling send button
         this.$btSend.removeAttr("disabled");
-
         return false;
     },
+    newContact: function(contact){
+        if (contact == null)
+            return;
+        contact.index = this.i;
+        var new_contact = this.new_contact_string.format(contact.name, contact.email, contact.phone, contact.index);
+
+        this.$table.append(new_contact);
+        //this.reportView.addContact(contact);
+        this.model.attributes.contacts.push(contact);
+        this.i++;
+    },
+
+    //Still Not implemented well
     removeContact: function (e) {
+        throw new Exception('Error');
+
         var dataId = "#contact"+ $(e.currentTarget).data('row');
         this.$table.find(dataId).remove();
 
@@ -179,36 +160,17 @@ CreateView = Backbone.View.extend({
     },
     submitNew:function(e){
         var that = this;
-
+        console.log(this.model);
         if(!validator.validateItems('.valid-before-submit'))
             return;
-
-        var $rows = this.$el.find('.contact-row');
-        var event = {
-            'title': this.$event_name.val(),
-            'when':this.$event_date.val(),
-            'user_id': (currentUser!=null)?currentUser.id: null,
-            'contacts': []
-        };
-
-        $rows.each(function() {
-            var dataContact = $(this).data("contact");
-            var contactArray = dataContact.trim().split(';');
-
-            var attendeeAddresses = that.parsePhoneAndEmail(contactArray[1]);
-
-            event.contacts.push({
-                'name': contactArray[0],
-                'email': attendeeAddresses.email,
-                'phone': attendeeAddresses.phone
-            });
-        });
+        this.model.attributes.start = this.model.get('start-date') + " " +this.model.get('start-time');
+        this.model.attributes.end = this.model.get('end-date') + " " +this.model.get('end-time');
 
         $.ajax({
             url: "/api/invite",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify(event),
+            data: JSON.stringify(this.model),
             cache: false,
             success: function() {
                 alert_notification([{

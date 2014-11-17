@@ -11,8 +11,8 @@
         <div class="row equidistant">
             <div class="col-xs-12  col-md-3 col-md-offset-2">
                 <div class="date-group">
-                    <input required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required" >
-                    <input required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required" >
+                    <input required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date" >
+                    <input required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required,time" >
                 </div>
             </div>
             <div class="col-xs-12 col-md-2 text-center label-text">
@@ -20,8 +20,8 @@
             </div>
             <div class="col-xs-12 col-md-3">
                 <div class="date-group">
-                    <input required type="text" class="date event-end-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date" >
-                    <input required type="text" class="time event-end-time valid-before-submit" placeholder="00:00 AM" data-validation="required,time" >
+                    <input required type="text" class="date event-end-date valid-before-submit" placeholder="01/01/2000" data-validation="date" >
+                    <input required type="text" class="time event-end-time valid-before-submit" placeholder="00:00 AM" data-validation="time" >
                 </div>
             </div>
         </div>
@@ -32,37 +32,19 @@
         </div>
     </section>
 
-    <section data-panel="second" class="container invite top-separator">
+    <section data-panel="second" class="container">
         <div class="row text-center">
             <h4>Where</h4>
         </div>
 
         <div class="row equidistant">
-            <div class="col-xs-8 col-md-6 col-md-offset-2">
-                <input type="text" class="form-control event-address-street" placeholder="Address"  >
-            </div>
-            <div class="col-xs-4 col-md-2">
-                <input type="text" class="form-control event-address-suite" placeholder="Apt"  >
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <input type="text" class="form-control event-address" placeholder="Address"  >
             </div>
         </div>
-        <div class="row equidistant">
-            <div class="col-xs-12 col-md-4 col-md-offset-2">
-                <input type="text" class="form-control event-address-city" placeholder="City"  >
-            </div>
-
-            <div class="col-xs-8 col-md-2">
-                <select class="form-control event-address-state" placeholder="State">
-
-                </select>
-            </div>
-            <div class="col-xs-4 col-md-2">
-                <input type="text" class="form-control event-address-zip" placeholder="Zip"  >
-            </div>
-        </div>
-
     </section>
 
-    <section data-panel="third" class="container invite top-separator">
+    <section data-panel="third" class="container invite">
 
         <div class="row text-center">
             <h4>Who is invited?</h4>

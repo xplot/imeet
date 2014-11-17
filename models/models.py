@@ -75,7 +75,7 @@ class Invite(BaseModel):
     title = ndb.StringProperty(required=True)
     description = ndb.StringProperty(required=True)
     user = ndb.KeyProperty(kind=User)
-    address = ndb.KeyProperty(kind=Location)
+    where = ndb.StringProperty(required=True)
 
 
 class InviteIndex(ndb.Model):

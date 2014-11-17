@@ -31,13 +31,9 @@ class InviteManager(object):
             'EmailTemplate':{
                 'Url': self.host_url + "/template/default_invite_template.html"
             },
-            'when': '2014-10-06T04:01AM',
-            'where': {
-                'address':  'some street',
-                'suite':    '18',
-                'city':     'Honolulu',
-                'state':    'HI',
-                'zip':      '12313'
+            'start': '2014-10-06T04:01AM',
+            'end': '2014-10-06T04:01AM',
+            'where': '29 Navarre Ave apt 7, Coral Gables, 33134'
             },
             'title': 'Candle',
 
@@ -48,19 +44,9 @@ class InviteManager(object):
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
         invite_dict['inviteId'] = invite.unique_id
         invite.title = invite_dict['title']
-        invite.start = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%dT%H:%M%p")
-
-        where_dict = invite_dict.get('where', None)
-        if where_dict is not None:
-            where = Location()
-            where.unique_id = str(uuid.uuid4()).replace('-', '')
-            where.address = where_dict['address']
-            where.suite = where_dict['suite']
-            where.city = where_dict['city']
-            where.state = where_dict['state']
-            where.zip = where_dict['zip']
-            where.put()
-            invite.where = where.key
+        invite.start = datetime.datetime.strptime(invite_dict['start'], "%m-%d-%Y %H:%M%p")
+        invite.end = datetime.datetime.strptime(invite_dict['end'], "%m-%d-%Y %H:%M%p")
+        invite.where = invite_dict.get('where', None)
 
         if self.user:
             invite.user = self.user.key
