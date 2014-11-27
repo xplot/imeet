@@ -1,3 +1,13 @@
+var palette = [
+    'red',
+    '#455a64',
+    '#03a9f4',
+    '#0E2A97',
+    '#00ACFF',
+    '#FF246C',
+    '#75B83B',
+];
+
 IndexView = Backbone.View.extend({
     initialize: function (options) {
         this.options = options || {};
@@ -16,11 +26,7 @@ IndexView = Backbone.View.extend({
     },
 
     render: function (data) {
-        $('#view-container').hide();
-        this.$el.show();
-
-        this.$inviteTitle = this.$el.find('.invite-title-input');
-        this.$headerImage = this.$el.find('.header-section');
+        $('#header').css('background-color', palette[Math.floor((Math.random() * palette.length))]);
     },
 
     createNew: function(){
