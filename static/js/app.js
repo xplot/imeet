@@ -100,7 +100,7 @@ function init_app() {
 
         //Invite
         new: function (title,id) {
-            create_invite_view.render({'title':title,'id':id});
+            //create_invite_view.render({'title':title,'id':id});
         },
         new_no_title: function (id) {
             this.new(null, id);
