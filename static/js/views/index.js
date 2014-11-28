@@ -8,6 +8,17 @@ var palette = [
     '#75B83B',
 ];
 
+InlineInviteView = Backbone.View.extend({
+    initialize: function (options) {
+        this.options = options || {};
+    },
+    template: JST['invite_inline_create.html'],
+    render: function (data) {
+
+        return this.template();
+    }
+});
+
 IndexView = Backbone.View.extend({
     initialize: function (options) {
         this.options = options || {};
@@ -26,6 +37,9 @@ IndexView = Backbone.View.extend({
     },
 
     render: function (data) {
+        var inline_view = new InlineInviteView({});
+        this.$el.append(inline_view.render());
+
         $('#header').css('background-color', palette[Math.floor((Math.random() * palette.length))]);
     },
 

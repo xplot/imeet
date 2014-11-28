@@ -37,6 +37,16 @@ __p += '<div class="modal-content">\n        <div class="close-modal" data-actio
 return __p
 };
 
+this["JST"]["invite_inline_create.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div id=\'header\'>\n    <div class=\'title\'>iMeet</div>\n</div>\n\n<div class="invite-inline">\n    <div class=\'row\'>\n        <div class="col-xs-12 event-name-home">\n            <input type="text" class="invite-title-input" placeholder="Event Name...">\n            <button class="imeet-btn" data-action="modal" data-where="new">Create</button>\n        </div>\n    </div>\n    <div class=\'row intro-text\' >\n        <div class="col-xs-12 title">\n            Create your events\n        </div>\n        <div class="col-xs-12" >\n            <i class="fa fa-star fa-1x"></i>&nbsp; Email  Sms  Phone Call &nbsp;<i class="fa fa-star fa-1x"></i>\n        </div>\n    </div>\n</div>\n';
+
+}
+return __p
+};
+
 this["JST"]["invite_report.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;

@@ -15,7 +15,7 @@ function init_app() {
 
     //Views
     index_view = new IndexView({
-        el: "#body-container"
+        el: "#view-container"
     });
 
     //Login
