@@ -1,11 +1,15 @@
 var palette = [
-    'red',
-    '#455a64',
-    '#03a9f4',
-    '#0E2A97',
-    '#00ACFF',
-    '#FF246C',
-    '#75B83B',
+    {bg:'#263238',color:'white'},
+    {bg:'#3E2723',color:'white'},
+    {bg:'#DD2C00',color:'black'},
+    {bg:'#FF6D00',color:'black'},
+    {bg:'#64DD17',color:'black'},
+    {bg:'#33691E',color:'white'},
+    {bg:'#827717',color:'white'},
+    {bg:'#00BFA5',color:'black'},
+    {bg:'#009688',color:'white'},
+    {bg:'#006064',color:'white'},
+    {bg:'#01579B',color:'white'},
 ];
 
 InlineInviteView = Backbone.View.extend({
@@ -40,7 +44,9 @@ IndexView = Backbone.View.extend({
         var inline_view = new InlineInviteView({});
         this.$el.append(inline_view.render());
 
-        $('#header').css('background-color', palette[Math.floor((Math.random() * palette.length))]);
+        var index = Math.floor((Math.random() * palette.length));
+        this.$el.find('.palette_background').css('background-color', palette[index].bg);
+        this.$el.find('.palette_foreground').css('color', palette[index].color);
     },
 
     createNew: function(){
