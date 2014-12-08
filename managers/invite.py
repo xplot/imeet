@@ -31,7 +31,8 @@ class InviteManager(object):
             'EmailTemplate':{
                 'Url': self.host_url + "/template/default_invite_template.html"
             },
-            'when': '2014-10-06T04:01AM',
+            'start': '2014-10-06 04:01AM',
+            'end': '2014-10-06 04:01AM',
             'where': {
                 'address':  'some street',
                 'suite':    '18',
@@ -48,7 +49,11 @@ class InviteManager(object):
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
         invite_dict['inviteId'] = invite.unique_id
         invite.title = invite_dict['title']
-        invite.start = datetime.datetime.strptime(invite_dict['when'], "%Y-%m-%dT%H:%M%p")
+
+        #12/09/2014 12:00 AM
+        invite.start = datetime.datetime.strptime(invite_dict['start'], "%m/%d/%Y %H:%M %p")
+        if invite_dict.get('end', None):
+            invite.end = datetime.datetime.strptime(invite_dict['end'], "%m/%d/%Y %H:%M %p")
 
         where_dict = invite_dict.get('where', None)
         if where_dict is not None:
@@ -100,7 +105,7 @@ class InviteManager(object):
             doc_id=invite.unique_id,
             fields=[
                 search.TextField(name='title', value=invite.title),
-                search.DateField(name='start', value=invite.when),
+                search.DateField(name='start', value=invite.start),
             ],
             language='en'
         )

@@ -9,7 +9,7 @@ CreateView = Backbone.View.extend({
 
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact{2}'  class='row contact-row equidistant' data-contact='{0};{1};{2}'>\
+            <div id='contact_{2}'  class='row contact-row equidistant' data-contact='{0};{1};{2}'>\
                 <div class='col-md-4 col-md-offset-2'> {0}</div>\
                 <div class='col-md-3'> {1}</div>\
                 <div class='col-md-1'> \
@@ -104,10 +104,9 @@ CreateView = Backbone.View.extend({
         if(options.id != null)
             this.createFromInvite(options.id);
         else
-            this.model = testModel;
-
-        if(options.title != null)
-            this.model.set('title', options.title);
+            this.model = new InviteModel({
+                title: options.title
+            });
 
         this.reportView = new ReportView({model:this.model, el: '#reportXXX'});
         this.reportView.render();
@@ -148,14 +147,15 @@ CreateView = Backbone.View.extend({
         if(!validator.validateItem(this.$new_phone))
             return;
 
-        var new_contact = this.new_contact_string.format(this.$new_name.val(),this.$new_phone.val(),this.i);
-
-        this.$table.append(new_contact);
-        this.reportView.addContact({
+        var contact = {
             name:this.$new_name.val(),
             address: this.$new_phone.val(),
             index:this.i
-        });
+        };
+
+        this.$table.append(this.new_contact_string.format(contact.name,contact.address,contact.index));
+        this.reportView.addContact(contact);
+        this.model.attributes.contacts.push(contact);
 
         this.i++;
         this.$new_name.val('');
@@ -167,7 +167,7 @@ CreateView = Backbone.View.extend({
         return false;
     },
     removeContact: function (e) {
-        var dataId = "#contact"+ $(e.currentTarget).data('row');
+        var dataId = "#contact_"+ $(e.currentTarget).data('row');
         this.$table.find(dataId).remove();
 
         this.reportView.removeContact(dataId);
@@ -176,7 +176,21 @@ CreateView = Backbone.View.extend({
         var $rows = this.$el.find('.contact-row');
         if($rows == null || $rows.length == 0)
           this.$btSend.attr("disabled", "disabled");
+
+        this.removeContactByIndex(parseInt(dataId.split('_')[1]));
     },
+
+    removeContactByIndex: function(index){
+        var i = 0;
+        this.model.attributes.contacts.forEach(function(contact){
+            if(contact.index == index)
+                return i;
+            i++;
+        });
+
+        this.model.attributes.contacts.splice(i, 1);
+    },
+
     submitNew:function(e){
         var that = this;
 
@@ -185,24 +199,17 @@ CreateView = Backbone.View.extend({
 
         var $rows = this.$el.find('.contact-row');
         var event = {
-            'title': this.$event_name.val(),
-            'when':this.$event_date.val(),
+            'title': this.model.attributes.title,
+            'description': this.model.description,
+            'start': this.model.attributes.start_date + " " +  this.model.attributes.start_time,
+            'end': isNaN(this.model.attributes.end_date)?
+                    this.model.attributes.end_date + " " + this.model.attributes.end_time
+                    : null,
             'user_id': (currentUser!=null)?currentUser.id: null,
-            'contacts': []
+            'contacts': this.normalizeContacts(this.model.attributes.contacts)
         };
-
-        $rows.each(function() {
-            var dataContact = $(this).data("contact");
-            var contactArray = dataContact.trim().split(';');
-
-            var attendeeAddresses = that.parsePhoneAndEmail(contactArray[1]);
-
-            event.contacts.push({
-                'name': contactArray[0],
-                'email': attendeeAddresses.email,
-                'phone': attendeeAddresses.phone
-            });
-        });
+        console.log(this.model);
+        console.log(event);
 
         $.ajax({
             url: "/api/invite",
@@ -225,6 +232,21 @@ CreateView = Backbone.View.extend({
             }
         });
     },
+    normalizeContacts: function(contacts){
+        var result = [];
+        var that = this;
+        contacts.forEach(function(contact){
+            var addresses = that.parsePhoneAndEmail(contact.address);
+            result.push({
+                    name: contact.name,
+                    email: addresses.email,
+                    phone: addresses.phone
+            });
+        });
+
+        return result;
+    },
+
     parsePhoneAndEmail: function(addressString){
       var trimmedAddressString = addressString.trim();
       var addresses = addressString.split(';');

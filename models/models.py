@@ -73,7 +73,7 @@ class Invite(BaseModel):
     start = ndb.DateTimeProperty(required=True)
     end = ndb.DateTimeProperty()
     title = ndb.StringProperty(required=True)
-    description = ndb.StringProperty(required=True)
+    description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
     address = ndb.KeyProperty(kind=Location)
 

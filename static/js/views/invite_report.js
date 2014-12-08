@@ -1,10 +1,10 @@
 InviteModel = Backbone.Model.extend({
   defaults: {
         'title': '',
-        'start-date': '',
-        'start-time': '',
-        'end-date': '',
-        'end-time': '',
+        'start_date': '',
+        'start_time': '',
+        'end_date': '',
+        'end_time': '',
         'description': '',
         'address': {
             'street': '',
@@ -17,30 +17,14 @@ InviteModel = Backbone.Model.extend({
     }
 });
 
-testModel = new InviteModel({
-    'title': 'WHATEVER',
-    'start-date': '03/02/2014',
-    'start-time': '2:05 AM',
-    'end-date': '03/02/2014',
-    'end-time': '2:05 AM',
-    'description': 'Lorem Ipsum',
-    'address': {
-        'street': '29 Navarre Ave',
-        'suite':'7',
-        'city': 'Miami',
-        'state': 'FL',
-        'zip': '33125'
-    },
-    'contacts': [],
-});
+
 
 var inviteBindings = {
     '.event-name': 'title',
-
-    '.event-start-date': 'start-date',
-    '.event-start-time': 'start-time',
-    '.event-end-date': 'end-date',
-    '.event-end-time': 'end-time',
+    '.event-start-date': 'start_date',
+    '.event-start-time': 'start_time',
+    '.event-end-date': 'end_date',
+    '.event-end-time': 'end_time',
     '.event-description': 'description',
     '.event-address-street': 'address.street',
     '.event-address-suite': 'address.suite',
@@ -69,14 +53,14 @@ var inviteBindings = {
         }
     },
     '.event-start-date-formatted': {
-        observe: ['start-date','start-time'],
+        observe: ['start_date','start_time'],
         onGet: function (values) {
             if(Date.parse(values[0] + ' ' + values[1]))
                 return 'From: ' + values[0] + ' ' + values[1];
         }
     },
     '.event-end-date-formatted': {
-        observe: ['end-date','end-time'],
+        observe: ['end_date','end_time'],
         onGet: function (values) {
             return 'To: ' + values[0] + ' ' +  values[1];
         }

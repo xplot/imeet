@@ -1,10 +1,10 @@
 var inviteBindings = {
     '.event-name': 'title',
 
-    '.event-start-date': 'start-date',
-    '.event-start-time': 'start-time',
-    '.event-end-date': 'end-date',
-    '.event-end-time': 'end-time',
+    '.event-start-date': 'start_date',
+    '.event-start-time': 'start_time',
+    '.event-end-date': 'end_date',
+    '.event-end-time': 'end_time',
     '.event-description': 'description',
     '.event-address-street': 'address.street',
     '.event-address-suite': 'address.suite',
@@ -17,30 +17,21 @@ var inviteBindings = {
                 return [
                     {value: null, label: ""},
                     {value: "FL", label: "Florida"},
-                    {value: "02", label: "February"},
-                    {value: "03", label: "March"},
-                    {value: "04", label: "April"},
-                    {value: "05", label: "May"},
-                    {value: "06", label: "June"},
-                    {value: "07", label: "July"},
-                    {value: "08", label: "August"},
-                    {value: "09", label: "September"},
-                    {value: "10", label: "October"},
-                    {value: "11", label: "November"},
-                    {value: "12", label: "December"},
+                    {value: "NY", label: "New York"},
+                    {value: "CA", label: "California"}
                 ]
             }
         }
     },
     '.event-start-date-formatted': {
-        observe: ['start-date','start-time'],
+        observe: ['start_date','start_time'],
         onGet: function (values) {
             if(Date.parse(values[0] + ' ' + values[1]))
                 return 'From: ' + values[0] + ' ' + values[1];
         }
     },
     '.event-end-date-formatted': {
-        observe: ['end-date','end-time'],
+        observe: ['end_date','end_time'],
         onGet: function (values) {
             return 'To: ' + values[0] + ' ' +  values[1];
         }
