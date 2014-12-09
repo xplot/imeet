@@ -1,18 +1,17 @@
 function alert_notification(alerts){
     var $alertDiv = $('#notification-alerts');
 
-    if(!$alertDiv.length){
-        $alertDiv = $('<div id="notification-alerts" class="jumbotron flyover flyover-bottom"><button class="btn btn-primary alert-close" data-dismiss="alert">X</button></div>');
-        $('body').append($alertDiv);
-    }
-
     alerts.forEach(function(alert){
+        console.log(alert);
         $alertDiv.prepend("\
             <div class='alert alert-" + alert.alertType + "'>" + alert.message + "</div>");
     });
 
-    if(alerts.length > 0)
-        $alertDiv.toggleClass('in');
+    if(alerts.length > 0){
+        $alertDiv.addClass('flyover-in');
+        $alertDiv.css('height',(150 + alerts.length*60) + 'px');
+    }
+
 }
 
 var validator = {

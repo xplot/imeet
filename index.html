@@ -29,17 +29,9 @@
 <body id="page-top" class="index">
 
 
-
-{% if messages|safe %}
-    <div id="notification-alerts" class="jumbotron flyover flyover-bottom">
-           {% for message in messages %}
-                <div class="alert alert-{{ message[1]|safe }}">
-                    {{ message[0]|safe }}
-                </div>
-           {% endfor %}
-        <button class="btn btn-primary alert-close" data-dismiss="alert">X</button>
-    </div>
-{% endif %}
+<div id="notification-alerts" class="jumbotron flyover flyover-bottom flyover-hidden">
+    <button class="btn btn-primary alert-close" data-dismiss="alert">X</button>
+</div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -325,6 +317,17 @@
                     '{{ item }}',
                 {% endfor %}
         ];
+
+        {% if messages|safe %}
+            var notifications = [];
+           {% for message in messages %}
+               notifications.push({
+                   alertType: '{{ message[1]|safe }}',
+                   message: '{{ message[0]|safe }}' });
+           {% endfor %}
+
+            alert_notification(notifications);
+        {% endif %}
 
     </script>
 

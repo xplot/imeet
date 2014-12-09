@@ -10,7 +10,6 @@ UserProfileView = Backbone.View.extend({
     render: function() {
         this.$el.html(this.template());
 
-        this.$editProfileForm = this.$el.find('#editProfileForm');
         this.$name = this.$el.find('#edit-profile-name');
         this.$username = this.$el.find('#edit-profile-username');
         this.$password = this.$el.find('#edit_profile_password');
@@ -42,19 +41,9 @@ UserProfileView = Backbone.View.extend({
     },
 
     save: function(){
-        this.$editProfileForm.validate({
-            rules: {
-                edit_profile_password: {
-                    minlength: 5
-                },
-                edit_profile_password_confirm: {
-                    minlength: 5,
-                    equalTo: "#edit_profile_password"
-                }
-            }
-        });
-        if(!this.$editProfileForm.valid())
+        if(!validator.validateItems('.valid-before-submit'))
             return;
+
         var user = {
           'username':   this.$username.val(),
           'password':   this.$password.val()
