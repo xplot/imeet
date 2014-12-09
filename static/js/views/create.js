@@ -1,3 +1,81 @@
+InviteModel = Backbone.Model.extend({
+  defaults: {
+        'title': '',
+        'start_date': '',
+        'start_time': '',
+        'end_date': '',
+        'end_time': '',
+        'description': '',
+        'address': {
+            'street': '',
+            'suite':'',
+            'city': '',
+            'state': '',
+            'zip': ''
+        },
+        'contacts': [],
+    }
+});
+
+var inviteBindings = {
+    '.event-name': 'title',
+    '.event-start-date': 'start_date',
+    '.event-start-time': 'start_time',
+    '.event-end-date': 'end_date',
+    '.event-end-time': 'end_time',
+    '.event-description': 'description',
+    '.event-address-street': 'address.street',
+    '.event-address-suite': 'address.suite',
+    '.event-address-city': 'address.city',
+    '.event-address-zip': 'address.zip',
+    '.event-address-state': {
+        observe: 'address.state',
+        selectOptions: {
+            collection: function() {
+                return [
+                    {value: null, label: ""},
+                    {value: "FL", label: "Florida"},
+                    {value: "NY", label: "New York"},
+                    {value: "CA", label: "California"},
+                ]
+            }
+        }
+    },
+    '.event-start-date-formatted': {
+        observe: ['start_date','start_time'],
+        onGet: function (values) {
+            //if(Date.parse(values[0] + ' ' + values[1]))
+            return 'From: ' + values[0] + ' ' + values[1];
+        }
+    },
+    '.event-end-date-formatted': {
+        observe: ['end_date','end_time'],
+        onGet: function (values) {
+            return 'To: ' + values[0] + ' ' +  values[1];
+        }
+    },
+    '.event-address-state-city': {
+        observe: ['address.state','address.city'],
+        onGet: function (values) {
+            var state = values[0] || '';
+            var city = values[1] || '';
+            if(state == null && city == null)
+                return '';
+            return city + ' ' + state;
+        }
+    },
+    '.event-address-street-with-number': {
+        observe: ['address.street', 'address.suite'],
+        onGet: function (values) {
+            var street = values[0] || '';
+            var suite = values[1] || '';
+            return street + ' ' + suite;
+        }
+    }
+};
+
+
+
 CreateContactView = Backbone.View.extend({
     //Will have to do it
 });
@@ -9,7 +87,7 @@ CreateView = Backbone.View.extend({
 
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact_{2}'  class='row contact-row equidistant' data-contact='{0};{1};{2}'>\
+            <div id='contact_{2}'  class='contact-row equidistant' data-contact='{0};{1};{2}'>\
                 <div class='col-md-4 col-md-offset-2'> {0}</div>\
                 <div class='col-md-3'> {1}</div>\
                 <div class='col-md-1'> \
@@ -142,8 +220,10 @@ CreateView = Backbone.View.extend({
         });
     },
     newContact: function(){
-        if(!validator.validateItem(this.$new_phone))
+        if(!validator.validateItem(this.$new_phone)){
+            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
+        }
 
         var contact = {
             name:this.$new_name.val(),
@@ -159,9 +239,6 @@ CreateView = Backbone.View.extend({
         this.$new_name.val('');
         this.$new_phone.val('');
 
-        //enabling send button
-        this.$btSend.removeAttr("disabled");
-
         return false;
     },
     removeContact: function (e) {
@@ -172,8 +249,6 @@ CreateView = Backbone.View.extend({
 
         //disabling send button
         var $rows = this.$el.find('.contact-row');
-        if($rows == null || $rows.length == 0)
-          this.$btSend.attr("disabled", "disabled");
 
         this.removeContactByIndex(parseInt(dataId.split('_')[1]));
     },
@@ -192,8 +267,11 @@ CreateView = Backbone.View.extend({
     submitNew:function(e){
         var that = this;
 
-        if(!validator.validateItems('.valid-before-submit'))
+        if(!validator.validateItems('.valid-before-submit') ||
+            this.model.attributes.contacts.length == 0){
+            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
+        }
 
         var $rows = this.$el.find('.contact-row');
         var event = {
