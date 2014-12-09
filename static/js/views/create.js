@@ -40,8 +40,6 @@ CreateView = Backbone.View.extend({
         this.$table = this.$el.find('.contact-table');
         this.$table = this.$el.find('.contact-table');
         this.$btSend = this.$el.find('.send');
-        this.$contactForm = this.$el.find('#newContactForm');
-        this.$inviteForm = this.$el.find('#newInviteForm');
         this.$new_name = this.$el.find('.new-contact-name');
         this.$new_phone = this.$el.find('.new-contact-phone');
 

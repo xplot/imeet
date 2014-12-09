@@ -77,9 +77,9 @@ module.exports = function (grunt) {
             external: {
 				src: [
                     '../static/js/external/jquery.js',
-										'../static/js/external/underscore.js',
+                    '../static/js/external/underscore.js',
                     '../static/js/external/backbone.js',
-										'../static/js/external/stickit.js',
+                    '../static/js/external/stickit.js',
                     '../static/js/external/bootstrap.js',
                     '../static/js/external/slider.js'
                 ],

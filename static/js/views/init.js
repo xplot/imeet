@@ -1,17 +1,30 @@
-function alert_notification(alerts){
-    var $alertDiv = $('#notification-alerts');
+$(function() {
 
-    alerts.forEach(function(alert){
-        console.log(alert);
-        $alertDiv.prepend("\
-            <div class='alert alert-" + alert.alertType + "'>" + alert.message + "</div>");
-    });
-
-    if(alerts.length > 0){
-        $alertDiv.addClass('flyover-in');
-        $alertDiv.css('height',(150 + alerts.length*60) + 'px');
+    // First, checks if it isn't implemented yet.
+    if (!String.prototype.format) {
+      String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+          return typeof args[number] != 'undefined'
+            ? args[number]
+            : match
+          ;
+        });
+      };
     }
+});
 
+function alert_notification(alerts){
+    var alert_string = '' +
+        '<div class="alert alert-{0} alert-dismissible flyover flyover-in" role="alert">'+
+            '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
+            '{1}' +
+        '</div>';
+
+    var $alertDiv = $('body');
+    alerts.forEach(function(alert){
+        $alertDiv.prepend(alert_string.format(alert.alertType, alert.message));
+    });
 }
 
 var validator = {
