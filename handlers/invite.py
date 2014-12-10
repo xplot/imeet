@@ -19,15 +19,14 @@ class InviteHandler(JsonHandler):
     def send(self):
         data = self._data()
 
-        email_template = {
-            'Url': "http://imeet.io/template/default_invite_template.html"
-        }
-        logging.info(data)
-        data['EmailTemplate'] = email_template
+        invite_manager = InviteManager(invite_dict=data, user=self.user)
+        invite_manager.create(),
+        invite_manager.send(
+            invite_template = {
+                'Url': "http://imeet.io/template/default_invite_template.html"
+            }
+        )
 
-        invite_manager = InviteManager(self.user)
-        invite_manager.create(data)
-        invite_manager.send(data)
         return True
 
     def view(self, id=0):

@@ -4,7 +4,8 @@
 Use this file to configure app engine modules as defined here:
 https://developers.google.com/appengine/docs/python/tools/appengineconfig
 """
- 
+
+appstats_SHELL_OK = True
  
 def add_vendor_packages(vendor_folder):
     """

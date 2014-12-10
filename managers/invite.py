@@ -13,10 +13,12 @@ from boilerplate.models import User
 class InviteManager(object):
     invite_index = 'invite_index'
 
-    def __init__(self, user=None):
+    def __init__(self, invite=None,invite_dict=None, user=None):
         self.user = user
+        self.invite_dict = invite_dict
+        self.invite = invite
 
-    def create(self, invite_dict):
+    def create(self):
         """
         Creates an invitation out of the supplied dictionary
         This is a valid data-format:
@@ -47,15 +49,15 @@ class InviteManager(object):
         """
         invite = Invite()
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
-        invite_dict['inviteId'] = invite.unique_id
-        invite.title = invite_dict['title']
+        self.invite_dict['inviteId'] = invite.unique_id
+        invite.title = self.invite_dict['title']
 
         #12/09/2014 12:00 AM
-        invite.start = datetime.datetime.strptime(invite_dict['start'], "%m/%d/%Y %H:%M %p")
-        if invite_dict.get('end', None):
-            invite.end = datetime.datetime.strptime(invite_dict['end'], "%m/%d/%Y %H:%M %p")
+        invite.start = datetime.datetime.strptime(self.invite_dict['start'], "%m/%d/%Y %H:%M %p")
+        if self.invite_dict.get('end', None):
+            invite.end = datetime.datetime.strptime(self.invite_dict['end'], "%m/%d/%Y %H:%M %p")
 
-        where_dict = invite_dict.get('where', None)
+        where_dict = self.invite_dict.get('where', None)
         if where_dict is not None:
             where = Location()
             where.unique_id = str(uuid.uuid4()).replace('-', '')
@@ -74,7 +76,7 @@ class InviteManager(object):
 
         db_contacts = []
         db_invite_contacts = []
-        for x in invite_dict['contacts']:
+        for x in self.invite_dict['contacts']:
             contact = Contact()
             contact.unique_id = str(uuid.uuid4()).replace('-', '')
             x['contactId'] = contact.unique_id
@@ -95,6 +97,9 @@ class InviteManager(object):
         #Finally we index the Document
         self._index_document(invite)
 
+        self.invite = invite
+
+
     def _index_document(self, invite):
         """
         Stores the document in the datastore index
@@ -111,7 +116,14 @@ class InviteManager(object):
         )
         index.put(inviteSearch)
 
-    def send(self, invite_dict):
+    def send(self, invite_template):
+
+        invite_dict = self.invite_dict
+        invite_dict['EmailTemplate'] = invite_template
+        import logging
+        logging.info("Invite to Send")
+        logging.info(invite_dict)
+
         """Send the invite out"""
         taskqueue.add(
             url='/api/invite/post',
@@ -184,21 +196,26 @@ class InviteManager(object):
 
         contact_invite.put()
 
-    def _build(self, invite):
+    def _build(self):
         #contacts
-        contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == invite.unique_id).fetch()}
+        contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == self.invite.unique_id).fetch()}
+
+        location = None
+        if self.invite.where is not None:
+            location = Location.get_by_id(self.invite.where)
+
         contacts = []
         if contacts_invites:
             contacts = Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
-        return self._to_dict(invite, contacts_invites, contacts)
+        return self._to_dict(self.invite, contacts_invites, contacts, location)
 
-    def _to_dict(self, invite, contacts_invites, contacts):
-        return {
+    def _to_dict(self, invite,contacts_invites, contacts, location=None):
+        initial = {
             'unique_id':invite.unique_id,
-
             'title':invite.title,
             'start': invite.start.strftime("%Y-%m-%d %H:%M"),
             'end': invite.end.strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',
+            'where': None,
             'contacts':[{
                 'name':x.name,
                 'phone': x.phone,
@@ -208,3 +225,12 @@ class InviteManager(object):
                 'email_response': contacts_invites[x.unique_id].email_response,
             } for x in contacts]
         }
+
+        if location is not None:
+            initial['where'] = {
+                'address': location.address,
+                'city': location.city,
+                'state': location.state,
+                'zip':location.zip
+            }
+        return initial
