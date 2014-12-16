@@ -204,7 +204,7 @@ class InviteManager(object):
         contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == invite.unique_id).fetch()}
 
         location = None
-        if self.invite.where is not None:
+        if invite.where is not None:
             location = Location.get_by_id(invite.where)
 
         contacts = []
