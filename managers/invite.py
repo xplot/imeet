@@ -196,20 +196,23 @@ class InviteManager(object):
 
         contact_invite.put()
 
-    def _build(self):
+    def _build(self, invite=None):
+        if invite is None:
+            invite = self.invite
+
         #contacts
-        contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == self.invite.unique_id).fetch()}
+        contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == invite.unique_id).fetch()}
 
         location = None
         if self.invite.where is not None:
-            location = Location.get_by_id(self.invite.where)
+            location = Location.get_by_id(invite.where)
 
         contacts = []
         if contacts_invites:
             contacts = Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
-        return self._to_dict(self.invite, contacts_invites, contacts, location)
+        return self._to_dict(invite, contacts_invites, contacts, location)
 
-    def _to_dict(self, invite,contacts_invites, contacts, location=None):
+    def _to_dict(self, invite, contacts_invites, contacts, location=None):
         initial = {
             'unique_id':invite.unique_id,
             'title':invite.title,
