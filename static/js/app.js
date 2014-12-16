@@ -43,10 +43,7 @@ function init_app() {
         childView: user_profile_view
     });
 
-    //Create Invite
-    create_invite_view = new CreateView({
-        el: "#view-container",
-    });
+
 
     //Search
     search_view = new SearchView({
@@ -100,6 +97,10 @@ function init_app() {
 
         //Invite
         new: function (title,id) {
+             //Create Invite
+            var create_invite_view = new CreateView({
+                el: "#view-container",
+            });
             create_invite_view.render({'title':title,'id':id});
         },
         new_no_title: function (id) {

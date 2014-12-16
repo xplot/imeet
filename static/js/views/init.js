@@ -1,7 +1,6 @@
-$(function() {
 
     // First, checks if it isn't implemented yet.
-    if (!String.prototype.format) {
+    if (!String.prototype.format)
       String.prototype.format = function() {
         var args = arguments;
         return this.replace(/{(\d+)}/g, function(match, number) {
@@ -11,11 +10,8 @@ $(function() {
           ;
         });
       };
-    }
-});
 
 function alert_notification(alerts){
-    console.log('came here');
     var alert_string = '' +
         '<div class="alert alert-{0} alert-dismissible flyover flyover-in" role="alert">'+
             '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +

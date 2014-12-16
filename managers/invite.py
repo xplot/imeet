@@ -51,6 +51,7 @@ class InviteManager(object):
         invite.unique_id = str(uuid.uuid4()).replace('-', '')
         self.invite_dict['inviteId'] = invite.unique_id
         invite.title = self.invite_dict['title']
+        invite.description = self.invite_dict.get('description', None)
 
         #12/09/2014 12:00 AM
         invite.start = datetime.datetime.strptime(self.invite_dict['start'], "%m/%d/%Y %H:%M %p")
@@ -58,7 +59,8 @@ class InviteManager(object):
             invite.end = datetime.datetime.strptime(self.invite_dict['end'], "%m/%d/%Y %H:%M %p")
 
         where_dict = self.invite_dict.get('where', None)
-        if where_dict is not None:
+
+        if where_dict is not None and where_dict.get('address', None):
             where = Location()
             where.unique_id = str(uuid.uuid4()).replace('-', '')
             where.address = where_dict['address']
@@ -205,7 +207,7 @@ class InviteManager(object):
 
         location = None
         if invite.where is not None:
-            location = Location.get_by_id(invite.where)
+            location = Location.get_by_id(invite.where.id())
 
         contacts = []
         if contacts_invites:
@@ -218,6 +220,7 @@ class InviteManager(object):
             'title':invite.title,
             'start': invite.start.strftime("%Y-%m-%d %H:%M"),
             'end': invite.end.strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',
+            'description': invite.description,
             'where': None,
             'contacts':[{
                 'name':x.name,
@@ -232,6 +235,7 @@ class InviteManager(object):
         if location is not None:
             initial['where'] = {
                 'address': location.address,
+                'suite': location.suite,
                 'city': location.city,
                 'state': location.state,
                 'zip':location.zip
