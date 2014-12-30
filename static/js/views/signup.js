@@ -9,22 +9,25 @@ UserRegisterView = Backbone.View.extend({
 
     render: function() {
         this.$el.html(this.template());
-
-        this.$registerForm = this.$el.find('#registerForm');
         this.$email = this.$el.find('.register-email');
     },
 
     registerEmail: function(){
-        this.$registerForm.validate();
-        if(!this.$registerForm.valid())
+        if(!validator.validateItem(this.$email)){
+            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
+        }
 
         var that = this;
         $.ajax({
             url: "/register/email/"+ this.$email.val(),
             type: "POST",
             cache: false,
-            success: function() {
+            success: function(data) {
+                alert_notification([{
+                    alertType:'success',
+                    message: "Account Created Successfully, please check your email"
+                }]);
                 Backbone.pubSub.trigger('childClose', { 'view' : that } );
             },
             error:function(data) {
