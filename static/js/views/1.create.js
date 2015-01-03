@@ -337,27 +337,20 @@ CreateView = SimpleView.extend({
             var $last_item = $("a .active");
             this.$el.find('.snap-panel').panelSnap({
                 menuSelector: 'a',
-    //            panelSelector: 'section',
-    //            namespace: '.panelSnap',
                 onSnapStart: function($target){
-
                 },
                 onSnapFinish: function($target){
-                    var menuItem = $target.data('panel');
-                    $last_item.removeClass('active');
-                    $last_item = $("a[data-panel='"+ menuItem + "']");
-                    $last_item.addClass('active');
                 },
                 onActivate: function(){},
                 directionThreshold: 50,
                 slideSpeed: 200,
                 $menu: this.$el.find('.menu'),
-              keyboardNavigation: {
-                enabled: true,
-                nextPanelKey: 40,
-                previousPanelKey: 38,
-                wrapAround: false
-              }
+                keyboardNavigation: {
+                    enabled: true,
+                    nextPanelKey: 40,
+                    previousPanelKey: 38,
+                    wrapAround: false
+                }
             });
         }
         catch(ex){

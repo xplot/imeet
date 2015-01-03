@@ -19,72 +19,125 @@ body {
   width: 100%;
   overflow-x: hidden;
 
+  .btn-success{
+    background-color: @btn-success !important;
+  }
+
   .snap-panel{
+    top:60px;
     position: absolute;
     width: 100%;
-    height: 100%;
-    overflow: scroll;
+    height: 80%;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 
-  .invite{
-
-    .label-text{
-      padding-top: 10px;
+  .invite-create{
+    .first{
+      background-color: @panel1;
+    }
+    .second{
+      background-color: @panel2;
+    }
+    .third{
+      background-color: @panel3;
+    }
+    .fourth{
+      background-color: @panel4;
     }
 
-    input,textarea,select,button{
-      margin-top: 10px;
-      margin-bottom: 10px;
-      outline: none;
-
+    .menu-down{
+      bottom: 1%;
     }
 
-    .date-group{
+    .menu-container {
+      position: absolute;
+      text-align: center;
       width: 100%;
-      height: 100%;
-      position: relative;
-      height: 43px;
-      font-size: 15px;
-      line-height: 1.42857143;
-      color: #2c3e50;
-      background-color: #fff;
-      background-image: none;
-      border: 2px solid #dce4ec;
-      border-radius: 4px;
-      float: left;
-
-      .date{
-        padding-left: 15px;
-        height: 100%;
-        width: 55%;
-        border: none;
-        margin-top: 0px;
-        margin-bottom: 0px;
-      }
-      .time{
-        height: 100%;
-        width: 43%;
-        border: none;
-        margin-top: 0px;
-        margin-bottom: 0px;
+      .menu {
+        list-style: none;
+        z-index: 1001;
       }
 
-      .date,.time:focus{
+      .send{
+        width: 20%;
+      }
+    }
+
+    .invite{
+      .invite-content{
+        position: absolute;
+        height: 90%;
+        width: 100%;
+      }
+
+      .label-text{
+        padding-top: 10px;
+      }
+
+      input,textarea,select,button{
+        margin-top: 10px;
+        margin-bottom: 10px;
         outline: none;
+
       }
-    }
 
-    .invite_report{
-        .panel{
-            .panel-heading{
-                height:60px !important;
-            }
+      .date-group{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        height: 43px;
+        font-size: 15px;
+        line-height: 1.42857143;
+        color: #2c3e50;
+        background-color: #fff;
+        background-image: none;
+        border: 2px solid #dce4ec;
+        border-radius: 4px;
+        float: left;
+
+        .date{
+          padding-left: 15px;
+          height: 100%;
+          width: 55%;
+          border: none;
+          margin-top: 0px;
+          margin-bottom: 0px;
         }
-    }
-  }
+        .time{
+          height: 100%;
+          width: 43%;
+          border: none;
+          margin-top: 0px;
+          margin-bottom: 0px;
+        }
 
-  .top-separator{
-    margin-top: 80px;
+        .date,.time:focus{
+          outline: none;
+        }
+      }
+
+      .invite_report{
+          .panel{
+              .panel-heading{
+                  height:60px !important;
+              }
+          }
+      }
+
+      .contact-table{
+        position: absolute;
+        background-color: red;
+        max-height: 70%;
+        width: 100%;
+        overflow-y: auto;
+      }
+
+      .contact-row{
+
+      }
+
+    }
   }
 }
 
@@ -227,9 +280,10 @@ h1, h2, h3, h4, h5, h6 {
             .animate(0.6s);
             font-style: normal;
             text-align: center;
+
             .caption-content {
               .animate(0.6s);
-              color: @nav-color;
+
               font-size: 30px;
               padding-top: 15px;
               font-weight: bold;
@@ -314,10 +368,12 @@ h1, h2, h3, h4, h5, h6 {
       top: 50%;
       position: relative;
       .event-name-home{
+
         display: inline-block;
         width: 500px;
         height: 70px;
-        border: 1px solid black;
+        border: 1px solid #FFF;
+
         input,
         input:focus,
         input:active,
@@ -331,7 +387,7 @@ h1, h2, h3, h4, h5, h6 {
           outline:0px !important;
           -webkit-appearance:none;
           border: none;
-          background-color: rgba(255,255,255,0.5);
+          background-color: #FFF;
         }
         input::-webkit-input-placeholder {
             color: lighten(black,25%);
@@ -633,6 +689,10 @@ form .row:first-child .floating-label-form-group {
   font-size: 5em;
 }
 
+.fa-3x{
+  font-size: 3em;
+}
+
 .fa-2x{
   font-size: 2em;
 }
@@ -684,11 +744,25 @@ form .row:first-child .floating-label-form-group {
         }
       }
     }
-    .equidistant{
-      margin-left: 5%;
-      margin-right: 5%;
+
+    #view-container{
+    .snap-panel{
+      height: 95%;
     }
 
+    .invite-content{
+        padding: 5%;
+        position: absolute;
+        height: 90%;
+        width: 100%;
+
+        .invite{
+          .label-text{
+            padding-top: 0px !important;
+          }
+        }
+      }
+  }
     .tablet{
       display: block;
     }
@@ -757,12 +831,24 @@ form .row:first-child .floating-label-form-group {
     }
   }
 
-  .invite{
-    .label-text{
-      padding-top: 0px !important;
+  #view-container{
+    .snap-panel{
+      height: 95%;
     }
-  }
 
+    .invite-content{
+        padding: 1%;
+        position: absolute;
+        height: 90%;
+        width: 100%;
+
+        .invite{
+          .label-text{
+            padding-top: 0px !important;
+          }
+        }
+      }
+  }
 }
 
 
@@ -804,14 +890,6 @@ form .row:first-child .floating-label-form-group {
   margin-right: 0px;
 }
 
-.contact-table{
-  max-height: 50%;
-  overflow-y: auto;
-}
-
-.contact-row{
-
-}
 
 .failed-validation{
   border: solid 1px red;
@@ -827,29 +905,14 @@ form .row:first-child .floating-label-form-group {
   overflow: hidden;
   height: 100%;
 
-  .menu{
-    text-align: right;
-    list-style: none;
-    position: fixed;
-    right: 4%;
-    top: 50%;
-    z-index: 1001;
-
-    .active{
-      .fa-circle-line:before{
-        content: "q";
-      }
-    }
-  }
-
   section{
     position: relative;
     width: 100%;
     height: 100%;
   }
-
-
 //  section:nth-child(2n) {
 //    background: @body-frame;
 //  }
 }
+
+

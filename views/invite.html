@@ -1,15 +1,16 @@
-<div class="snap-panel">
-    <section data-panel="first" class="container invite top-separator">
-            <div class="row text-center">
+<div class="snap-panel invite-create">
+    <section data-panel="first" class="container invite first">
+        <div class="row text-center invite-content ">
+            <div class="">
                 <h4>Event</h4>
             </div>
-            <div class="row equidistant">
+            <div class="row">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
                     <input required type="text" class="form-control event-name valid-before-submit" placeholder="Event" autofocus data-validation="required" >
                 </div>
             </div>
 
-            <div class="row equidistant">
+            <div class="row">
                 <div class="col-xs-12  col-md-3 col-md-offset-2">
                     <div class="date-group">
                         <input required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required" >
@@ -26,111 +27,139 @@
                     </div>
                 </div>
             </div>
-            <div class="row equidistant">
+            <div class="row">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
                   <textarea class="form-control event-description" rows="6"></textarea>
                 </div>
             </div>
-        </section>
-
-        <section data-panel="second" class="container invite top-separator">
-            <div class="row text-center">
-                <h4>Where</h4>
-            </div>
-
-            <div class="row equidistant">
-                <div class="col-xs-8 col-md-6 col-md-offset-2">
-                    <input type="text" class="form-control event-address-street" placeholder="Address"  >
-                </div>
-                <div class="col-xs-4 col-md-2">
-                    <input type="text" class="form-control event-address-suite" placeholder="Apt"  >
-                </div>
-            </div>
-            <div class="row equidistant">
-                <div class="col-xs-12 col-md-4 col-md-offset-2">
-                    <input type="text" class="form-control event-address-city" placeholder="City"  >
-                </div>
-
-                <div class="col-xs-8 col-md-2">
-                    <select class="form-control event-address-state" placeholder="State">
-
-                    </select>
-                </div>
-                <div class="col-xs-4 col-md-2">
-                    <input type="text" class="form-control event-address-zip" placeholder="Zip"  >
-                </div>
-            </div>
-
-        </section>
-
-        <section data-panel="third" class="container invite top-separator">
-
-            <div class="row2 text-center">
-                <h4>Who is invited?</h4>
-            </div>
-
-            <div class="row zero-margin equidistant">
-                <div class="col-md-4 col-md-offset-2">
-                    <input type="text" class="new-contact-name form-control" placeholder="Name">
-                </div>
-
-                <div class="col-md-3">
-                    <input type="text" class="new-contact-phone form-control"
-                        <%  if( features.indexOf('voice') != -1 )  { %>
-                            data-validation='required,email|phone' placeholder='Phone Number or Email Address'
-                        <% } else { %>
-                            data-validation='required,email' placeholder='Email Address'
-                        <% } %>
-                        name="newPhone" id="newPhone">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-info new-contact form-control">+</button>
-                </div>
-            </div>
-            <div class="row2 contact-table equidistant">
-            </div>
-        </section>
-
-        <section data-panel="fourth" class="top-separator invite">
-            <div id="reportXXX"></div>
-
-            <div class="row equidistant">
-                <div class="col-md-8 col-md-offset-2">
-                    <button type="button" class="btn form-control btn-success send">Send your iMeet</button>
-                </div>
-            </div>
-        </section>
-
-    <!-- Footer -->
-    <div class="section-container footer desktop navbar-fixed-bottom">
-        <div class="footer-below">
-            <div class="container">
-              <div class="row">
-                  <div class="col-lg-12">
-                      Miami, FL<br/>
-                      Copyright 2014 &copy; iMeet Inc. All rights reserved.
-                  </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-12 quiet">
-                    <br/>Built with love, Internet style
-                </div>
-              </div>
-            </div>
         </div>
+        <div class="row  menu-container menu-down">
+            <ul class="menu">
+                <li>
+                    <a href="" data-panel="second"><i class="fa fa-angle-down fa-5x"></i></a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+        <section data-panel="second" class="container invite second">
+
+            <div class="row text-center invite-content ">
+                <div class="">
+                    <h4>Where</h4>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8 col-md-6 col-md-offset-2">
+                        <input type="text" class="form-control event-address-street" placeholder="Address"  >
+                    </div>
+                    <div class="col-xs-4 col-md-2">
+                        <input type="text" class="form-control event-address-suite" placeholder="Apt"  >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-4 col-md-offset-2">
+                        <input type="text" class="form-control event-address-city" placeholder="City"  >
+                    </div>
+
+                    <div class="col-xs-8 col-md-2">
+                        <select class="form-control event-address-state" placeholder="State">
+
+                        </select>
+                    </div>
+                    <div class="col-xs-4 col-md-2">
+                        <input type="text" class="form-control event-address-zip" placeholder="Zip"  >
+                    </div>
+                </div>
+            </div>
+            <div class="row menu-container menu-down">
+                <ul class="menu">
+                    <li>
+                        <a href="" data-panel="third"><i class="fa fa-angle-down fa-5x"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section data-panel="third" class="container invite third">
+            <div class="row text-center invite-content ">
+                <div class="row2 text-center">
+                    <h4>Who is invited?</h4>
+                </div>
+
+                <div class="row zero-margin">
+                    <div class="col-md-4 col-md-offset-2">
+                        <input type="text" class="new-contact-name form-control" placeholder="Name">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="text" class="new-contact-phone form-control"
+                            <%  if( features.indexOf('voice') != -1 )  { %>
+                                data-validation='required,email|phone' placeholder='Phone Number or Email Address'
+                            <% } else { %>
+                                data-validation='required,email' placeholder='Email Address'
+                            <% } %>
+                            name="newPhone" id="newPhone">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-info new-contact form-control">+</button>
+                    </div>
+                </div>
+
+                <div class="row2 contact-table">
+                </div>
+            </div>
+
+            <div class="row  menu-container menu-down">
+                <ul class="menu">
+                    <li>
+                        <a href="" data-panel="fourth"><i class="fa fa-angle-down fa-5x"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section data-panel="fourth" class="container invite fourth">
+            <div class="row text-center invite-content">
+                <div id="reportXXX"></div>
+            </div>
+
+             <div class="row  menu-container menu-down">
+                <button type="button" class="btn form-control btn-success send">Send your iMeet</button>
+            </div>
+        </section>
+</div>
+
+<!--<ul class="menu">-->
+    <!--<li>-->
+        <!--<a href="" data-panel="first" class="active"><i class="fa fa-circle-line fa-1x"></i></a>-->
+    <!--</li>-->
+    <!--<li>-->
+
+    <!--</li>-->
+    <!--<li>-->
+        <!--<a href="" data-panel="third" ><i class="fa fa-circle-line fa-1x"></i></a>-->
+    <!--</li>-->
+    <!--<li>-->
+        <!--<a href="" data-panel="fourth" ><i class="fa fa-circle-line fa-1x"></i></a>-->
+    <!--</li>-->
+<!--</ul>-->
+
+<!-- Footer -->
+<div class="section-container footer desktop navbar-fixed-bottom">
+<div class="footer-below">
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              Miami, FL<br/>
+              Copyright 2014 &copy; iMeet Inc. All rights reserved.
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 quiet">
+            <br/>Built with love, Internet style
+        </div>
+      </div>
     </div>
 </div>
-<ul class="menu">
-    <li>
-        <a href="" data-panel="first" class="active"><i class="fa fa-circle-line fa-1x"></i></a>
-    </li>
-    <li>
-        <a href="" data-panel="second"><i class="fa fa-circle-line fa-1x"></i></a>
-    </li>
-    <li>
-        <a href="" data-panel="third" ><i class="fa fa-circle-line fa-1x"></i></a>
-    </li>
-    <li>
-        <a href="" data-panel="fourth" ><i class="fa fa-circle-line fa-1x"></i></a>
-    </li>
-</ul>
+</div>

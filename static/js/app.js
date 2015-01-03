@@ -19,7 +19,7 @@ function init_app() {
     });
 
     //Login
-    login_view = new SimpleView({
+    login_view = new LoginView({
         el: "#view-container",
         templateId: "#login"
     });
