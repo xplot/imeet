@@ -1,5 +1,10 @@
 @import "variables";
 @import "mixins";
+* {
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+}
 
 html,
 body {
@@ -747,10 +752,12 @@ form .row:first-child .floating-label-form-group {
 
     #view-container{
     .snap-panel{
-      height: 95%;
+      top:10%;
+      height: 85%;
     }
 
-    .invite-content{
+    .invite-create{
+        .invite-content{
         padding: 5%;
         position: absolute;
         height: 90%;
@@ -762,6 +769,14 @@ form .row:first-child .floating-label-form-group {
           }
         }
       }
+
+      .menu-container{
+        .send{
+          width: 80%;
+        }
+      }
+    }
+
   }
     .tablet{
       display: block;
@@ -771,6 +786,8 @@ form .row:first-child .floating-label-form-group {
 }
 
 @media(max-width:768px) {
+
+
     .equidistant{
       margin-left: 1%;
       margin-right: 1%;
