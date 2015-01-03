@@ -43,8 +43,6 @@ function init_app() {
         childView: user_profile_view
     });
 
-
-
     //Search
     search_view = new SearchView({
         el: "#modal_container"
@@ -97,7 +95,7 @@ function init_app() {
 
         //Invite
         new: function (title,id) {
-             //Create Invite
+            //Create Invite
             var create_invite_view = new CreateView({
                 el: "#view-container",
             });
@@ -136,9 +134,9 @@ function init_app() {
     });
 
     // Closes the Responsive Menu on Menu Item Click
-    $('.end-click').click(function() {
-        $('.navbar-toggle:visible').click();
-    });
+//    $('.end-click').click(function() {
+//        $('.navbar-toggle:visible').click();
+//    });
 
     $("body").on("input propertychange", ".floating-label-form-group", function(e) {
         $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
