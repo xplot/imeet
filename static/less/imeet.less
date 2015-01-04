@@ -66,6 +66,7 @@ body {
 
       .send{
         width: 20%;
+        bottom: 20% !important;
       }
     }
 
@@ -168,6 +169,10 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 700;
 }
 
+@media(max-width:768px) {
+
+
+}
 
 @media(min-width:768px) {
     .navbar-fixed-top {
@@ -736,6 +741,13 @@ form .row:first-child .floating-label-form-group {
   }
 }
 
+@media(min-device-width : 768px)
+and (max-device-width : 1024px){
+  .tablet{
+      display: block;
+    }
+}
+
 @media(max-width:1024px) {
     .section {
       .section-container {
@@ -757,7 +769,7 @@ form .row:first-child .floating-label-form-group {
 
     .invite-create{
         .invite-content{
-        padding: 5%;
+        padding: 10%;
         position: absolute;
         height: 90%;
         width: 100%;
@@ -769,7 +781,16 @@ form .row:first-child .floating-label-form-group {
         }
       }
 
+      .menu-down{
+        top:70%;
+
+        .fa-5x{
+          font-size: 3em !important;
+        }
+      }
+
       .menu-container{
+
         .send{
           width: 80%;
         }
@@ -777,21 +798,19 @@ form .row:first-child .floating-label-form-group {
     }
 
   }
-    .tablet{
-      display: block;
-    }
+
 
 
 }
 
 @media(max-width:768px) {
-
-
-    .equidistant{
-      margin-left: 1%;
-      margin-right: 1%;
+    *{
+      -webkit-appearance: none;
     }
-
+    .navbar-fixed-top {
+      position:absolute;
+      top:5px
+    }
     .small-margin-top{
       margin-top: 0px;
     }

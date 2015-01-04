@@ -118,10 +118,12 @@ class InviteManager(object):
         )
         index.put(inviteSearch)
 
-    def send(self, invite_template):
+    def send(self, invite_template, extra_data={}):
 
         invite_dict = self.invite_dict
         invite_dict['EmailTemplate'] = invite_template
+        invite_dict['ExtraContextData'] = extra_data
+
         import logging
         logging.info("Invite to Send")
         logging.info(invite_dict)
