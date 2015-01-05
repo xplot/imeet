@@ -100,7 +100,7 @@ class InviteManager(object):
         self._index_document(invite)
 
         self.invite = invite
-
+        return invite.unique_id
 
     def _index_document(self, invite):
         """

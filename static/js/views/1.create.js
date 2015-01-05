@@ -241,7 +241,6 @@ CreateView = SimpleView.extend({
             return;
         }
 
-        console.log(this.model);
         var event = {
             'title': this.model.attributes.title,
             'description': this.model.attributes.description,
@@ -266,12 +265,16 @@ CreateView = SimpleView.extend({
             contentType: "application/json",
             data: JSON.stringify(event),
             cache: false,
-            success: function() {
+            success: function(data) {
                 alert_notification([{
                     alertType:'success',
                     message: 'Event sent!'
                 }]);
-                Backbone.history.navigate('', true);
+
+                if(currentUser == null) //If Anonymous we will give people a link to follow the invite
+                    Backbone.history.navigate('sent/' + data[0], true);
+                else
+                    Backbone.history.navigate('view/' + data[0], true);
             },
             error: function(data) {
                 alert_notification([{

@@ -20,7 +20,7 @@ class InviteHandler(JsonHandler):
         data = self._data()
 
         invite_manager = InviteManager(invite_dict=data, user=self.user)
-        invite_manager.create(),
+        invite_id = invite_manager.create(),
         invite_manager.send(
             invite_template={
                 'Url': "http://imeet.io/template/default_invite_template.html",
@@ -31,7 +31,7 @@ class InviteHandler(JsonHandler):
             }
         )
 
-        return True
+        return invite_id
 
     def view(self, id=0):
         invite_manager = InviteManager()

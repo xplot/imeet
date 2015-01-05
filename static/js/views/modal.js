@@ -33,7 +33,6 @@ ModalView = Backbone.View.extend({
         });
 
         //Finally we show it
-        console.log(this.$el);
         this.$el.show();
         //this.$el.on('hidden.bs.modal', this.onChildClose);
         return this;

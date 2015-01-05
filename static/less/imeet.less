@@ -9,7 +9,7 @@
 html,
 body {
     height: 100%;
-	overflow-x: hidden;
+	overflow: hidden;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
 }
@@ -22,7 +22,7 @@ body {
 #body-container,
 #view-container{
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 
   .btn-success{
     background-color: @btn-success !important;
@@ -809,7 +809,7 @@ and (max-device-width : 1024px){
     }
     .navbar-fixed-top {
       position:absolute;
-      top:5px
+      top:0px
     }
     .small-margin-top{
       margin-top: 0px;
@@ -951,3 +951,6 @@ and (max-device-width : 1024px){
 }
 
 
+.small-text{
+  font-size: 11px;
+}

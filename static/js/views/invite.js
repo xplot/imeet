@@ -24,7 +24,7 @@ InviteView = Backbone.View.extend({
                 var inviteTable = $('.invite-table');
 
                 inviteTitle.html(data.title);
-                inviteDate.html(data.when);
+                inviteDate.html(data.start);
 
                 var contact_html = "\
             <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \

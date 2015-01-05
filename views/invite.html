@@ -4,6 +4,16 @@
             <div class="">
                 <h4>Event</h4>
             </div>
+            <div class="">
+
+                <%  if( currentUser == null )  { %>
+                    <label class="small-text">
+                    Note: For sms/calls to work, you have to be a registered
+                    <br/>
+                    Note2: Sms/calls will be free only during the beta phase. After that a subscription base fee will be offered
+                    </label>
+                <% } %>
+            </div>
             <div class="row">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
                     <input required type="text" class="form-control event-name valid-before-submit" placeholder="Event" autofocus data-validation="required" >
@@ -125,7 +135,7 @@
             </div>
 
              <div class="row  menu-container menu-down">
-                <button type="button" class="btn form-control btn-success send">Send your iMeet</button>
+                <button type="button" class="btn form-control btn-success send">Send</button>
             </div>
         </section>
 </div>

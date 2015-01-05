@@ -63,6 +63,15 @@ function init_app() {
         childView: invite_view
     });
 
+    sent_view = new SentView({
+        el: "#modal_container"
+    });
+
+    sent_view_modal = new ModalView({
+        el: $("#modal_container"),
+        childView: sent_view
+    });
+
     App.Router = Backbone.Router.extend({
         routes: {
             '': 'index',
@@ -72,6 +81,7 @@ function init_app() {
             'new/:title': 'new',
             'new/:title/from/:id': 'new',
             'new/from/:id': 'new_no_title',
+            'sent/:id': 'sent',
 
             'search': 'search',
             'login': 'login',
@@ -103,6 +113,10 @@ function init_app() {
         },
         new_no_title: function (id) {
             this.new(null, id);
+        },
+        sent: function (id) {
+          sent_view_modal.childView.model = id;
+          sent_view_modal.render();
         },
         search: function () {
             search_view_modal.render();
