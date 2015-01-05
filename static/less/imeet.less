@@ -9,7 +9,7 @@
 html,
 body {
     height: 100%;
-	overflow: hidden;
+	overflow-x: hidden;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
 }
@@ -22,7 +22,7 @@ body {
 #body-container,
 #view-container{
   width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 
   .btn-success{
     background-color: @btn-success !important;
@@ -762,23 +762,24 @@ and (max-device-width : 1024px){
     }
 
     #view-container{
-    .snap-panel{
-      top:10%;
-      height: 85%;
-    }
+      overflow-x: hidden;
+      .snap-panel{
+        top:10%;
+        height: 85%;
+      }
 
-    .invite-create{
-        .invite-content{
-        padding: 10%;
-        position: absolute;
-        height: 90%;
-        width: 100%;
+      .invite-create{
+          .invite-content{
+          padding: 10%;
+          position: absolute;
+          height: 90%;
+          width: 100%;
 
-        .invite{
-          .label-text{
-            padding-top: 0px !important;
+          .invite{
+            .label-text{
+              padding-top: 0px !important;
+            }
           }
-        }
       }
 
       .menu-down{
@@ -798,9 +799,6 @@ and (max-device-width : 1024px){
     }
 
   }
-
-
-
 }
 
 @media(max-width:768px) {
@@ -868,7 +866,7 @@ and (max-device-width : 1024px){
 
   #view-container{
     .snap-panel{
-      height: 95%;
+      height: 90%;
     }
 
     .invite-content{
