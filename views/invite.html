@@ -22,8 +22,10 @@
 
             <div class="row">
                 <div class="col-xs-12  col-md-3 col-md-offset-2">
-                    <div class="date-group">
-                        <input required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required" >
+                    <div class="date-group" id="start-date-group">
+                        <input required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000"
+                               data-validation="required,date"
+                        >
                         <input required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required" >
                     </div>
                 </div>

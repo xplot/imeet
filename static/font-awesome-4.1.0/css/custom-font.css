@@ -38,6 +38,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "invite" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .fa-paper-plane:before {
   content: "a";
 }
@@ -94,4 +107,12 @@
 }
 .fa-angle-up:before {
   content: "r";
+}
+
+.icon-chevron-up:before {
+  content: "r";
+}
+
+.icon-chevron-down:before {
+  content: "p";
 }

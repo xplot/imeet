@@ -134,11 +134,36 @@ var validator = {
         }
 
         if(!totalResult)
-                $item.addClass('failed-validation');
-            else
-                $item.removeClass('failed-validation');
+            this.errorValidationForItem($item);
+        else
+            this.succeedValidationForItem($item);
 
         return totalResult;
+    },
+
+    errorValidationForItem: function($item){
+        this.validationUI($item, true);
+    },
+    succeedValidationForItem: function($item){
+        this.validationUI($item, false);
+    },
+
+    validationUI:function($item, failed){
+        if(failed)
+            $item.addClass('failed-validation');
+        else
+            $item.removeClass('failed-validation');
+        var siblingItems = $item.data('validation-siblings');
+
+        if(siblingItems != null){
+            siblingItems.split(',').forEach(function(sibling){
+                var $sibling = $(sibling);
+                if(failed)
+                    $sibling.addClass('failed-validation');
+                else
+                    $sibling.removeClass('failed-validation');
+            });
+        }
     }
 };
 
