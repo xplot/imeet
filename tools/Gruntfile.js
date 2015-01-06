@@ -80,9 +80,11 @@ module.exports = function (grunt) {
                     '../static/js/external/underscore.js',
                     '../static/js/external/backbone.js',
                     '../static/js/external/stickit.js',
+					'../static/js/external/moment.js',
                     '../static/js/external/bootstrap.js',
+					'../static/js/external/datepicker.js',
                     '../static/js/external/slider.js',
-                    '../static/js/external/moment.js'
+
                 ],
                 dest: '../static/js/external.min.js'
 			},
