@@ -1,0 +1,32 @@
+<div class="modal-content">
+    <form id="registerForm">
+        <div class="close-modal" data-action="dismiss">
+            <div class="lr">
+                <div class="rl">
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                Invite Link <a href="http://imeet.io/view/<%  print(invite_id) %>"><h5 class="text-lowercase">http://imeet.io/view/<%  print(invite_id) %></h5></a>
+            </div>
+            <div class="row small-margin-top"></div>
+            <div class="row">
+               Register
+               <div class="controls">
+                   <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                        <div class="col-sm-9">
+                            <input required type="email" class="form-control register-email" placeholder="Enter email..." data-validation="email">
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-success form-control submit-register">Go</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+           </div>
+        </div>
+    </form>
+</div>

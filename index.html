@@ -22,24 +22,11 @@
     <link href="/font-awesome-4.1.0/css/custom-font.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:100,200,400" rel="stylesheet" type="text/css">
 
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="/js/external.min.js"></script>
+
 </head>
 
 <body id="page-top" class="index">
-
-{% if messages|safe %}
-    <div id="notification-alerts" class="jumbotron flyover flyover-bottom">
-           {% for message in messages %}
-                <div class="alert alert-{{ message[1]|safe }}">
-                    {{ message[0]|safe }}
-                </div>
-           {% endfor %}
-        <button class="btn btn-primary alert-close" data-dismiss="alert">X</button>
-    </div>
-{% endif %}
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -86,7 +73,7 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <div id="body-container" class="view-container">
+    <div id="body-container" class="view-container snapPanel">
         <section class="section header-section">
             <div class="header-container">
                 <div class="row">
@@ -96,27 +83,20 @@
                                 <button class="imeet-btn" data-action="modal" data-where="new">Create</button>
                             </div>
                     </div>
-                    <div class="row">
-                        <br/>
-                            <strong style="font-size: 20px">Notify by</strong><br/>
-                        <div class="col-lg-12" >
-                            <br/>
-                            Email <i class="fa fa-star fa-1x"></i> Sms <i class="fa fa-star fa-1x"></i> Phone Call
-                        </div>
-                    </div>
+
                 </div>
 
             </div>
         </section>
 
         <section class="section body-section">
-            <div class="row medium-margin-top">
+            <div class="row small-margin-top">
             </div>
             <div class="section-container" id="marketing">
                 <div class="row">
                     <div class="col-sm-4 section-item">
                         <div class="caption">
-                            <a style="cursor: pointer" class="portfolio-link navigate" data-action="modal" data-where="new">
+                            <a style="cursor: pointer" class="portfolio-link" data-action="modal" data-where="new">
                                 <i class="fa fa-group fa-5x">
                                     <div class="caption-content">Create Event</div>
                                 </i>
@@ -126,7 +106,7 @@
                     </div>
                     <div class="col-sm-4 section-item">
                         <div class="caption">
-                            <a style="cursor: pointer" class="portfolio-link navigate"  data-action="modal" data-where="search">
+                            <a style="cursor: pointer" class="portfolio-link">
                                 <i class="fa fa-mail fa-5x">
                                     <div class="caption-content">Send it</div>
                                 </i>
@@ -136,7 +116,7 @@
                     </div>
                     <div class="col-sm-4 section-item">
                         <div class="caption">
-                            <a style="cursor: pointer" class="portfolio-link navigate"  data-action="modal" data-where="register">
+                            <a style="cursor: pointer" class="portfolio-link">
                                 <i class="fa fa-happy-face fa-5x"></i>
                                 <i class="fa fa-happy-face fa-5x"></i>
                                 <i class="fa fa-happy-face fa-5x">
@@ -167,7 +147,7 @@
               <div class="row">
                 <div class="col-md-4 col-md-offset-1 section-item">
                 <div class="caption">
-                    iMeet makes easy organize your events with a group of people. Notify your friends or colleges through every possible way: SMS, email, Phone.
+                    iMeet makes it easy to organize your events with a group of people. Notify your friends or colleges through every possible way: SMS, email, Phone.
                 </div>
 
                 </div>
@@ -304,19 +284,10 @@
 
     </script>
 
-    <div id="modal_container" class="portfolio-modal modal fade contacts-modal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+    <div id="modal_container" class="portfolio-modal modal contacts-modal" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
-    <!-- jQuery Version 1.11.0 -->
-    <script src="/js/underscore.min.js"></script>
-    <script src="/js/jquery1110.min.js"></script>
-    <script src="/js/backbone.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/js/bootstrap.min.js"></script>
-
-    <script src="/js/templates.js"></script>
-    <script src="/js/views.js"></script>
-    <script src="/js/app.min.js"></script>
+     <script src="/js/imeet.min.js"></script>
 
     <script>
 
@@ -334,6 +305,19 @@
                     '{{ item }}',
                 {% endfor %}
         ];
+
+        {% if messages|safe %}
+            $(function() {
+                var notifications = [];
+                {%
+                    for message in messages %}
+                    notifications.push({
+                        alertType: '{{ message[1]|safe }}',
+                        message: "{{ message[0]|safe }}" });
+                    {%endfor %}
+                    alert_notification(notifications);
+            });
+        {% endif %}
 
     </script>
 

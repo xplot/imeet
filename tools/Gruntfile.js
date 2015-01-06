@@ -55,36 +55,6 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 	//
-	//	We will use directives to parse js files and concat them.
-	//	Our main file is app.js and within it we include the rest as we
-	//	need them.
-	//
-		directives: {
-			app: {
-				src:  '../static/js/app.js',
-				dest: 'tmp/js/app.js'
-			},
-			views: {
-				src:  '../static/js/views.js',
-				dest: 'tmp/js/views.js'
-			},
-            external: {
-              // Grunt will search for "**/*.js" under "lib/" when the "uglify" task
-              // runs and build the appropriate src-dest file mappings then, so you
-              // don't need to update the Gruntfile when files are added or removed.
-              files: [
-                  {
-                      expand: true,     // Enable dynamic expansion.
-                      cwd: '../static/js/external/',      // Src matches are relative to this path.
-                      src: ['**/*.js'], // Actual pattern(s) to match.
-                      dest: 'tmp/js/external/',   // Destination path prefix.
-                      ext: '.min.js',   // Dest filepaths will have this extension.
-                      extDot: 'first'   // Extensions in filenames begin after the first dot
-                  }
-              ]
-            }
-		},
-	//
 	//	LESS is used to parse our scss files, and we have two files that need
 	//	to be parsed and output into the /tmp folder.
 	//
@@ -101,21 +71,31 @@ module.exports = function (grunt) {
 	//
 		uglify: {
 			options: {
+                compress:true,
+                beautify:false
 			},
-			external: {
-				files: [{
-                    expand: true,     // Enable dynamic expansion.
-                    cwd: 'tmp/js/external/',      // Src matches are relative to this path.
-                    src: ['**/*.js'], // Actual pattern(s) to match.
-                    dest: '../static/js/',   // Destination path prefix.
-                }
-              ]
+            external: {
+				src: [
+                    '../static/js/external/jquery.js',
+                    '../static/js/external/underscore.js',
+                    '../static/js/external/backbone.js',
+                    '../static/js/external/stickit.js',
+					'../static/js/external/moment.js',
+                    '../static/js/external/bootstrap.js',
+					'../static/js/external/datepicker.js',
+                    '../static/js/external/slider.js',
+
+                ],
+                dest: '../static/js/external.min.js'
 			},
 			application_scripts: {
-				files: {
-					'../static/js/app.min.js': 'tmp/js/app.js',
-					'../static/js/views.min.js': 'tmp/js/views.js'
-				}
+				src: [
+                    '../static/js/templates.js',
+                    '../static/js/views/*.js',
+					'../static/js/app.js'
+                ],
+                dest: '../static/js/imeet.min.js'
+
 			}
 		},
 	//
@@ -125,7 +105,7 @@ module.exports = function (grunt) {
 			all: {
 				files: {
 					'../static/css/imeet.min.css': [
-                        '../static/less/external/bootstrapp.css',
+                        '../static/less/external/*.css',
                         'tmp/css/*.css'
                     ]
 				}
@@ -157,25 +137,23 @@ module.exports = function (grunt) {
 		watch: {
 			less: {
 				files: ['../static/less/*.less'],
-				tasks: ['less', 'cssmin']
-			},
-			libs: {
-				files: ['../static/js/external/*.js'],
 				tasks: [
-                    'directives:external',
-                    'uglify:external'
+                    'less',
+                    'cssmin'
                 ]
 			},
-			application_scripts: {
-				files: ['../static/js/*.js','!../static/js/*.min.js'],
+			libs: {
+                files: ['../static/js/external/*.js'],
 				tasks: [
-						'directives:app',
-						'directives:views',
-						'uglify:application_scripts']
+                    'uglify:external',
+                ]
 			},
-			jst: {
-				files: ['../views/**/*.html'],
-				tasks: ['jst']
+            application_scripts: {
+				files: ['../views/**/*.html','../static/js/*.js','../static/js/views/*.js','!../static/js/*.min.js'],
+				tasks: [
+                    'jst',
+                    'uglify:application_scripts'
+                ]
 			}
 		}
 	});

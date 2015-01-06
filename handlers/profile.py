@@ -564,6 +564,7 @@ class RegisterHandler(JsonHandler):
             ),
             _full=True
         )
+
         # load email's template
         template_val = {
             "app_name": self.app.config.get('app_name'),
@@ -581,7 +582,8 @@ class RegisterHandler(JsonHandler):
             'subject': subject,
             'body': body,
         })
-        return "Activation Email Sent"
+
+        return True
 
 class AccountActivationHandler(BaseHandler):
     """

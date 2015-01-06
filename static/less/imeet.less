@@ -1,18 +1,150 @@
-@import "variables";
+@import "variables"; 
 @import "mixins";
+* {
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+}
 
+html,
 body {
+    height: 100%;
 	overflow-x: hidden;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
 }
 
+#body-container{
+//This class will be different from view-container until we put all views under the same parent
+  height: 100%;
+}
+
 #body-container,
 #view-container{
-  position: absolute;
-  height: 100%;
   width: 100%;
   overflow-x: hidden;
+
+  .btn-success{
+    background-color: @btn-success !important;
+  }
+
+  .snap-panel{
+    top:60px;
+    position: absolute;
+    width: 100%;
+    bottom: 100px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .invite-create{
+    .first{
+      background-color: @panel1;
+    }
+    .second{
+      background-color: @panel2;
+    }
+    .third{
+      background-color: @panel3;
+    }
+    .fourth{
+      background-color: @panel4;
+    }
+
+    .menu-down{
+      bottom: 1%;
+    }
+
+    .menu-container {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      .menu {
+        padding: 0;
+        margin:0;
+        list-style: none;
+        z-index: 1001;
+      }
+
+      .send{
+        width: 20%;
+        bottom: 20% !important;
+      }
+    }
+
+    .invite{
+      .invite-content{
+        position: absolute;
+        height: 90%;
+        width: 100%;
+      }
+
+      .label-text{
+        padding-top: 10px;
+      }
+
+      input,textarea,select,button{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        outline: none;
+
+      }
+
+      .date-group{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        height: 43px;
+        font-size: 15px;
+        line-height: 1.42857143;
+        color: #2c3e50;
+        background-color: #fff;
+        background-image: none;
+        border: 2px solid #dce4ec;
+        border-radius: 4px;
+        float: left;
+
+        .date{
+          padding-left: 15px;
+          height: 100%;
+          width: 55%;
+          border: none;
+          margin-top: 0px;
+          margin-bottom: 0px;
+        }
+        .time{
+          height: 100%;
+          width: 43%;
+          border: none;
+          margin-top: 0px;
+          margin-bottom: 0px;
+        }
+
+        .date,.time:focus{
+          outline: none;
+        }
+      }
+
+      .invite_report{
+          .panel{
+              .panel-heading{
+                  height:60px !important;
+              }
+          }
+      }
+
+      .contact-table{
+        max-height: 70%;
+        width: 100%;
+        overflow-y: auto;
+      }
+
+      .contact-row{
+
+      }
+
+    }
+  }
 }
 
 p {
@@ -38,6 +170,10 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 700;
 }
 
+@media(max-width:768px) {
+
+
+}
 
 @media(min-width:768px) {
     .navbar-fixed-top {
@@ -74,7 +210,7 @@ h1, h2, h3, h4, h5, h6 {
           left:20px;
 	      margin: -14px -20px;
           font-weight: bold;
-          color: @nav-color;
+          color: @body-frame;
           font-size: 10px;
           margin-top:-3px;
           margin-left:-100px;
@@ -84,7 +220,7 @@ h1, h2, h3, h4, h5, h6 {
          -ms-transform: rotate(-45deg); /* IE 9 */
           -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
           transform: rotate(-45deg);
-          background-color: @body-frame;
+          background-color: @text-color;
       }
     }
 
@@ -126,7 +262,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar-default,
 .navbar-inverse {
-    color: @nav-text;
+    color: #FFF;
 	border: none;
     background-color: @nav-bg-color;
 }
@@ -154,9 +290,10 @@ h1, h2, h3, h4, h5, h6 {
             .animate(0.6s);
             font-style: normal;
             text-align: center;
+
             .caption-content {
               .animate(0.6s);
-              color: @nav-color;
+
               font-size: 30px;
               padding-top: 15px;
               font-weight: bold;
@@ -241,10 +378,12 @@ h1, h2, h3, h4, h5, h6 {
       top: 50%;
       position: relative;
       .event-name-home{
+
         display: inline-block;
         width: 500px;
         height: 70px;
-        border: 1px solid black;
+        border: 1px solid #FFF;
+
         input,
         input:focus,
         input:active,
@@ -258,7 +397,7 @@ h1, h2, h3, h4, h5, h6 {
           outline:0px !important;
           -webkit-appearance:none;
           border: none;
-          background-color: rgba(255,255,255,0.5);
+          background-color: #FFF;
         }
         input::-webkit-input-placeholder {
             color: lighten(black,25%);
@@ -544,8 +683,8 @@ form .row:first-child .floating-label-form-group {
   margin-top: 100px;
 }
 
-.left-medium-margin{
-  margin-left: 1px;
+.small-margin-left{
+  margin-left: 25px;
 }
 
 .fa-10x {
@@ -558,6 +697,10 @@ form .row:first-child .floating-label-form-group {
 
 .fa-5x {
   font-size: 5em;
+}
+
+.fa-3x{
+  font-size: 3em;
 }
 
 .fa-2x{
@@ -599,6 +742,13 @@ form .row:first-child .floating-label-form-group {
   }
 }
 
+@media(min-device-width : 768px)
+and (max-device-width : 1024px){
+  .tablet{
+      display: block;
+    }
+}
+
 @media(max-width:1024px) {
     .section {
       .section-container {
@@ -611,22 +761,55 @@ form .row:first-child .floating-label-form-group {
         }
       }
     }
-    .equidistant{
-      margin-left: 5%;
-      margin-right: 5%;
+
+    #view-container{
+      overflow-x: hidden;
+      .snap-panel{
+        top:10%;
+        height: 85%;
+      }
+
+      .invite-create{
+          .invite-content{
+          padding: 10%;
+          position: absolute;
+          height: 90%;
+          width: 100%;
+
+          .invite{
+            .label-text{
+              padding-top: 0px !important;
+            }
+          }
+      }
+
+      .menu-down{
+        top:70%;
+
+        .fa-5x{
+          font-size: 3em !important;
+        }
+      }
+
+      .menu-container{
+
+        .send{
+          width: 80%;
+        }
+      }
     }
 
-    .tablet{
-      display: block;
-    }
+  }
 }
 
 @media(max-width:768px) {
-    .equidistant{
-      margin-left: 5%;
-      margin-right: 5%;
+    *{
+      -webkit-appearance: none;
     }
-
+    .navbar-fixed-top {
+      position:absolute;
+      top:0px
+    }
     .small-margin-top{
       margin-top: 0px;
     }
@@ -681,6 +864,25 @@ form .row:first-child .floating-label-form-group {
       margin-left:0%;
     }
   }
+
+  #view-container{
+    .snap-panel{
+      height: 90%;
+    }
+
+    .invite-content{
+        padding: 1%;
+        position: absolute;
+        height: 90%;
+        width: 100%;
+
+        .invite{
+          .label-text{
+            padding-top: 0px !important;
+          }
+        }
+      }
+  }
 }
 
 
@@ -703,8 +905,10 @@ form .row:first-child .floating-label-form-group {
    z-index: 1051;
    transition: left 0.6s ease-out 0s;
 }
-.flyover.in {
-   left: 50%;
+
+.flyover-in{
+   left: 25% !important;
+   top: 5% !important;;
 }
 .flyover-centered {
    top: 50%;
@@ -715,10 +919,37 @@ form .row:first-child .floating-label-form-group {
    bottom: 10px;
 }
 
-.contact-row{
-	margin-top: 15px;
+.zero-margin{
+  margin-left: 0px;
+  margin-right: 0px;
 }
+
 
 .failed-validation{
   border: solid 1px red !important;
+}
+
+.label_title{
+    float:left;
+    text-align:right;
+    padding-right:15px;
+}
+
+#view-container{
+  overflow: hidden;
+  height: 100%;
+
+  section{
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+//  section:nth-child(2n) {
+//    background: @body-frame;
+//  }
+}
+
+
+.small-text{
+  font-size: 11px;
 }

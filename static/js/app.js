@@ -19,7 +19,7 @@ function init_app() {
     });
 
     //Login
-    login_view = new SimpleView({
+    login_view = new LoginView({
         el: "#view-container",
         templateId: "#login"
     });
@@ -43,11 +43,6 @@ function init_app() {
         childView: user_profile_view
     });
 
-    //Create Invite
-    create_invite_view = new CreateView({
-        el: "#view-container",
-    });
-
     //Search
     search_view = new SearchView({
         el: "#modal_container"
@@ -68,6 +63,15 @@ function init_app() {
         childView: invite_view
     });
 
+    sent_view = new SentView({
+        el: "#modal_container"
+    });
+
+    sent_view_modal = new ModalView({
+        el: $("#modal_container"),
+        childView: sent_view
+    });
+
     App.Router = Backbone.Router.extend({
         routes: {
             '': 'index',
@@ -77,6 +81,7 @@ function init_app() {
             'new/:title': 'new',
             'new/:title/from/:id': 'new',
             'new/from/:id': 'new_no_title',
+            'sent/:id': 'sent',
 
             'search': 'search',
             'login': 'login',
@@ -100,10 +105,18 @@ function init_app() {
 
         //Invite
         new: function (title,id) {
+            //Create Invite
+            var create_invite_view = new CreateView({
+                el: "#view-container",
+            });
             create_invite_view.render({'title':title,'id':id});
         },
         new_no_title: function (id) {
             this.new(null, id);
+        },
+        sent: function (id) {
+          sent_view_modal.childView.model = id;
+          sent_view_modal.render();
         },
         search: function () {
             search_view_modal.render();
@@ -135,9 +148,9 @@ function init_app() {
     });
 
     // Closes the Responsive Menu on Menu Item Click
-    $('.end-click').click(function() {
-        $('.navbar-toggle:visible').click();
-    });
+//    $('.end-click').click(function() {
+//        $('.navbar-toggle:visible').click();
+//    });
 
     $("body").on("input propertychange", ".floating-label-form-group", function(e) {
         $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
@@ -150,19 +163,6 @@ function init_app() {
 }
 
 $(function() {
-
-    // First, checks if it isn't implemented yet.
-    if (!String.prototype.format) {
-      String.prototype.format = function() {
-        var args = arguments;
-        return this.replace(/{(\d+)}/g, function(match, number) {
-          return typeof args[number] != 'undefined'
-            ? args[number]
-            : match
-          ;
-        });
-      };
-    }
     //Initialize Backbone see app.js
     init_app();
 });

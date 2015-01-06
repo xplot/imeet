@@ -58,11 +58,24 @@ class ContactInvite(ndb.Model):
     email_response = ndb.StringProperty()
 
 
-class Invite(BaseModel):
+class Location(BaseModel):
     unique_id = ndb.StringProperty()
-    when = ndb.DateTimeProperty(auto_now_add=True)
-    title = ndb.StringProperty()
+    address = ndb.StringProperty()
+    suite = ndb.StringProperty()
+    city = ndb.StringProperty()
+    state = ndb.StringProperty()
+    zip = ndb.StringProperty()
+    country = ndb.StringProperty()
+
+
+class Invite(BaseModel):
+    unique_id = ndb.StringProperty(required=True)
+    start = ndb.DateTimeProperty(required=True)
+    end = ndb.DateTimeProperty()
+    title = ndb.StringProperty(required=True)
+    description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
+    where = ndb.KeyProperty(kind=Location)
 
 
 class InviteIndex(ndb.Model):
