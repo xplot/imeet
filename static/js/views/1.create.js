@@ -326,14 +326,14 @@ CreateView = SimpleView.extend({
     plugins: function(){
         //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datepicker({});
-        this.$el.find('.event-start-time, .event-end-time').timepicker({});
-            /*minuteStep: 5,
+        this.$el.find('.event-start-time, .event-end-time').timepicker({
+            minuteStep: 5,
             template: false,
             appendWidgetTo: 'body',
             showSeconds: false,
             showMeridian: true,
             defaultTime: false
-        });*/
+        }); 
 
         try{
             //Snap Panel
