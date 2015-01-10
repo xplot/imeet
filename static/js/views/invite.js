@@ -44,25 +44,21 @@ InviteView = Backbone.View.extend({
                 inviteDate.html(data.start);
 
                 var contact_html = "\
-            <div id='contact{3}' class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
-                    <div class='col-sm-2  desktop'> {0} </div> \
-                    <div class='col-sm-2  desktop'>  {1} </div> \
-                    <div class='col-sm-2  desktop'> {2}</div> \
-                    <div class='col-sm-2  desktop'> {3}</div> \
-                    <div class='col-sm-2  desktop'> {4}</div> \
-                    <div class='col-sm-2  desktop'> {5}</div> \
-                    <div class='col-xs-12  mobile tablet'> {6}</div> \
+            <div class='row contact-row small-margin {3}' data-contact='{0},{1},{2}' > \
+                    <div class='col-sm-2'> {0} </div> \
+                    <div class='col-sm-2'>  {1} </div> \
+                    <div class='col-sm-2'> {2}</div> \
             </div> ";
 
                 data.contacts.forEach(function(contact){
+                    var status = "";
+                    if(contact.sms_response != null || contact.voice_reponse != null || contact.email_response != null)
+                        status = "alert-success";
                     inviteTable.append(contact_html.format(
                         contact.name || 'N/A',
-                        contact.phone || 'N/A',
-                        contact.email || 'N/A',
-                        contact.sms_response || '<span class="text-danger">N/A</span>',
-                        contact.voice_response || '<span class="text-danger">N/A</span>',
-                        contact.email_response || '<span class="text-danger">N/A</span>',
-                        that.contactToString(contact)
+                        contact.email || '',
+                        contact.phone || '',
+                        status
                     ));
 
 //                    for(var i=0;i<100;i++)

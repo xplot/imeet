@@ -14,6 +14,10 @@ body {
     font-weight: 400;
 }
 
+ul{
+  list-style-type: none;
+}
+
 #body-container{
 //This class will be different from view-container until we put all views under the same parent
   height: 100%;
@@ -954,22 +958,23 @@ and (max-width : 1023px){
   font-size: 11px;
 }
 
-
-@media(max-width:1024px) {
-
-  .invite-table {
-    height: 100%;
-    overflow-y: auto;
-    .confirmed {
-      background-color: @btn-green-success;
-    }
-    .invite_report_attendees {
-      max-height: 100%;
-      overflow-y: scroll;
-      position: absolute;
-      width: 100%;
-
-    }
-  }
+.invite-comments{
+  padding: 0px;
 }
 
+.invite-comment-row{
+  background-color: #e9eaed;
+  margin-top: 1px;
+  padding: 4px;
+  word-wrap: break-word;
+  display: list-item
+}
+
+.invite-comment-author{
+  color:#3b5998;
+  font-weight: bold;
+}
+
+.invite-newComment{
+  width: 100%;
+}
