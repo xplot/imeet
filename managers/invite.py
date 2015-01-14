@@ -200,6 +200,13 @@ class InviteManager(object):
 
         contact_invite.put()
 
+    def add_comment(self, id, author, commentText):
+        """Get the invite by id"""
+        invite = Invite.query(Invite.unique_id == id).get()
+        if invite is None:
+            raise Exception('Invite not found with id: ' + id)
+        invite.comments.add({})
+
     def _build(self, invite=None):
         if invite is None:
             invite = self.invite
