@@ -109,6 +109,7 @@ InviteView = Backbone.View.extend({
                 contact.phone || '',
                 status
             ));
+
         });
     },
     loadComments: function(comments){
