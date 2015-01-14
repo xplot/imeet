@@ -26,7 +26,7 @@ InviteView = Backbone.View.extend({
                 self.loadContacts();
 
                 self.loadComments(data.comments);
-                setInterval(function(){self.getComments(self.inviteId, self.loadComments)}, 5000);
+                setInterval(function(){self.getComments(self.inviteId, self.loadComments)}, 60000);
             }
         });
     },

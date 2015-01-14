@@ -67,6 +67,11 @@ class Location(BaseModel):
     zip = ndb.StringProperty()
     country = ndb.StringProperty()
 
+class Comment(BaseModel):
+    author = ndb.StringProperty(required=True)
+    comment = ndb.StringProperty(required=True)
+    commentedOn = ndb.DateTimeProperty(required=True)
+
 
 class Invite(BaseModel):
     unique_id = ndb.StringProperty(required=True)
@@ -76,6 +81,7 @@ class Invite(BaseModel):
     description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
     where = ndb.KeyProperty(kind=Location)
+    comments = ndb.StructuredProperty(Comment, repeated=True)
 
 
 class InviteIndex(ndb.Model):
