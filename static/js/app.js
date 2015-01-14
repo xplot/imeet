@@ -87,7 +87,8 @@ function init_app() {
             'login': 'login',
             'profile/edit': 'edit_profile',
             'register': 'register',
-            'view/:id': 'view'
+            'view/:id': 'view_as_organizer',
+            'view/:id/:contact_id': 'view_as_contact'
         },
         index: function () {
             index_view.render();
@@ -121,8 +122,11 @@ function init_app() {
         search: function () {
             search_view_modal.render();
         },
-        view: function (id) {
+        view_as_organizer: function (id) {
             invite_view_modal.render({'invite_id': id});
+        },
+        view_as_contact: function(id, contact_id){
+            invite_view_modal.render({'invite_id': id, 'contact_id': contact_id});
         }
     });
 

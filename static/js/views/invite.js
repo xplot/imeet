@@ -1,6 +1,7 @@
 InviteView = Backbone.View.extend({
     template: JST['inviteReport.html'],
     inviteId:null,
+    author: "Organizer",
 
     initialize: function(options){
         this.options = options || {};
@@ -25,6 +26,7 @@ InviteView = Backbone.View.extend({
     },
     render: function(data){
         this.inviteId = data.invite_id;
+        var contactId = data.contact_id;
 
         if(this.inviteId == null)
             console.error('Invite Id is null, check routing');
@@ -40,7 +42,7 @@ InviteView = Backbone.View.extend({
                 $('.invite-title').html(data.title);
                 $('.invite-date').html(data.start);
 
-                self.loadContacts();
+                self.loadContacts(data.contacts, contactId);
 
                 self.loadComments(data.comments);
                 setInterval(function(){self.getComments(self.inviteId, self.loadComments)}, 60000);
@@ -50,28 +52,28 @@ InviteView = Backbone.View.extend({
     addNewComment: function(eventData){
         if(eventData.charCode == 13){
 
+            var author = this.author;
             var commentText = eventData.target.value;
+            eventData.target.value = "";
 
             $('.invite-comments').append('<li class="invite-comment-row"> \
-                                            <span class="pull-left invite-comment-author">TempUser:</span> \
-                                                {0} \
+                                            <span class="pull-left invite-comment-author">{0}:</span> \
+                                                {1} \
                                          </li>'
-                                        .format(commentText));
+                                        .format(author, commentText));
 
             $.ajax({
                 url: "/api/invite/{0}/comment".format(this.inviteId),
                 type: "POST",
                 contentType: "application/json",
-                data: '{"comment": "{0}"}'.format(commentText),
+                data: '{"author": "{0}", "comment": "{1}"}'.format(author, commentText),
                 cache: false,
-                success: function(data) {
-
-                },
                 error: function(data) {
-                    alert_notification([{
-                        alertType:'danger',
-                        message: data.responseText
-                    }]);
+                    if(data.status != 200)
+                        alert_notification([{
+                            alertType:'danger',
+                            message: data.responseText
+                        }]);
                 }
             });
         }
@@ -90,7 +92,7 @@ InviteView = Backbone.View.extend({
             }
             });
     },
-    loadContacts: function(){
+    loadContacts: function(contacts, contactId){
         var contact_html = "\
             <div class='row contact-row small-margin {3}' data-contact='{0},{1},{2}' > \
                     <div class='col-sm-2'> {0} </div> \
@@ -99,7 +101,12 @@ InviteView = Backbone.View.extend({
             </div> ";
 
         var inviteTable = $('.invite-table');
-        data.contacts.forEach(function(contact){
+        var self = this;
+        contacts.forEach(function(contact){
+
+            if(contact.id == contactId)
+                self.author = contact.name || contact.email || contact.phone || "User";
+
             var status = "";
             if(contact.sms_response != null || contact.voice_reponse != null || contact.email_response != null)
                 status = "alert-success";

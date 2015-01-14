@@ -133,7 +133,7 @@ class MainHandler(BaseHandler):
     def search(self):
         return self.render_template('index.html')
 
-    def view_invite(self, id=0):
+    def view_invite(self, id=0, contact_id=0):
         return self.render_template('index.html')
 
 class EmailHandler(webapp2.RequestHandler):

@@ -29,6 +29,7 @@ app = webapp2.WSGIApplication([
     Route('/search', base.MainHandler, handler_method='search', ),
     Route('/view', base.MainHandler, handler_method='view'),
     Route('/view/<id>', base.MainHandler, handler_method='view_invite'),
+    Route('/view/<id>/<contact_id>', base.MainHandler, handler_method='view_invite'),
     Route('/sent/<id>', base.MainHandler, handler_method='view_invite'),
 
     #User Profile

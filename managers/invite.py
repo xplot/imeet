@@ -6,7 +6,7 @@ import uuid
 from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
 
-from models.models import Invite, Contact, ContactInvite, Location
+from models.models import Invite, Contact, ContactInvite, Location, Comment
 from boilerplate.models import User
 
 
@@ -212,9 +212,17 @@ class InviteManager(object):
         comment = Comment()
         comment.author = author
         comment.comment = commentText
-        comment.commentedOn = datetime
+        comment.commentedOn = datetime.datetime.now()
         invite.comments.append(comment)
         invite.put()
+
+    def get_comments(self, id):
+        invite = Invite.query(Invite.unique_id == id).get()
+        return {'comments':[{
+                'author': c.author,
+                'comment': c.comment,
+                'on': c.commentedOn.strftime("%Y-%m-%d %H:%M")
+            } for c in invite.comments]}
 
     def _build(self, invite=None):
         if invite is None:
@@ -234,16 +242,6 @@ class InviteManager(object):
 
     def _to_dict(self, invite, contacts_invites, contacts, location=None):
 
-        # comments = [{
-        #     'id' : 1,
-        #     'author': 'Javier De Paula',
-        #     'comment': "this is a test1"
-        # },{
-        #     'id' : 2,
-        #     'author': 'Rita Elena',
-        #     'comment': "this is a test2"
-        # }]
-
         if invite.comments is None:
             invite.comments = []
 
@@ -255,6 +253,7 @@ class InviteManager(object):
             'description': invite.description,
             'where': None,
             'contacts':[{
+                'id': x.unique_id,
                 'name':x.name,
                 'phone': x.phone,
                 'email':x.email,
@@ -265,7 +264,7 @@ class InviteManager(object):
             'comments':[{
                 'author': c.author,
                 'comment': c.comment,
-                'on': c.commentedOnq
+                'on': c.commentedOn.strftime("%Y-%m-%d %H:%M")
             } for c in invite.comments]
         }
 
