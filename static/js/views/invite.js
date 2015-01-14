@@ -13,43 +13,20 @@ InviteView = Backbone.View.extend({
             console.error('Invite Id is null, check routing');
 
         this.$el.html(this.template());
-        var loadComments = this.loadComments;
-        var getComments = this.getComments;
-        var inviteId = this.inviteId;
+        var self = this;
 
         $.ajax({
-            url: "/api/invite/" + inviteId,
+            url: "/api/invite/" + self.inviteId,
             type: "GET",
             cache: false,
             success: function(data) {
-                var inviteTitle = $('.invite-title');
-                var inviteDate = $('.invite-date');
-                var inviteTable = $('.invite-table');
+                $('.invite-title').html(data.title);
+                $('.invite-date').html(data.start);
 
-                inviteTitle.html(data.title);
-                inviteDate.html(data.start);
+                self.loadContacts();
 
-                var contact_html = "\
-                    <div class='row contact-row small-margin {3}' data-contact='{0},{1},{2}' > \
-                            <div class='col-sm-2'> {0} </div> \
-                            <div class='col-sm-2'>  {1} </div> \
-                            <div class='col-sm-2'> {2}</div> \
-                    </div> ";
-
-                data.contacts.forEach(function(contact){
-                    var status = "";
-                    if(contact.sms_response != null || contact.voice_reponse != null || contact.email_response != null)
-                        status = "alert-success";
-                    inviteTable.append(contact_html.format(
-                        contact.name || 'N/A',
-                        contact.email || '',
-                        contact.phone || '',
-                        status
-                    ));
-                });
-
-                loadComments(data.comments);
-                setInterval(function(){getComments(inviteId, loadComments)}, 5000);
+                self.loadComments(data.comments);
+                setInterval(function(){self.getComments(self.inviteId, self.loadComments)}, 5000);
             }
         });
     },
@@ -65,21 +42,21 @@ InviteView = Backbone.View.extend({
                                         .format(commentText));
 
             $.ajax({
-            url: "/api/invite/{0}/comment".format(this.inviteId),
-            type: "POST",
-            contentType: "application/json",
-            data: '{"comment": "{0}"}'.format(commentText),
-            cache: false,
-            success: function(data) {
+                url: "/api/invite/{0}/comment".format(this.inviteId),
+                type: "POST",
+                contentType: "application/json",
+                data: '{"comment": "{0}"}'.format(commentText),
+                cache: false,
+                success: function(data) {
 
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
-            }
-        });
+                },
+                error: function(data) {
+                    alert_notification([{
+                        alertType:'danger',
+                        message: data.responseText
+                    }]);
+                }
+            });
         }
     },
     getComments: function(inviteId, loadComments){
@@ -96,17 +73,38 @@ InviteView = Backbone.View.extend({
             }
             });
     },
+    loadContacts: function(){
+        var contact_html = "\
+            <div class='row contact-row small-margin {3}' data-contact='{0},{1},{2}' > \
+                    <div class='col-sm-2'> {0} </div> \
+                    <div class='col-sm-2'>  {1} </div> \
+                    <div class='col-sm-2'> {2}</div> \
+            </div> ";
+
+        var inviteTable = $('.invite-table');
+        data.contacts.forEach(function(contact){
+            var status = "";
+            if(contact.sms_response != null || contact.voice_reponse != null || contact.email_response != null)
+                status = "alert-success";
+            inviteTable.append(contact_html.format(
+                contact.name || 'N/A',
+                contact.email || '',
+                contact.phone || '',
+                status
+            ));
+        });
+    },
     loadComments: function(comments){
         var inviteCommentsElement = $('.invite-comments');
         var commentsHTML = "";
         comments.forEach(function(comment){
             commentsHTML = commentsHTML.concat('<li id="{0}" class="invite-comment-row"> \
-                                            <span class="pull-left invite-comment-author">{1}:</span> \
-                                            {2} \
-                                          </li>'
-                                          .format(comment.id,
-                                                  comment.author,
-                                                  comment.comment))
+                                                    <span class="pull-left invite-comment-author">{1}:</span> \
+                                                    {2} \
+                                                </li>'
+                                                .format(comment.id,
+                                                        comment.author,
+                                                        comment.comment))
         });
         inviteCommentsElement.html(commentsHTML);
     },
