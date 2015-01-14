@@ -742,8 +742,8 @@ form .row:first-child .floating-label-form-group {
   }
 }
 
-@media(min-device-width : 768px)
-and (max-device-width : 1024px){
+@media(min-width : 768px)
+and (max-width : 1023px){
   .tablet{
       display: block;
     }
@@ -953,3 +953,23 @@ and (max-device-width : 1024px){
 .small-text{
   font-size: 11px;
 }
+
+
+@media(max-width:1024px) {
+
+  .invite-table {
+    height: 100%;
+    overflow-y: auto;
+    .confirmed {
+      background-color: @btn-green-success;
+    }
+    .invite_report_attendees {
+      max-height: 100%;
+      overflow-y: scroll;
+      position: absolute;
+      width: 100%;
+
+    }
+  }
+}
+
