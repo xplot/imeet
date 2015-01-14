@@ -205,7 +205,16 @@ class InviteManager(object):
         invite = Invite.query(Invite.unique_id == id).get()
         if invite is None:
             raise Exception('Invite not found with id: ' + id)
-        invite.comments.add({})
+
+        if invite.comments is None:
+            invite.comment = []
+
+        comment = Comment()
+        comment.author = author
+        comment.comment = commentText
+        comment.commentedOn = datetime
+        invite.comments.append(comment)
+        invite.put()
 
     def _build(self, invite=None):
         if invite is None:
@@ -225,15 +234,18 @@ class InviteManager(object):
 
     def _to_dict(self, invite, contacts_invites, contacts, location=None):
 
-        comments = [{
-            'id' : 1,
-            'author': 'Javier De Paula',
-            'comment': "this is a test1"
-        },{
-            'id' : 2,
-            'author': 'Rita Elena',
-            'comment': "this is a test2"
-        }]
+        # comments = [{
+        #     'id' : 1,
+        #     'author': 'Javier De Paula',
+        #     'comment': "this is a test1"
+        # },{
+        #     'id' : 2,
+        #     'author': 'Rita Elena',
+        #     'comment': "this is a test2"
+        # }]
+
+        if invite.comments is None:
+            invite.comments = []
 
         initial = {
             'unique_id':invite.unique_id,
@@ -251,10 +263,10 @@ class InviteManager(object):
                 'email_response': contacts_invites[x.unique_id].email_response,
             } for x in contacts],
             'comments':[{
-                'id' : c['id'],
-                'author': c['author'],
-                'comment': c['comment'],
-            } for c in comments]
+                'author': c.author,
+                'comment': c.comment,
+                'on': c.commentedOnq
+            } for c in invite.comments]
         }
 
         if location is not None:

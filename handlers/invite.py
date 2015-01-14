@@ -83,9 +83,7 @@ class InviteHandler(JsonHandler):
         r.raise_for_status()
 
     def add_comment(self, id):
-        #add the comment here
         data = self._data()
-        logging.info(data['comment'])
         InviteManager().add_comment(data['comment'])
 
     def get_comments(self, id):
