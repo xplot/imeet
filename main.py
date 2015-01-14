@@ -64,5 +64,9 @@ app = webapp2.WSGIApplication([
           handler_method='view', methods=['GET']),
     Route('/api/<invite_id>/contact/<contact_id>/response', invite.InviteHandler, name='accept_response',
           handler_method='accept_response', methods=['POST']),
+    Route('/api/invite/<id>/comment', invite.InviteHandler, name='add_comment', handler_method='add_comment', methods=['POST']),
+    Route('/api/invite/<id>/comments', invite.InviteHandler, name='get_last_comments', handler_method='get_last_comments', methods=['GET']),
+
+
 
 ], config=config,debug=True)

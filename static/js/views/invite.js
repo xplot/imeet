@@ -27,11 +27,11 @@ InviteView = Backbone.View.extend({
                 inviteDate.html(data.start);
 
                 var contact_html = "\
-            <div class='row contact-row small-margin {3}' data-contact='{0},{1},{2}' > \
-                    <div class='col-sm-2'> {0} </div> \
-                    <div class='col-sm-2'>  {1} </div> \
-                    <div class='col-sm-2'> {2}</div> \
-            </div> ";
+                    <div class='row contact-row small-margin {3}' data-contact='{0},{1},{2}' > \
+                            <div class='col-sm-2'> {0} </div> \
+                            <div class='col-sm-2'>  {1} </div> \
+                            <div class='col-sm-2'> {2}</div> \
+                    </div> ";
 
                 data.contacts.forEach(function(contact){
                     var status = "";
@@ -43,9 +43,52 @@ InviteView = Backbone.View.extend({
                         contact.phone || '',
                         status
                     ));
-                })
+                });
+
+                var inviteCommentsElement = $('.invite-comments');
+                data.comments.forEach(function(comment){
+                    inviteCommentsElement.append('<li id="{0}" class="invite-comment-row"> \
+                                                    <span class="pull-left invite-comment-author">{1}:</span> \
+                                                    {2} \
+                                                  </li>'
+                                                  .format(comment.id,
+                                                          comment.author,
+                                                          comment.comment))
+                });
 
             }
         });
+    },
+    addNewComment: function(eventData){
+        if(eventData.charCode == 13){
+
+            var commentText = eventData.target.value;
+
+            $('.invite-comments').append('<li class="invite-comment-row"> \
+                                            <span class="pull-left invite-comment-author">TempUser:</span> \
+                                                {0} \
+                                         </li>'
+                                        .format(commentText));
+
+            $.ajax({
+            url: "/api/invite/{0}/comment".format(this.inviteId),
+            type: "POST",
+            contentType: "application/json",
+            data: '{"comment": "{0}"}'.format(commentText),
+            cache: false,
+            success: function(data) {
+
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+        }
+    },
+    events: {
+        "keypress .invite-newComment": "addNewComment"
     }
 });
