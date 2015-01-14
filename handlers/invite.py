@@ -87,8 +87,21 @@ class InviteHandler(JsonHandler):
         data = self._data()
         logging.info(data['comment'])
 
-    def get_last_comments(self, id):
-        data = self._data()
-        logging.info(data['last_comment_id'])
+    def get_comments(self, id):
+        comments = [{
+            'id' : 1,
+            'author': 'Javier De Paula',
+            'comment': "this is a test1"
+        },{
+            'id' : 2,
+            'author': 'Rita Elena',
+            'comment': "this is a test2"
+        },{
+            'id' : 3,
+            'author': 'Ajadex Lopez',
+            'comment': "this is a test3"
+        }]
+        return comments
+
 
 

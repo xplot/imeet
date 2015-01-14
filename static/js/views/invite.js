@@ -13,9 +13,12 @@ InviteView = Backbone.View.extend({
             console.error('Invite Id is null, check routing');
 
         this.$el.html(this.template());
+        var loadComments = this.loadComments;
+        var getComments = this.getComments;
+        var inviteId = this.inviteId;
 
         $.ajax({
-            url: "/api/invite/" + this.inviteId,
+            url: "/api/invite/" + inviteId,
             type: "GET",
             cache: false,
             success: function(data) {
@@ -45,17 +48,8 @@ InviteView = Backbone.View.extend({
                     ));
                 });
 
-                var inviteCommentsElement = $('.invite-comments');
-                data.comments.forEach(function(comment){
-                    inviteCommentsElement.append('<li id="{0}" class="invite-comment-row"> \
-                                                    <span class="pull-left invite-comment-author">{1}:</span> \
-                                                    {2} \
-                                                  </li>'
-                                                  .format(comment.id,
-                                                          comment.author,
-                                                          comment.comment))
-                });
-
+                loadComments(data.comments);
+                setInterval(function(){getComments(inviteId, loadComments)}, 5000);
             }
         });
     },
@@ -87,6 +81,34 @@ InviteView = Backbone.View.extend({
             }
         });
         }
+    },
+    getComments: function(inviteId, loadComments){
+        $.ajax({
+            url: "/api/invite/{0}/comments".format(inviteId),
+            type: "GET",
+            contentType: "application/json",
+            cache: false,
+            success: function(comments) {
+                loadComments(comments);
+            },
+            error: function(data) {
+                //log the error
+            }
+            });
+    },
+    loadComments: function(comments){
+        var inviteCommentsElement = $('.invite-comments');
+        var commentsHTML = "";
+        comments.forEach(function(comment){
+            commentsHTML = commentsHTML.concat('<li id="{0}" class="invite-comment-row"> \
+                                            <span class="pull-left invite-comment-author">{1}:</span> \
+                                            {2} \
+                                          </li>'
+                                          .format(comment.id,
+                                                  comment.author,
+                                                  comment.comment))
+        });
+        inviteCommentsElement.html(commentsHTML);
     },
     events: {
         "keypress .invite-newComment": "addNewComment"
