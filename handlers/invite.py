@@ -81,3 +81,14 @@ class InviteHandler(JsonHandler):
         if r.status_code != 200:
             logging.error(r.text)
         r.raise_for_status()
+
+    def add_comment(self, id):
+        #add the comment here
+        data = self._data()
+        logging.info(data['comment'])
+
+    def get_last_comments(self, id):
+        data = self._data()
+        logging.info(data['last_comment_id'])
+
+
