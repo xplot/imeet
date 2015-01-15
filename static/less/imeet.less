@@ -149,6 +149,38 @@ ul{
 
     }
   }
+
+  .invite-view{
+    width: 100%;
+    top:50px;
+    bottom: 0px;
+    position: absolute;
+    overflow-y: auto;
+    padding: 5%;
+
+    .invite-content{
+
+      width: 100%;
+
+      .hangout{
+        padding: 10px;
+
+        ul{
+          max-height: 200px;
+          overflow-y: auto;
+        }
+        input{
+          padding: 5px;
+        }
+      }
+
+      .attendees{
+
+      }
+    }
+
+
+  }
 }
 
 p {
@@ -175,7 +207,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media(max-width:768px) {
-
+  .invite-view {
+    padding: 0% !important;
+  }
 
 }
 
@@ -881,9 +915,6 @@ and (max-width : 1023px){
     .invite-content{
         padding: 1%;
         position: absolute;
-        height: 90%;
-        width: 100%;
-
         .invite{
           .label-text{
             padding-top: 0px !important;
@@ -957,14 +988,7 @@ and (max-width : 1023px){
 //  }
 }
 
-.hangout{
 
-  padding: 10px;
-
-  input{
-    padding: 5px;
-  }
-}
 
 .small-text{
   font-size: 11px;
@@ -990,4 +1014,13 @@ and (max-width : 1023px){
 .invite-newComment{
   width: 100%;
 
+}
+
+.animate_comment {
+
+  -moz-transition: background-color 5s;
+  -webkit-transition: background-color 5s;
+  -o-transition: background-color 5s;
+  -ms-transition: background-color 5s;
+  transition: background-color 5s;
 }

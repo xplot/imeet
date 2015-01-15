@@ -55,12 +55,7 @@ function init_app() {
 
     //Report
     invite_view = new InviteView({
-        el: "#modal_container"
-    });
-
-    invite_view_modal = new ModalView({
-        el: $("#modal_container"),
-        childView: invite_view
+        el: "#view-container",
     });
 
     sent_view = new SentView({
@@ -123,10 +118,10 @@ function init_app() {
             search_view_modal.render();
         },
         view_as_organizer: function (id) {
-            invite_view_modal.render({'invite_id': id});
+            invite_view.render({'invite_id': id});
         },
         view_as_contact: function(id, contact_id){
-            invite_view_modal.render({'invite_id': id, 'contact_id': contact_id});
+            invite_view.render({'invite_id': id, 'contact_id': contact_id});
         }
     });
 

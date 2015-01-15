@@ -1,4 +1,4 @@
-InviteView = Backbone.View.extend({
+InviteView = SimpleView.extend({
     template: JST['inviteReport.html'],
     inviteId:null,
     author: "Organizer",
@@ -7,24 +7,10 @@ InviteView = Backbone.View.extend({
         this.options = options || {};
         this.inviteId = this.options.id;
     },
-    contactToString: function(contact){
-        var contactString = "<div>{0} {1} {2} <div style='width: 50px;float: left' class='{3}'>YES</div></div>";
 
-        var confirmed = contact.sms_response != null
-            || contact.voice_response != null || contact.email_response!= null
-            || false;
-        var item_class = "hidden";
-        if(confirmed)
-            item_class = 'confirmed';
-
-        return contactString.format(
-                contact.name || '',
-                contact.phone || '',
-                contact.email || '',
-                item_class
-        );
-    },
     render: function(data){
+        this.hidePanels();
+
         this.inviteId = data.invite_id;
         var contactId = data.contact_id;
 
@@ -45,9 +31,10 @@ InviteView = Backbone.View.extend({
                 $('.invite-date').html(data.start);
 
                 self.loadContacts(data.contacts, contactId);
+                self.currentCommentIndex = data.comments.length;
 
                 self.loadComments(data.comments);
-                setInterval(function(){self.getComments(self.inviteId, self.loadComments)}, 60000);
+                setInterval(function(){self.getComments(self.inviteId, data.comments.length, self.loadComments)}, 60000);
             }
         });
     },
@@ -63,6 +50,7 @@ InviteView = Backbone.View.extend({
                                                 {1} \
                                          </li>'
                                         .format(author, commentText));
+            $('.invite-comments').scrollTop(1000000);
 
             $.ajax({
                 url: "/api/invite/{0}/comment".format(this.inviteId),
@@ -80,19 +68,19 @@ InviteView = Backbone.View.extend({
             });
         }
     },
-    getComments: function(inviteId, loadComments){
+    getComments: function(inviteId, currentCommentIndex, loadComments){
         $.ajax({
             url: "/api/invite/{0}/comments".format(inviteId),
             type: "GET",
             contentType: "application/json",
             cache: false,
-            success: function(comments) {
-                loadComments(comments);
+            success: function(data) {
+                loadComments(data.comments, currentCommentIndex);
             },
             error: function(data) {
-                //log the error
+
             }
-            });
+        });
     },
     loadContacts: function(contacts, contactId){
         var contact_html = "\
@@ -112,8 +100,9 @@ InviteView = Backbone.View.extend({
                 self.author = contact.name || contact.email || contact.phone || "User";
 
             var status = "";
-            if(contact.sms_response == null & contact.voice_reponse != null & contact.email_response != null)
+            if(contact.sms_response == null & contact.voice_reponse == null & contact.email_response == null)
                 status = "hidden";
+
             inviteTable.append(contact_html.format(
                 contact.name || '',
                 contact.email || '',
@@ -123,18 +112,31 @@ InviteView = Backbone.View.extend({
 
         });
     },
-    loadComments: function(comments){
+
+    loadComments: function(comments, currentCommentIndex){
         var inviteCommentsElement = $('.invite-comments');
         var commentsHTML = "";
+        var index = 1;
+        var that = this;
+        var initial = currentCommentIndex == null;
+
         comments.forEach(function(comment){
+            var should_animate = "";
+            if(!initial && index >= currentCommentIndex)
+                should_animate = "animate_comment";
+
             commentsHTML = commentsHTML.concat('\
-                <li id="{0}" class="invite-comment-row"> \
+                <li id="{0}" class="invite-comment-row {3}"> \
                     <span class="pull-left invite-comment-author">{1}:</span> \
                     {2} \
-                </li>'.format(comment.id, comment.author, comment.comment)
-            )
+                </li>'.format(comment.id, comment.author, comment.comment, should_animate)
+            );
+            index++;
         });
         inviteCommentsElement.html(commentsHTML);
+        that.currentCommentIndex = comments.lenght;
+
+        inviteCommentsElement.scrollTop(1000000);
     },
     events: {
         "keypress .invite-newComment": "addNewComment"

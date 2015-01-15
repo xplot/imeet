@@ -218,11 +218,14 @@ class InviteManager(object):
 
     def get_comments(self, id):
         invite = Invite.query(Invite.unique_id == id).get()
-        return {'comments':[{
+
+        return {
+            'comments': [{
                 'author': c.author,
                 'comment': c.comment,
                 'on': c.commentedOn.strftime("%Y-%m-%d %H:%M")
-            } for c in invite.comments]}
+            } for c in invite.comments]
+        }
 
     def _build(self, invite=None):
         if invite is None:

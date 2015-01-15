@@ -87,7 +87,7 @@ class InviteHandler(JsonHandler):
         InviteManager().add_comment(id, data['author'], data['comment'])
 
     def get_comments(self, id):
-        InviteManager().get_comments(id)
+        return InviteManager().get_comments(id)
 
 
 
