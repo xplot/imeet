@@ -39,7 +39,9 @@ InviteView = Backbone.View.extend({
             type: "GET",
             cache: false,
             success: function(data) {
+
                 $('.invite-title').html(data.title);
+                $('.invite-location').html(data.where);
                 $('.invite-date').html(data.start);
 
                 self.loadContacts(data.contacts, contactId);
@@ -94,24 +96,26 @@ InviteView = Backbone.View.extend({
     },
     loadContacts: function(contacts, contactId){
         var contact_html = "\
-            <div class='row contact-row small-margin {3}' data-contact='{0},{1},{2}' > \
-                    <div class='col-sm-2'> {0} </div> \
-                    <div class='col-sm-2'>  {1} </div> \
-                    <div class='col-sm-2'> {2}</div> \
+            <div class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
+                    <div class='col-xs-2'> \
+                        <i class='fa fa-like fa-1_2x {3}'></i> \
+                    </div>\
+                    <div class='col-xs-6'> \
+                             {0} {1},{2} \
+                    </div> \
             </div> ";
 
         var inviteTable = $('.invite-table');
         var self = this;
         contacts.forEach(function(contact){
-
             if(contact.id == contactId)
                 self.author = contact.name || contact.email || contact.phone || "User";
 
             var status = "";
-            if(contact.sms_response != null || contact.voice_reponse != null || contact.email_response != null)
-                status = "alert-success";
+            if(contact.sms_response == null & contact.voice_reponse != null & contact.email_response != null)
+                status = "hidden";
             inviteTable.append(contact_html.format(
-                contact.name || 'N/A',
+                contact.name || '',
                 contact.email || '',
                 contact.phone || '',
                 status
@@ -123,13 +127,12 @@ InviteView = Backbone.View.extend({
         var inviteCommentsElement = $('.invite-comments');
         var commentsHTML = "";
         comments.forEach(function(comment){
-            commentsHTML = commentsHTML.concat('<li id="{0}" class="invite-comment-row"> \
-                                                    <span class="pull-left invite-comment-author">{1}:</span> \
-                                                    {2} \
-                                                </li>'
-                                                .format(comment.id,
-                                                        comment.author,
-                                                        comment.comment))
+            commentsHTML = commentsHTML.concat('\
+                <li id="{0}" class="invite-comment-row"> \
+                    <span class="pull-left invite-comment-author">{1}:</span> \
+                    {2} \
+                </li>'.format(comment.id, comment.author, comment.comment)
+            )
         });
         inviteCommentsElement.html(commentsHTML);
     },
