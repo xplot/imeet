@@ -46,6 +46,7 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/social_login/<provider_name>/complete', profile.CallbackSocialLoginHandler, name='social-login-complete', strict_slash=True),
     RedirectRoute('/social_login/<provider_name>/delete', profile.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),
 
+    RedirectRoute('/social_sharing/facebook', profile.SocialSharingHandler, name='social-sharing-facebook', handler_method='facebook', strict_slash=True),
 
     RedirectRoute('/taskqueue-send-email/', base.SendEmailHandler, name='taskqueue-send-email', strict_slash=True),
 
@@ -68,6 +69,6 @@ app = webapp2.WSGIApplication([
     Route('/api/invite/<id>/comment', invite.InviteHandler, name='add_comment', handler_method='add_comment', methods=['POST']),
     Route('/api/invite/<id>/comments', invite.InviteHandler, name='get_comments', handler_method='get_comments', methods=['GET']),
 
-
+    Route('_blank', base.MainHandler, name='blank', handler_method='blank'),
 
 ], config=config,debug=True)

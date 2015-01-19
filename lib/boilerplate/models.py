@@ -76,6 +76,15 @@ class User(User):
                 result['unused'].append(v)
         return result
 
+    def get_social_providers_tokens(self):
+        social_user_objects = SocialUser.get_by_user(self.key)
+        result = {}
+
+        for social_user_object in social_user_objects:
+            extra_data = social_user_object.extra_data
+            if extra_data.get('access_token', None):
+                result[social_user_object.provider] = extra_data['access_token']
+        return result
 
 class LogVisit(ndb.Model):
     user = ndb.KeyProperty(kind=User)

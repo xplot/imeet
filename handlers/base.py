@@ -136,6 +136,9 @@ class MainHandler(BaseHandler):
     def view_invite(self, id=0, contact_id=0):
         return self.render_template('index.html')
 
+    def blank(self):
+        return self.render_template('blank.html')
+
 class EmailHandler(webapp2.RequestHandler):
     def send(self):
         email = self.request.get('email')

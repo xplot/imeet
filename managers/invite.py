@@ -43,7 +43,9 @@ class InviteManager(object):
                 'zip':      '12313'
             },
             'title': 'Candle',
-
+            'sharing_options':{
+                'facebook':True,
+            }
             'user_id': u'5302669702856704' #Not mandatory, could be anonymous
         }
         """
@@ -123,6 +125,7 @@ class InviteManager(object):
         invite_dict = self.invite_dict
         invite_dict['EmailTemplate'] = invite_template
         invite_dict['ExtraContextData'] = extra_data
+        invite_dict['sharingOptions'] = self.sharing_options(invite_dict)
 
         import logging
         logging.info("Invite to Send")
@@ -280,3 +283,14 @@ class InviteManager(object):
                 'zip':location.zip
             }
         return initial
+
+    def sharing_options(self, invite_dict):
+        if not invite_dict.get('facebook_share', None):
+            return None
+        sharing_options = {}
+        social_provider_tokens = self.user.get_social_providers_tokens()
+
+        if social_provider_tokens.get('facebook', None):
+            sharing_options['FacebookAccessToken'] = social_provider_tokens['facebook']
+
+        return sharing_options

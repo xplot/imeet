@@ -290,7 +290,9 @@
      <script src="/js/imeet.min.js"></script>
 
     <script>
-
+        var api = {
+          url: '{{ host_url }}',
+        };
         var currentUser =
         {% if username %}
         {

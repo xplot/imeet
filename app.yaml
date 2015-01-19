@@ -9,9 +9,11 @@ builtins:
 - deferred: on
 
 handlers:
-- url: /favicon.ico
-  static_files: /favicon.ico
-  upload: /favicon.ico
+- url: /favicon\.ico
+  mime_type: image/vnd.microsoft.icon
+  static_files: favicon.ico
+  upload: favicon.ico
+
 - url: /css
   static_dir: static/css
 - url: /js

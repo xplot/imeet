@@ -96,7 +96,8 @@ CreateView = SimpleView.extend({
     events: {
        'click .new-contact' : 'newContact',
        'click .remove-contact': 'removeContact',
-       'click .send': 'submitNew'
+       'click .send': 'submitNew',
+       'click .share_facebook' : 'share_on_facebook_auth'
     },
 
     template: JST['invite.html'],
@@ -255,6 +256,7 @@ CreateView = SimpleView.extend({
                 'state': this.model.attributes['address.state'],
                 'zip': this.model.attributes['address.zip']
             },
+            'facebook_share': true,
             'user_id': (currentUser!=null)?currentUser.id: null,
             'contacts': this.normalizeContacts(this.model.attributes.contacts)
         };
@@ -321,6 +323,15 @@ CreateView = SimpleView.extend({
         else
           return {phone: addresses[0], email: addresses[1]};
       }
+    },
+
+    share_on_facebook_auth: function(){
+        //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
+        window.open(
+            api.url + "/social_sharing/facebook",
+            "_blank",
+            "toolbar=no, scrollbars=no, resizable=yes, top=500, left=500, width=400, height=400"
+        );
     },
 
     plugins: function(){
