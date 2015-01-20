@@ -97,7 +97,8 @@ CreateView = SimpleView.extend({
        'click .new-contact' : 'newContact',
        'click .remove-contact': 'removeContact',
        'click .send': 'submitNew',
-       'click .share_facebook' : 'share_on_facebook_auth'
+       'change .share_to_facebook': 'share_on_facebook_auth'
+       //'click .share_to_facebook' : 'share_on_facebook_auth'
     },
 
     template: JST['invite.html'],
@@ -302,39 +303,46 @@ CreateView = SimpleView.extend({
     },
 
     parsePhoneAndEmail: function(addressString){
-      var trimmedAddressString = addressString.trim();
-      var addresses = addressString.split(';');
-      if(addresses.length == 1)
-        addresses = addressString.split(',');
+        var trimmedAddressString = addressString.trim();
+        var addresses = addressString.split(';');
+        if(addresses.length == 1)
+            addresses = addressString.split(',');
 
-      for(var i=0; i < addresses.length; i++)
-        addresses[i] = addresses[i].trim();
+        for(var i=0; i < addresses.length; i++)
+            addresses[i] = addresses[i].trim();
 
-      //only 1 address (phone or email)
-      if(addresses.length == 1){
-        if(isNaN(addresses[0]))
-          return {email: addresses[0], phone: ''};
-        else
-          return {phone: addresses[0], email: ''};
-      }
-      else{ //phone and email at the same time.
-        if(isNaN(addresses[0]))
-          return {email: addresses[0], phone: addresses[1]};
-        else
-          return {phone: addresses[0], email: addresses[1]};
-      }
+        //only 1 address (phone or email)
+        if(addresses.length == 1){
+            if(isNaN(addresses[0]))
+                return {email: addresses[0], phone: ''};
+            else
+                return {phone: addresses[0], email: ''};
+        }
+        else{ //phone and email at the same time.
+            if(isNaN(addresses[0]))
+                return {email: addresses[0], phone: addresses[1]};
+            else
+                return {phone: addresses[0], email: addresses[1]};
+        }
     },
 
     share_on_facebook_auth: function(){
         //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
+
         window.open(
             api.url + "/social_sharing/facebook",
             "_blank",
-            "toolbar=no, scrollbars=no, resizable=yes, top=500, left=500, width=400, height=400"
+            "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500, width=400, height=400"
         );
     },
 
     plugins: function(){
+        $('#bt_toggle').bootstrapToggle();
+
+         $('#bt_toggle').change(function() {
+            console.log($(this).prop('checked'));
+        });
+
         //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datetimepicker({
             pickTime: false,
@@ -342,14 +350,6 @@ CreateView = SimpleView.extend({
         this.$el.find('.event-start-time, .event-end-time').datetimepicker({
             pickDate: false,  
         });
-        // this.$el.find('.event-start-time, .event-end-time').timepicker({
-        //     minuteStep: 5,
-        //     template: false,
-        //     appendWidgetTo: 'body',
-        //     showSeconds: false,
-        //     showMeridian: true,
-        //     defaultTime: false
-        // });
 
         try{
             //Snap Panel

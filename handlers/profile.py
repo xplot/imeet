@@ -233,9 +233,11 @@ class CallbackSocialLoginHandler(BaseHandler):
         # facebook association
         if provider_name == "facebook":
             code = self.request.get('code')
-            callback_url = "%s/social_login/%s/complete" % (
+            import urllib
+            callback_url = "%s/social_login/%s/complete?continue_url=%s" % (
                 self.request.host_url,
-                provider_name
+                provider_name,
+                urllib.quote_plus(continue_url)
             )
 
             token = facebook.get_access_token_from_code(
@@ -247,6 +249,9 @@ class CallbackSocialLoginHandler(BaseHandler):
             access_token = token['access_token']
             fb = facebook.GraphAPI(access_token)
             user_data = fb.get_object('me')
+
+            logging.info("Obtained Access Token")
+            logging.info(access_token)
 
             if self.user:
                 # new association with facebook
@@ -452,9 +457,10 @@ class SocialSharingHandler(BaseHandler):
     """
     def facebook(self):
         provider = 'facebook'
-        callback_url = "%s/social_login/%s/complete" % (
+        callback_url = "%s/social_login/%s/complete?continue_url=%s" % (
             self.request.host_url,
             'facebook',
+            self.uri_for('blank')
         )
         perms = ['email', 'publish_stream']
         fb_url = facebook.auth_url(self.app.config.get('fb_api_key'), callback_url, perms)

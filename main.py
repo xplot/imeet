@@ -21,6 +21,7 @@ from config import config
 
 app = webapp2.WSGIApplication([
     Route('/', base.MainHandler, name='home'),
+    Route('/_blank', base.MainHandler, name='blank', handler_method='blank'),
 
     Route('/new', base.MainHandler),
     Route('/new/<invite_name>', base.MainHandler),
@@ -69,6 +70,6 @@ app = webapp2.WSGIApplication([
     Route('/api/invite/<id>/comment', invite.InviteHandler, name='add_comment', handler_method='add_comment', methods=['POST']),
     Route('/api/invite/<id>/comments', invite.InviteHandler, name='get_comments', handler_method='get_comments', methods=['GET']),
 
-    Route('_blank', base.MainHandler, name='blank', handler_method='blank'),
+
 
 ], config=config,debug=True)
