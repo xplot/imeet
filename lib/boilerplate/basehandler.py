@@ -171,6 +171,17 @@ class BaseHandler(webapp2.RequestHandler):
         return login_urls
 
     @webapp2.cached_property
+    def user_social_sharing(self):
+        social_sharing = {}
+        user = self.user_model.get_by_id(long(self.user_id))
+        tokens = user.get_social_providers_tokens()
+
+        if tokens.get('facebook', None):
+            social_sharing['facebook_sharing_enabled'] = True
+
+        return social_sharing
+
+    @webapp2.cached_property
     def provider_info(self):
         return models.SocialUser.PROVIDERS_INFO
 
@@ -285,6 +296,9 @@ class BaseHandler(webapp2.RequestHandler):
             kwargs['form'] = self.form
         if self.messages:
             kwargs['messages'] = self.messages
+
+        if self.user:
+            kwargs.update(self.user_social_sharing)
 
         self.response.headers.add_header('X-UA-Compatible', 'IE=Edge,chrome=1')
 

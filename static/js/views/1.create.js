@@ -328,7 +328,8 @@ CreateView = SimpleView.extend({
 
     share_on_facebook_auth: function(){
         //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
-
+        if(currentUser.social_sharing.facebook || !$(this).is(':checked'))
+            return;
         window.open(
             api.url + "/social_sharing/facebook",
             "_blank",

@@ -563,6 +563,12 @@ def get_access_token_from_code(code, redirect_uri, app_id, app_secret):
     }
     # We would use GraphAPI.request() here, except for that the fact
     # that the response is a key-value pair, and not JSON.
+
+    import logging
+    logging.info("WHen accessing access_Token")
+    logging.info("https://graph.facebook.com/oauth/access_token" +
+                              "?" + urllib.urlencode(args))
+
     response = urllib.urlopen("https://graph.facebook.com/oauth/access_token" +
                               "?" + urllib.urlencode(args)).read()
     query_str = parse_qs(response)

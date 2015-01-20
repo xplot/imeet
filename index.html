@@ -297,6 +297,9 @@
         {% if username %}
         {
           id: '{{user_id}}',
+          social_sharing:{
+                facebook: {{'true' if facebook_sharing_enabled else 'false'}}
+           }
         };
         {%else %}
             null;

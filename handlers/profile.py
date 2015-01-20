@@ -228,18 +228,16 @@ class CallbackSocialLoginHandler(BaseHandler):
 
     def get(self, provider_name):
 
-        continue_url = self.request.get('continue_url')
+        continue_url = self.request.get('continue_url', None)
 
         # facebook association
         if provider_name == "facebook":
             code = self.request.get('code')
-            import urllib
-            callback_url = "%s/social_login/%s/complete?continue_url=%s" % (
-                self.request.host_url,
-                provider_name,
-                urllib.quote_plus(continue_url)
-            )
 
+            callback_url = "%s/social_login/%s/complete" % (
+                self.request.host_url,
+                provider_name
+            )
             token = facebook.get_access_token_from_code(
                 code,
                 callback_url,
@@ -249,9 +247,6 @@ class CallbackSocialLoginHandler(BaseHandler):
             access_token = token['access_token']
             fb = facebook.GraphAPI(access_token)
             user_data = fb.get_object('me')
-
-            logging.info("Obtained Access Token")
-            logging.info(access_token)
 
             if self.user:
                 # new association with facebook
@@ -277,6 +272,9 @@ class CallbackSocialLoginHandler(BaseHandler):
                 else:
                     message = _('Facebook account updated')
                     self.add_message(message, 'success')
+
+                    #For now
+                    continue_url = self.uri_for('blank')
 
                     social_user.extra_data = user_data
                     social_user.put()
@@ -457,15 +455,19 @@ class SocialSharingHandler(BaseHandler):
     """
     def facebook(self):
         provider = 'facebook'
-        callback_url = "%s/social_login/%s/complete?continue_url=%s" % (
+
+        callback_url = "%s/social_login/%s/complete" % (
             self.request.host_url,
             'facebook',
-            self.uri_for('blank')
         )
         perms = ['email', 'publish_stream']
-        fb_url = facebook.auth_url(self.app.config.get('fb_api_key'), callback_url, perms)
-        logging.info("When asking for token")
-        logging.info(callback_url)
+        fb_url = facebook.auth_url(
+            self.app.config.get('fb_api_key'),
+            callback_url,
+            perms
+        )
+        logging.info("Facebook URL when asking for Code")
+        logging.info(fb_url)
         self.redirect(fb_url)
 
 
