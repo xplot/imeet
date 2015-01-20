@@ -328,23 +328,21 @@ CreateView = SimpleView.extend({
 
     share_on_facebook_auth: function(){
         //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
-        if(currentUser.social_sharing.facebook || !$(this).is(':checked'))
+        console.log($('#bt_toggle').is(':checked'));
+        console.log(currentUser.social_sharing.facebook);
+        if(currentUser.social_sharing.facebook || !$('#bt_toggle').is(':checked'))
             return;
         window.open(
             api.url + "/social_sharing/facebook",
             "_blank",
-            "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500, width=400, height=400"
+            "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500"
         );
     },
 
     plugins: function(){
         $('#bt_toggle').bootstrapToggle();
 
-         $('#bt_toggle').change(function() {
-            console.log($(this).prop('checked'));
-        });
-
-        //DatePicker
+         //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datetimepicker({
             pickTime: false,
         });

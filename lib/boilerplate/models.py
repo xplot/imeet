@@ -82,7 +82,7 @@ class User(User):
 
         for social_user_object in social_user_objects:
             extra_data = social_user_object.extra_data
-            if extra_data.get('access_token', None):
+            if extra_data.get('access_token', None) and extra_data.get('social_sharing', None):
                 result[social_user_object.provider] = extra_data['access_token']
         return result
 

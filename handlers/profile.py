@@ -275,7 +275,7 @@ class CallbackSocialLoginHandler(BaseHandler):
 
                     #For now
                     continue_url = self.uri_for('blank')
-
+                    user_data['social_sharing'] = True
                     social_user.extra_data = user_data
                     social_user.put()
 
@@ -460,7 +460,7 @@ class SocialSharingHandler(BaseHandler):
             self.request.host_url,
             'facebook',
         )
-        perms = ['email', 'publish_stream']
+        perms = ['email', 'publish_actions']
         fb_url = facebook.auth_url(
             self.app.config.get('fb_api_key'),
             callback_url,
