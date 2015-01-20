@@ -81,8 +81,8 @@ class Invite(BaseModel):
     description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
     where = ndb.KeyProperty(kind=Location)
+    facebook_post_id = ndb.StringProperty(required=False)
     comments = ndb.StructuredProperty(Comment, repeated=True)
-
 
 class InviteIndex(ndb.Model):
     doc_id = ndb.StringProperty()

@@ -21,6 +21,7 @@ from config import config
 
 app = webapp2.WSGIApplication([
     Route('/', base.MainHandler, name='home'),
+    Route('/_blank', base.MainHandler, name='blank', handler_method='blank'),
 
     Route('/new', base.MainHandler),
     Route('/new/<invite_name>', base.MainHandler),
@@ -46,6 +47,7 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/social_login/<provider_name>/complete', profile.CallbackSocialLoginHandler, name='social-login-complete', strict_slash=True),
     RedirectRoute('/social_login/<provider_name>/delete', profile.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),
 
+    RedirectRoute('/social_sharing/facebook', profile.SocialSharingHandler, name='social-sharing-facebook', handler_method='facebook', strict_slash=True),
 
     RedirectRoute('/taskqueue-send-email/', base.SendEmailHandler, name='taskqueue-send-email', strict_slash=True),
 

@@ -196,39 +196,16 @@ class SocialLoginHandler(BaseHandler):
             return self.redirect_to('login')
         callback_url = "%s/social_login/%s/complete" % (self.request.host_url, provider_name)
 
-        if provider_name == "twitter":
-            twitter_helper = twitter.TwitterAuth(self, redirect_uri=callback_url)
-            self.redirect(twitter_helper.auth_url())
-
-        elif provider_name == "facebook":
-
+        if provider_name == "facebook":
             self.session['linkedin'] = None
             perms = ['email', 'publish_stream']
             fb_url = facebook.auth_url(self.app.config.get('fb_api_key'), callback_url, perms)
             logging.info(fb_url)
             self.redirect(fb_url)
 
-        elif provider_name == 'linkedin':
-            self.session['facebook'] = None
-            authentication = linkedin.LinkedInAuthentication(
-                self.app.config.get('linkedin_api'),
-                self.app.config.get('linkedin_secret'),
-                callback_url,
-                [linkedin.PERMISSIONS.BASIC_PROFILE, linkedin.PERMISSIONS.EMAIL_ADDRESS])
-            self.redirect(authentication.authorization_url)
-
-        elif provider_name == "github":
-            scope = 'gist'
-            github_helper = github.GithubAuth(self.app.config.get('github_server'),
-                                              self.app.config.get('github_client_id'), \
-                                              self.app.config.get('github_client_secret'),
-                                              self.app.config.get('github_redirect_uri'), scope)
-            self.redirect(github_helper.get_authorize_url())
-
         elif provider_name == "google":
 
             user = users.get_current_user()
-
             continue_url = self.request.get('continue_url')
             dest_url = dest_url = self.uri_for('social-login-complete', provider_name=provider_name)
             if continue_url:
@@ -253,52 +230,38 @@ class CallbackSocialLoginHandler(BaseHandler):
 
         continue_url = self.request.get('continue_url')
 
-        if provider_name == "twitter":
-            oauth_token = self.request.get('oauth_token')
-            oauth_verifier = self.request.get('oauth_verifier')
-            twitter_helper = twitter.TwitterAuth(self)
-            user_data = twitter_helper.auth_complete(oauth_token,
-                                                     oauth_verifier)
-            logging.info('twitter user_data: ' + str(user_data))
-            if self.user:
-                # new association with twitter
-                user_info = self.user_model.get_by_id(long(self.user_id))
-                if models.SocialUser.check_unique(user_info.key, 'twitter', str(user_data['user_id'])):
-                    social_user = models.SocialUser(
-                        user=user_info.key,
-                        provider='twitter',
-                        uid=str(user_data['user_id']),
-                        extra_data=user_data
-                    )
-                    social_user.put()
-
-                    message = _('Twitter association added.')
-                    self.add_message(message, 'success')
-                else:
-                    message = _('This Twitter account is already in use.')
-                    self.add_message(message, 'danger')
-                if continue_url:
-                    self.redirect(continue_url)
-                else:
-                    self.redirect_to('edit-profile')
-            else:
-                # login with twitter
-                pass
-
         # facebook association
-        elif provider_name == "facebook":
+        if provider_name == "facebook":
             code = self.request.get('code')
-            callback_url = "%s/social_login/%s/complete" % (self.request.host_url, provider_name)
-            token = facebook.get_access_token_from_code(code, callback_url, self.app.config.get('fb_api_key'),
-                                                        self.app.config.get('fb_secret'))
+            import urllib
+            callback_url = "%s/social_login/%s/complete?continue_url=%s" % (
+                self.request.host_url,
+                provider_name,
+                urllib.quote_plus(continue_url)
+            )
+
+            token = facebook.get_access_token_from_code(
+                code,
+                callback_url,
+                self.app.config.get('fb_api_key'),
+                self.app.config.get('fb_secret')
+            )
             access_token = token['access_token']
             fb = facebook.GraphAPI(access_token)
             user_data = fb.get_object('me')
-            logging.info('facebook user_data: ' + str(user_data))
+
+            logging.info("Obtained Access Token")
+            logging.info(access_token)
+
             if self.user:
                 # new association with facebook
                 user_info = self.user_model.get_by_id(long(self.user_id))
-                if models.SocialUser.check_unique(user_info.key, 'facebook', str(user_data['id'])):
+                social_user = social_user = models.SocialUser.get_by_provider_and_uid(
+                    'facebook',
+                    str(user_data['id'])
+                )
+                user_data['access_token'] = access_token
+                if social_user is None:
                     social_user = models.SocialUser(
                         user=user_info.key,
                         provider='facebook',
@@ -312,16 +275,22 @@ class CallbackSocialLoginHandler(BaseHandler):
                     message = _('Facebook association added!')
                     self.add_message(message, 'success')
                 else:
-                    message = _('This Facebook account is already in use!')
-                    self.add_message(message, 'danger')
+                    message = _('Facebook account updated')
+                    self.add_message(message, 'success')
+
+                    social_user.extra_data = user_data
+                    social_user.put()
+
                 if continue_url:
                     self.redirect(continue_url)
                 else:
                     self.redirect_to('edit-profile')
             else:
                 # login with Facebook
-                social_user = models.SocialUser.get_by_provider_and_uid('facebook',
-                                                                        str(user_data['id']))
+                social_user = models.SocialUser.get_by_provider_and_uid(
+                    'facebook',
+                    str(user_data['id'])
+                )
                 if social_user:
                     # Social user exists. Need authenticate related site account
                     user = social_user.user.get()
@@ -347,9 +316,6 @@ class CallbackSocialLoginHandler(BaseHandler):
                     self.create_account_from_social_provider(provider_name, uid, email, continue_url, user_data)
 
                     # end facebook
-        # association with linkedin
-        elif provider_name == "linkedin":
-            pass
 
         # google
         elif provider_name == 'google':
@@ -483,6 +449,24 @@ class CallbackSocialLoginHandler(BaseHandler):
             self.redirect(continue_url)
         else:
             self.redirect_to('edit-profile')
+
+
+class SocialSharingHandler(BaseHandler):
+    """
+    Handler for Social authentication
+    """
+    def facebook(self):
+        provider = 'facebook'
+        callback_url = "%s/social_login/%s/complete?continue_url=%s" % (
+            self.request.host_url,
+            'facebook',
+            self.uri_for('blank')
+        )
+        perms = ['email', 'publish_stream']
+        fb_url = facebook.auth_url(self.app.config.get('fb_api_key'), callback_url, perms)
+        logging.info("When asking for token")
+        logging.info(callback_url)
+        self.redirect(fb_url)
 
 
 class DeleteSocialProviderHandler(BaseHandler):
