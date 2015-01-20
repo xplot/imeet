@@ -340,8 +340,11 @@ CreateView = SimpleView.extend({
     },
 
     plugins: function(){
-        $('#bt_toggle').bootstrapToggle();
 
+        if(currentUser != null)
+            $('#bt_toggle').bootstrapToggle();
+        else
+            $('.bt_toggle_parent').hide();
          //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datetimepicker({
             pickTime: false,
