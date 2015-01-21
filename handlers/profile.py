@@ -316,17 +316,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                         social_user.put()
 
                     self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
-                    if self.app.config['log_visit']:
-                        try:
-                            logVisit = models.LogVisit(
-                                user=user.key,
-                                uastring=self.request.user_agent,
-                                ip=self.request.remote_addr,
-                                timestamp=utils.get_date_time()
-                            )
-                            logVisit.put()
-                        except (apiproxy_errors.OverQuotaError, BadValueError):
-                            logging.error("Error saving Visit Log in datastore")
+
                     if social_sharing_request:
                         self.redirect_to("blank")
                     elif continue_url:
@@ -339,6 +329,8 @@ class CallbackSocialLoginHandler(BaseHandler):
                         user_data['access_token'] = access_token
 
                     uid = str(user_data['id'])
+                    logging.info("Facebook User Id")
+                    logging.info(uid)
                     email = str(user_data.get('email'))
                     self.create_account_from_social_provider(
                         provider_name,
@@ -398,17 +390,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                     # Social user found. Authenticate the user
                     user = social_user.user.get()
                     self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
-                    if self.app.config['log_visit']:
-                        try:
-                            logVisit = models.LogVisit(
-                                user=user.key,
-                                uastring=self.request.user_agent,
-                                ip=self.request.remote_addr,
-                                timestamp=utils.get_date_time()
-                            )
-                            logVisit.put()
-                        except (apiproxy_errors.OverQuotaError, BadValueError):
-                            logging.error("Error saving Visit Log in datastore")
+
                     if continue_url:
                         self.redirect(continue_url)
                     else:

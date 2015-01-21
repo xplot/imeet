@@ -328,9 +328,9 @@ CreateView = SimpleView.extend({
 
     share_on_facebook_auth: function(){
         //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
-        console.log($('#bt_toggle').is(':checked'));
-        console.log(currentUser.social_sharing.facebook);
-        if(currentUser.social_sharing.facebook || !$('#bt_toggle').is(':checked'))
+
+        if((currentUser != null && currentUser.social_sharing.facebook)
+            || !$('#bt_toggle').is(':checked'))
             return;
         window.open(
             api.url + "/social_sharing/facebook",
@@ -340,11 +340,8 @@ CreateView = SimpleView.extend({
     },
 
     plugins: function(){
+        $('#bt_toggle').bootstrapToggle();
 
-        if(currentUser != null)
-            $('#bt_toggle').bootstrapToggle();
-        else
-            $('.bt_toggle_parent').hide();
          //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datetimepicker({
             pickTime: false,

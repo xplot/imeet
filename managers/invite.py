@@ -285,7 +285,7 @@ class InviteManager(object):
         return initial
 
     def sharing_options(self, invite_dict):
-        if not invite_dict.get('facebook_share', None):
+        if not invite_dict.get('facebook_share', None) or not self.user:
             return None
         sharing_options = {}
         social_provider_tokens = self.user.get_social_providers_tokens()
