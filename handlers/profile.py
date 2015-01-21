@@ -22,6 +22,7 @@ from google.appengine.api import taskqueue
 from google.appengine.api import users
 from google.appengine.api.datastore_errors import BadValueError
 from google.appengine.runtime import apiproxy_errors
+from google.appengine.api import memcache
 
 from github import github
 from linkedin import linkedin
@@ -34,7 +35,7 @@ from boilerplate.decorators import user_required
 from boilerplate import facebook
 from base import JsonHandler
 from boilerplate import models
-
+from datetime import datetime, timedelta
 
 class LoginRequiredHandler(BaseHandler):
     def get(self):
@@ -229,6 +230,11 @@ class CallbackSocialLoginHandler(BaseHandler):
     def get(self, provider_name):
 
         continue_url = self.request.get('continue_url', None)
+        request_id = self.request.get('request_id', None)
+        social_sharing_request = False
+
+        if request_id:
+            social_sharing_request = memcache.get(request_id)
 
         # facebook association
         if provider_name == "facebook":
@@ -238,6 +244,9 @@ class CallbackSocialLoginHandler(BaseHandler):
                 self.request.host_url,
                 provider_name
             )
+            if request_id:
+                callback_url += "?request_id="+request_id
+
             token = facebook.get_access_token_from_code(
                 code,
                 callback_url,
@@ -248,6 +257,9 @@ class CallbackSocialLoginHandler(BaseHandler):
             fb = facebook.GraphAPI(access_token)
             user_data = fb.get_object('me')
 
+            time_delta = timedelta(days=7)
+            token_expiration_date = datetime.now() + time_delta
+
             if self.user:
                 # new association with facebook
                 user_info = self.user_model.get_by_id(long(self.user_id))
@@ -255,7 +267,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                     'facebook',
                     str(user_data['id'])
                 )
-                user_data['access_token'] = access_token
+
                 if social_user is None:
                     social_user = models.SocialUser(
                         user=user_info.key,
@@ -263,6 +275,11 @@ class CallbackSocialLoginHandler(BaseHandler):
                         uid=str(user_data['id']),
                         extra_data=user_data
                     )
+
+                    if social_sharing_request:
+                        social_user.social_sharing_token_expiration = token_expiration_date
+                        user_data['access_token'] = access_token
+
                     social_user.put()
 
                     user_info.username = user_data.get('email')
@@ -270,16 +287,15 @@ class CallbackSocialLoginHandler(BaseHandler):
                     message = _('Facebook association added!')
                     self.add_message(message, 'success')
                 else:
-                    message = _('Facebook account updated')
-                    self.add_message(message, 'success')
-
-                    #For now
-                    continue_url = self.uri_for('blank')
-                    user_data['social_sharing'] = True
+                    if social_sharing_request:
+                        social_user.social_sharing_token_expiration = token_expiration_date
+                        user_data['access_token'] = access_token
                     social_user.extra_data = user_data
                     social_user.put()
 
-                if continue_url:
+                if social_sharing_request:
+                    self.redirect_to("blank")
+                elif continue_url:
                     self.redirect(continue_url)
                 else:
                     self.redirect_to('edit-profile')
@@ -292,6 +308,13 @@ class CallbackSocialLoginHandler(BaseHandler):
                 if social_user:
                     # Social user exists. Need authenticate related site account
                     user = social_user.user.get()
+
+                    if social_sharing_request:
+                        social_user.social_sharing_token_expiration = token_expiration_date
+                        user_data['access_token'] = access_token
+                        social_user.extra_data = user_data
+                        social_user.put()
+
                     self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
                     if self.app.config['log_visit']:
                         try:
@@ -304,14 +327,27 @@ class CallbackSocialLoginHandler(BaseHandler):
                             logVisit.put()
                         except (apiproxy_errors.OverQuotaError, BadValueError):
                             logging.error("Error saving Visit Log in datastore")
-                    if continue_url:
+                    if social_sharing_request:
+                        self.redirect_to("blank")
+                    elif continue_url:
                         self.redirect(continue_url)
                     else:
                         self.redirect_to('home')
                 else:
+
+                    if social_sharing_request:
+                        user_data['access_token'] = access_token
+
                     uid = str(user_data['id'])
                     email = str(user_data.get('email'))
-                    self.create_account_from_social_provider(provider_name, uid, email, continue_url, user_data)
+                    self.create_account_from_social_provider(
+                        provider_name,
+                        uid,
+                        email,
+                        continue_url,
+                        user_data,
+                        social_sharing_request=social_sharing_request
+                    )
 
                     # end facebook
 
@@ -384,10 +420,14 @@ class CallbackSocialLoginHandler(BaseHandler):
             self.add_message(message, 'warning')
             self.redirect_to('login', continue_url=continue_url) if continue_url else self.redirect_to('login')
 
-    def create_account_from_social_provider(self, provider_name, uid, email=None, continue_url=None, user_data=None):
+    def create_account_from_social_provider(self, provider_name, uid, email=None, continue_url=None, user_data=None, social_sharing_request=False):
         """Social user does not exist yet so create it with the federated identity provided (uid)
         and create prerequisite user and log the user account in
         """
+
+        time_delta = timedelta(days=7)
+        token_expiration_date = datetime.now() + time_delta
+
         provider_display_name = models.SocialUser.PROVIDERS_INFO[provider_name]['label']
         if models.SocialUser.check_unique_uid(provider_name, uid):
             # create user
@@ -422,6 +462,10 @@ class CallbackSocialLoginHandler(BaseHandler):
             if user_data:
                 social_user.extra_data = user_data
                 self.session[provider_name] = json.dumps(user_data) # TODO is this needed?
+
+            if social_sharing_request:
+                social_user.social_sharing_token_expiration = token_expiration_date
+
             social_user.put()
             # authenticate user
             self.auth.set_session(self.auth.store.user_to_dict(user), remember=True)
@@ -443,7 +487,10 @@ class CallbackSocialLoginHandler(BaseHandler):
         else:
             message = _('This %s account is already in use.' % provider_display_name)
             self.add_message(message, 'danger')
-        if continue_url:
+
+        if social_sharing_request:
+                        self.redirect_to("blank")
+        elif continue_url:
             self.redirect(continue_url)
         else:
             self.redirect_to('edit-profile')
@@ -453,21 +500,27 @@ class SocialSharingHandler(BaseHandler):
     """
     Handler for Social authentication
     """
+
+    def _get_memcached_key(self):
+        import uuid
+        return 'social_' + str(uuid.uuid4()).replace('-', '')
+
     def facebook(self):
         provider = 'facebook'
-
-        callback_url = "%s/social_login/%s/complete" % (
+        temporal_key = self._get_memcached_key()
+        memcache.set(temporal_key, True, 500)
+        callback_url = "%s/social_login/%s/complete?request_id=%s" % (
             self.request.host_url,
             'facebook',
+            temporal_key
         )
+
         perms = ['email', 'publish_actions']
         fb_url = facebook.auth_url(
             self.app.config.get('fb_api_key'),
             callback_url,
             perms
         )
-        logging.info("Facebook URL when asking for Code")
-        logging.info(fb_url)
         self.redirect(fb_url)
 
 
@@ -550,7 +603,7 @@ class RegisterHandler(JsonHandler):
             ),
             _full=True
         )
-
+        logging.info(confirmation_url)
         # load email's template
         template_val = {
             "app_name": self.app.config.get('app_name'),

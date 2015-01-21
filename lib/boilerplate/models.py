@@ -1,6 +1,6 @@
 from webapp2_extras.appengine.auth.models import User
 from google.appengine.ext import ndb
-
+from datetime import datetime
 
 class User(User):
     """
@@ -82,8 +82,11 @@ class User(User):
 
         for social_user_object in social_user_objects:
             extra_data = social_user_object.extra_data
-            if extra_data.get('access_token', None) and extra_data.get('social_sharing', None):
+            if  extra_data.get('access_token', None) and \
+                social_user_object.social_sharing_token_expiration is not None and\
+                social_user_object.social_sharing_token_expiration < datetime.now():
                 result[social_user_object.provider] = extra_data['access_token']
+
         return result
 
 class LogVisit(ndb.Model):
@@ -129,6 +132,7 @@ class SocialUser(ndb.Model):
     provider = ndb.StringProperty()
     uid = ndb.StringProperty()
     extra_data = ndb.JsonProperty()
+    social_sharing_token_expiration = ndb.DateTimeProperty()
 
     @classmethod
     def get_by_user(cls, user):
