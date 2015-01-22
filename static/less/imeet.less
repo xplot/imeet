@@ -154,6 +154,8 @@ ul{
     }
   }
 
+
+
   .invite-view{
     width: 100%;
     top:50px;
@@ -406,15 +408,15 @@ h1, h2, h3, h4, h5, h6 {
 .header-section {
 	text-align: center;
 	color: @nav-color;
-  background-color: @body-frame;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  top: 0;
-  left: 0;
-  height: 60%;
-  width: 100%;
+    background-color: @body-frame;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    height: 60%;
+    width: 100%;
 
     .header-container{
       top: 50%;
@@ -440,7 +442,12 @@ h1, h2, h3, h4, h5, h6 {
           -webkit-appearance:none;
           border: none;
           background-color: #FFF;
-          font-size: 24px;
+          @media(max-width : 768px) {
+            font-size: 22px;
+          }
+          @media(min-width:1024px) {
+            font-size: 24px;
+          }
         }
         input::-webkit-input-placeholder {
             color: lighten(black,25%);
@@ -466,7 +473,12 @@ h1, h2, h3, h4, h5, h6 {
           width: 25%;
           float: left;
           border: none;
-          font-size:27px;
+          @media(max-width : 768px) {
+            font-size: 21px;
+          }
+          @media(min-width:1024px) {
+            font-size: 27px;
+          }
           span{
             position: relative;
             top:30%;
