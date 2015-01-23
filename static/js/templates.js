@@ -1,5 +1,15 @@
 this["JST"] = this["JST"] || {};
 
+this["JST"]["contacts.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '{% extends "base.html" %}\n{% block title %}Contacts{% endblock %}\n{% block content %}\n    <br/>\n    <br/>\n    <br/>\n    <h3>Contacts</h3>\n\n\n\n\n\n{% endblock %}';
+
+}
+return __p
+};
+
 this["JST"]["editProfile.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
