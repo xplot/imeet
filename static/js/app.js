@@ -35,22 +35,13 @@ function init_app() {
 
     //Edit Profile
     user_profile_view = new UserProfileView({
-        el: "#modal_container"
+        el: "#view-container",
     });
 
-    profile_view = new ModalView({
-        el: "#modal_container",
-        childView: user_profile_view
-    });
 
     //Search
     search_view = new SearchView({
-        el: "#modal_container"
-    });
-
-    search_view_modal = new ModalView({
-        el: "#modal_container",
-        childView: search_view
+        el: "#view-container",
     });
 
     //Report
@@ -96,7 +87,7 @@ function init_app() {
             register_view.render();
         },
         edit_profile: function () {
-            profile_view.render();
+            user_profile_view.render();
         },
 
         //Invite
@@ -115,7 +106,7 @@ function init_app() {
           sent_view_modal.render();
         },
         search: function () {
-            search_view_modal.render();
+            search_view.render();
         },
         view_as_organizer: function (id) {
             invite_view.render({'invite_id': id});
@@ -153,7 +144,7 @@ function init_app() {
 
     $("body").on("input propertychange", ".floating-label-form-group", function(e) {
         $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
-    }).on("focus", ".floating-label-form-group", function() {
+    }).on("focu s", ".floating-label-form-group", function() {
         $(this).addClass("floating-label-form-group-with-focus");
     }).on("blur", ".floating-label-form-group", function() {
         $(this).removeClass("floating-label-form-group-with-focus");

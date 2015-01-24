@@ -1,4 +1,4 @@
-UserProfileView = Backbone.View.extend({
+UserProfileView = SimpleView.extend({
     template: JST['editProfile.html'],
     initialize: function(options){
         this.options = options || {};
@@ -8,6 +8,8 @@ UserProfileView = Backbone.View.extend({
     },
 
     render: function() {
+        this.hidePanels();
+
         this.$el.html(this.template());
 
         this.$name = this.$el.find('#edit-profile-name');
@@ -61,7 +63,7 @@ UserProfileView = Backbone.View.extend({
             data: JSON.stringify(user),
             cache: false,
             success: function(data) {
-                Backbone.pubSub.trigger('childClose', { 'view' : that } );
+                Backbone.history.navigate('search');
             }
         });
 

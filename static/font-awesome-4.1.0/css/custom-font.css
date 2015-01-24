@@ -101,3 +101,6 @@
 .fa-like:before {
   content: "u";
 }
+.fa-bubble:before {
+  content: "v";
+}

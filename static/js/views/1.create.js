@@ -159,7 +159,7 @@ CreateView = SimpleView.extend({
 
                 data.contacts.forEach(function(contact){
                     contact.index = that.i;
-                    contact.address = [contact.phone, contact.email].join(',');
+                    contact.address = [contact.phone, contact.email].join(' ');
                     that.$table.append(that.new_contact_string.format(
                         contact.name,
                         contact.address,
@@ -167,7 +167,7 @@ CreateView = SimpleView.extend({
 
                     that.model.attributes.contacts.push(contact);
                     that.reportView.addContact(contact);
-                    this.i++;
+                    that.i++;
                 });
 
                 if(data.where){
@@ -274,10 +274,10 @@ CreateView = SimpleView.extend({
                     message: 'Event sent!'
                 }]);
 
-                if(currentUser == null) //If Anonymous we will give people a link to follow the invite
-                    Backbone.history.navigate('sent/' + data[0], true);
-                else
-                    Backbone.history.navigate('view/' + data[0], true);
+//                if(currentUser == null) //If Anonymous we will give people a link to follow the invite
+//                    Backbone.history.navigate('sent/' + data[0], true);
+//                else
+                Backbone.history.navigate('view/' + data[0], true);
             },
             error: function(data) {
                 alert_notification([{
