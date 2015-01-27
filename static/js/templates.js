@@ -4,7 +4,7 @@ this["JST"]["contacts.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '{% extends "base.html" %}\n{% block title %}Contacts{% endblock %}\n{% block content %}\n    <br/>\n    <br/>\n    <br/>\n<div class="row">\n    <h3>Contacts</h3>\n</div>\n\n<div id="contact-list">\n    <div class="row">\n        <a class="add-contact" href="contacts/new">Add new</a>\n    </div>\n\n    <div class="row">\n        {% if contacts.__len__() > 1 %}\n         <input type="text" class="form-control" id="searchInput" placeholder="filter">\n        {% endif %}\n    </div>\n\n\n    <div class="row">\n        <table class="table table-hover">\n            <tbody>\n                {% for contact in contacts%}\n                    <tr>\n                        <td>' +
+__p += '{% extends "base.html" %}\n{% block title %}Contacts{% endblock %}\n{% block content %}\n    <br/>\n    <br/>\n    <br/>\n<div class="row">\n    <h3>Contacts</h3>\n</div>\n\n<div id="contact-list">\n    <div class="row">\n        <a class="add-contact" href="contacts/new">Add new</a>\n    </div>\n\n    <div class="row">\n        {% if show_search %}\n         <input type="text" class="form-control" id="searchInput" placeholder="filter">\n        {% endif %}\n    </div>\n\n\n    <div class="row">\n        <table class="table table-hover">\n            <tbody>\n                {% for contact in contacts%}\n                    <tr>\n                        <td>' +
 ((__t = (contact.name)) == null ? '' : __t) +
 '</td>\n                        <td>' +
 ((__t = (contact.email)) == null ? '' : __t) +
