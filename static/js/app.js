@@ -55,7 +55,7 @@ function init_app() {
 
     //Report
     invite_view = new InviteView({
-        el: "#view-container",
+        el: "#view-container"
     });
 
     sent_view = new SentView({
@@ -65,6 +65,14 @@ function init_app() {
     sent_view_modal = new ModalView({
         el: $("#modal_container"),
         childView: sent_view
+    });
+
+    contacts_view = new ContactsView({
+        el: "#contact-list"
+    });
+
+    contactsNew_view = new ContactsNewView({
+        el: "#contact-edition"
     });
 
     App.Router = Backbone.Router.extend({
@@ -83,7 +91,10 @@ function init_app() {
             'profile/edit': 'edit_profile',
             'register': 'register',
             'view/:id': 'view_as_organizer',
-            'view/:id/:contact_id': 'view_as_contact'
+            'view/:id/:contact_id': 'view_as_contact',
+
+            'contacts' : 'contacts',
+            'contacts/new' : 'contacts_new'
         },
         index: function () {
             index_view.render();
@@ -122,6 +133,12 @@ function init_app() {
         },
         view_as_contact: function(id, contact_id){
             invite_view.render({'invite_id': id, 'contact_id': contact_id});
+        },
+        contacts: function(){
+            contacts_view.render();
+        },
+        contacts_new: function(){
+            contactsNew_view.render();
         }
     });
 

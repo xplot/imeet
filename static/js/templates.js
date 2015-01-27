@@ -4,7 +4,13 @@ this["JST"]["contacts.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '{% extends "base.html" %}\n{% block title %}Contacts{% endblock %}\n{% block content %}\n    <br/>\n    <br/>\n    <br/>\n    <h3>Contacts</h3>\n\n\n\n\n\n{% endblock %}';
+__p += '{% extends "base.html" %}\n{% block title %}Contacts{% endblock %}\n{% block content %}\n    <br/>\n    <br/>\n    <br/>\n<div class="row">\n    <h3>Contacts</h3>\n</div>\n\n<div id="contact-list">\n    <div class="row">\n        <a class="add-contact" href="contacts/new">Add new</a>\n    </div>\n\n    <div class="row">\n        {% if contacts.__len__() > 1 %}\n         <input type="text" class="form-control" id="searchInput" placeholder="filter">\n        {% endif %}\n    </div>\n\n\n    <div class="row">\n        <table class="table table-hover">\n            <tbody>\n                {% for contact in contacts%}\n                    <tr>\n                        <td>' +
+((__t = (contact.name)) == null ? '' : __t) +
+'</td>\n                        <td>' +
+((__t = (contact.email)) == null ? '' : __t) +
+'</td>\n                        <td>' +
+((__t = (contact.phone)) == null ? '' : __t) +
+'</td>\n                    </tr>\n                {% endfor %}\n            </tbody>\n        </table>\n    </div>\n</div>\n\n<div id="contact-edition">\n\n</div>\n\n{% endblock %}';
 
 }
 return __p
@@ -15,6 +21,16 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="modal-content">\n        <div class="close-modal" data-action="dismiss">\n            <div class="lr">\n                <div class="rl">\n                </div>\n            </div>\n        </div>\n        <div class="container">\n            <h4>Edit your profile</h4>\n           <div class="row controls">\n               <div class="col-sm-3"></div>\n                <div class="col-sm-6">\n                    <br/><br/>\n                    <div class="floating-label-form-group">\n                        <div id="edit-profile-email">Email</div>\n                    </div>\n                    <br/><br/>\n                    <div class="floating-label-form-group">\n                        <label for="edit-profile-name" class="fl">Full Name</label>\n                        <input id="edit-profile-name" type="text" class="form-control valid-before-submit" placeholder="John Smith..."\n                                data-validation="required">\n                    </div>\n                    <div class="floating-label-form-group">\n                        <label for="edit-profile-username" class="fl" data-validation="required">Username</label>\n                        <input id="edit-profile-username" type="text" class="form-control valid-before-submit" placeholder="username..." data-validation="required">\n                    </div>\n                    <div class="floating-label-form-group">\n                        <label for="edit-profile-username" class="fl" data-validation="required">Pasword</label>\n                        <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control valid-before-submit" placeholder="password..." data-validation="required">\n                    </div>\n                    <div class="floating-label-form-group">\n                        <label for="edit-profile-username" class="fl">Pasword Confirm</label>\n                        <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control valid-before-submit" placeholder=" confirm password..." data-validation="required">\n                    </div>\n                </div>\n            </div>\n            <div class="form-group col-xs-9 medium-margin">\n                <a class="btn btn-primary btn-lg save-profile pull-right" role="button">Save</a>\n            </div>\n        </div>\n</div>\n';
+
+}
+return __p
+};
+
+this["JST"]["edit_contact.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="form-horizontal">\n  <div class="form-group">\n    <label for="firstNameInput">Firstname</label>\n    <input type="text" class="form-control" id="firstNameInput" placeholder="Jane">\n  </div>\n  <div class="form-group">\n    <label for="lastNameInput">Lastname</label>\n    <input type="text" class="form-control" id="lastNameInput" placeholder="Doe">\n  </div>\n\n  <div class="form-group">\n    <label for="emailInput">Email contact</label>\n    <input type="email" class="form-control" id="emailInput" placeholder="jane.doe@example.com">\n  </div>\n  <div class="form-group">\n    <label for="phoneNumberInput">Phone number</label>\n    <input type="text" class="form-control" id="phoneNumberInput" placeholder="123-456-7890">\n  </div>\n\n  <div class="form-group">\n    <button id="save-contact" type="submit" class="btn btn-default">Add contact</button>\n  </div>\n</div>';
 
 }
 return __p

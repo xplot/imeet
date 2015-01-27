@@ -35,6 +35,7 @@ app = webapp2.WSGIApplication([
 
     #Contacts
     Route('/contacts', contacts.ContactHandler),
+    Route('/contacts/new', contacts.ContactHandler),
 
     #User Profile
     Route('/register', base.MainHandler, name='register'),
