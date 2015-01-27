@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Contacts{% endblock %}
+{% block content %}
+    <br/>
+    <br/>
+    <br/>
+<div class="row">
+    <h3>Contacts</h3>
+</div>
+
+<div id="contact-list">
+    <div class="row">
+        <a class="add-contact" href="contacts/new">Add new</a>
+    </div>
+
+    <div class="row">
+        {% if contacts.__len__() > 1 %}
+         <input type="text" class="form-control" id="searchInput" placeholder="filter">
+        {% endif %}
+    </div>
+
+
+    <div class="row">
+        <table class="table table-hover">
+            <tbody>
+                {% for contact in contacts%}
+                    <tr>
+                        <td>{{contact.name}}</td>
+                        <td>{{contact.email}}</td>
+                        <td>{{contact.phone}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="contact-edition">
+
+</div>
+
+{% endblock %}

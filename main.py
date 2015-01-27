@@ -15,7 +15,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-from handlers import base, invite, profile
+from handlers import base, invite, profile, contacts
 from config import config
 
 
@@ -33,6 +33,10 @@ app = webapp2.WSGIApplication([
     Route('/view/<id>/<contact_id>', base.MainHandler, handler_method='view_invite'),
     Route('/sent/<id>', base.MainHandler, handler_method='view_invite'),
     Route('/', base.MainHandler, name='home'),
+
+    #Contacts
+    Route('/contacts', contacts.ContactHandler),
+    Route('/contacts/new', contacts.ContactHandler),
 
     #User Profile
     Route('/register', base.MainHandler, name='register', handler_method='default_method'),
