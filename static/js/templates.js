@@ -1,21 +1,5 @@
 this["JST"] = this["JST"] || {};
 
-this["JST"]["contacts.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '{% extends "base.html" %}\n{% block title %}Contacts{% endblock %}\n{% block content %}\n    <br/>\n    <br/>\n    <br/>\n<div class="row">\n    <h3>Contacts</h3>\n</div>\n\n<div id="contact-list">\n    <div class="row">\n        <a class="add-contact" href="contacts/new">Add new</a>\n    </div>\n\n    <div class="row">\n        {% if show_search %}\n         <input type="text" class="form-control" id="searchInput" placeholder="filter">\n        {% endif %}\n    </div>\n\n\n    <div class="row">\n        <table class="table table-hover">\n            <tbody>\n                {% for contact in contacts%}\n                    <tr>\n                        <td>' +
-((__t = (contact.name)) == null ? '' : __t) +
-'</td>\n                        <td>' +
-((__t = (contact.email)) == null ? '' : __t) +
-'</td>\n                        <td>' +
-((__t = (contact.phone)) == null ? '' : __t) +
-'</td>\n                    </tr>\n                {% endfor %}\n            </tbody>\n        </table>\n    </div>\n</div>\n\n<div id="contact-edition">\n\n</div>\n\n{% endblock %}';
-
-}
-return __p
-};
-
 this["JST"]["editProfile.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -30,7 +14,7 @@ this["JST"]["edit_contact.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="form-horizontal">\n  <div class="form-group">\n    <label for="firstNameInput">Firstname</label>\n    <input type="text" class="form-control" id="firstNameInput" placeholder="Jane">\n  </div>\n  <div class="form-group">\n    <label for="lastNameInput">Lastname</label>\n    <input type="text" class="form-control" id="lastNameInput" placeholder="Doe">\n  </div>\n\n  <div class="form-group">\n    <label for="emailInput">Email contact</label>\n    <input type="email" class="form-control" id="emailInput" placeholder="jane.doe@example.com">\n  </div>\n  <div class="form-group">\n    <label for="phoneNumberInput">Phone number</label>\n    <input type="text" class="form-control" id="phoneNumberInput" placeholder="123-456-7890">\n  </div>\n\n  <div class="form-group">\n    <button id="save-contact" type="submit" class="btn btn-default">Add contact</button>\n  </div>\n</div>';
+__p += '<div class="form-horizontal contacts-form">\n  <div class="form-group">\n    <label for="nameInput">Name</label>\n    <input type="text" class="form-control" id="nameInput" placeholder="Jane Doe">\n  </div>\n\n  <div class="form-group">\n    <label for="emailInput">Email contact</label>\n    <input type="email" class="form-control" id="emailInput" placeholder="jane.doe@example.com">\n  </div>\n  <div class="form-group">\n    <label for="phoneInput">Phone number</label>\n    <input type="text" class="form-control" id="phoneInput" placeholder="123-456-7890">\n  </div>\n\n  <div class="form-group">\n    <button id="save-contact" type="submit" class="btn btn-default">Add contact</button>\n  </div>\n</div>';
 
 }
 return __p

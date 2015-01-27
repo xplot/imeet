@@ -63,6 +63,7 @@ module.exports = function (grunt) {
 				files: {
 					'tmp/css/imeet.css': '../static/less/imeet.less',
                     'tmp/css/index.css': '../static/less/index.less',
+                    'tmp/css/contacts.css': '../static/less/contacts.less',
 				}
 			}
 		},
@@ -114,7 +115,10 @@ module.exports = function (grunt) {
                         '../static/less/external/*.css',
                         'tmp/css/index.css'
                     ],
-
+                    '../static/css/contacts.min.css': [
+                        '../static/less/external/*.css',
+                        'tmp/css/contacts.css'
+                    ],
 				}
 			}
 		},

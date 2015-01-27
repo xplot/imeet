@@ -63,7 +63,7 @@ function init_app() {
     });
 
     contactsNew_view = new ContactsNewView({
-        el: "#contact-edition"
+        el: "#view-container"
     });
 
     App.Router = Backbone.Router.extend({

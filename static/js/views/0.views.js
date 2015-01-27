@@ -7,6 +7,9 @@ SimpleView = Backbone.View.extend({
         $('#body-container').hide();
         $('#view-container').show();
         $('#modal_container').hide();
+    },
+    clearTemplate:function(){
+        $("#view-container").html("");
     }
 });
 
