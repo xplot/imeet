@@ -1,5 +1,18 @@
-@import "variables"; 
-@import "mixins";
+@import "base";
+@import "navbar";
+
+body{
+  font-weight: 700 !important;
+}
+
+label{
+  font-weight: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-transform: uppercase;
+}
+
 input[type='text'],
 textarea,
 button,
@@ -8,18 +21,6 @@ select {
   -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
-}
-
-html,
-body {
-    height: 100%;
-	overflow-x: hidden;
-    font-family: 'Lato', sans-serif;
-    font-weight: 400;
-}
-
-ul{
-  list-style-type: none;
 }
 
 #body-container{
@@ -187,6 +188,29 @@ ul{
   }
 }
 
+.search-view{
+  width: 100%;
+  top:50px;
+  bottom: 0px;
+  position: absolute;
+  overflow-y: auto;
+  padding: 5%;
+}
+
+.edit-profile-view{
+  width: 100%;
+  top:50px;
+  bottom: 0px;
+  position: absolute;
+  overflow-y: auto;
+  padding: 5%;
+
+  div{
+    margin-top: 10px;
+  }
+}
+
+
 p {
 	font-size: 20px;
 }
@@ -204,109 +228,17 @@ a.active {
 	outline: none;
     text-decoration: none;
 }
-hh
-h1, h2, h3, h4, h5, h6 {
-	text-transform: uppercase;
-	font-weight: 700;
-}
+
+
 
 @media(max-width:768px) {
   .invite-view {
     padding: 0% !important;
   }
-
-}
-
-@media(min-width:768px) {
-    .navbar-fixed-top {
-        -webkit-transition: padding 0.3s;
-        -moz-transition: padding 0.3s;
-        transition: padding 0.3s;
-	    .navbar-brand {
-	        font-size: 2em;
-	        -webkit-transition: all 0.3s;
-	        -moz-transition: all 0.3s;
-	        transition: all 0.3s;
-	    }
-    }
-    .navbar-fixed-top.navbar-shrink {
-        padding: 10px 0;
-		.navbar-brand {
-	        font-size: 1.5em;
-	    }
-	}
-}
-
-/*Responsive CSS triangles. Resize the Result section to see the triangles in action.*/
-
-.navbar {
-	text-transform: uppercase;
-	font-weight: 700;
-	a:focus {
-		outline: none;
-	}
-
-    .navbar-header{
-      .beta {
-          position: absolute;
-          left:20px;
-	      margin: -14px -20px;
-          font-weight: bold;
-          color: @body-frame;
-          font-size: 10px;
-          margin-top:-3px;
-          margin-left:-100px;
-          text-align:center;
-          width: 190px;
-          height: 20px;
-         -ms-transform: rotate(-45deg); /* IE 9 */
-          -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
-          transform: rotate(-45deg);
-          background-color: @text-color;
-      }
-    }
-
-	.navbar-nav {
-		letter-spacing: 1px;
-		li {
-			a:focus {
-				outline: none;
-			}
-            .dropdown-menu{
-                background-color: @nav-color;
-                border:none !important;
-                border-radius: 0px;
-                li{
-                  a {
-                    color: #ffffff !important;
-                  }
-                  a:hover {
-                      color: #ffffff !important;
-                  }
-                }
-
-              }
-
-              button{
-                padding-top: 19.5px;
-                padding-bottom: 19.5px;
-                background-color: transparent;
-                border: none !important;
-                text-transform: uppercase;
-              }
-              button:active{
-                border: none;
-                border-color: transparent;
-              }
-		}
-	}
-}
-
-.navbar-default,
-.navbar-inverse {
-    color: #FFF;
-	border: none;
-    background-color: @nav-bg-color;
+  .search-view {
+    padding: 0% !important;
+    margin-top: 50px;
+  }
 }
 
 .section {
@@ -710,6 +642,9 @@ form .row:first-child .floating-label-form-group {
   height: 1px;
 }
 
+.text-center{
+  text-align: center;
+}
 
 .small-margin{
   margin: 5px;
@@ -1030,3 +965,5 @@ and (max-width : 1023px){
   -ms-transition: background-color 5s;
   transition: background-color 5s;
 }
+
+

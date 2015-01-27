@@ -20,27 +20,28 @@ from config import config
 
 
 app = webapp2.WSGIApplication([
-    Route('/', base.MainHandler, name='home'),
+
     Route('/_blank', base.MainHandler, name='blank', handler_method='blank'),
 
-    Route('/new', base.MainHandler),
-    Route('/new/<invite_name>', base.MainHandler),
-    Route('/new/from/<source_invite_id>', base.MainHandler),
-    Route('/new/<invite_name>/from/<source_invite_id>', base.MainHandler),
-    Route('/search', base.MainHandler, handler_method='search', ),
-    Route('/view', base.MainHandler, handler_method='view'),
+    Route('/new', base.MainHandler, handler_method='new'),
+    Route('/new/<invite_name>', base.MainHandler, handler_method='new'),
+    Route('/new/from/<source_invite_id>', base.MainHandler, handler_method='new'),
+    Route('/new/<invite_name>/from/<source_invite_id>', base.MainHandler, handler_method='new'),
+    Route('/search', base.MainHandler, handler_method='search'),
+    Route('/view', base.MainHandler, handler_method='view_invite'),
     Route('/view/<id>', base.MainHandler, handler_method='view_invite'),
     Route('/view/<id>/<contact_id>', base.MainHandler, handler_method='view_invite'),
     Route('/sent/<id>', base.MainHandler, handler_method='view_invite'),
+    Route('/', base.MainHandler, name='home'),
 
     #User Profile
-    Route('/register', base.MainHandler, name='register'),
+    Route('/register', base.MainHandler, name='register', handler_method='default_method'),
     Route('/register/email/<email>', profile.RegisterHandler, handler_method='register_email'),
     RedirectRoute('/activate/<user_id>/<token>', profile.AccountActivationHandler, name='account-activation', strict_slash=True),
 
     Route('/login', profile.LoginHandler, name='login'),
     Route('/logout', profile.LogoutHandler, name='logout'),
-    Route('/profile/edit', base.MainHandler, name='edit-profile'),
+    Route('/profile/edit', base.MainHandler, name='edit-profile', handler_method='default_method'),
     Route('/api/profile/<user_id>', profile.UserProfileHandler, name='get-profile'),
 
     RedirectRoute('/social_login/<provider_name>', profile.SocialLoginHandler, name='social-login', strict_slash=True),
