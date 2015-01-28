@@ -37,7 +37,7 @@ app = webapp2.WSGIApplication([
     #Contacts
     Route('/contacts', contacts.ContactHandler),
     Route('/contacts/new', contacts.ContactHandler),
-    Route('/api/contacts', contacts.ContactHandler, handler_method='add_contact', methods=['POST']),
+    Route('/api/contacts', contacts.ApiContactHandler, handler_method='add_contact', methods=['POST']),
     Route('/api/contacts/<contact_id>', contacts.ContactHandler, handler_method='delete_contact', methods=['DELETE']),
 
     #User Profile

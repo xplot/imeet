@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row small-margin-top">
-        {% if show_search %}
+        {% if False and show_search %}
         <div class="col-md-12">
          <input type="text" class="form-control" id="searchInput" placeholder="filter">
         </div>
@@ -44,9 +44,12 @@
 
 {% block initScript %}
  <script>
-     var contactList = new ContactList();
+    var contactList = new ContactList();
+
     {% for contact in contacts%}
         contactList.create({unique_id: "{{contact.unique_id}}", name:"{{contact.name}}", email:"{{contact.email}}", phone:"{{contact.phone}}"});
     {% endfor %}
+
+
 </script>
 {% endblock %}

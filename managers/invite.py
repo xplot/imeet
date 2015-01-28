@@ -13,7 +13,7 @@ from boilerplate.models import User
 class InviteManager(object):
     invite_index = 'invite_index'
 
-    def __init__(self, invite=None,invite_dict=None, user=None):
+    def __init__(self, invite=None, invite_dict=None, user=None):
         self.user = user
         self.invite_dict = invite_dict
         self.invite = invite

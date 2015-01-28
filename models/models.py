@@ -93,11 +93,11 @@ class InviteIndex(ndb.Model):
 
 
 class Contact(BaseModel):
-    unique_id = ndb.StringProperty()
+    unique_id = ndb.StringProperty(required=True)
     name = ndb.StringProperty()
     phone = ndb.StringProperty()
     email = ndb.StringProperty()
-
+    user = ndb.KeyProperty(kind=User)
 
 class Subscription(BaseModel):
     unique_id = ndb.StringProperty(required=True)

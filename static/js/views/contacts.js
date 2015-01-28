@@ -8,23 +8,47 @@ Contact = Backbone.Model.extend({
 
 ContactList = Backbone.Collection.extend({
       model: Contact,
-      //localStorage: new Store("backbone-contact")
+      localStorage: new Store("backbone-contact")
     });
 
 ContactsView = SimpleView.extend({
+    first_time: true,
+
     initialize: function (options) {
         this.options = options || {};
     },
     events: {
        'click .add-contact' : 'navigateToAddContact',
     },
+
     render: function(options) {
+        $('#contact-list').show();
+
+        if(!this.first_time){
+            return;
+        }
+        this.contactList = options.contactList;
+
+        this.listenTo(this.contactList, 'add', this.addContact);
+        //this.listenTo(this.contactList, 'remove', this.addContact);
+
         this.clearTemplate();
+
         var contactTable =$('#contacts_table');
         contactList.each(function(contact){
             contactTable.append(new ContactItemView({model: contact}).render().el);
         });
-        $('#contact-list').show();
+
+        this.first_time = false;
+    },
+
+    addContact: function(contact){
+        var contactTable =$('#contacts_table');
+        contactTable.append(new ContactItemView({model: contact}).render().el);
+    },
+
+    render_full_list: function(){
+
     },
 
     navigateToAddContact: function(evt){
@@ -69,7 +93,10 @@ ContactsNewView = SimpleView.extend({
             url: "/api/contacts",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify(contact),
+            data: JSON.stringify({
+                user_id: currentUser.id,
+                contact: contact
+            }),
             cache: false,
             success: function(unique_id) {
                 alert_notification([{
@@ -78,8 +105,9 @@ ContactsNewView = SimpleView.extend({
                 }]);
 
                 that.$el.html("");
+
                 contact.set("unique_id", unique_id);
-                contactTable.append(new ContactItemView({model: contact}).render().el);
+                contactList.create(contact);
                 Backbone.history.navigate("contacts", true);
             },
             error: function(data) {

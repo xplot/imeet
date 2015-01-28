@@ -12,11 +12,10 @@ def user_context(handler):
     Please only use when request inherits from JsonHandler
     """
     def check_context(self, *args, **kwargs):
-        user_id = self._data().get('user_id',None)
+        user_id = self._data().get('user_id', None)
 
         if user_id:
             user = User.get_by_id(long(user_id))
-            logging.info(user)
             self.user = user
         else:
             self.user = None

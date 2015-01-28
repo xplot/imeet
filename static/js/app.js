@@ -126,7 +126,7 @@ function init_app() {
             invite_view.render({'invite_id': id, 'contact_id': contact_id});
         },
         contacts: function(){
-            contacts_view.render();
+            contacts_view.render({contactList: contactList});
         },
         contacts_new: function(){
             contactsNew_view.render();
