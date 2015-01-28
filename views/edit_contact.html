@@ -1,19 +1,19 @@
 <div class="form-horizontal contacts-form">
   <div class="form-group">
     <label for="nameInput">Name</label>
-    <input type="text" class="form-control" id="nameInput" placeholder="Jane Doe">
+    <input type="text" class="form-control contact_input" id="nameInput" placeholder="Jane Doe" data-validation="required">
   </div>
 
   <div class="form-group">
     <label for="emailInput">Email contact</label>
-    <input type="email" class="form-control" id="emailInput" placeholder="jane.doe@example.com">
+    <input type="email" class="form-control contact_input" id="emailInput" placeholder="jane.doe@example.com" data-validation="email">
   </div>
   <div class="form-group">
     <label for="phoneInput">Phone number</label>
-    <input type="text" class="form-control" id="phoneInput" placeholder="123-456-7890">
+    <input type="text" class="form-control contact_input" id="phoneInput" placeholder="123-456-7890" data-validation="phone">
   </div>
 
   <div class="form-group">
-    <button id="save-contact" type="submit" class="btn btn-default">Add contact</button>
+    <a class="add-contact btn" id="save-contact">Add contact</a>
   </div>
 </div>

@@ -8,7 +8,7 @@ Contact = Backbone.Model.extend({
 
 ContactList = Backbone.Collection.extend({
       model: Contact,
-      localStorage: new Store("backbone-contact")
+      //localStorage: new Store("backbone-contact")
     });
 
 ContactsView = SimpleView.extend({
@@ -44,12 +44,18 @@ ContactsNewView = SimpleView.extend({
 
     render: function(options) {
         $('#contact-list').hide();
+
         var template = _.template(this.template(), {});
         this.$el.html(template);
         this.$el.show();
+
     },
 
     saveContact: function(){
+        if(!validator.validateItems('.contact_input')){
+            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+            return;
+        }
 
         var contact = new Contact ({
             name: $("#nameInput").val(),

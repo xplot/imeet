@@ -35,6 +35,7 @@ var validator = {
     validateItems: function(selector){
         var result = true;
         var $elements_to_validate = $(selector);
+
         $elements_to_validate.each(function(index){
             var $item = $($elements_to_validate[index]);
             result = validator.validateItem($item) && result ;

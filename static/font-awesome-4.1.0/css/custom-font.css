@@ -104,3 +104,12 @@
 .fa-bubble:before {
   content: "v";
 }
+.fa-pen:before {
+  content: "w";
+}
+.fa-delete-garbage-streamline:before {
+  content: "x";
+}
+.fa-pen-streamline:before {
+  content: "y";
+}

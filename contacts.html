@@ -6,22 +6,27 @@
     <br/>
     <br/>
 <div class="row">
-    <h3>Contacts</h3>
+    <div class="col-md-2">
+        <h4>Contact</h4>
+    </div>
 </div>
 
 <div id="contact-list">
     <div class="row">
-        <a class="add-contact" href="contacts/new">Add new</a>
+        <div class="col-md-2">
+            <a class="add-contact btn" href="contacts/new">New Contact</a>
+        </div>
     </div>
-
-    <div class="row">
+    <div class="row small-margin-top">
         {% if show_search %}
+        <div class="col-md-12">
          <input type="text" class="form-control" id="searchInput" placeholder="filter">
+        </div>
         {% endif %}
     </div>
 
 
-    <div class="row">
+    <div class="row small-margin-top">
         <table class="table table-hover">
             <tbody id="contacts_table">
 
