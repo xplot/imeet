@@ -4,7 +4,9 @@ this["JST"]["contact_item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="editable col-md-2">\n    ' +
+__p += '<div data-id="' +
+__e( unique_id ) +
+'">\n<div class="editable col-md-2">\n    ' +
 __e( name ) +
 '\n</div>\n<div class="col-md-2">' +
 __e( email ) +
@@ -12,9 +14,27 @@ __e( email ) +
 __e( phone ) +
 '</div>\n<div class="col-md-1 update-column">\n    <a class="update-contact" href="api/contacts/' +
 __e( unique_id ) +
-'"><i class="fa-pen fa-1_2x"></i></a>\n    <a class="delete-contact" href="api/contacts/' +
+'"><i class="fa-pen fa-1_2x"></i></a>\n    <a class="delete-contact" href="#"><i data-id="' +
 __e( unique_id ) +
-'"><i class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n</div>';
+'" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n</div>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["contact_item_edit.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div data-id="' +
+__e( unique_id ) +
+'">\n<div class="editable col-md-2">\n    <input id="edit-name" value="' +
+__e( name ) +
+'">\n</div>\n<div class="col-md-2">\n<input id="edit-email" value="' +
+__e( email ) +
+'">\n</div>\n<div class="col-md-2">\n    <input id="edit-phone" value="' +
+__e( phone ) +
+'">\n\n</div>\n<div class="col-md-1 update-column">\n    <a href="#" class="finish-edit">OK</a>\n</div>\n</div>';
 
 }
 return __p

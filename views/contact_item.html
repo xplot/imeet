@@ -1,3 +1,4 @@
+<div data-id="<%- unique_id %>">
 <div class="editable col-md-2">
     <%- name %>
 </div>
@@ -5,5 +6,6 @@
 <div class="col-md-2"><%- phone %></div>
 <div class="col-md-1 update-column">
     <a class="update-contact" href="api/contacts/<%- unique_id %>"><i class="fa-pen fa-1_2x"></i></a>
-    <a class="delete-contact" href="api/contacts/<%- unique_id %>"><i class="fa-delete-garbage-streamline fa-1_2x"></i></a>
+    <a class="delete-contact" href="#"><i data-id="<%- unique_id %>" class="fa-delete-garbage-streamline fa-1_2x"></i></a>
+</div>
 </div>

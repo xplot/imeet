@@ -7,9 +7,19 @@ Contact = Backbone.Model.extend({
     });
 
 ContactList = Backbone.Collection.extend({
-      model: Contact,
-      localStorage: new Store("backbone-contact")
-    });
+    model: Contact,
+    localStorage: new Store("backbone-contact"),
+
+    getById: function(unique_id){
+        return this.filter(function(val) {
+            return val.get("unique_id") === unique_id;
+        });
+    },
+
+    removeBy: function(unique_id){
+        this.remove(this.getById(unique_id));
+    }
+ });
 
 ContactsView = SimpleView.extend({
     first_time: true,
@@ -30,7 +40,7 @@ ContactsView = SimpleView.extend({
         this.contactList = options.contactList;
 
         this.listenTo(this.contactList, 'add', this.addContact);
-        //this.listenTo(this.contactList, 'remove', this.addContact);
+        this.listenTo(this.contactList, 'remove', this.removeContact);
 
         this.clearTemplate();
 
@@ -47,8 +57,9 @@ ContactsView = SimpleView.extend({
         contactTable.append(new ContactItemView({model: contact}).render().el);
     },
 
-    render_full_list: function(){
-
+    removeContact: function(data){
+        var $contact_row = $('div[data-id="'+ data.get('unique_id') + '"');
+        $contact_row.remove();
     },
 
     navigateToAddContact: function(evt){
@@ -72,7 +83,6 @@ ContactsNewView = SimpleView.extend({
         var template = _.template(this.template(), {});
         this.$el.html(template);
         this.$el.show();
-
     },
 
     saveContact: function(){
@@ -87,7 +97,7 @@ ContactsNewView = SimpleView.extend({
             phone: $("#phoneInput").val()
         });
 
-        var contactTable =$('#contacts_table');
+        var contactTable = $('#contacts_table');
         var that = this;
         $.ajax({
             url: "/api/contacts",
@@ -117,34 +127,85 @@ ContactsNewView = SimpleView.extend({
                 }]);
             }
         });
-
-
     }
 });
 
 ContactItemView = SimpleView.extend({
-   tagName: 'tr',
-   template: JST["contact_item.html"],
-   model: null,
+    tagName: 'tr',
+    template: JST["contact_item.html"],
+    editTemplate: JST["contact_item_edit.html"],
+    model: null,
+    editMode: false,
+
     events: {
        'click .editable' : "enterEditMode",
+       'click .finish-edit' : "finishEditMode",
        'click .delete-contact' : 'deleteContact'
 
-   },
-   render: function(){
+    },
+
+    render: function(){
        this.$el.html(_.template(this.template(this.model.toJSON())));
        return this;
-   },
+    },
 
-   enterEditMode: function(evt){
-       console.log("entering edit mode..");
-   },
+    enterEditMode: function(evt){
+        if(this.editMode)
+            return;
+        this.editMode = true;
+        this.$el.html(_.template(this.editTemplate(this.model.toJSON())));
+    },
 
-   deleteContact: function(evt){
-        evt.preventDefault();
-        //evt.target.parentNode.parentNode.parentNode.parentNode.removeChild(evt.target.parentNode.parentNode.parentNode);
+    finishEditMode: function(evt){
+        if(!this.editMode)
+            return;
+        this.editMode = false;
+
+        this.model.set('name',$("#edit-name").val());
+        this.model.set('email',$("#edit-email").val());
+        this.model.set('phone',$("#edit-phone").val());
+
+        this.saveContact();
+
+        this.$el.html(_.template(this.template(this.model.toJSON())));
+    },
+
+    saveContact: function(){
+        var unique_id = this.model.get('unique_id');
+
         $.ajax({
-            url: evt.target.parentNode.attributes.href.value,
+            url: api.url + "api/contacts/" +  unique_id + "/edit",
+            data:JSON.stringify({
+                name: this.model.get('name'),
+                email: this.model.get('email'),
+                phone: this.model.get('phone')
+            }),
+            type: "PUT",
+            contentType: "application/json",
+            cache: false,
+            success: function(data) {
+                alert_notification([{
+                    alertType:'success',
+                    message: 'Contact updated!'
+                }]);
+
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
+    deleteContact: function(evt){
+        evt.preventDefault();
+        var $remove_link = $(evt.target);
+        var unique_id = this.model.get('unique_id');
+
+        $.ajax({
+            url: api.url + "api/contacts/" + unique_id + "/delete",
             type: "DELETE",
             contentType: "application/json",
             cache: false,
@@ -154,7 +215,7 @@ ContactItemView = SimpleView.extend({
                     message: 'Contact deleted!'
                 }]);
 
-                evt.target.parentNode.parentNode.parentNode.parentNode.removeChild(evt.target.parentNode.parentNode.parentNode);
+                contactList.removeBy(unique_id);
             },
             error: function(data) {
                 alert_notification([{

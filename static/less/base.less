@@ -23,15 +23,37 @@ h1, h2, h3, h4, h5, h6 {
 
 a,
 input[type='text'],
+input[type='password'],
 textarea,
 button,
 div,section
-select {
+select,.btn {
   -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
 }
+a,
+a:focus,
+a:active,
+a.active{
+    text-decoration: none !important;
+    background-color: transparent;
+}
 
+.btn{
+  background-color: @nav-bg-color;
+  border: solid 1px @nav-bg-color;
+  color: @off-white;
+}
+.btn:hover{
+  background-color: @off-white;
+  border: solid 1px @nav-bg-color;
+  color: @nav-bg-color;
+}
+.btn-danger{
+  background-color: @btn-danger;
+  border: solid 1px @btn-danger !important;
+}
 
 .quiet{
 	font-size:8px;
@@ -77,19 +99,6 @@ p {
 p.small {
 	font-size: 16px;
 }
-
-a,
-a:focus,
-a:active,
-a.active,
-.btn{
-    background-color: @nav-bg-color;
-	color: @off-white;
-	outline: none;
-    text-decoration: none;
-}
-
-
 
 .line{
   height: 1px;

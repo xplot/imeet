@@ -87,6 +87,7 @@ module.exports = function (grunt) {
 					'../static/js/external/datepicker.js',
                     '../static/js/external/jquery-xslider.js',
                     '../static/js/external/slider.js',
+                    '../static/js/external/backbone_store.js',
 
                 ],
                 dest: '../static/js/external.min.js'

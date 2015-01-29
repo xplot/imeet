@@ -12,7 +12,7 @@ from models.models import Contact
 class ContactHandler(BaseHandler):
     def get(self):
         if self.user is None:
-            raise Exception("User cannot be null")
+            self.redirect_to('home')
 
         contactlist = Contact.query(Contact.user == self.user_key)\
             .order(Contact.name)\
@@ -43,7 +43,26 @@ class ApiContactHandler(JsonHandler):
 
         return contact.unique_id
 
-    def delete_contact(self, contact_id):
+    def update_contact(self, unique_id):
+        contact = Contact.query(Contact.unique_id == unique_id).get()
 
-        contact = Contact.get_by_id(contact_id)
+        if not contact:
+            raise Exception("Contact not found")
+
+        data = self._data()
+
+        contact.name = data['name']
+        contact.name = data['email']
+        contact.name = data['phone']
+        contact.put()
+
+        return unique_id
+
+    def delete_contact(self, unique_id):
+        contact = Contact.query(Contact.unique_id == unique_id).get()
+
+        if not contact:
+            raise Exception("Contact not found")
+
         contact.key.delete()
+        return unique_id
