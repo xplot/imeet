@@ -25,7 +25,11 @@ class ContactHandler(BaseHandler):
         contact.name = data['name']
         contact.email = data['email']
         contact.phone = data['phone']
-        #contact.put()
+        contact.put()
+
+        self.response.content_type = 'application/json'
+        self.response.write(json.dumps(contact.unique_id))
+        #return contact
 
     def delete_contact(self, contact_id):
         logging.info(contact_id)
