@@ -729,6 +729,8 @@ class UserProfileHandler(JsonHandler):
         user_data = self._data()
         user_info = models.User.get_by_id(long(user_id))
 
+        logging.info(user_data)
+
         if not user_info:
             raise Exception("User not found with id: " + user_id)
 

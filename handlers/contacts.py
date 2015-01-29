@@ -52,8 +52,8 @@ class ApiContactHandler(JsonHandler):
         data = self._data()
 
         contact.name = data['name']
-        contact.name = data['email']
-        contact.name = data['phone']
+        contact.email = data['email']
+        contact.phone = data['phone']
         contact.put()
 
         return unique_id

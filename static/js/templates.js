@@ -4,19 +4,19 @@ this["JST"]["contact_item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div data-id="' +
+__p += '<div class="row" data-id="' +
 __e( unique_id ) +
-'">\n<div class="editable col-md-2">\n    ' +
+'">\n    <div class="editable col-sm-4 col-xs-8">\n        ' +
 __e( name ) +
-'\n</div>\n<div class="col-md-2">' +
+'\n    </div>\n    <div class="desktop tablet col-sm-4">' +
 __e( email ) +
-'</div>\n<div class="col-md-2">' +
+'</div>\n    <div class="desktop tablet col-sm-2">' +
 __e( phone ) +
-'</div>\n<div class="col-md-1 update-column">\n    <a class="update-contact" href="api/contacts/' +
+'</div>\n    <div class="col-sm-2 col-xs-4 update-column">\n        <a class="update-contact" href="api/contacts/' +
 __e( unique_id ) +
-'"><i class="fa-pen fa-1_2x"></i></a>\n    <a class="delete-contact" href="#"><i data-id="' +
+'"><i class="fa-pen fa-1_2x"></i></a>\n        <a class="delete-contact" href="#"><i data-id="' +
 __e( unique_id ) +
-'" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n</div>\n</div>';
+'" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n    </div>\n</div>';
 
 }
 return __p
@@ -44,7 +44,7 @@ this["JST"]["editProfile.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="edit-profile-view">\n\n   <div class="col-xs-12 text-center">\n       <h4>Edit your profile</h4>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <div id="edit-profile-email">Email</div>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-name" type="text" class="form-control valid-before-submit" placeholder="John Smith..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-username" type="text" class="form-control valid-before-submit" placeholder="username..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control valid-before-submit" placeholder="password..." data-validation="required">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control valid-before-submit" placeholder=" confirm password..." data-validation="required">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <button type=\'button\' class=\'save-profile btn btn-info form-control\'>Save</button>\n    </div>\n\n</div>\n';
+__p += '<div class="edit-profile-view">\n\n   <div class="col-xs-12 text-center">\n       <h4>Edit your profile</h4>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <div id="edit-profile-email">Email</div>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-name" type="text" class="form-control valid-before-submit" placeholder="John Smith..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-username" type="text" class="form-control valid-before-submit" placeholder="username..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control" placeholder="password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control" placeholder=" confirm password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <button type=\'button\' class=\'save-profile btn btn-info form-control\'>Save</button>\n    </div>\n\n</div>\n';
 
 }
 return __p

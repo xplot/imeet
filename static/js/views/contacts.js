@@ -131,7 +131,6 @@ ContactsNewView = SimpleView.extend({
 });
 
 ContactItemView = SimpleView.extend({
-    tagName: 'tr',
     template: JST["contact_item.html"],
     editTemplate: JST["contact_item_edit.html"],
     model: null,

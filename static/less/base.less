@@ -5,7 +5,7 @@ html,
 body {
     height: 100%;
 	overflow-x: hidden;
-    font-weight: 100 !important;
+    font-weight: 400 !important;
     font-family: 'Roboto', sans-serif !important;
 }
 
@@ -31,6 +31,19 @@ select,.btn {
   -webkit-border-radius: 0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
+
+
+}
+
+input[type='text'],
+input[type='password'],
+input[type='int'],
+textarea
+{
+  font-weight: 400 !important;
+}
+::-webkit-input-placeholder {
+   font-weight: 200;
 }
 a,
 a:focus,
@@ -158,4 +171,23 @@ p.small {
 
 .nav-color-bg{
   background-color: @nav-color;
+}
+
+.desktop,
+.mobile,
+.tablet{
+  display: none;
+}
+
+@media(min-width:1024px) {
+  .desktop{
+    display: block;
+  }
+}
+
+@media(min-width : 768px)
+and (max-width : 1023px){
+  .tablet{
+      display: block;
+    }
 }
