@@ -2,10 +2,10 @@
     <div class="editable col-sm-4 col-xs-8">
         <%- name %>
     </div>
-    <div class="desktop tablet col-sm-4"><%- email %></div>
-    <div class="desktop tablet col-sm-2"><%- phone %></div>
+    <div class="editable desktop tablet col-sm-4"><%- email %></div>
+    <div class="editable desktop tablet col-sm-2"><%- phone %></div>
     <div class="col-sm-2 col-xs-4 update-column">
-        <a class="update-contact" href="api/contacts/<%- unique_id %>"><i class="fa-pen fa-1_2x"></i></a>
+        <a class="editable" href="#"><i class="fa-pen fa-1_2x"></i></a>
         <a class="delete-contact" href="#"><i data-id="<%- unique_id %>" class="fa-delete-garbage-streamline fa-1_2x"></i></a>
     </div>
 </div>

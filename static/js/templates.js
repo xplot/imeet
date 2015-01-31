@@ -8,13 +8,11 @@ __p += '<div class="row" data-id="' +
 __e( unique_id ) +
 '">\n    <div class="editable col-sm-4 col-xs-8">\n        ' +
 __e( name ) +
-'\n    </div>\n    <div class="desktop tablet col-sm-4">' +
+'\n    </div>\n    <div class="editable desktop tablet col-sm-4">' +
 __e( email ) +
-'</div>\n    <div class="desktop tablet col-sm-2">' +
+'</div>\n    <div class="editable desktop tablet col-sm-2">' +
 __e( phone ) +
-'</div>\n    <div class="col-sm-2 col-xs-4 update-column">\n        <a class="update-contact" href="api/contacts/' +
-__e( unique_id ) +
-'"><i class="fa-pen fa-1_2x"></i></a>\n        <a class="delete-contact" href="#"><i data-id="' +
+'</div>\n    <div class="col-sm-2 col-xs-4 update-column">\n        <a class="editable" href="#"><i class="fa-pen fa-1_2x"></i></a>\n        <a class="delete-contact" href="#"><i data-id="' +
 __e( unique_id ) +
 '" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n    </div>\n</div>';
 
@@ -26,15 +24,15 @@ this["JST"]["contact_item_edit.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div data-id="' +
+__p += '<div class="row" data-id="' +
 __e( unique_id ) +
-'">\n<div class="editable col-md-2">\n    <input id="edit-name" value="' +
+'">\n    <div class="editable col-sm-4 col-xs-8">\n        <input id="edit-name" value="' +
 __e( name ) +
-'">\n</div>\n<div class="col-md-2">\n<input id="edit-email" value="' +
+'" placeholder="Name...">\n    </div>\n    <div class="desktop tablet col-sm-4">\n        <input id="edit-email" value="' +
 __e( email ) +
-'">\n</div>\n<div class="col-md-2">\n    <input id="edit-phone" value="' +
+'" placeholder="Email...">\n    </div>\n    <div class="desktop tablet col-sm-2">\n        <input id="edit-phone" value="' +
 __e( phone ) +
-'">\n\n</div>\n<div class="col-md-1 update-column">\n    <a href="#" class="finish-edit">OK</a>\n</div>\n</div>';
+'" placeholder="Phone...">\n    </div>\n    <div class="col-sm-2 col-xs-4 update-column">\n        <a href="#" class="finish-edit">OK</a>\n    </div>\n</div>';
 
 }
 return __p

@@ -183,10 +183,10 @@ ContactItemView = SimpleView.extend({
             contentType: "application/json",
             cache: false,
             success: function(data) {
-                alert_notification([{
-                    alertType:'success',
-                    message: 'Contact updated!'
-                }]);
+//                alert_notification([{
+//                    alertType:'success',
+//                    message: 'Contact updated!'
+//                }]);
 
             },
             error: function(data) {
