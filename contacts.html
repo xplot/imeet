@@ -44,11 +44,8 @@
 {% block initScript %}
  <script>
     var contactList = new ContactList();
-
     {% for contact in contacts%}
         contactList.create({unique_id: "{{contact.unique_id}}", name:"{{contact.name}}", email:"{{contact.email}}", phone:"{{contact.phone}}"});
     {% endfor %}
-
-
 </script>
 {% endblock %}

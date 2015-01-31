@@ -11,7 +11,7 @@ InviteModel = Backbone.Model.extend({
         'address.city': '',
         'address.state': '',
         'address.zip': '',
-        'contacts': [],
+        'contacts': new ContactList(),
     }
 });
 
@@ -82,11 +82,11 @@ ReadContactView = Backbone.View.extend({
 CreateView = SimpleView.extend({
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact_{2}'  class='contact-row equidistant' data-contact='{0};{1};{2}'>\
+            <div id='{2}'  class='contact-row equidistant' data-contact='{0};{1}'>\
                 <div class='col-md-4 col-md-offset-2'> {0}</div>\
                 <div class='col-md-3'> {1}</div>\
                 <div class='col-md-1'> \
-                    <button type='button' class='btn btn-danger remove-contact form-control' data-row='{2}'>-</button>              \
+                    <button type='button' class='btn btn-danger remove-contact form-control' data-rowid='{2}'>-</button>              \
                 </div> \
             </div>",
     reportView: null,
@@ -102,6 +102,7 @@ CreateView = SimpleView.extend({
     },
 
     template: JST['invite.html'],
+    contacts: null,
 
     render: function(options) {
        this.hidePanels();
@@ -120,9 +121,14 @@ CreateView = SimpleView.extend({
         if(options.id != null)
             this.createFromInvite(options.id);
         else{
+
             this.model = new InviteModel({
                 title: options.title
             });
+
+            this.listenTo(this.model.attributes.contacts, 'add', this.newContact_DOM);
+            this.listenTo(this.model.attributes.contacts, 'remove', this.removeContact_DOM);
+
             this.reportView = new ReportView({model:this.model, el: '#reportXXX'});
             this.reportView.render();
             this.stickit();
@@ -146,29 +152,12 @@ CreateView = SimpleView.extend({
                     description: data.description,
                     start_date: moment(data.start).format('L'),
                     start_time: moment(data.start).format('LT'),
-                    contacts:[]
                 });
 
                 if(data.end){
                     that.model.attributes.end_date = moment(data.end).format('L');
                     that.model.attributes.end_time = moment(data.end).format('LT');
                 }
-
-                that.reportView = new ReportView({model:that.model, el: '#reportXXX'});
-                that.reportView.render();
-
-                data.contacts.forEach(function(contact){
-                    contact.index = that.i;
-                    contact.address = [contact.phone, contact.email].join(' ');
-                    that.$table.append(that.new_contact_string.format(
-                        contact.name,
-                        contact.address,
-                        contact.index));
-
-                    that.model.attributes.contacts.push(contact);
-                    that.reportView.addContact(contact);
-                    that.i++;
-                });
 
                 if(data.where){
                     that.model.attributes['address.street'] = data.where.address;
@@ -177,6 +166,21 @@ CreateView = SimpleView.extend({
                     that.model.attributes['address.state'] = data.where.state;
                     that.model.attributes['address.zip'] = data.where.zip;
                 }
+
+                data.contacts.forEach(function(contact){
+                    that.model.attributes.contacts.add( new Contact({
+                        unique_id: guid(),
+                        name: contact.name,
+                        email: contact.email,
+                        phone: contact.phone
+                    }));
+                });
+
+                this.listenTo(this.model.attributes.contacts, 'add', this.newContact_DOM);
+                this.listenTo(this.model.attributes.contacts, 'remove', this.removeContact_DOM);
+
+                that.reportView = new ReportView({model:that.model, el: '#reportXXX'});
+                that.reportView.render();
 
                 that.stickit();
             },
@@ -188,61 +192,56 @@ CreateView = SimpleView.extend({
             }
         });
     },
+
+    //start-AddContact
     newContact: function(){
         if(!validator.validateItem(this.$new_phone)){
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
 
-        var contact = {
-            name:this.$new_name.val(),
-            address: this.$new_phone.val(),
-            index:this.i
-        };
+        var emailAndPhone = this.parsePhoneAndEmail(this.$new_phone.val());
+        this.model.attributes.contacts.add( new Contact({
+            unique_id:  guid(),
+            name:       this.$new_name.val(),
+            email:      emailAndPhone.email,
+            phone:      emailAndPhone.phone
+        }));
 
+        return false;
+    },
+    newContact_DOM: function(contact){
         this.$new_name.val('');
         this.$new_phone.val('');
 
-        this.$table.append(this.new_contact_string.format(contact.name,contact.address,contact.index));
-        this.reportView.addContact(contact);
-        this.model.attributes.contacts.push(contact);
-
-        this.i++;
-        return false;
+        this.$table.append(
+            this.new_contact_string.format(
+                contact.attributes.name,
+                contact.attributes.email + " " +  contact.attributes.phone,
+                contact.attributes.unique_id
+            )
+        );
     },
+    //end-AddContact
 
-    removeContact: function (e) {
-        var dataId = "#contact_"+ $(e.currentTarget).data('row');
-        this.$table.find(dataId).remove();
-
-        this.reportView.removeContact(dataId);
-
-        //disabling send button
-        var $rows = this.$el.find('.contact-row');
-
-        this.removeContactByIndex(parseInt(dataId.split('_')[1]));
+    //start-RemoveContact
+    removeContact:function(e){
+        var dataId = $(e.currentTarget).data('rowid');
+        this.model.attributes.contacts.removeBy(dataId);
     },
-
-    removeContactByIndex: function(index){
-        var i = 0;
-        this.model.attributes.contacts.forEach(function(contact){
-            if(contact.index == index)
-                return i;
-            i++;
-        });
-
-        this.model.attributes.contacts.splice(i, 1);
+    removeContact_DOM: function (contact) {
+        this.$table.find('#' + contact.attributes.unique_id).remove();
     },
+    //end-RemoveContact
 
     submitNew:function(e){
         var that = this;
-
         if(!validator.validateItems('.valid-before-submit') ||
             this.model.attributes.contacts.length == 0){
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
-
+        
         var event = {
             'title': this.model.attributes.title,
             'description': this.model.attributes.description,
@@ -259,7 +258,7 @@ CreateView = SimpleView.extend({
             },
             'facebook_share': true,
             'user_id': (currentUser!=null)?currentUser.id: null,
-            'contacts': this.normalizeContacts(this.model.attributes.contacts)
+            'contacts': this.model.attributes.contacts.collectionToJSON()
         };
 
         $.ajax({
@@ -287,20 +286,7 @@ CreateView = SimpleView.extend({
             }
         });
     },
-    normalizeContacts: function(contacts){
-        var result = [];
-        var that = this;
-        contacts.forEach(function(contact){
-            var addresses = that.parsePhoneAndEmail(contact.address);
-            result.push({
-                    name: contact.name,
-                    email: addresses.email,
-                    phone: addresses.phone
-            });
-        });
 
-        return result;
-    },
 
     parsePhoneAndEmail: function(addressString){
         var trimmedAddressString = addressString.trim();
