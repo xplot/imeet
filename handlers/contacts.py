@@ -1,3 +1,4 @@
+import base64
 import logging
 import uuid
 import json
@@ -66,3 +67,8 @@ class ApiContactHandler(JsonHandler):
 
         contact.key.delete()
         return unique_id
+
+    def import_csv(self):
+        data = self._data()
+        csv = data["file"][13:].decode('base64')
+

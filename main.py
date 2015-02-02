@@ -40,6 +40,7 @@ app = webapp2.WSGIApplication([
     Route('/api/contacts', contacts.ApiContactHandler, handler_method='add_contact', methods=['POST']),
     Route('/api/contacts/<unique_id>/delete', contacts.ApiContactHandler, handler_method='delete_contact', methods=['DELETE']),
     Route('/api/contacts/<unique_id>/edit', contacts.ApiContactHandler, handler_method='update_contact', methods=['PUT']),
+    Route('/api/contacts/csv', contacts.ApiContactHandler, handler_method='import_csv', methods=['POST']),
 
     #User Profile
     Route('/register', base.MainHandler, name='register', handler_method='default_method'),

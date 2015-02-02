@@ -6,6 +6,7 @@ ContactsView = SimpleView.extend({
     },
     events: {
        'click .add-contact' : 'navigateToAddContact',
+       'change #import-csv' : 'importFromCsv'
     },
 
     render: function(options) {
@@ -42,6 +43,43 @@ ContactsView = SimpleView.extend({
     navigateToAddContact: function(evt){
         evt.preventDefault();
         Backbone.history.navigate(evt.target.attributes.href.value, true);
+    },
+
+    importFromCsv: function(evt){
+
+        var reader = new FileReader();
+        // closure to capture the file information.
+        reader.onload = (function(theFile,that) {
+            return function(e) {
+                $.ajax({
+                    url: "/api/contacts/csv",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: '{"file_name": "{0}", "file": "{1}"}'.format(theFile.name, e.target.result),
+                    cache: false,
+                    success: function() {
+                        alert_notification([{
+                            alertType:'success',
+                            message: 'Contact created!'
+                        }]);
+
+                        console.info("file uploaded correctly.")
+                    },
+                    error: function(data) {
+                        alert_notification([{
+                            alertType:'danger',
+                            message: data.responseText
+                        }]);
+                    }
+                });
+            };
+        })(evt.target.files[0],this);
+
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(evt.target.files[0]);
+
+
+
     }
 });
 
