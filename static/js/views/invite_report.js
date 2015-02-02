@@ -30,6 +30,6 @@ ReportView = Backbone.View.extend({
         );
     },
     removeContact: function(contact){
-        this.$report_table.find(contact.attributes.unique_id).remove();
+        this.$report_table.find('#'+contact.attributes.unique_id).remove();
     }
 });

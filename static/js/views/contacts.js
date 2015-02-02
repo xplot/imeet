@@ -6,28 +6,90 @@ ContactsView = SimpleView.extend({
     },
     events: {
        'click .add-contact' : 'navigateToAddContact',
-       'change #import-csv' : 'importFromCsv'
+       'change #import-csv' : 'importFromCsv',
+       'click .add-group' : 'addGroup',
+       'dragstart .contact-row': 'contactStartDrag',
+       'dragover .group': 'preventDefault',
+       'dragleave .group': 'contactDragLeave',
+       'dragenter .group': 'contactDragEnter',
+       'drop .group': 'contactDropped'
+    },
+
+    preventDefault: function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+    },
+
+    contactStartDrag: function(ev){
+        var $contactRow = $(ev.target);
+        var unique_id = $contactRow.data('id');
+        ev.originalEvent.dataTransfer.setData("contact_id", unique_id);
+    },
+
+    contactDragEnter: function(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        var $group = $(ev.target);
+        if($group.hasClass('group-drag-hover'))
+            return;
+
+        $group.addClass('group-drag-hover');
+    },
+
+    contactDragLeave: function(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        var $group = $(ev.target);
+        if(!$group.hasClass('group-drag-hover'))
+            return;
+
+        $group.removeClass('group-drag-hover');
+    },
+
+    contactDropped: function(ev) {
+        ev.preventDefault();
+        var $group = $(ev.target);
+        var id = $group.data('id');
+        var group = this.groupList.getById(id);
+
+        if(group.length > 0){
+            var contact_unique_id = ev.originalEvent.dataTransfer.getData("contact_id");
+            var contact = this.contactList.getById(contact_unique_id);
+            if(contact.length > 0)
+                this.addContactToGroup(contact[0], group[0]);
+        }
+
+        $group.removeClass('group-drag-hover');
     },
 
     render: function(options) {
+        this.hidePanels();
         $('#contact-list').show();
 
         if(!this.first_time){
             return;
         }
         this.contactList = options.contactList;
+        this.groupList = options.groupList;
 
         this.listenTo(this.contactList, 'add', this.addContact);
         this.listenTo(this.contactList, 'remove', this.removeContact);
 
         this.clearTemplate();
 
+        var groupsTable =$('.groups_table');
         var contactTable =$('#contacts_table');
         contactList.each(function(contact){
             contactTable.append(new ContactItemView({model: contact}).render().el);
         });
 
+        this.groupListView = new GroupListView();
+        groupsTable.html(this.groupListView.render({groupList: this.groupList}));
+
         this.first_time = false;
+
     },
 
     addContact: function(contact){
@@ -77,10 +139,28 @@ ContactsView = SimpleView.extend({
 
         // Read in the image file as a data URL.
         reader.readAsDataURL(evt.target.files[0]);
+    },
 
+    addGroup: function(){
+        this.groupListView.showDialog();
+    },
 
+    addContactToGroup: function(contact, group){
+        $.ajax({
+            url: "/api/group/" + group.attributes.unique_id+ "/"+ contact.attributes.unique_id + "?user_id=" + currentUser.id,
+            type: "POST",
+            contentType: "application/json",
+            success: function(unique_id) {
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: "The contact couldn't be added to the group"
+                }]);
+            }
+        });
+    },
 
-    }
 });
 
 ContactsNewView = SimpleView.extend({
@@ -95,7 +175,7 @@ ContactsNewView = SimpleView.extend({
     render: function(options) {
         $('#contact-list').hide();
 
-        var template = _.template(this.template(), {});
+        var template = this.template({});
         this.$el.html(template);
         this.$el.show();
     },
@@ -159,7 +239,7 @@ ContactItemView = SimpleView.extend({
     },
 
     render: function(){
-       this.$el.html(_.template(this.template(this.model.toJSON())));
+       this.$el.html(this.template(this.model.toJSON()));
        return this;
     },
 
@@ -167,7 +247,7 @@ ContactItemView = SimpleView.extend({
         if(this.editMode)
             return;
         this.editMode = true;
-        this.$el.html(_.template(this.editTemplate(this.model.toJSON())));
+        this.$el.html(this.editTemplate(this.model.toJSON()));
     },
 
     finishEditMode: function(evt){
@@ -181,7 +261,7 @@ ContactItemView = SimpleView.extend({
 
         this.saveContact();
 
-        this.$el.html(_.template(this.template(this.model.toJSON())));
+        this.$el.html(this.template(this.model.toJSON()));
     },
 
     saveContact: function(){

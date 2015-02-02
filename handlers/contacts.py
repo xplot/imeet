@@ -10,7 +10,8 @@ from boilerplate.basehandler import BaseHandler
 from base import JsonHandler
 from google.appengine.ext import ndb
 from models.models import Contact
-
+from boilerplate.models import User
+from managers.group import GroupManager
 
 class ContactHandler(BaseHandler):
     def get(self):
@@ -21,14 +22,34 @@ class ContactHandler(BaseHandler):
             .order(Contact.name)\
         .fetch()
 
+        group_manager = GroupManager(self.user_key)
+
         return self.render_template(
             'contacts.html',
             contacts=contactlist or [],
+            groups=group_manager.get_groups_for_user(),
             show_search=len(contactlist) > 1
         )
 
 
 class ApiContactHandler(JsonHandler):
+
+    @user_context
+    def get(self):
+        if self.user is None:
+            return []
+
+        return [
+            {
+                'unique_id': x.unique_id,
+                'name': x.name,
+                'phone': x.phone,
+                'email': x.email
+            }
+            for x in Contact.query(
+                Contact.user == self.user.key
+            ).order(Contact.name).fetch()
+        ]
 
     @user_context
     def add_contact(self):

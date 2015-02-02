@@ -12,6 +12,8 @@ InviteModel = Backbone.Model.extend({
         'address.state': '',
         'address.zip': '',
         'contacts': new ContactList(),
+        'all_contacts': new ContactList(),
+        'all_groups': new ContactList()
     }
 });
 
@@ -82,10 +84,10 @@ ReadContactView = Backbone.View.extend({
 CreateView = SimpleView.extend({
     el: '#header-container',
     new_contact_string: "\
-            <div id='{2}'  class='contact-row equidistant' data-contact='{0};{1}'>\
-                <div class='col-md-4 col-md-offset-2'> {0}</div>\
-                <div class='col-md-3'> {1}</div>\
-                <div class='col-md-1'> \
+            <div id='{2}'  class='contact-row col-md-12' data-contact='{0};{1}'>\
+                <div class='col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0'> {0}</div>\
+                <div class='col-xs-8 col-xs-offset-2 col-md-3 col-md-offset-0'> {1}</div>\
+                <div class='col-xs-8 col-xs-offset-2 col-md-1 col-md-offset-0'> \
                     <button type='button' class='btn btn-danger remove-contact form-control' data-rowid='{2}'>-</button>              \
                 </div> \
             </div>",
@@ -96,9 +98,13 @@ CreateView = SimpleView.extend({
     events: {
        'click .new-contact' : 'newContact',
        'click .remove-contact': 'removeContact',
+       'keyup .contact-input': 'newContactEnter',
+       'click .new-contact-button': 'newContactClick',
+
        'click .send': 'submitNew',
-       'change .share_to_facebook': 'share_on_facebook_auth'
+       'change .share_to_facebook': 'share_on_facebook_auth',
        //'click .share_to_facebook' : 'share_on_facebook_auth'
+       'click .contact-input-container': 'focusOnClick'
     },
 
     template: JST['invite.html'],
@@ -112,22 +118,20 @@ CreateView = SimpleView.extend({
 
         this.$table = this.$el.find('.contact-table');
         this.$btSend = this.$el.find('.send');
-        this.$new_name = this.$el.find('.new-contact-name');
-        this.$new_phone = this.$el.find('.new-contact-phone');
+        this.$newContact = this.$el.find('.contact-input');
 
         this.$btSend = this.$el.find('.send');
         this.i = 0;
 
+        this.model = new InviteModel({});
+
+        this.listenTo(this.model.attributes.contacts, 'add', this.newContact);
+        this.listenTo(this.model.attributes.contacts, 'remove', this.removeContact_DOM);
+
         if(options.id != null)
             this.createFromInvite(options.id);
         else{
-
-            this.model = new InviteModel({
-                title: options.title
-            });
-
-            this.listenTo(this.model.attributes.contacts, 'add', this.newContact_DOM);
-            this.listenTo(this.model.attributes.contacts, 'remove', this.removeContact_DOM);
+            this.model.attributes.title = options.title;
 
             this.reportView = new ReportView({model:this.model, el: '#reportXXX'});
             this.reportView.render();
@@ -135,7 +139,6 @@ CreateView = SimpleView.extend({
         }
 
         this.plugins();
-
         return this;
     },
 
@@ -146,13 +149,10 @@ CreateView = SimpleView.extend({
             type: "GET",
             cache: false,
             success: function(data) {
-
-                that.model = new InviteModel({
-                    title: data.title,
-                    description: data.description,
-                    start_date: moment(data.start).format('L'),
-                    start_time: moment(data.start).format('LT'),
-                });
+                that.model.attributes.title = data.title;
+                that.model.attributes.description = data.description;
+                that.model.attributes.start_date = moment(data.start).format('L');
+                that.model.attributes.start_time = moment(data.start).format('LT');
 
                 if(data.end){
                     that.model.attributes.end_date = moment(data.end).format('L');
@@ -167,20 +167,12 @@ CreateView = SimpleView.extend({
                     that.model.attributes['address.zip'] = data.where.zip;
                 }
 
-                data.contacts.forEach(function(contact){
-                    that.model.attributes.contacts.add( new Contact({
-                        unique_id: guid(),
-                        name: contact.name,
-                        email: contact.email,
-                        phone: contact.phone
-                    }));
-                });
-
-                this.listenTo(this.model.attributes.contacts, 'add', this.newContact_DOM);
-                this.listenTo(this.model.attributes.contacts, 'remove', this.removeContact_DOM);
-
                 that.reportView = new ReportView({model:that.model, el: '#reportXXX'});
                 that.reportView.render();
+
+                data.contacts.forEach(function(contact){
+                    that.model.attributes.contacts.add(new Contact(contact));
+                });
 
                 that.stickit();
             },
@@ -193,34 +185,83 @@ CreateView = SimpleView.extend({
         });
     },
 
-    //start-AddContact
-    newContact: function(){
-        if(!validator.validateItem(this.$new_phone)){
-            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+    last_selected_item: null,
+    newContactEnter: function(evt) {
+        if (evt.keyCode != 13) {
             return;
         }
-
-        var emailAndPhone = this.parsePhoneAndEmail(this.$new_phone.val());
-        this.model.attributes.contacts.add( new Contact({
-            unique_id:  guid(),
-            name:       this.$new_name.val(),
-            email:      emailAndPhone.email,
-            phone:      emailAndPhone.phone
-        }));
-
-        return false;
+        this.$newContact.trigger('blur');
+        this.newContactClick();
     },
-    newContact_DOM: function(contact){
-        this.$new_name.val('');
-        this.$new_phone.val('');
+    newContactClick: function() {
+        var contact = null;
+        var group = null;
+        if(this.last_selected_item != null && this.last_selected_item.is_group)
+            group = this.last_selected_item;
+        else if(this.last_selected_item != null ){
+            contact = this.last_selected_item;
+        }
 
-        this.$table.append(
+        if(this.last_selected_item == null && this.$newContact.val() != ''){
+            if(!validator.validateItem(this.$newContact)){
+                alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+                return;
+            }
+
+            var emailAndPhone = this.parsePhoneAndEmail(this.$newContact.val());
+            contact = {
+                unique_id:  guid(),
+                name:       '',
+                email:      emailAndPhone.email,
+                phone:      emailAndPhone.phone
+            };
+        }
+
+        this.$newContact.val('');
+        this.last_selected_item = null;
+
+        if(contact != null)
+            this.model.attributes.contacts.add(new Contact(contact));
+        if(group != null)
+            this.addContactsFromGroup(group.unique_id);
+    },
+
+    addContactsFromGroup: function(group_id){
+        var that = this;
+        $.ajax({
+            url: "/api/group/" + group_id + "?user_id="+currentUser.id,
+            type: "GET",
+            success: function(data) {
+                if(data.length == 0){
+                    alert_notification([{alertType: 'warning', message: 'No contacts in the selected group!'}]);
+                    return;
+                }
+
+                data.forEach(function(item){
+                    var contact = new Contact(item);
+                    that.model.attributes.contacts.add(contact);
+                });
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: "There was an error getting the contacts for the group"
+                }]);
+            }
+        });
+    },
+
+    //start-AddContact
+    newContact: function(contactModel){
+        this.$table.prepend(
             this.new_contact_string.format(
-                contact.attributes.name,
-                contact.attributes.email + " " +  contact.attributes.phone,
-                contact.attributes.unique_id
+                contactModel.attributes.name,
+                contactModel.attributes.email + " " +  contactModel.attributes.phone,
+                contactModel.attributes.unique_id
             )
         );
+
+        return false;
     },
     //end-AddContact
 
@@ -325,6 +366,10 @@ CreateView = SimpleView.extend({
         );
     },
 
+    searchContact: function(input){
+        return ['pepe','jose'];
+    },
+
     plugins: function(){
         $('#bt_toggle').bootstrapToggle();
 
@@ -335,6 +380,8 @@ CreateView = SimpleView.extend({
         this.$el.find('.event-start-time, .event-end-time').datetimepicker({
             pickDate: false,  
         });
+
+        this.setupContactsTypeahead();
 
         try{
             //Snap Panel
@@ -360,5 +407,92 @@ CreateView = SimpleView.extend({
         catch(ex){
             //Swallow ex
         }
-}
+    },
+
+    setupContactsTypeahead: function(){
+        var that = this;
+
+        var substringMatcher = function(strs) {
+            return function findMatches(q, cb) {
+                var matches, substrRegex;
+                matches = [];
+                substrRegex = new RegExp(q, 'i');
+
+                $.each(strs, function(i, contact) {
+                    if (substrRegex.test(contact.name) || substrRegex.test(contact.email) || substrRegex.test(contact.phone))
+                        matches.push(contact);
+                });
+            cb(matches);
+            };
+        };
+
+        var substringGroupMatcher = function(strs) {
+            return function findMatches(q, cb) {
+                var matches, substrRegex;
+                matches = [];
+                substrRegex = new RegExp(q, 'i');
+
+                $.each(strs, function(i, group) {
+                    if (substrRegex.test(group.name)){
+                        group.is_group = true;
+                        matches.push(group);
+                    }
+                });
+            cb(matches);
+            };
+        };
+
+        var setupTypeAhead = function(contacts_and_groups){
+            that.$newContact.typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1,
+            },
+            {
+                autoselect: true,
+                name: 'contacts',
+                displayKey: 'name',
+                source: substringMatcher(contacts_and_groups.contacts),
+                templates: {
+                    header: '<h5>Contacts</h5>',
+                    suggestion: JST['contact_item_typeahead.html']
+                }
+
+            },
+            {
+                autoselect: true,
+                name: 'groups',
+                displayKey: 'name',
+                source: substringGroupMatcher(contacts_and_groups.groups),
+                templates: {
+                    header: '<h5>Groups</h5>',
+                    suggestion: _.template('<%- name %>')
+                }
+
+            }
+            ).on('typeahead:selected', function (obj, data) {
+                that.last_selected_item = data;
+            })
+            .on('keypress keydown input', function($e) {
+                $e.stopPropagation();
+            });
+        };
+
+        if(currentUser == null){
+            setupTypeAhead([]);
+            return;
+        }
+
+        $.ajax({
+            url: "/api/contacts/groups?user_id="+currentUser.id,
+            type: "GET",
+            success: function(data) {
+                that.model.attributes.all_contacts = new ContactList(data);
+                setupTypeAhead(data);
+            },
+            error: function(data) {
+
+            }
+        });
+    }
 });
