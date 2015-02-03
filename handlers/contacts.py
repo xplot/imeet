@@ -2,6 +2,8 @@ import base64
 import logging
 import uuid
 import json
+import csv
+import StringIO
 
 from managers.auth import user_context
 from boilerplate.basehandler import BaseHandler
@@ -68,7 +70,24 @@ class ApiContactHandler(JsonHandler):
         contact.key.delete()
         return unique_id
 
+    @user_context
     def import_csv(self):
         data = self._data()
-        csv = data["file"][13:].decode('base64')
+        index = data["file"].find('base64,') + 7
+        csv_string = data["file"][index:].decode('base64')
+
+        f = StringIO.StringIO(csv_string)
+        contacts = csv.DictReader(f)
+        for contact_data in contacts:
+            contact = Contact()
+            contact.unique_id = str(uuid.uuid4()).replace('-', '')
+            contact.name = contact_data['name']
+            contact.email = contact_data['email']
+            contact.phone = contact_data['phone']
+            contact.user = self.user.key
+            contact.put()
+
+
+
+
 
