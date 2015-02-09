@@ -56,78 +56,124 @@
       }
     }
 
-    .invite{
-      .invite-content{
+    .invite {
+      .invite-content {
         position: absolute;
-        height: 90%;
-        width: 100%;
-      }
-
-      .label-text{
-        padding-top: 10px;
-      }
-
-      input,textarea,select,button{
-        margin-top: 10px;
-        margin-bottom: 10px;
-        outline: none;
-
-      }
-
-      .date-group{
-        width: 100%;
         height: 100%;
-        position: relative;
-        height: 43px;
-        font-size: 15px;
-        line-height: 1.42857143;
-        color: #2c3e50;
-        background-color: #fff;
-        background-image: none;
-        border: 2px solid #dce4ec;
-        border-radius: 4px;
-        float: left;
-
-        .date{
-          padding-left: 15px;
-          height: 100%;
-          width: 55%;
-          border: none;
-          margin-top: 0px;
-          margin-bottom: 0px;
-        }
-        .time{
-          height: 100%;
-          width: 43%;
-          border: none;
-          margin-top: 0px;
-          margin-bottom: 0px;
-        }
-
-        .date,.time:focus{
-          outline: none;
-        }
-      }
-
-      .invite_report{
-          .panel{
-              .panel-heading{
-                  height:60px !important;
-              }
-          }
-      }
-
-      .contact-table{
-        max-height: 70%;
         width: 100%;
-        overflow-y: auto;
+
+        .profile-contacts {
+
+          padding: 20px;
+
+        }
+
+        .contact-input-container {
+          .contact-input{
+
+          }
+
+          .twitter-typeahead{
+            width: 100%;
+
+          }
+
+          .tt-dropdown-menu {
+            width:100%;
+            padding: 2px 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+               -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            font-weight: 400;
+            max-height: 400px;
+            overflow-y: auto;
+
+            .tt-suggestion {
+              padding: 3px 20px;
+              line-height: 24px;
+
+            }
+            .tt-cursor {
+              color: @off-white;
+              background-color: @nav-bg-color;
+              cursor: pointer;
+            }
+          }
+        }
+
+        .label-text {
+          padding-top: 10px;
+        }
+
+        input, textarea, select, button {
+          margin-top: 10px;
+          margin-bottom: 10px;
+          outline: none;
+
+        }
+
+        .date-group {
+          width: 100%;
+          height: 100%;
+          position: relative;
+          height: 43px;
+          font-size: 15px;
+          line-height: 1.42857143;
+          color: #2c3e50;
+          background-color: #fff;
+          background-image: none;
+          border: 2px solid #dce4ec;
+          border-radius: 4px;
+          float: left;
+
+          .date {
+            padding-left: 15px;
+            height: 100%;
+            width: 55%;
+            border: none;
+            margin-top: 0px;
+            margin-bottom: 0px;
+          }
+          .time {
+            height: 100%;
+            width: 43%;
+            border: none;
+            margin-top: 0px;
+            margin-bottom: 0px;
+          }
+
+          .date, .time:focus {
+            outline: none;
+          }
+        }
+
+        .invite_report {
+          .panel {
+            .panel-heading {
+              height: 60px !important;
+            }
+          }
+        }
+
+        .contact-table {
+          max-height: 70%;
+          height: 70%;
+          width: 100%;
+          overflow-y: auto;
+          padding: 0px;
+        }
+
+        .contact-row {
+          padding-left: 0px;
+          padding-right: 0px;
+        }
       }
-
-      .contact-row{
-
-      }
-
     }
+
+
   }
 
 
@@ -196,194 +242,6 @@
     padding: 0% !important;
     margin-top: 50px;
   }
-}
-
-.section {
-    width: 100%;
-
-    .section-container {
-
-      //width: 100%;
-      .section-item {
-        text-align: center;
-        //margin: 0 0 15px;
-        //right: 0;
-
-        .arrow {
-          color: @nav-color;
-        }
-        .caption {
-          display: block;
-          width: 100%;
-          height: 100%;
-
-          i {
-            .animate(0.6s);
-            font-style: normal;
-            text-align: center;
-
-            .caption-content {
-              .animate(0.6s);
-
-              font-size: 30px;
-              padding-top: 15px;
-              font-weight: bold;
-            }
-          }
-          &:hover {
-            i {
-              color: @body-frame;
-
-              .caption-content {
-                color: @body-frame;
-              }
-            }
-          }
-          .section-link {
-            text-decoration: none;
-            display: block;
-            position: relative;
-            max-width: 400px;
-            margin: 0 auto;
-          }
-        }
-      }
-      * {
-        z-index: 2;
-      }
-    }
-}
-
-
-.body-section {
-  .horizontal-divider{
-      background-color: @nav-color;
-      height: 1px;
-      margin-left: 10%;
-      margin-right: 10%;
-  }
-
-	#marketing{
-		border-bottom: 1px solid #e5e5e5;
-		padding-bottom: 80px;
-	}
-
-  #about{
-			background-color: #ecf4f9;
-			padding-bottom: 50px;
-			padding-top: 20px;
-
-      .caption{
-        padding-top: 20px;
-				text-align: center;
-      }
-  }
-
-	#imeetPlus{
-		//background-color: #576a75;
-		padding-bottom: 80px;
-		padding-top: 40px;
-
-		.caption{
-			padding-top: 20px;
-			text-align: center;
-		}
-	}
-
-}
-
-.header-section {
-	text-align: center;
-	color: @nav-color;
-    background-color: @body-frame;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    top: 0;
-    left: 0;
-    height: 60%;
-    width: 100%;
-
-    .header-container{
-      top: 50%;
-      position: relative;
-      .event-name-home{
-
-        display: inline-block;
-        width: 500px;
-        height: 70px;
-        border: 1px solid #FFF;
-
-        input,
-        input:focus,
-        input:active,
-        {
-          width: 75%;
-          padding-left: 15px;
-          padding-right: 15px;
-          height: 100%;
-          color:black;
-          float: left;
-          outline:0px !important;
-          -webkit-appearance:none;
-          border: none;
-          background-color: #FFF;
-          @media(max-width : 768px) {
-            font-size: 22px;
-          }
-          @media(min-width:1024px) {
-            font-size: 24px;
-          }
-        }
-        input::-webkit-input-placeholder {
-            color: lighten(black,25%);
-        }
-        input:-moz-placeholder {
-            /* FF 4-18 */
-            color: lighten(black,25%);
-        }
-        input::-moz-placeholder {
-            /* FF 19+ */
-            color: lighten(black,25%);
-        }
-        input:-ms-input-placeholder {
-            /* IE 10+ */
-            color: lighten(black,25%);
-        }
-
-        button{
-          cursor: pointer;
-          background-color: darken(@nav-bg-color,5%);
-          color: white;
-          height: 100%;
-          width: 25%;
-          float: left;
-          border: none;
-          @media(max-width : 768px) {
-            font-size: 21px;
-          }
-          @media(min-width:1024px) {
-            font-size: 27px;
-          }
-          span{
-            position: relative;
-            top:30%;
-          }
-        }
-        button:hover{
-          color: @link-color;
-        }
-      }
-
-    }
-
-    .header-footer{
-      text-align: center;
-      color: #ffffff;
-      top: 85%;
-      position: relative;
-    }
 }
 
 .btn-outline {
@@ -504,19 +362,7 @@
         height: 85%;
       }
 
-      .invite-create{
-          .invite-content{
-          padding: 10%;
-          position: absolute;
-          height: 90%;
-          width: 100%;
 
-          .invite{
-            .label-text{
-              padding-top: 0px !important;
-            }
-          }
-      }
 
       .menu-down{
         top:70%;
@@ -533,8 +379,6 @@
         }
       }
     }
-
-  }
 }
 
 @media(max-width:768px) {
@@ -605,15 +449,7 @@
       height: 90%;
     }
 
-    .invite-content{
-        padding: 1%;
-        position: absolute;
-        .invite{
-          .label-text{
-            padding-top: 0px !important;
-          }
-        }
-      }
+
   }
 }
 

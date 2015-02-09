@@ -259,7 +259,7 @@ class InviteManager(object):
             'description': invite.description,
             'where': None,
             'contacts':[{
-                'id': x.unique_id,
+                'unique_id': x.unique_id,
                 'name':x.name,
                 'phone': x.phone,
                 'email':x.email,

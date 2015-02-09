@@ -49,7 +49,6 @@ class BaseModel(ndb.Model):
         result = json.dumps(model_dict, default=data_type_handler, indent = 4)
         return result
 
-
 class ContactInvite(ndb.Model):
     contact_id = ndb.StringProperty()
     invite_id = ndb.StringProperty()
@@ -116,3 +115,14 @@ class Feature(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     name = ndb.StringProperty(required=True)
     Subscription = ndb.KeyProperty(kind=Subscription,required=True)
+
+
+class Group(BaseModel):
+    unique_id = ndb.StringProperty(required=True)
+    name = ndb.StringProperty(required=True)
+    user = ndb.KeyProperty(kind=User)
+
+class GroupedContact(BaseModel):
+    user = ndb.KeyProperty(kind=User)
+    group_unique_id = ndb.StringProperty(required=True)
+    contact_unique_id = ndb.StringProperty(required=True)

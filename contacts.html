@@ -7,19 +7,15 @@
     <br/>
 
 <div class="row">
-
+    <div class="col-md-4">
+        <h4>Contacts and Groups</h4>
     </div>
 
-<div id="contact-list">
-    <div class="row">
-        <div class="col-md-2">
-    <h4>Contact</h4>
-</div>
         <div class="desktop col-md-8 text-right">
 
             <h5>
                 <a href="#">
-                    <div class="btn-file">
+                    <div class="btn btn-file">
                         CSV import<input id="import-csv" type="file">
                     </div>
                </a>
@@ -27,10 +23,12 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-2">
             <a class="btn btn-success add-contact" href="contacts/new">New Contact</a>
+        </div>
+        <div class="col-md-2">
+            <a class="btn add-group" href="#">New Group</a>
         </div>
     </div>
     <div class="row small-margin-top">
@@ -41,9 +39,11 @@
         {% endif %}
     </div>
 
-
-    <div id="contacts_table" class="container small-margin-top">
+    <div class="row small-margin-top">
+        <div class="groups_table" class=""></div>
     </div>
+
+    <div id="contacts_table" class="container small-margin-top"></div>
 </div>
 
 <div class="row">
@@ -58,6 +58,11 @@
     var contactList = new ContactList();
     {% for contact in contacts%}
         contactList.create({unique_id: "{{contact.unique_id}}", name:"{{contact.name}}", email:"{{contact.email}}", phone:"{{contact.phone}}"});
+    {% endfor %}
+
+    var groupList = new GroupList();
+    {% for group in groups%}
+        groupList.create({unique_id: "{{group.unique_id}}", name:"{{group.name}}"});
     {% endfor %}
 </script>
 {% endblock %}

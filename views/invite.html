@@ -94,31 +94,31 @@
         </section>
 
         <section data-panel="third" class="container invite third">
-            <div class="row text-center invite-content ">
-                <div class="row2 text-center">
-                    <h4>Who is invited?</h4>
+            <div class="text-center invite-content invite-contacts-setup ">
+                <div class="row">
+                    <div class="col-xs-12 col-md-8 col-md-offset-2 text-center">
+                        <h4>Who is invited?</h4>
+                    </div>
                 </div>
 
-                <div class="row zero-margin">
-                    <div class="col-md-4 col-md-offset-2">
-                        <input type="text" class="new-contact-name form-control" placeholder="Name">
-                    </div>
-
-                    <div class="col-md-3">
-                        <input type="text" class="new-contact-phone form-control"
+                <div class="row">
+                    <div class="text-center col-xs-8 col-md-7 col-md-offset-2 contact-input-container">
+                        <input type="text" class="contact-input form-control"
                             <%  if( features.indexOf('voice') != -1 )  { %>
-                                data-validation='required,email|phone' placeholder='Phone Number or Email Address'
+                                data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
                             <% } else { %>
                                 data-validation='required,email' placeholder='Email Address'
-                            <% } %>
-                            name="newPhone" id="newPhone">
+                            <% } %>>
                     </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-info new-contact form-control">+</button>
+                    <div class="col-xs-3 col-md-1">
+                        <button type="button" class="btn new-contact-button form-control">+</button>
                     </div>
                 </div>
 
-                <div class="row2 contact-table">
+                <div class="row">
+                    <div class="contact-table text-center col-xs-12 col-md-8 col-md-offset-2">
+
+                    </div>
                 </div>
             </div>
 

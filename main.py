@@ -15,7 +15,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-from handlers import base, invite, profile, contacts
+from handlers import base, invite, profile, contacts, group
 from config import config
 
 
@@ -37,6 +37,7 @@ app = webapp2.WSGIApplication([
     #Contacts
     Route('/contacts', contacts.ContactHandler),
     Route('/contacts/new', contacts.ContactHandler),
+    Route('/api/contacts', contacts.ApiContactHandler, handler_method='get', methods=['GET']),
     Route('/api/contacts', contacts.ApiContactHandler, handler_method='add_contact', methods=['POST']),
     Route('/api/contacts/<unique_id>/delete', contacts.ApiContactHandler, handler_method='delete_contact', methods=['DELETE']),
     Route('/api/contacts/<unique_id>/edit', contacts.ApiContactHandler, handler_method='update_contact', methods=['PUT']),
@@ -65,8 +66,7 @@ app = webapp2.WSGIApplication([
           handler_method='send', methods=['POST']),
 
     #Invite
-    Route('/api/invite', invite.InviteHandler, name='send',
-          handler_method='send', methods=['POST']),
+    Route('/api/invite', invite.InviteHandler, name='send', handler_method='send', methods=['POST']),
     Route('/api/invite/post', invite.InviteHandler, name='post_to_voiceflows',
           handler_method='post_to_voiceflows', methods=['POST']),
     Route('/api/invite/search/<user_id>', invite.InviteHandler, name='search',
@@ -79,6 +79,13 @@ app = webapp2.WSGIApplication([
     Route('/api/invite/<id>/comment', invite.InviteHandler, name='add_comment', handler_method='add_comment', methods=['POST']),
     Route('/api/invite/<id>/comments', invite.InviteHandler, name='get_comments', handler_method='get_comments', methods=['GET']),
 
+    #Groups
+    Route('/api/group', group.ApiGroupHandler, name='get_groups', handler_method='get', methods=['GET']),
+    Route('/api/group/<group_id>', group.ApiGroupHandler, name='get_contacts_in_group', handler_method='get_contacts_in_group', methods=['GET']),
+    Route('/api/group/<group_name>', group.ApiGroupHandler, name='add_group', handler_method='add', methods=['POST']),
+    Route('/api/group/<group_id>', group.ApiGroupHandler, name='remove_group', handler_method='remove', methods=['DELETE']),
+    Route('/api/group/<group_id>/<contact_id>', group.ApiGroupHandler, name='add_contact', handler_method='add_contact_to_group', methods=['POST']),
 
+    Route('/api/contacts/groups', group.ApiGroupHandler, handler_method='get_all_groups_and_contacts', methods=['GET']),
 
 ], config=config,debug=True)
