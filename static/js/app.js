@@ -26,11 +26,7 @@ function init_app() {
 
     //Register
     user_register_view = new UserRegisterView({
-        el: "#modal_container"
-    });
-    register_view = new ModalView({
-        el: "#modal_container",
-        childView: user_register_view
+        el: "#view-container"
     });
 
     //Edit Profile
@@ -95,7 +91,7 @@ function init_app() {
             login_view.render();
         },
         register: function () {
-            register_view.render();
+            user_register_view.render();
         },
         edit_profile: function () {
             user_profile_view.render();

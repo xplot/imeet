@@ -76,7 +76,7 @@ var validator = {
                 passed = fieldValue.length == 0 ||  validator.emailRegex.test(fieldValue);
                 break;
             case "phone":
-                passed = validator.digitsRegex.test(fieldValue) && (fieldValue.length == 10 || fieldValue.length == 0) ;
+                passed = validator.digitsRegex.test(fieldValue) || fieldValue.length == 0 ;
                 break;
             case "date":
                 var date = new Date(fieldValue);

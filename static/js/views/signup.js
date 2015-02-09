@@ -1,4 +1,4 @@
-UserRegisterView = Backbone.View.extend({
+UserRegisterView = SimpleView.extend({
     template: JST['register.html'],
     initialize: function(options){
         this.options = options || {};
@@ -8,6 +8,7 @@ UserRegisterView = Backbone.View.extend({
     },
 
     render: function() {
+        this.hidePanels();
         this.$el.html(this.template());
         this.$email = this.$el.find('.register-email');
     },

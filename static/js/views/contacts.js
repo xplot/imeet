@@ -8,60 +8,6 @@ ContactsView = SimpleView.extend({
        'click .add-contact' : 'navigateToAddContact',
        'change #import-csv' : 'importFromCsv',
        'click .add-group' : 'addGroup',
-       'dragstart .contact-row': 'contactStartDrag',
-       'dragover .group': 'preventDefault',
-       'dragleave .group': 'contactDragLeave',
-       'dragenter .group': 'contactDragEnter',
-       'drop .group': 'contactDropped'
-    },
-
-    preventDefault: function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-    },
-
-    contactStartDrag: function(ev){
-        var $contactRow = $(ev.target);
-        var unique_id = $contactRow.data('id');
-        ev.originalEvent.dataTransfer.setData("contact_id", unique_id);
-    },
- 
-    contactDragEnter: function(ev) {
-        ev.preventDefault();
-        ev.stopPropagation();
-
-        var $group = $(ev.target);
-        if($group.hasClass('group-drag-hover'))
-            return;
-
-        $group.addClass('group-drag-hover');
-    },
-
-    contactDragLeave: function(ev) {
-        ev.preventDefault();
-        ev.stopPropagation();
-
-        var $group = $(ev.target);
-        if(!$group.hasClass('group-drag-hover'))
-            return;
-
-        $group.removeClass('group-drag-hover');
-    },
-
-    contactDropped: function(ev) {
-        ev.preventDefault();
-        var $group = $(ev.target);
-        var id = $group.data('id');
-        var group = this.groupList.getById(id);
-
-        if(group.length > 0){
-            var contact_unique_id = ev.originalEvent.dataTransfer.getData("contact_id");
-            var contact = this.contactList.getById(contact_unique_id);
-            if(contact.length > 0)
-                this.addContactToGroup(contact[0], group[0]);
-        }
-
-        $group.removeClass('group-drag-hover');
     },
 
     render: function(options) {
@@ -86,7 +32,10 @@ ContactsView = SimpleView.extend({
         });
 
         this.groupListView = new GroupListView();
-        groupsTable.html(this.groupListView.render({groupList: this.groupList}));
+        groupsTable.html(this.groupListView.render({
+            groupList: this.groupList,
+            contactList: this.contactList
+        }));
 
         this.first_time = false;
 
@@ -145,21 +94,7 @@ ContactsView = SimpleView.extend({
         this.groupListView.showDialog();
     },
 
-    addContactToGroup: function(contact, group){
-        $.ajax({
-            url: "/api/group/" + group.attributes.unique_id+ "/"+ contact.attributes.unique_id + "?user_id=" + currentUser.id,
-            type: "POST",
-            contentType: "application/json",
-            success: function(unique_id) {
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: "The contact couldn't be added to the group"
-                }]);
-            }
-        });
-    },
+
 
 });
 
@@ -232,6 +167,7 @@ ContactItemView = SimpleView.extend({
     editMode: false,
 
     events: {
+       'dragstart .contact-row': 'enterDragMode',
        'click .editable' : "enterEditMode",
        'click .finish-edit' : "finishEditMode",
        'click .delete-contact' : 'deleteContact'
@@ -241,6 +177,14 @@ ContactItemView = SimpleView.extend({
     render: function(){
        this.$el.html(this.template(this.model.toJSON()));
        return this;
+    },
+
+    enterDragMode: function(ev){
+        console.log('LLEGUE AL DRAG START');
+        //ev.preventDefault();
+        //ev.stopPropagation();
+        var unique_id = this.model.get('unique_id');
+        ev.originalEvent.dataTransfer.setData("contact_id", unique_id);
     },
 
     enterEditMode: function(evt){
