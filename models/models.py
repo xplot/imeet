@@ -49,23 +49,12 @@ class BaseModel(ndb.Model):
         result = json.dumps(model_dict, default=data_type_handler, indent = 4)
         return result
 
-
 class ContactInvite(ndb.Model):
     contact_id = ndb.StringProperty()
     invite_id = ndb.StringProperty()
     voice_response = ndb.StringProperty()
     sms_response = ndb.StringProperty()
     email_response = ndb.StringProperty()
-
-
-class Location(BaseModel):
-    unique_id = ndb.StringProperty()
-    address = ndb.StringProperty()
-    suite = ndb.StringProperty()
-    city = ndb.StringProperty()
-    state = ndb.StringProperty()
-    zip = ndb.StringProperty()
-    country = ndb.StringProperty()
 
 class Comment(BaseModel):
     author = ndb.StringProperty(required=True)
@@ -80,7 +69,7 @@ class Invite(BaseModel):
     title = ndb.StringProperty(required=True)
     description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
-    where = ndb.KeyProperty(kind=Location)
+    where = ndb.StringProperty(required=False)
     facebook_post_id = ndb.StringProperty(required=False)
     comments = ndb.StructuredProperty(Comment, repeated=True)
 
@@ -93,11 +82,11 @@ class InviteIndex(ndb.Model):
 
 
 class Contact(BaseModel):
-    unique_id = ndb.StringProperty()
+    unique_id = ndb.StringProperty(required=True)
     name = ndb.StringProperty()
     phone = ndb.StringProperty()
     email = ndb.StringProperty()
-
+    user = ndb.KeyProperty(kind=User)
 
 class Subscription(BaseModel):
     unique_id = ndb.StringProperty(required=True)
@@ -116,3 +105,14 @@ class Feature(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     name = ndb.StringProperty(required=True)
     Subscription = ndb.KeyProperty(kind=Subscription,required=True)
+
+
+class Group(BaseModel):
+    unique_id = ndb.StringProperty(required=True)
+    name = ndb.StringProperty(required=True)
+    user = ndb.KeyProperty(kind=User)
+
+class GroupedContact(BaseModel):
+    user = ndb.KeyProperty(kind=User)
+    group_unique_id = ndb.StringProperty(required=True)
+    contact_unique_id = ndb.StringProperty(required=True)

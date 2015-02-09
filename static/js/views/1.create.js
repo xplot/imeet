@@ -6,12 +6,10 @@ InviteModel = Backbone.Model.extend({
         'end_date': '',
         'end_time': '',
         'description': '',
-        'address.street': '',
-        'address.suite': '',
-        'address.city': '',
-        'address.state': '',
-        'address.zip': '',
-        'contacts': [],
+        'where': '',
+        'contacts': new ContactList(),
+        'all_contacts': new ContactList(),
+        'all_groups': new ContactList()
     }
 });
 
@@ -22,23 +20,8 @@ var inviteBindings = {
     '.event-end-date': 'end_date',
     '.event-end-time': 'end_time',
     '.event-description': 'description',
-    '.event-address-street': 'address.street',
-    '.event-address-suite': 'address.suite',
-    '.event-address-city': 'address.city',
-    '.event-address-zip': 'address.zip',
-    '.event-address-state': {
-        observe: 'address.state',
-        selectOptions: {
-            collection: function() {
-                return [
-                    {value: null, label: ""},
-                    {value: "FL", label: "Florida"},
-                    {value: "NY", label: "New York"},
-                    {value: "CA", label: "California"},
-                ]
-            }
-        }
-    },
+    '.event-where': 'where',
+
     '.event-start-date-formatted': {
         observe: ['start_date','start_time'],
         onGet: function (values) {
@@ -52,24 +35,6 @@ var inviteBindings = {
             return 'To: ' + values[0] + ' ' +  values[1];
         }
     },
-    '.event-address-state-city': {
-        observe: ['address.state','address.city'],
-        onGet: function (values) {
-            var state = values[0] || '';
-            var city = values[1] || '';
-            if(state == null && city == null)
-                return '';
-            return city + ' ' + state;
-        }
-    },
-    '.event-address-street-with-number': {
-        observe: ['address.street', 'address.suite'],
-        onGet: function (values) {
-            var street = values[0] || '';
-            var suite = values[1] || '';
-            return street + ' ' + suite;
-        }
-    }
 };
 
 CreateContactView = Backbone.View.extend({
@@ -82,11 +47,11 @@ ReadContactView = Backbone.View.extend({
 CreateView = SimpleView.extend({
     el: '#header-container',
     new_contact_string: "\
-            <div id='contact_{2}'  class='contact-row equidistant' data-contact='{0};{1};{2}'>\
-                <div class='col-md-4 col-md-offset-2'> {0}</div>\
-                <div class='col-md-3'> {1}</div>\
-                <div class='col-md-1'> \
-                    <button type='button' class='btn btn-danger remove-contact form-control' data-row='{2}'>-</button>              \
+            <div id='{2}'  class='contact-row col-md-12' data-contact='{0};{1}'>\
+                <div class='col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0'> {0}</div>\
+                <div class='col-xs-8 col-xs-offset-2 col-md-3 col-md-offset-0'> {1}</div>\
+                <div class='col-xs-8 col-xs-offset-2 col-md-1 col-md-offset-0'> \
+                    <button type='button' class='btn btn-danger remove-contact form-control' data-rowid='{2}'>-</button>              \
                 </div> \
             </div>",
     reportView: null,
@@ -96,12 +61,17 @@ CreateView = SimpleView.extend({
     events: {
        'click .new-contact' : 'newContact',
        'click .remove-contact': 'removeContact',
+       'keyup .contact-input': 'newContactEnter',
+       'click .new-contact-button': 'newContactClick',
+
        'click .send': 'submitNew',
-       'change .share_to_facebook': 'share_on_facebook_auth'
+       'change .share_to_facebook': 'share_on_facebook_auth',
        //'click .share_to_facebook' : 'share_on_facebook_auth'
+       'click .contact-input-container': 'focusOnClick'
     },
 
     template: JST['invite.html'],
+    contacts: null,
 
     render: function(options) {
        this.hidePanels();
@@ -109,27 +79,30 @@ CreateView = SimpleView.extend({
         this.bindings = inviteBindings;
         this.$el.html(this.template());
 
+        this.$where = this.$el.find('.event-where');
         this.$table = this.$el.find('.contact-table');
         this.$btSend = this.$el.find('.send');
-        this.$new_name = this.$el.find('.new-contact-name');
-        this.$new_phone = this.$el.find('.new-contact-phone');
+        this.$newContact = this.$el.find('.contact-input');
 
         this.$btSend = this.$el.find('.send');
         this.i = 0;
 
+        this.model = new InviteModel({});
+
+        this.listenTo(this.model.attributes.contacts, 'add', this.newContact);
+        this.listenTo(this.model.attributes.contacts, 'remove', this.removeContact_DOM);
+
         if(options.id != null)
             this.createFromInvite(options.id);
         else{
-            this.model = new InviteModel({
-                title: options.title
-            });
+            this.model.attributes.title = options.title;
+
             this.reportView = new ReportView({model:this.model, el: '#reportXXX'});
             this.reportView.render();
             this.stickit();
         }
 
         this.plugins();
-
         return this;
     },
 
@@ -140,43 +113,24 @@ CreateView = SimpleView.extend({
             type: "GET",
             cache: false,
             success: function(data) {
+                that.model.set('title', data.title);
+                that.model.set('description', data.description);
+                that.model.set('where', data.where);
+                that.model.set('start_date', moment(data.start).format('L'));
+                that.model.set('start_time', moment(data.start).format('LT'));
 
-                that.model = new InviteModel({
-                    title: data.title,
-                    description: data.description,
-                    start_date: moment(data.start).format('L'),
-                    start_time: moment(data.start).format('LT'),
-                    contacts:[]
-                });
 
                 if(data.end){
-                    that.model.attributes.end_date = moment(data.end).format('L');
-                    that.model.attributes.end_time = moment(data.end).format('LT');
+                    that.model.set('end_date', moment(data.end).format('L'));
+                    that.model.set('end_time', moment(data.end).format('LT'));
                 }
 
                 that.reportView = new ReportView({model:that.model, el: '#reportXXX'});
                 that.reportView.render();
 
                 data.contacts.forEach(function(contact){
-                    contact.index = that.i;
-                    contact.address = [contact.phone, contact.email].join(',');
-                    that.$table.append(that.new_contact_string.format(
-                        contact.name,
-                        contact.address,
-                        contact.index));
-
-                    that.model.attributes.contacts.push(contact);
-                    that.reportView.addContact(contact);
-                    this.i++;
+                    that.model.attributes.contacts.add(new Contact(contact));
                 });
-
-                if(data.where){
-                    that.model.attributes['address.street'] = data.where.address;
-                    that.model.attributes['address.suite'] = data.where.suite;
-                    that.model.attributes['address.city'] = data.where.city;
-                    that.model.attributes['address.state'] = data.where.state;
-                    that.model.attributes['address.zip'] = data.where.zip;
-                }
 
                 that.stickit();
             },
@@ -188,78 +142,118 @@ CreateView = SimpleView.extend({
             }
         });
     },
-    newContact: function(){
-        if(!validator.validateItem(this.$new_phone)){
-            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+
+    last_selected_item: null,
+    newContactEnter: function(evt) {
+        if (evt.keyCode != 13) {
             return;
         }
+        this.$newContact.trigger('blur');
+        this.newContactClick();
+    },
+    newContactClick: function() {
+        var contact = null;
+        var group = null;
+        if(this.last_selected_item != null && this.last_selected_item.is_group)
+            group = this.last_selected_item;
+        else if(this.last_selected_item != null ){
+            contact = this.last_selected_item;
+        }
 
-        var contact = {
-            name:this.$new_name.val(),
-            address: this.$new_phone.val(),
-            index:this.i
-        };
+        if(this.last_selected_item == null && this.$newContact.val() != ''){
+            if(!validator.validateItem(this.$newContact)){
+                alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+                return;
+            }
 
-        this.$new_name.val('');
-        this.$new_phone.val('');
+            var emailAndPhone = this.parsePhoneAndEmail(this.$newContact.val());
+            contact = {
+                unique_id:  guid(),
+                name:       '',
+                email:      emailAndPhone.email,
+                phone:      emailAndPhone.phone
+            };
+        }
 
-        this.$table.append(this.new_contact_string.format(contact.name,contact.address,contact.index));
-        this.reportView.addContact(contact);
-        this.model.attributes.contacts.push(contact);
+        this.$newContact.val('');
+        this.last_selected_item = null;
 
-        this.i++;
+        if(contact != null)
+            this.model.attributes.contacts.add(new Contact(contact));
+        if(group != null)
+            this.addContactsFromGroup(group.unique_id);
+    },
+
+    addContactsFromGroup: function(group_id){
+        var that = this;
+        $.ajax({
+            url: "/api/group/" + group_id + "?user_id="+currentUser.id,
+            type: "GET",
+            success: function(data) {
+                if(data.length == 0){
+                    alert_notification([{alertType: 'warning', message: 'No contacts in the selected group!'}]);
+                    return;
+                }
+
+                data.forEach(function(item){
+                    var contact = new Contact(item);
+                    that.model.attributes.contacts.add(contact);
+                });
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: "There was an error getting the contacts for the group"
+                }]);
+            }
+        });
+    },
+
+    //start-AddContact
+    newContact: function(contactModel){
+        this.$table.prepend(
+            this.new_contact_string.format(
+                contactModel.get('name'),
+                contactModel.get('email') + " " +  contactModel.get('phone'),
+                contactModel.get('unique_id')
+            )
+        );
+
         return false;
     },
+    //end-AddContact
 
-    removeContact: function (e) {
-        var dataId = "#contact_"+ $(e.currentTarget).data('row');
-        this.$table.find(dataId).remove();
-
-        this.reportView.removeContact(dataId);
-
-        //disabling send button
-        var $rows = this.$el.find('.contact-row');
-
-        this.removeContactByIndex(parseInt(dataId.split('_')[1]));
+    //start-RemoveContact
+    removeContact:function(e){
+        var dataId = $(e.currentTarget).data('rowid');
+        this.model.attributes.contacts.removeBy(dataId);
     },
-
-    removeContactByIndex: function(index){
-        var i = 0;
-        this.model.attributes.contacts.forEach(function(contact){
-            if(contact.index == index)
-                return i;
-            i++;
-        });
-
-        this.model.attributes.contacts.splice(i, 1);
+    removeContact_DOM: function (contact) {
+        this.$table.find('#' + contact.attributes.unique_id).remove();
     },
+    //end-RemoveContact
 
     submitNew:function(e){
         var that = this;
-
         if(!validator.validateItems('.valid-before-submit') ||
             this.model.attributes.contacts.length == 0){
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
-
+        
         var event = {
-            'title': this.model.attributes.title,
-            'description': this.model.attributes.description,
-            'start': this.model.attributes.start_date + " " +  this.model.attributes.start_time,
-            'end': isNaN(this.model.attributes.end_date)?
-                    this.model.attributes.end_date + " " + this.model.attributes.end_time
+            'title': this.model.get('title'),
+            'description': this.model.get('description'),
+            'where': this.model.get('where'),
+
+            'start': this.model.get('start_date') + " " +  this.model.get('start_time'),
+            'end': isNaN(this.model.get('end_date'))?
+                    this.model.get('end_date') + " " + this.model.get('end_time')
                     : null,
-            'where': {
-                'address': this.model.attributes['address.street'],
-                'suite': this.model.attributes['address.suite'],
-                'city': this.model.attributes['address.city'],
-                'state': this.model.attributes['address.state'],
-                'zip': this.model.attributes['address.zip']
-            },
+
             'facebook_share': true,
             'user_id': (currentUser!=null)?currentUser.id: null,
-            'contacts': this.normalizeContacts(this.model.attributes.contacts)
+            'contacts': this.model.attributes.contacts.collectionToJSON()
         };
 
         $.ajax({
@@ -274,10 +268,10 @@ CreateView = SimpleView.extend({
                     message: 'Event sent!'
                 }]);
 
-                if(currentUser == null) //If Anonymous we will give people a link to follow the invite
-                    Backbone.history.navigate('sent/' + data[0], true);
-                else
-                    Backbone.history.navigate('view/' + data[0], true);
+//                if(currentUser == null) //If Anonymous we will give people a link to follow the invite
+//                    Backbone.history.navigate('sent/' + data[0], true);
+//                else
+                Backbone.history.navigate('view/' + data[0], true);
             },
             error: function(data) {
                 alert_notification([{
@@ -287,20 +281,7 @@ CreateView = SimpleView.extend({
             }
         });
     },
-    normalizeContacts: function(contacts){
-        var result = [];
-        var that = this;
-        contacts.forEach(function(contact){
-            var addresses = that.parsePhoneAndEmail(contact.address);
-            result.push({
-                    name: contact.name,
-                    email: addresses.email,
-                    phone: addresses.phone
-            });
-        });
 
-        return result;
-    },
 
     parsePhoneAndEmail: function(addressString){
         var trimmedAddressString = addressString.trim();
@@ -339,6 +320,10 @@ CreateView = SimpleView.extend({
         );
     },
 
+    searchContact: function(input){
+        return ['pepe','jose'];
+    },
+
     plugins: function(){
         $('#bt_toggle').bootstrapToggle();
 
@@ -349,6 +334,10 @@ CreateView = SimpleView.extend({
         this.$el.find('.event-start-time, .event-end-time').datetimepicker({
             pickDate: false,  
         });
+
+        this.setupContactsTypeahead();
+
+        this.initWhere();
 
         try{
             //Snap Panel
@@ -374,5 +363,125 @@ CreateView = SimpleView.extend({
         catch(ex){
             //Swallow ex
         }
-}
+    },
+
+    setupContactsTypeahead: function(){
+        var that = this;
+
+        var substringMatcher = function(strs) {
+            return function findMatches(q, cb) {
+                var matches, substrRegex;
+                matches = [];
+                substrRegex = new RegExp(q, 'i');
+
+                $.each(strs, function(i, contact) {
+                    if (substrRegex.test(contact.name) || substrRegex.test(contact.email) || substrRegex.test(contact.phone))
+                        matches.push(contact);
+                });
+            cb(matches);
+            };
+        };
+
+        var substringGroupMatcher = function(strs) {
+            return function findMatches(q, cb) {
+                var matches, substrRegex;
+                matches = [];
+                substrRegex = new RegExp(q, 'i');
+
+                $.each(strs, function(i, group) {
+                    if (substrRegex.test(group.name)){
+                        group.is_group = true;
+                        matches.push(group);
+                    }
+                });
+            cb(matches);
+            };
+        };
+
+        var setupTypeAhead = function(contacts_and_groups){
+            that.$newContact.typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1,
+            },
+            {
+                autoselect: true,
+                name: 'contacts',
+                displayKey: 'name',
+                source: substringMatcher(contacts_and_groups.contacts),
+                templates: {
+                    header: '<h5>Contacts</h5>',
+                    suggestion: JST['contact_item_typeahead.html']
+                }
+
+            },
+            {
+                autoselect: true,
+                name: 'groups',
+                displayKey: 'name',
+                source: substringGroupMatcher(contacts_and_groups.groups),
+                templates: {
+                    header: '<h5>Groups</h5>',
+                    suggestion: _.template('<%- name %>')
+                }
+
+            }
+            ).on('typeahead:selected', function (obj, data) {
+                that.last_selected_item = data;
+            })
+            .on('keypress keydown input', function($e) {
+                $e.stopPropagation();
+            });
+        };
+
+        if(currentUser == null){
+            setupTypeAhead([]);
+            return;
+        }
+
+        $.ajax({
+            url: "/api/contacts/groups?user_id="+currentUser.id,
+            type: "GET",
+            success: function(data) {
+                that.model.attributes.all_contacts = new ContactList(data);
+                setupTypeAhead(data);
+            },
+            error: function(data) {
+
+            }
+        });
+    },
+
+    initWhere: function () {
+        var that = this;
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {HTMLInputElement} */(this.$where[0]),
+            { types: ['geocode'] }
+        );
+
+        var fillAddress = function() {
+            var place = autocomplete.getPlace();
+            that.model.set('where',place.formatted_address);
+        };
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            fillAddress();
+        });
+    },
+
+    // Bias the autocomplete object to the user's geographical location,
+    // as supplied by the browser's 'navigator.geolocation' object.
+    geoLocateWhere: function () {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var geolocation = new google.maps.LatLng(
+              position.coords.latitude, position.coords.longitude);
+          var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          autocomplete.setBounds(circle.getBounds());
+        });
+      }
+    }
 });

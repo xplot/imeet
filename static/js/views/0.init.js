@@ -1,15 +1,32 @@
 
-    // First, checks if it isn't implemented yet.
-    if (!String.prototype.format)
-      String.prototype.format = function() {
-        var args = arguments;
-        return this.replace(/{(\d+)}/g, function(match, number) {
-          return typeof args[number] != 'undefined'
-            ? args[number]
-            : match
-          ;
-        });
-      };
+// First, checks if it isn't implemented yet.
+if (!String.prototype.format)
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+
+Backbone.Model.prototype.toJSON2 = function() {
+  var json = _.clone(this.attributes);
+  for(var attr in json) {
+    if((json[attr] instanceof Backbone.Model) || (json[attr] instanceof Backbone.Collection)) {
+      json[attr] = json[attr].toJSON();
+    }
+  }
+  return json;
+};
+
+function guid(){
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+}
 
 function alert_notification(alerts){
 
@@ -28,13 +45,14 @@ function alert_notification(alerts){
 }
 
 var validator = {
-    digitsRegex: new RegExp("^[0-9]*$"),
+    digitsRegex: new RegExp("^[0-9]{10}$"),
     charsRegex: new RegExp(".*"),
     emailRegex:/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 
     validateItems: function(selector){
         var result = true;
         var $elements_to_validate = $(selector);
+
         $elements_to_validate.each(function(index){
             var $item = $($elements_to_validate[index]);
             result = validator.validateItem($item) && result ;
@@ -166,4 +184,54 @@ var validator = {
         }
     }
 };
+
+var randomColor = function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+var cut = function cutText(text) {
+    if(text.length >= 8)
+        return text.substring(0,4) + "...";
+    return text;
+}
+
+var colorInverter = function invertHex(hexnum){
+  if(hexnum.length != 6) {
+    console.error("Hex color must be six hex numbers in length.");
+    return false;
+  }
+
+  hexnum = hexnum.toUpperCase();
+  var splitnum = hexnum.split("");
+  var resultnum = "";
+  var simplenum = "FEDCBA9876".split("");
+  var complexnum = new Array();
+  complexnum.A = "5";
+  complexnum.B = "4";
+  complexnum.C = "3";
+  complexnum.D = "2";
+  complexnum.E = "1";
+  complexnum.F = "0";
+
+  for(i=0; i<6; i++){
+    if(!isNaN(splitnum[i])) {
+      resultnum += simplenum[splitnum[i]];
+    } else if(complexnum[splitnum[i]]){
+      resultnum += complexnum[splitnum[i]];
+    } else {
+      console.error("Hex colors must only include hex numbers 0-9, and A-F");
+      return false;
+    }
+  }
+
+  return resultnum;
+}
+
+
+
 

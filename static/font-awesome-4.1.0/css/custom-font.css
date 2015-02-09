@@ -83,6 +83,9 @@
 .fa-angle-down:before {
   content: "p";
 }
+.fa-chevron-down:before{
+    content: "p";
+}
 .fa-circle:before {
   content: "q";
 }
@@ -92,6 +95,11 @@
 .fa-angle-up:before {
   content: "r";
 }
+
+.fa-chevron-up:before{
+    content: "r";
+}
+
 .fa-paperplane:before {
   content: "a";
 }
@@ -100,4 +108,16 @@
 }
 .fa-like:before {
   content: "u";
+}
+.fa-bubble:before {
+  content: "v";
+}
+.fa-pen:before {
+  content: "w";
+}
+.fa-delete-garbage-streamline:before {
+  content: "x";
+}
+.fa-pen-streamline:before {
+  content: "y";
 }

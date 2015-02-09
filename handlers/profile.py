@@ -68,8 +68,14 @@ class LoginHandler(BaseHandler):
         """
         username = self.request.get('username')
         continue_url = self.request.get('continue').encode('ascii', 'ignore')
+        password = self.request.get('password').strip()
+        # Password to SHA512
+        password = utils.hashing(password, self.app.config.get('salt'))
+        logging.info("Password" + password)
 
         try:
+
+
             if utils.is_email_valid(username):
                 user = models.User.get_by_email(username)
                 if user:
@@ -80,11 +86,8 @@ class LoginHandler(BaseHandler):
                 auth_id = "own:%s" % username
                 user = models.User.get_by_auth_id(auth_id)
 
-            password = self.request.get('password').strip()
             remember_me = True if str(self.request.POST.get('remember_me')) == 'on' else False
 
-            # Password to SHA512
-            password = utils.hashing(password, self.app.config.get('salt'))
 
             # Try to login user with password
             # Raises InvalidAuthIdError if user is not found
@@ -728,6 +731,8 @@ class UserProfileHandler(JsonHandler):
 
         user_data = self._data()
         user_info = models.User.get_by_id(long(user_id))
+
+        logging.info(user_data)
 
         if not user_info:
             raise Exception("User not found with id: " + user_id)

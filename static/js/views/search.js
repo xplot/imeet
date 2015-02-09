@@ -1,10 +1,10 @@
-SearchView = Backbone.View.extend({
+SearchView = SimpleView.extend({
     template: JST['search.html'],
     invite_string: "\
-            <div class='row'> \
-                <div class='col-sm-4 col-md-offset-2'>  <a href='#' class='navigate' data-action='modal' data-where='view/{0}'>{1}</a> </div> \
-                <div class='col-sm-3'>  {2} </div> \
-                <div class='col-sm-2'> <button type='button' class='navigate btn btn-info form-control' data-where='new/from/{0}'>Copy</button></div> \
+            <div class='row' style='margin-top: 20px'> \
+                <div class='col-xs-10 col-xs-offset-1 col-md-3 col-md-offset-1'>  <a href='#' class='navigate' data-action='modal' data-where='view/{0}'>{1}</a> </div> \
+                <div class='col-xs-6 col-md-2 desktop tablet'>  {2} </div> \
+                <div class='col-xs-6 col-xs-offset-2 col-md-2'> <button type='button' class='navigate btn btn-info form-control' data-where='new/from/{0}'>Duplicate</button></div> \
             </div>\
             <div class='small-margin-top'> </div> \
     ",
@@ -17,6 +17,8 @@ SearchView = Backbone.View.extend({
     },
 
     render: function() {
+        this.hidePanels();
+
         this.$el.html(this.template());
         this.$searchBox = this.$el.find('#searchBox');
         this.search();
@@ -36,17 +38,22 @@ SearchView = Backbone.View.extend({
             type: "GET",
             cache: false,
             success: function(data) {
+                var results = $('.search-result');
                 if(data!=null){
-                    var results = $('.search-result');
+                    results.html('');
                     results.empty();
                     data.forEach(function(invite){
+
                         results.append(that.invite_string.format(
                             invite.unique_id,
                             invite.title,
                             invite.start,
                             invite.end
                         ));
+
                     });
+                }else{
+                    results.html('You dont have any iMeets. Start sending! <a href="/new" type="button" class="btn btn-success">Start</a>');
                 }
             }
         });

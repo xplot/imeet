@@ -1,0 +1,102 @@
+/*start - navbar*/
+@media(min-width:768px) {
+
+      .navbar-brand {
+        margin-left: 100px;
+      }
+
+}
+@media(min-width:768px) {
+    .navbar-fixed-top {
+        -webkit-transition: padding 0.3s;
+        -moz-transition: padding 0.3s;
+        transition: padding 0.3s;
+	    .navbar-brand {
+	        font-size: 2em;
+	        -webkit-transition: all 0.3s;
+	        -moz-transition: all 0.3s;
+	        transition: all 0.3s;
+
+	    }
+    }
+    .navbar-fixed-top.navbar-shrink {
+        padding: 10px 0;
+		.navbar-brand {
+	        font-size: 1.5em;
+	    }
+	}
+}
+
+/*Responsive CSS triangles. Resize the Result section to see the triangles in action.*/
+
+.navbar {
+    font-weight: 100 !important;
+
+	font-size: 150%;
+	a:focus {
+		outline: none;
+	}
+
+    .navbar-header{
+      .beta {
+          position: absolute;
+          left:20px;
+	      margin: -14px -20px;
+          font-weight: bold;
+          color: @body-frame;
+          font-size: 10px;
+          margin-top:-3px;
+          margin-left:-100px;
+          text-align:center;
+          width: 190px;
+          height: 20px;
+         -ms-transform: rotate(-45deg); /* IE 9 */
+          -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
+          transform: rotate(-45deg);
+          background-color: @text-color;
+      }
+    }
+
+	.navbar-nav {
+		letter-spacing: 1px;
+		li {
+			a:focus {
+				outline: none;
+			}
+            .dropdown-menu{
+                background-color: @nav-color;
+                border:none !important;
+                border-radius: 0px;
+                li{
+                  a {
+                    color: #ffffff !important;
+                  }
+                  a:hover {
+                      color: #ffffff !important;
+                  }
+                }
+
+              }
+
+              button{
+                padding-top: 19.5px;
+                padding-bottom: 19.5px;
+                background-color: transparent;
+                border: none !important;
+                text-transform: uppercase;
+              }
+              button:active{
+                border: none;
+                border-color: transparent;
+              }
+		}
+	}
+}
+
+.navbar-default,
+.navbar-inverse {
+    color: #FFF;
+	border: none;
+    background-color: @nav-bg-color;
+}
+/*end   - navbar*/

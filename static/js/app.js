@@ -35,27 +35,18 @@ function init_app() {
 
     //Edit Profile
     user_profile_view = new UserProfileView({
-        el: "#modal_container"
+        el: "#view-container",
     });
 
-    profile_view = new ModalView({
-        el: "#modal_container",
-        childView: user_profile_view
-    });
 
     //Search
     search_view = new SearchView({
-        el: "#modal_container"
-    });
-
-    search_view_modal = new ModalView({
-        el: "#modal_container",
-        childView: search_view
+        el: "#view-container",
     });
 
     //Report
     invite_view = new InviteView({
-        el: "#view-container",
+        el: "#view-container"
     });
 
     sent_view = new SentView({
@@ -65,6 +56,14 @@ function init_app() {
     sent_view_modal = new ModalView({
         el: $("#modal_container"),
         childView: sent_view
+    });
+
+    contacts_view = new ContactsView({
+        el: "#contact-list"
+    });
+
+    contactsNew_view = new ContactsNewView({
+        el: "#view-container"
     });
 
     App.Router = Backbone.Router.extend({
@@ -83,7 +82,10 @@ function init_app() {
             'profile/edit': 'edit_profile',
             'register': 'register',
             'view/:id': 'view_as_organizer',
-            'view/:id/:contact_id': 'view_as_contact'
+            'view/:id/:contact_id': 'view_as_contact',
+
+            'contacts' : 'contacts',
+            'contacts/new' : 'contacts_new'
         },
         index: function () {
             index_view.render();
@@ -96,7 +98,7 @@ function init_app() {
             register_view.render();
         },
         edit_profile: function () {
-            profile_view.render();
+            user_profile_view.render();
         },
 
         //Invite
@@ -115,13 +117,19 @@ function init_app() {
           sent_view_modal.render();
         },
         search: function () {
-            search_view_modal.render();
+            search_view.render();
         },
         view_as_organizer: function (id) {
             invite_view.render({'invite_id': id});
         },
         view_as_contact: function(id, contact_id){
             invite_view.render({'invite_id': id, 'contact_id': contact_id});
+        },
+        contacts: function(){
+            contacts_view.render({contactList: contactList, groupList: groupList});
+        },
+        contacts_new: function(){
+            contactsNew_view.render();
         }
     });
 
@@ -153,7 +161,7 @@ function init_app() {
 
     $("body").on("input propertychange", ".floating-label-form-group", function(e) {
         $(this).toggleClass("floating-label-form-group-with-value", !! $(e.target).val());
-    }).on("focus", ".floating-label-form-group", function() {
+    }).on("focu s", ".floating-label-form-group", function() {
         $(this).addClass("floating-label-form-group-with-focus");
     }).on("blur", ".floating-label-form-group", function() {
         $(this).removeClass("floating-label-form-group-with-focus");

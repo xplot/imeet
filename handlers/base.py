@@ -124,11 +124,18 @@ class SendEmailHandler(BaseHandler):
             raise
 
 class MainHandler(BaseHandler):
-    def get(self, invite_name=None,source_invite_id=None):
+
+    def default_method(self):
         return self.render_template('index.html')
 
-    def new(self):
-        return self.render_template('index.html')
+    def get(self, invite_name=None, source_invite_id=None):
+        return self.render_template('index_3.0.html')
+
+    def new(self, invite_name=None, source_invite_id=None):
+        return self.render_template(
+            'index.html',
+            location_enabled=True
+        )
 
     def search(self):
         return self.render_template('index.html')

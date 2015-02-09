@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Organize your Events, notify your attendees, via Sms, Email, Phone Call, track their responses">
+    <meta name="keywords" content="Imeet, meetings, events, social,
+        gathering, isolation, isolate, reunion, rendezvous, rsvp, contact, friends, notify, sms, email, phone, call, ivr,
+        organize, calendar, create, help, automate, report
+    ">
+    <meta name="author" content="Imeet">
+
+    <title>iMeet - {% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <link href="/css/{% block css %}{% endblock %}.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/font-awesome-4.1.0/css/custom-font.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:100,400,700' rel='stylesheet' type='text/css'>
+
+    <script src="/js/external.min.js"></script>
+
+</head>
+<body id="page-top" class="index">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <div class="beta">BETA</div>
+                    <i class="fa fa-paper-plane fa-1x small-margin"></i>iMEET
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <!--<li>-->
+                        <!--<a href="#about" class="end-click">About</a>-->
+                    <!--</li>-->
+                     <!--<li>-->
+                        <!--<a href="#about" class="end-click">iMEET Plus</a>-->
+                    <!--</li>-->
+                    <li>
+                        <a href="/new" class="end-click">Create iMEET</a>
+                    </li>
+                    <li class="page-scroll">
+                      {% if username %}
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{email}} <span class="caret"></span></a>
+                          <ul class="dropdown-menu " role="menu">
+                            <li><a href="/search">My iMeets</a></li>
+                            <li><a href="/contacts">My Contacts</a></li>
+                            <li><a role="menuitem" tabindex="-1" href="/profile/edit">My Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a role="menuitem" class="end-click" tabindex="-1" href="/logout">Logout</a></li>
+                          </ul>
+                      {%else %}
+                            <a href="/login" class="end-click navigate">My account</a>
+                      {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container snapPanel">
+        <div id="content">{% block content %}{% endblock %}</div>
+    </div>
+
+    <script src="/js/imeet.min.js"></script>
+
+    <script>
+        var api = {
+          url: '{{ host_url }}',
+        };
+        var currentUser =
+        {% if username %}
+        {
+          id: '{{user_id}}',
+          social_sharing:{
+                facebook: {{'true' if facebook_sharing_enabled else 'false'}}
+           }
+        };
+        {%else %}
+            null;
+        {%endif %}
+
+        var features = [
+               {% for item in subscription_features %}
+                    '{{ item }}',
+                {% endfor %}
+        ];
+
+        {% if messages|safe %}
+            $(function() {
+                var notifications = [];
+                {%
+                    for message in messages %}
+                    notifications.push({
+                        alertType: '{{ message[1]|safe }}',
+                        message: "{{ message[0]|safe }}" });
+                    {%endfor %}
+                    alert_notification(notifications);
+            });
+        {% endif %}
+
+    </script>
+
+   {% block initScript %}{% endblock %}
+
+    <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-55798503-1', 'auto');
+          ga('send', 'pageview');
+
+    </script>
+</body>
+</html>

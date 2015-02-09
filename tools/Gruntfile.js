@@ -61,7 +61,9 @@ module.exports = function (grunt) {
 		less: {
 			styles: {
 				files: {
-					'tmp/css/imeet.css': '../static/less/imeet.less'
+					'tmp/css/imeet.css': '../static/less/imeet.less',
+                    'tmp/css/index.css': '../static/less/index.less',
+                    'tmp/css/contacts.css': '../static/less/contacts.less',
 				}
 			}
 		},
@@ -83,8 +85,10 @@ module.exports = function (grunt) {
 					'../static/js/external/moment.js',
                     '../static/js/external/bootstrap.js',
 					'../static/js/external/datepicker.js',
+                    '../static/js/external/jquery-xslider.js',
+                    '../static/js/external/bootstrap-typeahead.js',
                     '../static/js/external/slider.js',
-
+                    '../static/js/external/backbone_store.js'
                 ],
                 dest: '../static/js/external.min.js'
 			},
@@ -106,8 +110,16 @@ module.exports = function (grunt) {
 				files: {
 					'../static/css/imeet.min.css': [
                         '../static/less/external/*.css',
-                        'tmp/css/*.css'
-                    ]
+                        'tmp/css/imeet.css'
+                    ],
+                    '../static/css/index.min.css': [
+                        '../static/less/external/*.css',
+                        'tmp/css/index.css'
+                    ],
+                    '../static/css/contacts.min.css': [
+                        '../static/less/external/*.css',
+                        'tmp/css/contacts.css'
+                    ],
 				}
 			}
 		},
@@ -142,6 +154,7 @@ module.exports = function (grunt) {
                     'cssmin'
                 ]
 			},
+
 			libs: {
                 files: ['../static/js/external/*.js'],
 				tasks: [

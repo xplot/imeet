@@ -1,4 +1,4 @@
-UserProfileView = Backbone.View.extend({
+UserProfileView = SimpleView.extend({
     template: JST['editProfile.html'],
     initialize: function(options){
         this.options = options || {};
@@ -8,11 +8,14 @@ UserProfileView = Backbone.View.extend({
     },
 
     render: function() {
+        this.hidePanels();
+
         this.$el.html(this.template());
 
         this.$name = this.$el.find('#edit-profile-name');
         this.$username = this.$el.find('#edit-profile-username');
         this.$password = this.$el.find('#edit_profile_password');
+        this.$password_confirm = this.$el.find('#edit_profile_password_confirm');
         this.$email = this.$el.find('#edit-profile-email');
 
         var that = this;
@@ -44,15 +47,19 @@ UserProfileView = Backbone.View.extend({
         if(!validator.validateItems('.valid-before-submit'))
             return;
 
+        if(this.$password.val() != null && (this.$password.val() != this.$password_confirm.val())){
+            alert_notification([{alertType: 'warning', message: "Password and Password confirm don't match!!!"}]);
+        }
+
         var user = {
           'username':   this.$username.val(),
-          'password':   this.$password.val()
         };
 
-        if(this.$name.val() != null) {
-            user.name = this.$name.val().split(' ')[0];
-            user.last_name = this.$name.val().split(' ')[1];
-        }
+        user.name = this.$name.val().split(' ')[0];
+        user.last_name = this.$name.val().split(' ')[1];
+
+        if(this.$password.val() != null && this.$password.val() != '')
+            user.password = this.$password.val();
 
         var that = this;
         $.ajax({
@@ -61,7 +68,7 @@ UserProfileView = Backbone.View.extend({
             data: JSON.stringify(user),
             cache: false,
             success: function(data) {
-                Backbone.pubSub.trigger('childClose', { 'view' : that } );
+                Backbone.history.navigate('/search', true);
             }
         });
 

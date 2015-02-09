@@ -23,11 +23,11 @@ class InviteHandler(JsonHandler):
         invite_id = invite_manager.create(),
         invite_manager.send(
             invite_template={
-                'Url': "http://imeet.io/template/default_invite_template.html",
+                'Url': "http://imeet3-dot-invite-voiceflows.appspot.com/template/default_invite_template.html",
 
             },
             extra_data={
-                'email_response_url': "http://imeet.io/template/default_invite_response.html",
+                'email_response_url': "http://imeet3-dot-invite-voiceflows.appspot.com/template/default_invite_response.html",
             }
         )
 
