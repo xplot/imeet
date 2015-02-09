@@ -25,7 +25,7 @@ ContactsView = SimpleView.extend({
         var unique_id = $contactRow.data('id');
         ev.originalEvent.dataTransfer.setData("contact_id", unique_id);
     },
-
+ 
     contactDragEnter: function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
