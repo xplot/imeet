@@ -7,12 +7,12 @@ ContactsView = SimpleView.extend({
     events: {
        'click .add-contact' : 'navigateToAddContact',
        'change #import-csv' : 'importFromCsv',
-       'click .add-group' : 'addGroup',
+       'click .add-group' : 'addGroup'
     },
 
     render: function(options) {
-        this.hidePanels();
         $('#contact-list').show();
+        $('#contact-new').hide();
 
         if(!this.first_time){
             return;
@@ -22,8 +22,6 @@ ContactsView = SimpleView.extend({
 
         this.listenTo(this.contactList, 'add', this.addContact);
         this.listenTo(this.contactList, 'remove', this.removeContact);
-
-        this.clearTemplate();
 
         var groupsTable =$('.groups_table');
         var contactTable =$('#contacts_table');
@@ -38,7 +36,6 @@ ContactsView = SimpleView.extend({
         }));
 
         this.first_time = false;
-
     },
 
     addContact: function(contact){
@@ -53,7 +50,7 @@ ContactsView = SimpleView.extend({
 
     navigateToAddContact: function(evt){
         evt.preventDefault();
-        Backbone.history.navigate(evt.target.attributes.href.value, true);
+        Backbone.history.navigate("/contacts/new", true);
     },
 
     importFromCsv: function(evt){
@@ -92,9 +89,7 @@ ContactsView = SimpleView.extend({
 
     addGroup: function(){
         this.groupListView.showDialog();
-    },
-
-
+    }
 
 });
 

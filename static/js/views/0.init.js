@@ -196,7 +196,7 @@ var randomColor = function getRandomColor() {
 
 var cut = function cutText(text) {
     if(text.length >= 8)
-        return text.substring(0,4) + "...";
+        return text.substring(0,8) + "...";
     return text;
 }
 

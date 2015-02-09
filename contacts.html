@@ -2,54 +2,42 @@
 {% block css %}contacts{% endblock %}
 {% block title %}Contacts{% endblock %}
 {% block content %}
-    <br/>
-    <br/>
-    <br/>
 
-<div class="row">
-    <div class="col-md-4">
-        <h4>Contacts and Groups</h4>
-    </div>
-
-        <div class="desktop col-md-8 text-right">
-
-            <h5>
-                <a href="#">
-                    <div class="btn btn-file">
-                        CSV import<input id="import-csv" type="file">
-                    </div>
-               </a>
-            </h5>
+<div id="contact-list">
+    <div class="row medium-margin-top">
+        <div class="col-md-4">
+            <h4>Contacts and Groups</h4>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-2">
-            <a class="btn btn-success add-contact" href="contacts/new">New Contact</a>
-        </div>
-        <div class="col-md-2">
-            <a class="btn add-group" href="#">New Group</a>
+        <div class="">
+            <div class="col-md-2">
+                <a class="btn btn-success add-contact" href="contacts/new">New Contact</a>
+            </div>
+            <div class="col-md-2">
+                <a class="btn add-group" href="#">New Group</a>
+            </div>
+            <div class="col-md-2 import-csv-container">
+                <a href="#">
+                    <div class="btn btn-file"> CSV import<input id="import-csv" type="file"></div>
+               </a>
+            </div>
         </div>
     </div>
-    <div class="row small-margin-top">
-        {% if False and show_search %}
-        <div class="col-md-12">
-         <input type="text" class="form-control" id="searchInput" placeholder="filter">
-        </div>
-        {% endif %}
-    </div>
+
 
     <div class="row small-margin-top">
         <div class="groups_table" class=""></div>
     </div>
 
-    <div id="contacts_table" class="container small-margin-top"></div>
+    <div class="row small-margin-top">
+        <div id="contacts_table" class="container small-margin-top"></div>
+    </div>
+
 </div>
 
-<div class="row">
-    <div id="view-container">
-    </div>
-</div>
+<div id="contact-new"></div>
 
 {% endblock %}
 
