@@ -6,11 +6,7 @@ InviteModel = Backbone.Model.extend({
         'end_date': '',
         'end_time': '',
         'description': '',
-        'address.street': '',
-        'address.suite': '',
-        'address.city': '',
-        'address.state': '',
-        'address.zip': '',
+        'where': '',
         'contacts': new ContactList(),
         'all_contacts': new ContactList(),
         'all_groups': new ContactList()
@@ -24,23 +20,8 @@ var inviteBindings = {
     '.event-end-date': 'end_date',
     '.event-end-time': 'end_time',
     '.event-description': 'description',
-    '.event-address-street': 'address.street',
-    '.event-address-suite': 'address.suite',
-    '.event-address-city': 'address.city',
-    '.event-address-zip': 'address.zip',
-    '.event-address-state': {
-        observe: 'address.state',
-        selectOptions: {
-            collection: function() {
-                return [
-                    {value: null, label: ""},
-                    {value: "FL", label: "Florida"},
-                    {value: "NY", label: "New York"},
-                    {value: "CA", label: "California"},
-                ]
-            }
-        }
-    },
+    '.event-where': 'where',
+
     '.event-start-date-formatted': {
         observe: ['start_date','start_time'],
         onGet: function (values) {
@@ -54,24 +35,6 @@ var inviteBindings = {
             return 'To: ' + values[0] + ' ' +  values[1];
         }
     },
-    '.event-address-state-city': {
-        observe: ['address.state','address.city'],
-        onGet: function (values) {
-            var state = values[0] || '';
-            var city = values[1] || '';
-            if(state == null && city == null)
-                return '';
-            return city + ' ' + state;
-        }
-    },
-    '.event-address-street-with-number': {
-        observe: ['address.street', 'address.suite'],
-        onGet: function (values) {
-            var street = values[0] || '';
-            var suite = values[1] || '';
-            return street + ' ' + suite;
-        }
-    }
 };
 
 CreateContactView = Backbone.View.extend({
@@ -116,6 +79,7 @@ CreateView = SimpleView.extend({
         this.bindings = inviteBindings;
         this.$el.html(this.template());
 
+        this.$where = this.$el.find('.event-where');
         this.$table = this.$el.find('.contact-table');
         this.$btSend = this.$el.find('.send');
         this.$newContact = this.$el.find('.contact-input');
@@ -149,22 +113,16 @@ CreateView = SimpleView.extend({
             type: "GET",
             cache: false,
             success: function(data) {
-                that.model.attributes.title = data.title;
-                that.model.attributes.description = data.description;
-                that.model.attributes.start_date = moment(data.start).format('L');
-                that.model.attributes.start_time = moment(data.start).format('LT');
+                that.model.set('title', data.title);
+                that.model.set('description', data.description);
+                that.model.set('where', data.where);
+                that.model.set('start_date', moment(data.start).format('L'));
+                that.model.set('start_time', moment(data.start).format('LT'));
+
 
                 if(data.end){
-                    that.model.attributes.end_date = moment(data.end).format('L');
-                    that.model.attributes.end_time = moment(data.end).format('LT');
-                }
-
-                if(data.where){
-                    that.model.attributes['address.street'] = data.where.address;
-                    that.model.attributes['address.suite'] = data.where.suite;
-                    that.model.attributes['address.city'] = data.where.city;
-                    that.model.attributes['address.state'] = data.where.state;
-                    that.model.attributes['address.zip'] = data.where.zip;
+                    that.model.set('end_date', moment(data.end).format('L'));
+                    that.model.set('end_time', moment(data.end).format('LT'));
                 }
 
                 that.reportView = new ReportView({model:that.model, el: '#reportXXX'});
@@ -255,9 +213,9 @@ CreateView = SimpleView.extend({
     newContact: function(contactModel){
         this.$table.prepend(
             this.new_contact_string.format(
-                contactModel.attributes.name,
-                contactModel.attributes.email + " " +  contactModel.attributes.phone,
-                contactModel.attributes.unique_id
+                contactModel.get('name'),
+                contactModel.get('email') + " " +  contactModel.get('phone'),
+                contactModel.get('unique_id')
             )
         );
 
@@ -284,19 +242,15 @@ CreateView = SimpleView.extend({
         }
         
         var event = {
-            'title': this.model.attributes.title,
-            'description': this.model.attributes.description,
-            'start': this.model.attributes.start_date + " " +  this.model.attributes.start_time,
-            'end': isNaN(this.model.attributes.end_date)?
-                    this.model.attributes.end_date + " " + this.model.attributes.end_time
+            'title': this.model.get('title'),
+            'description': this.model.get('description'),
+            'where': this.model.get('where'),
+
+            'start': this.model.get('start_date') + " " +  this.model.get('start_time'),
+            'end': isNaN(this.model.get('end_date'))?
+                    this.model.get('end_date') + " " + this.model.get('end_time')
                     : null,
-            'where': {
-                'address': this.model.attributes['address.street'],
-                'suite': this.model.attributes['address.suite'],
-                'city': this.model.attributes['address.city'],
-                'state': this.model.attributes['address.state'],
-                'zip': this.model.attributes['address.zip']
-            },
+
             'facebook_share': true,
             'user_id': (currentUser!=null)?currentUser.id: null,
             'contacts': this.model.attributes.contacts.collectionToJSON()
@@ -382,6 +336,8 @@ CreateView = SimpleView.extend({
         });
 
         this.setupContactsTypeahead();
+
+        this.initWhere();
 
         try{
             //Snap Panel
@@ -494,5 +450,38 @@ CreateView = SimpleView.extend({
 
             }
         });
+    },
+
+    initWhere: function () {
+        var that = this;
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {HTMLInputElement} */(this.$where[0]),
+            { types: ['geocode'] }
+        );
+
+        var fillAddress = function() {
+            var place = autocomplete.getPlace();
+            that.model.set('where',place.formatted_address);
+        };
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            fillAddress();
+        });
+    },
+
+    // Bias the autocomplete object to the user's geographical location,
+    // as supplied by the browser's 'navigator.geolocation' object.
+    geoLocateWhere: function () {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var geolocation = new google.maps.LatLng(
+              position.coords.latitude, position.coords.longitude);
+          var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          autocomplete.setBounds(circle.getBounds());
+        });
+      }
     }
 });

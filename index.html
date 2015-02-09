@@ -134,8 +134,11 @@
           ga('create', 'UA-55798503-1', 'auto');
           ga('send', 'pageview');
 
-</script>
+    </script>
 
+    {% if location_enabled %}
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    {% endif %}
 </body>
 
 </html>

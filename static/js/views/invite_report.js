@@ -2,7 +2,7 @@ ReportView = Backbone.View.extend({
     bindings: inviteBindings,
     new_contact_string: "\
             <li id='{2}' class='contact-row' data-contact='{0};{1}'>\
-                {0} &nbsp; {1} \
+                {0} {3} {1} \
             </li>",
     initialize: function(options){
         this.options = options || {};
@@ -25,11 +25,14 @@ ReportView = Backbone.View.extend({
     addContact: function(contact){
         this.$report_table.append(
             this.new_contact_string.format(
-                contact.attributes.name, contact.attributes.email + " " + contact.attributes.phone, contact.attributes.unique_id
+                contact.get('name'),
+                contact.get('email') + " " + contact.get('phone'),
+                contact.get('unique_id'),
+                (contact.get('name').length > 0)?"&nbsp;":""
             )
         );
     },
     removeContact: function(contact){
-        this.$report_table.find('#'+contact.attributes.unique_id).remove();
+        this.$report_table.find('#'+contact.get('unique_id')).remove();
     }
 });

@@ -85,11 +85,11 @@ InviteView = SimpleView.extend({
     loadContacts: function(contacts, contactId){
         var contact_html = "\
             <div class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
-                    <div class='col-xs-2'> \
+                    <div class='col-xs-2 col-md-1'> \
                         <i class='fa fa-like fa-1_2x {3}'></i> \
                     </div>\
-                    <div class='col-xs-6'> \
-                             {0} {1},{2} \
+                    <div class='col-xs-10 col-md-12'> \
+                             {0} {1} {2} \
                     </div> \
             </div> ";
 

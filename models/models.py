@@ -56,16 +56,6 @@ class ContactInvite(ndb.Model):
     sms_response = ndb.StringProperty()
     email_response = ndb.StringProperty()
 
-
-class Location(BaseModel):
-    unique_id = ndb.StringProperty()
-    address = ndb.StringProperty()
-    suite = ndb.StringProperty()
-    city = ndb.StringProperty()
-    state = ndb.StringProperty()
-    zip = ndb.StringProperty()
-    country = ndb.StringProperty()
-
 class Comment(BaseModel):
     author = ndb.StringProperty(required=True)
     comment = ndb.StringProperty(required=True)
@@ -79,7 +69,7 @@ class Invite(BaseModel):
     title = ndb.StringProperty(required=True)
     description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
-    where = ndb.KeyProperty(kind=Location)
+    where = ndb.StringProperty(required=False)
     facebook_post_id = ndb.StringProperty(required=False)
     comments = ndb.StructuredProperty(Comment, repeated=True)
 

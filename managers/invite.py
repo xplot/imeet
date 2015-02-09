@@ -6,7 +6,7 @@ import uuid
 from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
 
-from models.models import Invite, Contact, ContactInvite, Location, Comment
+from models.models import Invite, Contact, ContactInvite, Comment
 from boilerplate.models import User
 
 
@@ -35,13 +35,7 @@ class InviteManager(object):
             },
             'start': '2014-10-06 04:01AM',
             'end': '2014-10-06 04:01AM',
-            'where': {
-                'address':  'some street',
-                'suite':    '18',
-                'city':     'Honolulu',
-                'state':    'HI',
-                'zip':      '12313'
-            },
+            'where': 'Location',
             'title': 'Candle',
             'sharing_options':{
                 'facebook':True,
@@ -54,24 +48,12 @@ class InviteManager(object):
         self.invite_dict['inviteId'] = invite.unique_id
         invite.title = self.invite_dict['title']
         invite.description = self.invite_dict.get('description', None)
+        invite.where = self.invite_dict.get('where', None)
 
         #12/09/2014 12:00 AM
         invite.start = datetime.datetime.strptime(self.invite_dict['start'], "%m/%d/%Y %H:%M %p")
         if self.invite_dict.get('end', None):
             invite.end = datetime.datetime.strptime(self.invite_dict['end'], "%m/%d/%Y %H:%M %p")
-
-        where_dict = self.invite_dict.get('where', None)
-
-        if where_dict is not None and where_dict.get('address', None):
-            where = Location()
-            where.unique_id = str(uuid.uuid4()).replace('-', '')
-            where.address = where_dict['address']
-            where.suite = where_dict['suite']
-            where.city = where_dict['city']
-            where.state = where_dict['state']
-            where.zip = where_dict['zip']
-            where.put()
-            invite.where = where.key
 
         if self.user:
             invite.user = self.user.key
@@ -237,16 +219,12 @@ class InviteManager(object):
         #contacts
         contacts_invites = {x.contact_id:x for x in ContactInvite.query(ContactInvite.invite_id == invite.unique_id).fetch()}
 
-        location = None
-        if invite.where is not None:
-            location = Location.get_by_id(invite.where.id())
-
         contacts = []
         if contacts_invites:
             contacts = Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
-        return self._to_dict(invite, contacts_invites, contacts, location)
+        return self._to_dict(invite, contacts_invites, contacts)
 
-    def _to_dict(self, invite, contacts_invites, contacts, location=None):
+    def _to_dict(self, invite, contacts_invites, contacts):
 
         if invite.comments is None:
             invite.comments = []
@@ -257,7 +235,7 @@ class InviteManager(object):
             'start': invite.start.strftime("%Y-%m-%d %H:%M"),
             'end': invite.end.strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',
             'description': invite.description,
-            'where': None,
+            'where': invite.where,
             'contacts':[{
                 'unique_id': x.unique_id,
                 'name':x.name,
@@ -274,14 +252,6 @@ class InviteManager(object):
             } for c in invite.comments]
         }
 
-        if location is not None:
-            initial['where'] = {
-                'address': location.address,
-                'suite': location.suite,
-                'city': location.city,
-                'state': location.state,
-                'zip':location.zip
-            }
         return initial
 
     def sharing_options(self, invite_dict):
