@@ -454,6 +454,9 @@ CreateView = SimpleView.extend({
 
     initWhere: function () {
         var that = this;
+        if(typeof google === 'undefined')
+            return;
+
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {HTMLInputElement} */(this.$where[0]),
             { types: ['geocode'] }

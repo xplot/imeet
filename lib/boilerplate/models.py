@@ -90,6 +90,9 @@ class User(User):
 
         return result
 
+    def fullname(self):
+        return self.name + " " + self.last_name
+
 class LogVisit(ndb.Model):
     user = ndb.KeyProperty(kind=User)
     uastring = ndb.StringProperty()

@@ -39,25 +39,29 @@ InviteView = SimpleView.extend({
         });
     },
     addNewComment: function(eventData){
-        if(eventData.charCode == 13){
-
-            var author = this.author;
+        if(eventData.charCode == 13 && eventData.target.value !== ""){
+            var author = (currentUser!=null)? currentUser.fullname : this.author;
             var commentText = eventData.target.value;
             eventData.target.value = "";
 
-            $('.invite-comments').append('<li class="invite-comment-row"> \
-                                            <span class="pull-left invite-comment-author">{0}:</span> \
-                                                {1} \
-                                         </li>'
-                                        .format(author, commentText));
+
+
             $('.invite-comments').scrollTop(1000000);
 
             $.ajax({
                 url: "/api/invite/{0}/comment".format(this.inviteId),
                 type: "POST",
                 contentType: "application/json",
-                data: '{"author": "{0}", "comment": "{1}"}'.format(author, commentText),
+                data: JSON.stringify(
+                {
+                    user_id: (currentUser == null)? null: currentUser.id,
+                    author: author,
+                    comment: commentText
+                }),
                 cache: false,
+                success: function(data){
+                    $('.invite-comments').append(JST['comment.html'](data));
+                },
                 error: function(data) {
                     if(data.status != 200)
                         alert_notification([{
@@ -88,7 +92,7 @@ InviteView = SimpleView.extend({
                     <div class='col-xs-2 col-md-1'> \
                         <i class='fa fa-like fa-1_2x {3}'></i> \
                     </div>\
-                    <div class='col-xs-10 col-md-12'> \
+                    <div class='col-xs-10 col-md-11'> \
                              {0} {1} {2} \
                     </div> \
             </div> ";
@@ -96,6 +100,7 @@ InviteView = SimpleView.extend({
         var inviteTable = $('.invite-table');
         var self = this;
         contacts.forEach(function(contact){
+
             if(contact.id == contactId)
                 self.author = contact.name || contact.email || contact.phone || "User";
 
@@ -125,12 +130,11 @@ InviteView = SimpleView.extend({
             if(!initial && index >= currentCommentIndex)
                 should_animate = "animate_comment";
 
-            commentsHTML = commentsHTML.concat('\
-                <li id="{0}" class="invite-comment-row {3}"> \
-                    <span class="pull-left invite-comment-author">{1}:</span> \
-                    {2} \
-                </li>'.format(comment.id, comment.author, comment.comment, should_animate)
-            );
+            commentsHTML = commentsHTML.concat(JST['comment.html']({
+                author: comment.author,
+                comment: comment.comment
+            }));
+
             index++;
         });
         inviteCommentsElement.html(commentsHTML);

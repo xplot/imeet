@@ -82,9 +82,19 @@ class InviteHandler(JsonHandler):
             logging.error(r.text)
         r.raise_for_status()
 
+    @user_context
     def add_comment(self, id):
         data = self._data()
+
+        if self.user is not None:
+            data['author'] = self.user.fullname()
+
         InviteManager().add_comment(id, data['author'], data['comment'])
+
+        return {
+            'author': data['author'],
+            'comment': data['comment']
+        }
 
     def get_comments(self, id):
         return InviteManager().get_comments(id)
