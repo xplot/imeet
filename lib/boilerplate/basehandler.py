@@ -286,7 +286,6 @@ class BaseHandler(webapp2.RequestHandler):
             #'theme': self.get_theme,
             'user_id': self.user_id,
             'username': self.username,
-            'user_fullname': self.current_user.fullname(),
             'email': self.email,
             'url': self.request.url,
             'is_mobile': self.is_mobile,
@@ -300,6 +299,7 @@ class BaseHandler(webapp2.RequestHandler):
 
         if self.user:
             kwargs.update(self.user_social_sharing)
+            kwargs['user_fullname'] = self.current_user.fullname()
 
         self.response.headers.add_header('X-UA-Compatible', 'IE=Edge,chrome=1')
 
