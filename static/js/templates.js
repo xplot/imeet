@@ -100,29 +100,43 @@ __p += '<div class="form-horizontal contacts-form">\n  <div class="form-group">\
 return __p
 };
 
-this["JST"]["group.html"] = function(obj) {
+this["JST"]["group-item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="container groups">\n';
- _.each(groupList, function(group){ ;
-__p += '\n    ';
 
-        var color = randomColor();
-        var inverse = colorInverter(color);
-    ;
-__p += '\n      <div data-id="' +
-__e( group.unique_id ) +
-'" class="group col-md-1" style="background-color: #' +
-__e( color ) +
-';color: #' +
-__e( inverse ) +
-'">' +
-__e( cut(group.name)) +
-'</div>\n';
- }); ;
-__p += '\n</div>\n';
+
+    var color = randomColor();
+    var inverse = colorInverter(color);
+;
+__p += '\n<div class="panel group panel-default ' +
+__e( panel_class ) +
+'" data-id="' +
+__e( unique_id ) +
+'" id="panel_' +
+__e( unique_id ) +
+'">\n    <div class="panel-heading " role="tab" id="heading_' +
+__e( unique_id ) +
+'" data-id="' +
+__e( unique_id ) +
+'">\n        <h4 class="panel-title" data-id="' +
+__e( unique_id ) +
+'">\n            <a class="collapsed" data-toggle="collapse" data-parent="#groups_accordion" href="#collapse_' +
+__e( unique_id ) +
+'"\n               aria-expanded="false" aria-controls="collapse_' +
+__e( unique_id ) +
+'" data-id="' +
+__e( unique_id ) +
+'">\n                <div data-id="' +
+__e( unique_id ) +
+'">\n                    ' +
+__e( cut(name)) +
+'<i style="float: right" class="fa fa-angle-down fa-1_5x"></i>\n                </div>\n            </a>\n      </h4>\n    </div>\n    <div id="collapse_' +
+__e( unique_id ) +
+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" >\n        <div class="panel-body group group-box" data-id="' +
+__e( unique_id ) +
+'">\n            Drop Contacts here!!!\n        </div>\n    </div>\n</div>\n\n';
 
 }
 return __p

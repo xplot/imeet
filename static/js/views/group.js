@@ -1,5 +1,5 @@
 GroupListView = Backbone.View.extend({
-    template: JST['group.html'],
+
     events: {
        'dragover .group': 'contactDragOver',
        'dragenter .group': 'contactDragEnter',
@@ -13,8 +13,20 @@ GroupListView = Backbone.View.extend({
         this.groupList = options.groupList;
         this.contactList = options.contactList;
 
-        this.$el.html(this.template({groupList: this.groupList.collectionToJSON()}));
-        this.$groupsTable = this.$el.find('.groups');
+        var that = this;
+        var index = 0;
+        if(groupList.length > 0)
+            this.groupList.forEach(function(group){
+                var group_json = group.toJSON();
+                group_json.panel_class = (false && index%2 == 0)? 'group-panel-even':'group-panel-odd';
+                that.$el.append(JST['group-item.html'](group_json));
+                index++;
+            });
+        else{
+            that.$el.append("You have no groups. Create one!");
+        }
+
+        this.$groupsTable = this.$el;
 
         this.listenTo(this.groupList, 'add', this.newGroupAdded);
         this.listenTo(this.groupList, 'remove', this.removedGroup);
@@ -29,15 +41,9 @@ GroupListView = Backbone.View.extend({
     },
 
     newGroupAdded: function(group){
-        console.log(group);
-        var color = randomColor();
-        var inverse = colorInverter(color);
-        this.$groupsTable.prepend('<div data-id="{0}" class="group col-md-1" style="background-color: #{2};color: #{3}">{1}</div>'.format(
-            group.attributes.unique_id,
-            cut(group.attributes.name),
-            color,
-            inverse
-        ));
+        var group_json = group.toJSON();
+        group_json.panel_class = (this.groupList.length%2 == 0)? 'group-panel-even':'group-panel-odd';
+        this.$el.prepend(JST['group-item.html'](group_json));
     },
 
     removedGroup: function(){
@@ -47,20 +53,20 @@ GroupListView = Backbone.View.extend({
     contactDragEnter: function(ev) {
         ev.preventDefault();
 
-        var $group = $(ev.target);
-        if($group.hasClass('group-drag-hover'))
+        var $item = $(ev.target);
+        if($item.hasClass('group-drag-hover'))
             return;
 
-        $group.addClass('group-drag-hover');
+        $item.addClass('group-drag-hover');
     },
     contactDragLeave: function(ev) {
         ev.preventDefault();
 
-        var $group = $(ev.target);
-        if(!$group.hasClass('group-drag-hover'))
+        var $item = $(ev.target);
+        if(!$item.hasClass('group-drag-hover'))
             return;
 
-        $group.removeClass('group-drag-hover');
+        $item.removeClass('group-drag-hover');
     },
     contactDragOver: function(ev) {
         ev.preventDefault();
@@ -79,7 +85,7 @@ GroupListView = Backbone.View.extend({
                 this.addContactToGroup(contact[0], group[0]);
         }
 
-        //$group.removeClass('group-drag-hover');
+        $group.removeClass('group-drag-hover');
     },
 
     addContactToGroup: function(contact, group){

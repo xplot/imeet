@@ -29,11 +29,13 @@ ContactsView = SimpleView.extend({
             contactTable.append(new ContactItemView({model: contact}).render().el);
         });
 
-        this.groupListView = new GroupListView();
-        groupsTable.html(this.groupListView.render({
+        this.groupListView = new GroupListView({
+            el: '.groups_table'
+        });
+        this.groupListView.render({
             groupList: this.groupList,
             contactList: this.contactList
-        }));
+        });
 
         this.first_time = false;
     },

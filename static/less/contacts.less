@@ -40,16 +40,37 @@ body{
 
 .groups_table{
   //position: absolute;
-  max-height: 10%;
+  max-height: 400px;
   overflow-y: auto;
+
+  .group-panel-even{
+    .panel-heading{
+      background-color: @nav-bg-color;
+      color: @off-white;
+    }
+  }
+
+  .group-panel-odd{
+    .panel-heading{
+      background-color: @off-white;
+      color: @nav-bg-color;
+    }
+  }
+
+
   .group{
-    margin: 10px;
-    padding: 10px;
+    margin: 0px;
+    padding: 0px;
     //border: 1px solid @nav-bg-color;
   }
 
+  .group-box{
+    padding: 20px;
+  }
+
   .group-drag-hover{
-    opacity: 0.6;
+
+    border: solid 1px green;
   }
 
 

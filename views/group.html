@@ -1,9 +1,0 @@
-<div class="container groups">
-<% _.each(groupList, function(group){ %>
-    <%
-        var color = randomColor();
-        var inverse = colorInverter(color);
-    %>
-      <div data-id="<%- group.unique_id %>" class="group col-md-1" style="background-color: #<%- color %>;color: #<%- inverse %>"><%- cut(group.name)%></div>
-<% }); %>
-</div>
