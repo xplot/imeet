@@ -16,7 +16,7 @@ from managers.group import GroupManager
 class ContactHandler(BaseHandler):
     def get(self):
         if self.user is None:
-            self.redirect_to('home')
+            return self.redirect_to('home')
 
         group_manager = GroupManager(self.user_key)
 

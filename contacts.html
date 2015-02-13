@@ -12,10 +12,10 @@
 
     <div class="row">
         <div class="">
-            <div class="col-md-2">
+            <div class="col-md-2 col-sm-6 col-xs-6">
                 <a class="btn btn-success add-contact" href="contacts/new">New Contact</a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-sm-6 col-xs-6">
                 <a class="btn add-group" href="#">New Group</a>
             </div>
             <div class="col-md-2 import-csv-container">
@@ -27,11 +27,11 @@
     </div>
 
     <div class="row small-margin-top">
-        <div class="col-md-6 container ">
+        <div class="col-xs-12 col-md-8 container ">
             <h4>Contacts</h4>
             <div id="contacts_table" class="small-margin-top"></div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4 desktop groups-container">
             <h4>Groups</h4>
             <div id="groups_accordion" class="panel-group groups_table" role="tablist" aria-multiselectable="true"></div>
         </div>
@@ -48,7 +48,7 @@
 
     var groupList = new GroupList();
     {% for group in contact_groups['groups']%}
-        groupList.create({unique_id: "{{group.unique_id}}", name:"{{group.name}}"});
+        groupList.create({unique_id: "{{group.unique_id}}", name:"{{group.name}}", contacts: new ContactList()});
     {% endfor %}
 
     var contactList = new ContactList();
@@ -69,13 +69,15 @@
         xcontact.get('groups').forEach(function(item){
             var group = groupList.getById(item);
 
-            if(group != null && group.length >0)
+            if(group != null && group.length >0){
                 group[0].get('contacts').add(xcontact);
+            }
+
         });
 
         contactList.add(xcontact);
     {% endfor %}
 
-
+    console.log(groupList);
 </script>
 {% endblock %}

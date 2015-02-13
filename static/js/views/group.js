@@ -1,13 +1,14 @@
 GroupListView = Backbone.View.extend({
 
     events: {
-       'dragover .group': 'contactDragOver',
-       'dragenter .group': 'contactDragEnter',
-        'dragleave .group': 'contactDragLeave',
-       'drop .group': 'contactDropped'
+       'dragover .group-drop-area': 'contactDragOver',
+       'dragenter .group-drop-area': 'contactDragEnter',
+       'dragleave .group-drop-area': 'contactDragLeave',
+       'drop .group-drop-area': 'contactDropped',
     },
 
     newGroupView: null,
+
 
     render: function(options) {
         this.groupList = options.groupList;
@@ -56,7 +57,7 @@ GroupListView = Backbone.View.extend({
         ev.preventDefault();
 
         var $item = $(ev.target);
-        if($item.hasClass('group-drag-hover'))
+        if($item.hasClass('group-drag-hover') ||!$item.hasClass('group-drop-area'))
             return;
 
         $item.addClass('group-drag-hover');
@@ -65,7 +66,7 @@ GroupListView = Backbone.View.extend({
         ev.preventDefault();
 
         var $item = $(ev.target);
-        if(!$item.hasClass('group-drag-hover'))
+        if(!$item.hasClass('group-drag-hover') ||!$item.hasClass('group-drop-area'))
             return;
 
         $item.removeClass('group-drag-hover');
@@ -75,8 +76,13 @@ GroupListView = Backbone.View.extend({
     },
 
     contactDropped: function(ev) {
-        ev.preventDefault();
         var $group = $(ev.target);
+
+        if(!$group.hasClass('group-drop-area'))
+            return;
+        ev.preventDefault();
+        ev.stopPropagation();
+
         var id = $group.data('id');
         var group = this.groupList.getById(id);
 
@@ -96,12 +102,13 @@ GroupListView = Backbone.View.extend({
             type: "POST",
             contentType: "application/json",
             success: function(data) {
-                $('#groupbox_'+ group.get('unique_id')).append('<div class="col-md-3 group-contact">' + contact.get('name') + '</div>')
+                $('#groupbox_'+ group.get('unique_id')).append('<div class="col-md-5 group-contact">' + cut(contact.get('name'),8) + '</div>')
             },
-            error: function() {
+            error: function(data) {
+                console.log(data);
                 alert_notification([{
                     alertType:'danger',
-                    message: "The contact couldn't be added to the group"
+                    message: data.responseText
                 }]);
             }
         });
@@ -135,6 +142,10 @@ GroupCreateView = Backbone.View.extend({
         this.$groupInput.focus();
     },
 
+    hide: function () {
+        this.$el.find('.addGroup-modal').hide();
+    },
+
     newGroupKeyEvent: function(evt) {
         if (evt.keyCode != 13) {
             return;
@@ -150,7 +161,7 @@ GroupCreateView = Backbone.View.extend({
             return;
         }
 
-        this.$el.hide();
+        this.hide();
 
         $.ajax({
             url: "/api/group/" + name + "?user_id="+currentUser.id,

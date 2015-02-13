@@ -117,7 +117,7 @@ class GroupManager(object):
     def add_contact_to_group(self, group_id, contact_id):
 
         if self.is_contact_in_group(contact_id, group_id=group_id):
-            return
+            raise Exception("Contact already exists in group")
 
         grouped_contact = GroupedContact()
         grouped_contact.group_unique_id = group_id

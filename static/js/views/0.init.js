@@ -194,11 +194,13 @@ var randomColor = function getRandomColor() {
     return color;
 }
 
-var cut = function cutText(text) {
-    if(text.length >= 8)
-        return text.substring(0,8) + "...";
+var cut = function cutText(text,length) {
+    if(length == null)
+        length = 8;
+    if(text.length >= length)
+        return text.substring(0,length) + "...";
     return text;
-}
+};
 
 var colorInverter = function invertHex(hexnum){
   if(hexnum.length != 6) {

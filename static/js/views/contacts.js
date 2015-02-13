@@ -7,7 +7,8 @@ ContactsView = SimpleView.extend({
     events: {
        'click .add-contact' : 'navigateToAddContact',
        'change #import-csv' : 'importFromCsv',
-       'click .add-group' : 'addGroup'
+       'click .add-group' : 'addGroup',
+        'mouseup div': 'mouseUp',
     },
 
     render: function(options) {
@@ -168,7 +169,6 @@ ContactItemView = SimpleView.extend({
        'click .editable' : "enterEditMode",
        'click .finish-edit' : "finishEditMode",
        'click .delete-contact' : 'deleteContact'
-
     },
 
     render: function(){
@@ -177,7 +177,6 @@ ContactItemView = SimpleView.extend({
     },
 
     enterDragMode: function(ev){
-        console.log('LLEGUE AL DRAG START');
         //ev.preventDefault();
         //ev.stopPropagation();
         var unique_id = this.model.get('unique_id');

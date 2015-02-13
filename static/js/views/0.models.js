@@ -8,7 +8,6 @@ Contact = Backbone.Model.extend({
 
 ContactList = Backbone.Collection.extend({
     model: Contact,
-    localStorage: new Store("backbone-contact"),
 
     getById: function(unique_id){
         return this.filter(function(val) {

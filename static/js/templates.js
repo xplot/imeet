@@ -28,15 +28,15 @@ this["JST"]["contact_item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="contact-row col-sm-12" data-id="' +
+__p += '<div class="contact-row col-md-12 col-xs-12 col-sm-12" data-id="' +
 __e( unique_id ) +
-'" draggable="true">\n    <div class="editable col-sm-4 col-xs-8" >\n        ' +
+'" draggable="true">\n    <div class="editable col-md-3 col-xs-8 col-sm-4" >\n        ' +
 __e( name ) +
-'\n    </div>\n    <div class="editable desktop tablet col-sm-4">' +
+'\n    </div>\n    <div class="editable desktop tablet col-md-3 col-sm-3">' +
 __e( email ) +
-'</div>\n    <div class="editable desktop tablet col-sm-2">' +
+'</div>\n    <div class="editable desktop tablet col-md-3 col-sm-3">' +
 __e( phone ) +
-'</div>\n    <div class="col-sm-2 col-xs-4 update-column">\n        <a class="editable" href="#"><i class="fa-pen fa-1_2x"></i></a>\n        <a class="delete-contact" href="#"><i data-id="' +
+'</div>\n    <div class="col-md-2 col-xs-4 update-column pull-right col-sm-2">\n        <a class="editable" href="#"><i class="fa-pen fa-1_2x"></i></a>\n        <a class="delete-contact" href="#"><i data-id="' +
 __e( unique_id ) +
 '" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n    </div>\n</div>';
 
@@ -50,13 +50,13 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="row" data-id="' +
 __e( unique_id ) +
-'">\n    <div class="editable col-sm-4 col-xs-8">\n        <input id="edit-name" value="' +
+'">\n    <div class="editable col-md-3 col-xs-8">\n        <input id="edit-name" value="' +
 __e( name ) +
-'" placeholder="Name...">\n    </div>\n    <div class="desktop tablet col-sm-4">\n        <input id="edit-email" value="' +
+'" placeholder="Name...">\n    </div>\n    <div class="desktop tablet col-md-3">\n        <input id="edit-email" value="' +
 __e( email ) +
-'" placeholder="Email...">\n    </div>\n    <div class="desktop tablet col-sm-2">\n        <input id="edit-phone" value="' +
+'" placeholder="Email...">\n    </div>\n    <div class="desktop tablet col-md-3">\n        <input id="edit-phone" value="' +
 __e( phone ) +
-'" placeholder="Phone...">\n    </div>\n    <div class="col-sm-2 col-xs-4 update-column">\n        <a href="#" class="finish-edit">OK</a>\n    </div>\n</div>';
+'" placeholder="Phone...">\n    </div>\n    <div class="col-md-3 update-column">\n        <a href="#" class="finish-edit">OK</a>\n    </div>\n</div>';
 
 }
 return __p
@@ -116,13 +116,13 @@ __e( panel_class ) +
 __e( unique_id ) +
 '" id="panel_' +
 __e( unique_id ) +
-'">\n    <div class="panel-heading " role="tab" id="heading_' +
+'">\n    <div class="panel-heading group-drop-area" role="tab" id="heading_' +
 __e( unique_id ) +
 '" data-id="' +
 __e( unique_id ) +
-'">\n        <h4 class="panel-title" data-id="' +
+'">\n        <div class="panel-title group-drop-area" data-id="' +
 __e( unique_id ) +
-'">\n            <a class="collapsed" data-toggle="collapse" data-parent="#groups_accordion" href="#collapse_' +
+'">\n            <a class="collapsed group-drop-area" data-toggle="collapse" data-parent="#groups_accordion" href="#collapse_' +
 __e( unique_id ) +
 '"\n               aria-expanded="false" aria-controls="collapse_' +
 __e( unique_id ) +
@@ -130,18 +130,18 @@ __e( unique_id ) +
 __e( unique_id ) +
 '">\n                <div data-id="' +
 __e( unique_id ) +
-'">\n                    ' +
+'" class="group-drop-area">\n                    ' +
 __e( cut(name)) +
-'<i style="float: right" class="fa fa-angle-down fa-1_5x"></i>\n                </div>\n            </a>\n      </h4>\n    </div>\n    <div id="collapse_' +
+'<i style="float: right" class="fa fa-angle-down fa-1_5x"></i>\n                </div>\n            </a>\n      </div>\n    </div>\n    <div id="collapse_' +
 __e( unique_id ) +
-'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" >\n        <div class="panel-body group group-box " data-id="' +
+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" >\n        <div class="panel-body group-box group-drop-area" data-id="' +
 __e( unique_id ) +
 '" id="groupbox_' +
 __e( unique_id ) +
-'">\n            ';
+'">\n            Drop Here!!! <br/>\n            ';
 _.each(contacts, function(contact) { ;
-__p += '\n                <div class="col-md-3 group-contact">\n                    ' +
-__e( contact.name ) +
+__p += '\n\n                <div class="col-md-5 group-contact">\n                    ' +
+__e( cut(contact.name,8) ) +
 '\n                </div>\n            ';
  }) ;
 __p += '\n        </div>\n    </div>\n</div>\n\n';
