@@ -17,13 +17,13 @@ GroupListView = Backbone.View.extend({
         var index = 0;
         if(groupList.length > 0)
             this.groupList.forEach(function(group){
-                var group_json = group.toJSON();
+                var group_json = group.toJSON2();
                 group_json.panel_class = (false && index%2 == 0)? 'group-panel-even':'group-panel-odd';
                 that.$el.append(JST['group-item.html'](group_json));
                 index++;
             });
         else{
-            that.$el.append("You have no groups. Create one!");
+            that.$el.append("<div class='empty-groups'>You have no groups. Create one!</div>");
         }
 
         this.$groupsTable = this.$el;
@@ -41,6 +41,8 @@ GroupListView = Backbone.View.extend({
     },
 
     newGroupAdded: function(group){
+        $('empty-groups').hide();
+
         var group_json = group.toJSON();
         group_json.panel_class = (this.groupList.length%2 == 0)? 'group-panel-even':'group-panel-odd';
         this.$el.prepend(JST['group-item.html'](group_json));
@@ -93,9 +95,10 @@ GroupListView = Backbone.View.extend({
             url: "/api/group/" + group.attributes.unique_id+ "/"+ contact.attributes.unique_id + "?user_id=" + currentUser.id,
             type: "POST",
             contentType: "application/json",
-            success: function(unique_id) {
+            success: function(data) {
+                $('#groupbox_'+ group.get('unique_id')).append('<div class="col-md-3 group-contact">' + contact.get('name') + '</div>')
             },
-            error: function(data) {
+            error: function() {
                 alert_notification([{
                     alertType:'danger',
                     message: "The contact couldn't be added to the group"

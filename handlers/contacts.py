@@ -18,19 +18,12 @@ class ContactHandler(BaseHandler):
         if self.user is None:
             self.redirect_to('home')
 
-        contactlist = Contact.query(Contact.user == self.user_key)\
-            .order(Contact.name)\
-        .fetch()
-
         group_manager = GroupManager(self.user_key)
 
         return self.render_template(
             'contacts.html',
-            contacts=contactlist or [],
-            groups=group_manager.get_groups_for_user(),
-            show_search=len(contactlist) > 1
+            contact_groups=group_manager.get_contacts_sorted_by_group()
         )
-
 
 class ApiContactHandler(JsonHandler):
 

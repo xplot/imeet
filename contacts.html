@@ -45,14 +45,37 @@
 
 {% block initScript %}
  <script>
-    var contactList = new ContactList();
-    {% for contact in contacts%}
-        contactList.create({unique_id: "{{contact.unique_id}}", name:"{{contact.name}}", email:"{{contact.email}}", phone:"{{contact.phone}}"});
-    {% endfor %}
 
     var groupList = new GroupList();
-    {% for group in groups%}
+    {% for group in contact_groups['groups']%}
         groupList.create({unique_id: "{{group.unique_id}}", name:"{{group.name}}"});
     {% endfor %}
+
+    var contactList = new ContactList();
+    {% for contact in contact_groups['contacts']%}
+
+        var xcontact = new Contact({
+            unique_id: "{{contact.unique_id}}",
+            name:"{{contact.name}}",
+            email:"{{contact.email}}",
+            phone:"{{contact.phone}}",
+            groups: [
+                {% for groupId in contact['groups']%}
+                    '{{groupId}}',
+                {% endfor%}
+            ]
+        });
+
+        xcontact.get('groups').forEach(function(item){
+            var group = groupList.getById(item);
+
+            if(group != null && group.length >0)
+                group[0].get('contacts').add(xcontact);
+        });
+
+        contactList.add(xcontact);
+    {% endfor %}
+
+
 </script>
 {% endblock %}

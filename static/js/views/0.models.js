@@ -6,12 +6,6 @@ Contact = Backbone.Model.extend({
       }
     });
 
-Group = Backbone.Model.extend({
-    defaults: {
-        name: '',
-    }
-});
-
 ContactList = Backbone.Collection.extend({
     model: Contact,
     localStorage: new Store("backbone-contact"),
@@ -33,6 +27,13 @@ ContactList = Backbone.Collection.extend({
     }
  });
 
+
+Group = Backbone.Model.extend({
+    defaults: {
+        name: '',
+        contacts: new ContactList()
+    }
+});
 
 GroupList = Backbone.Collection.extend({
     model: Group,

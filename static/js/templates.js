@@ -110,7 +110,7 @@ with (obj) {
     var color = randomColor();
     var inverse = colorInverter(color);
 ;
-__p += '\n<div class="panel group panel-default ' +
+__p += '\n<div class="panel panel-default ' +
 __e( panel_class ) +
 '" data-id="' +
 __e( unique_id ) +
@@ -134,9 +134,17 @@ __e( unique_id ) +
 __e( cut(name)) +
 '<i style="float: right" class="fa fa-angle-down fa-1_5x"></i>\n                </div>\n            </a>\n      </h4>\n    </div>\n    <div id="collapse_' +
 __e( unique_id ) +
-'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" >\n        <div class="panel-body group group-box" data-id="' +
+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" >\n        <div class="panel-body group group-box " data-id="' +
 __e( unique_id ) +
-'">\n            Drop Contacts here!!!\n        </div>\n    </div>\n</div>\n\n';
+'" id="groupbox_' +
+__e( unique_id ) +
+'">\n            ';
+_.each(contacts, function(contact) { ;
+__p += '\n                <div class="col-md-3 group-contact">\n                    ' +
+__e( contact.name ) +
+'\n                </div>\n            ';
+ }) ;
+__p += '\n        </div>\n    </div>\n</div>\n\n';
 
 }
 return __p
