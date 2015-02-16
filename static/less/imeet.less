@@ -16,9 +16,11 @@
     top:60px;
     position: absolute;
     width: 100%;
-    bottom: 100px;
+    bottom: 0px;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-right: 0px;
+    padding-left: 0px;
   }
 
   .signup-container{
@@ -39,6 +41,8 @@
   .invite-create{
     .first{
       background-color: @panel1;
+      padding-left: 15px;
+      padding-right: 15px;
     }
     .second{
       background-color: @panel2;
@@ -80,18 +84,56 @@
     }
 
     .invite {
+      @media(max-width:768px) {
+        .invite {
+          font-size: 80%;
+        }
+      }
+      .panel{
+          box-shadow:none;
+          position: absolute;
+          height: 90%;
+
+          .panel-heading{
+            border-bottom: 1px solid @nav-bg-color !important;
+          }
+          .panel-body{
+            padding: 0px;
+            height: 100%;
+
+          }
+      }
+
+      .send-container {
+          position: absolute;
+          bottom: 10px;
+          .facebook_share {
+            display: inline-block;
+            padding: 10px;
+            div {
+              display: table-cell;
+              float: none;
+              vertical-align: middle;
+            }
+          }
+
+          .send {
+            margin-top: 0px;
+            margin-bottom: 0px;
+          }
+        }
+
       .invite-content {
-        position: absolute;
-        height: 100%;
-        width: 100%;
 
+        .row{
+
+        }
         .profile-contacts {
-
           padding: 20px;
-
         }
 
         .contact-input-container {
+
           .contact-input{
 
           }
@@ -173,34 +215,24 @@
           }
         }
 
-        .invite_report {
-          .panel {
-            .panel-heading {
-              height: 60px !important;
-            }
-          }
-        }
 
-        .contact-table {
-          max-height: 400px;
-          height: 70%;
+        .contact-table-container {
+          height: 60%;
           width: 100%;
           overflow-y: auto;
-          padding: 0px;
-        }
 
-        .contact-read-table{
-          max-height: 400px;
-          text-align: left;
-          overflow-y: auto;
-          list-style: none;
-          padding-left: 0px;
-          font-size: 80%;
-        }
 
-        .contact-row {
-          padding-left: 0px;
-          padding-right: 0px;
+          .contact-table {
+            height: 100%;
+            width: 100%;
+            padding: 0px;
+
+          }
+
+          .contact-row {
+            padding-left: 0px;
+            padding-right: 0px;
+          }
         }
       }
     }
@@ -461,13 +493,6 @@
     }
   }
 
-  #view-container{
-    .snap-panel{
-      height: 90%;
-    }
-
-
-  }
 }
 
 .zero-margin{

@@ -24,6 +24,32 @@ __e(comment) +
 return __p
 };
 
+this["JST"]["contact-item-invite-create.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div id=\'' +
+__e( unique_id ) +
+'\'  class=\'contact-row col-md-12\' data-contact=\'' +
+__e( name) +
+';' +
+__e(email) +
+' ' +
+__e(phone ) +
+'\'>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0\'> ' +
+__e(name ) +
+'</div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-3 col-md-offset-0\'> ' +
+__e(email ) +
+'</div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-3 col-md-offset-0\'> ' +
+__e(phone ) +
+'</div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-2 col-md-offset-0\'>\n        <button type=\'button\' class=\'btn btn-danger remove-contact form-control\' data-rowid=\'' +
+__e(unique_id ) +
+'\'>-</button>\n    </div>\n</div>\n';
+
+}
+return __p
+};
+
 this["JST"]["contact_item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -155,17 +181,29 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '\n\n<div class="snap-panel invite-create">\n    <section data-panel="first" class="container invite first">\n        <div class="row text-center invite-content ">\n            <div class="">\n                <h4>Event</h4>\n            </div>\n            <div class="">\n\n                ';
+__p += '\n\n<div class="snap-panel invite-create">\n    <section data-panel="first" class="invite first">\n        <div class="zero-margin text-center invite-content ">\n            <div class="">\n                <h4>Event</h4>\n            </div>\n            <div class="">\n\n                ';
   if( currentUser == null )  { ;
 __p += '\n                    <label class="small-text">\n                    Note: For sms/calls to work, you have to be a registered\n                    <br/>\n                    Note2: Sms/calls will be free only during the beta phase. After that a subscription base fee will be offered\n                    </label>\n                ';
  } ;
-__p += '\n            </div>\n            <div class="row">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <input required type="text" class="form-control event-name valid-before-submit" placeholder="Event" autofocus data-validation="required" >\n                </div>\n            </div>\n\n            <div class="row small-margin-top">\n                <h4>Details</h4>\n            </div>\n\n            <div class="row">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <input type="text" class="form-control event-where" placeholder="Location...."  >\n                </div>\n            </div>\n\n            <div class="row">\n                <div class="col-xs-12  col-md-3 col-md-offset-2">\n                    <div class="date-group" id="start-date-group">\n                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000"\n                               data-validation="required,date"\n                        >\n                        <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required" >\n                    </div>\n                </div>\n                <div class="col-xs-12 col-md-2 text-center label-text">\n                    To\n                </div>\n                <div class="col-xs-12 col-md-3">\n                    <div class="date-group">\n                        <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000">\n                        <input readonly="true" required type="text" class="time event-end-time" placeholder="00:00 AM"  >\n                    </div>\n                </div>\n            </div>\n            <div class="row desktop tablet small-margin-top">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <textarea class="form-control event-description" rows="6"></textarea>\n                </div>\n            </div>\n\n        </div>\n        <div class="row  menu-container menu-down">\n            <ul class="menu">\n                <li>\n                    <a href="" data-panel="second"><i class="fa fa-angle-down fa-5x"></i></a>\n                </li>\n            </ul>\n        </div>\n    </section>\n\n        <section data-panel="second" class="container invite third">\n            <div class="text-center invite-content invite-contacts-setup ">\n                <div class="row">\n                    <div class="col-xs-12 col-md-8 col-md-offset-2 text-center">\n                        <h4>Who is invited?</h4>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="text-center col-xs-8 col-md-7 col-md-offset-2 contact-input-container">\n                        <input type="text" class="contact-input form-control"\n                            ';
+__p += '\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <input type="text" class="form-control event-name-input valid-before-submit" placeholder="Event" autofocus data-validation="required" value="' +
+__e(title) +
+'" >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <h4>Details</h4>\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <input type="text" class="form-control event-where-input" placeholder="Location...."  >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12  col-md-3 col-md-offset-2">\n                    <div class="date-group" id="start-date-group">\n                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
+__e(start_date ) +
+'">\n                        <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
+__e(start_time ) +
+'">\n                    </div>\n                </div>\n                <div class="col-xs-12 col-md-2 text-center label-text">\n                    To\n                </div>\n                <div class="col-xs-12 col-md-3">\n                    <div class="date-group">\n                        <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" value="' +
+__e(end_date ) +
+'">\n                        <input readonly="true" required type="text" class="time event-end-time" placeholder="00:00 AM"  value="' +
+__e(end_time ) +
+'">\n                    </div>\n                </div>\n            </div>\n            <div class="zero-margin desktop tablet small-margin-top">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <textarea class="form-control event-description-input" rows="6"></textarea>\n                </div>\n            </div>\n\n        </div>\n        <div class="zero-margin  menu-container menu-down">\n            <ul class="menu">\n                <li>\n                    <a href="" data-panel="second"><i class="fa fa-angle-down fa-5x"></i></a>\n                </li>\n            </ul>\n        </div>\n    </section>\n\n    <section data-panel="second" class="invite second ">\n        <div class="panel col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 invite-content">\n            <div class="panel-heading">\n                <div class="row">\n                     <div class=\'pull-left col-xs-3 col-md-6\'><h4 class=\'event-name\'>' +
+__e( title ) +
+'</h4></div>\n                     <div class=\'col-xs-9 col-md-6 text-right\'>\n                        <div class=\'col-xs-12 col-md-12 event-start-date-formatted\'></div>\n                        <div class=\'col-xs-12 col-md-12 event-end-date-formatted\'></div>\n                     </div>\n                </div>\n                 <div class=\'row\'>\n                    <div class=\'pull-left event-description col-xs-12 col-md-12\'></div>\n                    <div class=\'pull-left event-where col-md-12\'></div>\n                </div>\n            </div>\n            <div class="panel-body">\n                <div class="row text-center">\n                    <h4>Who is invited?</h4>\n                </div>\n                <div class="zero-margin">\n                    <div class="text-center contact-input-container col-md-10 col-xs-10">\n                        <input type="text" class="contact-input form-control"\n                        ';
   if( features.indexOf('voice') != -1 )  { ;
-__p += '\n                                data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n                            ';
+__p += '\n                        data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n                        ';
  } else { ;
-__p += '\n                                data-validation=\'required,email\' placeholder=\'Email Address\'\n                            ';
+__p += '\n                        data-validation=\'required,email\' placeholder=\'Email Address\'\n                        ';
  } ;
-__p += '>\n                    </div>\n                    <div class="col-xs-3 col-md-1">\n                        <button type="button" class="btn new-contact-button form-control">+</button>\n                    </div>\n                </div>\n\n                <div class="row">\n                    <div class="contact-table text-center col-xs-12 col-md-8 col-md-offset-2">\n\n                    </div>\n                </div>\n            </div>\n\n            <div class="row menu-container menu-down  desktop tablet">\n                <ul class="menu">\n                    <li>\n                        <a href="" data-panel="third"><i class="fa fa-angle-down fa-5x"></i></a>\n                    </li>\n                </ul>\n            </div>\n        </section>\n\n        <section data-panel="third" class="container invite fourth">\n            <div class="row text-center invite-content">\n                <div id="reportXXX"></div>\n            </div>\n\n\n        </section>\n</div>\n\n\n<!-- Footer -->\n<div class="section-container footer desktop navbar-fixed-bottom">\n<div class="footer-below">\n    <div class="container">\n      <div class="row">\n          <div class="col-lg-12">\n              Miami, FL<br/>\n              Copyright 2014 &copy; iMeet Inc. All rights reserved.\n          </div>\n      </div>\n    </div>\n</div>\n</div>\n';
+__p += '>\n                    </div>\n                    <div class="col-xs-3 col-md-2 no-padding col-xs-2">\n                        <button type="button" class="btn new-contact-button form-control">+</button>\n                    </div>\n                </div>\n                <div class="zero-margin contact-table-container">\n                    <div class="contact-table text-center"></div>\n                </div>\n            </div>\n        </div>\n        <div class=\'row send-container col-xs-offset-0 col-xs-12 col-md-8 col-md-offset-2\'>\n            <div class="facebook_share pull-right">\n                <div>Facebook Share</div>\n                <div><input type="checkbox"\n                   data-toggle="toggle"\n                   id="bt_toggle"\n                   class="share_to_facebook"\n                   data-style="android"\n                   data-on="ON" data-off="OFF"\n                   data-onstyle="info"\n                   data-onstyle="success" data-offstyle="danger" />\n                </div>\n            </div>\n            <div class="">\n                <button type="button" class="btn form-control btn-success send">Send</button>\n            </div>\n\n        </div>\n    </section>\n</div>\n\n\n<!--&lt;!&ndash; Footer &ndash;&gt;-->\n<!--<div class="section-container footer desktop navbar-fixed-bottom">-->\n<!--<div class="footer-below">-->\n    <!--<div class="container">-->\n      <!--<div class="row">-->\n          <!--<div class="col-lg-12">-->\n              <!--Miami, FL<br/>-->\n              <!--Copyright 2014 &copy; iMeet Inc. All rights reserved.-->\n          <!--</div>-->\n      <!--</div>-->\n    <!--</div>-->\n<!--</div>-->\n<!--</div>-->\n';
 
 }
 return __p
@@ -185,7 +223,7 @@ this["JST"]["invite_report.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<style>\n  .toggle.android { border-radius: 0px;}\n  .toggle.android .toggle-handle { border-radius: 0px; }\n</style>\n\n<div class="row equidistant invite_report">\n    <div class="col-xs-12 col-md-8 col-md-offset-2">\n        <div class="panel">\n         <div class="panel-heading" >\n                <div class="row">\n                     <div class=\'pull-left col-xs-3 col-md-6\' style="text-align: left"><h4 class=\'event-name\'></h4></div>\n\n                     <div class=\'col-xs-9 col-md-6 text-right\'>\n                        <div class=\'col-xs-12 col-md-12 event-start-date-formatted\'></div>\n                        <div class=\'col-xs-12 col-md-12 event-end-date-formatted\'></div>\n                     </div>\n                </div>\n             </div>\n         </div>\n\n         <div class="panel-body container">\n            <div class=\'col-md-12\'>\n                <div class=\'pull-left event-description col-xs-12 col-md-12\'></div>\n                <div class=\'pull-left event-where col-md-12\'></div>\n            </div>\n             <div class=\'col-md-9 medium-margin-top\'>\n                 <!--<ul class="contact-read-table">-->\n                <!--</ul>-->\n\n                     <div class="row bt_toggle_parent">\n                        <label for="bt_toggle">Share on Facebook</label>\n                        <input type="checkbox"\n                           data-toggle="toggle"\n                           id="bt_toggle"\n                           class="share_to_facebook"\n                           data-style="android"\n                           data-onstyle="info"\n                           data-onstyle="success" data-offstyle="danger" />\n                    </div>\n                    <button type="button" class="btn form-control btn-success send">Send</button>\n\n             </div>\n\n          </div>\n        </div>\n    </div>\n</div>\n';
+__p += '<style>\n  .toggle.android { border-radius: 0px;}\n  .toggle.android .toggle-handle { border-radius: 0px; }\n</style>\n\n<div class="row equidistant invite_report">\n    <div class="col-xs-12 col-md-8 col-md-offset-2">\n\n    </div>\n</div>\n';
 
 }
 return __p

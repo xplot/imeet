@@ -1,8 +1,8 @@
 
 
 <div class="snap-panel invite-create">
-    <section data-panel="first" class="container invite first">
-        <div class="row text-center invite-content ">
+    <section data-panel="first" class="invite first">
+        <div class="zero-margin text-center invite-content ">
             <div class="">
                 <h4>Event</h4>
             </div>
@@ -16,29 +16,30 @@
                     </label>
                 <% } %>
             </div>
-            <div class="row">
+
+            <div class="zero-margin">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
-                    <input required type="text" class="form-control event-name valid-before-submit" placeholder="Event" autofocus data-validation="required" >
+                    <input type="text" class="form-control event-name-input valid-before-submit" placeholder="Event" autofocus data-validation="required" value="<%-title%>" >
                 </div>
             </div>
 
-            <div class="row small-margin-top">
-                <h4>Details</h4>
-            </div>
-
-            <div class="row">
+            <div class="zero-margin">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
-                  <input type="text" class="form-control event-where" placeholder="Location...."  >
+                    <h4>Details</h4>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="zero-margin">
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                  <input type="text" class="form-control event-where-input" placeholder="Location...."  >
+                </div>
+            </div>
+
+            <div class="zero-margin">
                 <div class="col-xs-12  col-md-3 col-md-offset-2">
                     <div class="date-group" id="start-date-group">
-                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000"
-                               data-validation="required,date"
-                        >
-                        <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required" >
+                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="<%-start_date %>">
+                        <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="<%-start_time %>">
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-2 text-center label-text">
@@ -46,19 +47,19 @@
                 </div>
                 <div class="col-xs-12 col-md-3">
                     <div class="date-group">
-                        <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000">
-                        <input readonly="true" required type="text" class="time event-end-time" placeholder="00:00 AM"  >
+                        <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" value="<%-end_date %>">
+                        <input readonly="true" required type="text" class="time event-end-time" placeholder="00:00 AM"  value="<%-end_time %>">
                     </div>
                 </div>
             </div>
-            <div class="row desktop tablet small-margin-top">
+            <div class="zero-margin desktop tablet small-margin-top">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
-                  <textarea class="form-control event-description" rows="6"></textarea>
+                  <textarea class="form-control event-description-input" rows="6"></textarea>
                 </div>
             </div>
 
         </div>
-        <div class="row  menu-container menu-down">
+        <div class="zero-margin  menu-container menu-down">
             <ul class="menu">
                 <li>
                     <a href="" data-panel="second"><i class="fa fa-angle-down fa-5x"></i></a>
@@ -67,64 +68,75 @@
         </div>
     </section>
 
-        <section data-panel="second" class="container invite third">
-            <div class="text-center invite-content invite-contacts-setup ">
+    <section data-panel="second" class="invite second ">
+        <div class="panel col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 invite-content">
+            <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-12 col-md-8 col-md-offset-2 text-center">
-                        <h4>Who is invited?</h4>
-                    </div>
+                     <div class='pull-left col-xs-3 col-md-6'><h4 class='event-name'><%- title %></h4></div>
+                     <div class='col-xs-9 col-md-6 text-right'>
+                        <div class='col-xs-12 col-md-12 event-start-date-formatted'></div>
+                        <div class='col-xs-12 col-md-12 event-end-date-formatted'></div>
+                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="text-center col-xs-8 col-md-7 col-md-offset-2 contact-input-container">
+                 <div class='row'>
+                    <div class='pull-left event-description col-xs-12 col-md-12'></div>
+                    <div class='pull-left event-where col-md-12'></div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row text-center">
+                    <h4>Who is invited?</h4>
+                </div>
+                <div class="zero-margin">
+                    <div class="text-center contact-input-container col-md-10 col-xs-10">
                         <input type="text" class="contact-input form-control"
-                            <%  if( features.indexOf('voice') != -1 )  { %>
-                                data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
-                            <% } else { %>
-                                data-validation='required,email' placeholder='Email Address'
-                            <% } %>>
+                        <%  if( features.indexOf('voice') != -1 )  { %>
+                        data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
+                        <% } else { %>
+                        data-validation='required,email' placeholder='Email Address'
+                        <% } %>>
                     </div>
-                    <div class="col-xs-3 col-md-1">
+                    <div class="col-xs-3 col-md-2 no-padding col-xs-2">
                         <button type="button" class="btn new-contact-button form-control">+</button>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="contact-table text-center col-xs-12 col-md-8 col-md-offset-2">
-
-                    </div>
+                <div class="zero-margin contact-table-container">
+                    <div class="contact-table text-center"></div>
                 </div>
             </div>
-
-            <div class="row menu-container menu-down  desktop tablet">
-                <ul class="menu">
-                    <li>
-                        <a href="" data-panel="third"><i class="fa fa-angle-down fa-5x"></i></a>
-                    </li>
-                </ul>
+        </div>
+        <div class='row send-container col-xs-offset-0 col-xs-12 col-md-8 col-md-offset-2'>
+            <div class="facebook_share pull-right">
+                <div>Facebook Share</div>
+                <div><input type="checkbox"
+                   data-toggle="toggle"
+                   id="bt_toggle"
+                   class="share_to_facebook"
+                   data-style="android"
+                   data-on="ON" data-off="OFF"
+                   data-onstyle="info"
+                   data-onstyle="success" data-offstyle="danger" />
+                </div>
             </div>
-        </section>
-
-        <section data-panel="third" class="container invite fourth">
-            <div class="row text-center invite-content">
-                <div id="reportXXX"></div>
+            <div class="">
+                <button type="button" class="btn form-control btn-success send">Send</button>
             </div>
 
-
-        </section>
+        </div>
+    </section>
 </div>
 
 
-<!-- Footer -->
-<div class="section-container footer desktop navbar-fixed-bottom">
-<div class="footer-below">
-    <div class="container">
-      <div class="row">
-          <div class="col-lg-12">
-              Miami, FL<br/>
-              Copyright 2014 &copy; iMeet Inc. All rights reserved.
-          </div>
-      </div>
-    </div>
-</div>
-</div>
+<!--&lt;!&ndash; Footer &ndash;&gt;-->
+<!--<div class="section-container footer desktop navbar-fixed-bottom">-->
+<!--<div class="footer-below">-->
+    <!--<div class="container">-->
+      <!--<div class="row">-->
+          <!--<div class="col-lg-12">-->
+              <!--Miami, FL<br/>-->
+              <!--Copyright 2014 &copy; iMeet Inc. All rights reserved.-->
+          <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--</div>-->

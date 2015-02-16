@@ -91,6 +91,10 @@ class User(User):
         return result
 
     def fullname(self):
+        if not self.name:
+            return self.last_name
+        if not self.last_name:
+            return self.name
         return self.name + " " + self.last_name
 
 class LogVisit(ndb.Model):

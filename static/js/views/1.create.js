@@ -9,33 +9,9 @@ InviteModel = Backbone.Model.extend({
         'where': '',
         'contacts': new ContactList(),
         'all_contacts': new ContactList(),
-        'all_groups': new ContactList()
+        'all_groups': new ContactList(),
     }
 });
-
-var inviteBindings = {
-    '.event-name': 'title',
-    '.event-start-date': 'start_date',
-    '.event-start-time': 'start_time',
-    '.event-end-date': 'end_date',
-    '.event-end-time': 'end_time',
-    '.event-description': 'description',
-    '.event-where': 'where',
-
-    '.event-start-date-formatted': {
-        observe: ['start_date','start_time'],
-        onGet: function (values) {
-            //if(Date.parse(values[0] + ' ' + values[1]))
-            return 'From: ' + values[0] + ' ' + values[1];
-        }
-    },
-    '.event-end-date-formatted': {
-        observe: ['end_date','end_time'],
-        onGet: function (values) {
-            return 'To: ' + values[0] + ' ' +  values[1];
-        }
-    },
-};
 
 CreateContactView = Backbone.View.extend({
     //Will have to do it
@@ -45,18 +21,37 @@ ReadContactView = Backbone.View.extend({
 });
 
 CreateView = SimpleView.extend({
-    el: '#header-container',
-    new_contact_string: "\
-            <div id='{2}'  class='contact-row col-md-12' data-contact='{0};{1}'>\
-                <div class='col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0'> {0}</div>\
-                <div class='col-xs-8 col-xs-offset-2 col-md-3 col-md-offset-0'> {1}</div>\
-                <div class='col-xs-8 col-xs-offset-2 col-md-1 col-md-offset-0'> \
-                    <button type='button' class='btn btn-danger remove-contact form-control' data-rowid='{2}'>-</button>              \
-                </div> \
-            </div>",
-    reportView: null,
+    el: '#view-container',
+    bindings: {
+        '.event-name': 'title',
+        '.event-name-input': 'title',
+        '.event-start-date': 'start_date',
+        '.event-start-time': 'start_time',
+        '.event-end-date': 'end_date',
+        '.event-end-time': 'end_time',
+        '.event-description': 'description',
+        '.event-description-input': 'description',
+        '.event-where': 'where',
+        '.event-where-input': 'where',
+
+        '.event-start-date-formatted': {
+            observe: ['start_date', 'start_time'],
+            onGet: function (values) {
+                //if(Date.parse(values[0] + ' ' + values[1]))
+                return 'From: ' + values[0] + ' ' + values[1];
+            }
+        },
+        '.event-end-date-formatted': {
+            observe: ['end_date', 'end_time'],
+            onGet: function (values) {
+                return 'To: ' + values[0] + ' ' + values[1];
+            }
+        }
+    },
+
     initialize: function(options){
         this.options = options || {};
+        this.model = new InviteModel();
     },
     events: {
        'click .new-contact' : 'newContact',
@@ -75,34 +70,26 @@ CreateView = SimpleView.extend({
 
     render: function(options) {
        this.hidePanels();
+        if(options.title != null)
+            this.model.set('title', options.title);
 
-        this.bindings = inviteBindings;
-        this.$el.html(this.template());
-
-        this.$where = this.$el.find('.event-where');
-        this.$table = this.$el.find('.contact-table');
-        this.$btSend = this.$el.find('.send');
-        this.$newContact = this.$el.find('.contact-input');
-
-        this.$btSend = this.$el.find('.send');
         this.i = 0;
 
-        this.model = new InviteModel({});
-
-        this.listenTo(this.model.attributes.contacts, 'add', this.newContact);
-        this.listenTo(this.model.attributes.contacts, 'remove', this.removeContact_DOM);
+        this.listenTo(this.model.get('contacts'), 'add', this.newContact);
+        this.listenTo(this.model.get('contacts'), 'remove', this.removeContact_DOM);
 
         if(options.id != null)
             this.createFromInvite(options.id);
         else{
-            this.model.attributes.title = options.title;
 
-            this.reportView = new ReportView({model:this.model, el: '#reportXXX'});
-            this.reportView.render();
-            this.stickit();
         }
 
+        this.$el.html(this.template(this.model.toJSON()));
+        this.$newContact = this.$el.find('.contact-input');
+
         this.plugins();
+        this.stickit();
+
         return this;
     },
 
@@ -119,20 +106,15 @@ CreateView = SimpleView.extend({
                 that.model.set('start_date', moment(data.start).format('L'));
                 that.model.set('start_time', moment(data.start).format('LT'));
 
-
                 if(data.end){
                     that.model.set('end_date', moment(data.end).format('L'));
                     that.model.set('end_time', moment(data.end).format('LT'));
                 }
 
-                that.reportView = new ReportView({model:that.model, el: '#reportXXX'});
-                that.reportView.render();
-
                 data.contacts.forEach(function(contact){
                     that.model.attributes.contacts.add(new Contact(contact));
                 });
 
-                that.stickit();
             },
             error: function(data) {
                 alert_notification([{
@@ -211,12 +193,10 @@ CreateView = SimpleView.extend({
 
     //start-AddContact
     newContact: function(contactModel){
+        if(this.$table == null)
+            this.$table = this.$el.find('.contact-table');
         this.$table.prepend(
-            this.new_contact_string.format(
-                contactModel.get('name'),
-                contactModel.get('email') + " " +  contactModel.get('phone'),
-                contactModel.get('unique_id')
-            )
+            JST['contact-item-invite-create.html'](contactModel.toJSON())
         );
 
         return false;
@@ -229,6 +209,8 @@ CreateView = SimpleView.extend({
         this.model.attributes.contacts.removeBy(dataId);
     },
     removeContact_DOM: function (contact) {
+        if(this.$table == null)
+            this.$table = this.$el.find('.contact-table');
         this.$table.find('#' + contact.attributes.unique_id).remove();
     },
     //end-RemoveContact
@@ -456,9 +438,10 @@ CreateView = SimpleView.extend({
         var that = this;
         if(typeof google === 'undefined')
             return;
+        this.$where = this.$el.find('.event-where-input');
 
         autocomplete = new google.maps.places.Autocomplete(
-            /** @type {HTMLInputElement} */(this.$where[0]),
+            /** @type {HTMLInputElement} */(that.$where[0]),
             { types: ['geocode'] }
         );
 
