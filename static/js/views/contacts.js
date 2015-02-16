@@ -107,6 +107,8 @@ ContactsNewView = SimpleView.extend({
 
     render: function(options) {
         $('#contact-list').hide();
+        console.log(options);
+        this.contactList = options.contactList;
 
         var template = this.template({});
         this.$el.html(template);
@@ -142,10 +144,9 @@ ContactsNewView = SimpleView.extend({
                     message: 'Contact created!'
                 }]);
 
-                that.$el.html("");
 
                 contact.set("unique_id", unique_id);
-                contactList.create(contact);
+                that.contactList.add(contact);
                 Backbone.history.navigate("contacts", true);
             },
             error: function(data) {

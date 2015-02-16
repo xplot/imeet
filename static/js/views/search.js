@@ -1,10 +1,10 @@
 SearchView = SimpleView.extend({
     template: JST['search.html'],
     invite_string: "\
-            <div class='row' style='margin-top: 20px'> \
-                <div class='col-xs-10 col-xs-offset-1 col-md-3 col-md-offset-1'>  <a href='#' class='navigate' data-action='modal' data-where='view/{0}'>{1}</a> </div> \
-                <div class='col-xs-6 col-md-2 desktop tablet'>  {2} </div> \
-                <div class='col-xs-6 col-xs-offset-2 col-md-2'> <button type='button' class='navigate btn btn-info form-control' data-where='new/from/{0}'>Duplicate</button></div> \
+            <div class='zero-margin' style='margin-top: 20px'> \
+                <div class='col-xs-8 col-xs-offset-0 col-md-8 col-sm-6 col-md-offset-0'>  <a href='#' class='navigate' data-action='modal' data-where='view/{0}'>{1}</a> </div> \
+                <div class='col-md-2 col-sm-4 desktop tablet'>  {2} </div> \
+                <div class='col-xs-4 col-xs-offset-0 col-sm-2  col-md-2'> <button type='button' class='navigate btn btn-info form-control' data-where='new/from/{0}'>Copy</button></div> \
             </div>\
             <div class='small-margin-top'> </div> \
     ",

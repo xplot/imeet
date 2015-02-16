@@ -38,13 +38,19 @@
     }
   }
 
+  .invite{
+    position: absolute;
+  }
+
   .invite-create{
     .first{
+      top:0%;
       background-color: @panel1;
       padding-left: 15px;
       padding-right: 15px;
     }
     .second{
+      top:100%;
       background-color: @panel2;
     }
     .third{
@@ -95,7 +101,7 @@
           height: 90%;
 
           .panel-heading{
-            border-bottom: 1px solid @nav-bg-color !important;
+            border-bottom: 1px solid @off-white !important;
           }
           .panel-body{
             padding: 0px;
@@ -109,7 +115,7 @@
           bottom: 10px;
           .facebook_share {
             display: inline-block;
-            padding: 10px;
+            padding-bottom: 10px;
             div {
               display: table-cell;
               float: none;
@@ -244,13 +250,33 @@
 
   .invite-view{
     width: 100%;
-    top:50px;
+    top:80px;
     bottom: 0px;
     position: absolute;
     overflow-y: auto;
-    padding: 5%;
+    overflow-x: hidden;
 
-    .invite-content{
+    .panel{
+
+        box-shadow:none;
+        width: 100%;
+        position: absolute;
+        height: 90%;
+
+        .panel-heading{
+          width: 100%;
+          float: left;
+          border-bottom: 1px solid @off-white !important;
+        }
+        .panel-body{
+          padding: 0px;
+
+          width: 100%;
+          float: left;
+        }
+    }
+
+    .invite-view-content{
 
       width: 100%;
 
@@ -554,3 +580,6 @@
 }
 
 
+.search-result{
+  padding: 15px;
+}

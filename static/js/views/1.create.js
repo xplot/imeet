@@ -164,6 +164,8 @@ CreateView = SimpleView.extend({
             this.model.attributes.contacts.add(new Contact(contact));
         if(group != null)
             this.addContactsFromGroup(group.unique_id);
+
+        this.$newContact.focus();
     },
 
     addContactsFromGroup: function(group_id){

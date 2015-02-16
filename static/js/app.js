@@ -125,7 +125,7 @@ function init_app() {
             contacts_view.render({contactList: contactList, groupList: groupList});
         },
         contacts_new: function(){
-            contactsNew_view.render();
+            contactsNew_view.render({contactList:contactList});
         }
     });
 
