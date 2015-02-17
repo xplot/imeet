@@ -3,8 +3,10 @@
 <div class="snap-panel invite-create">
     <section data-panel="first" class="invite first">
         <div class="zero-margin text-center invite-content ">
-            <div class="">
-                <h4>Event</h4>
+            <div class="zero-margin">
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                    <h4>Event</h4>
+                </div>
             </div>
             <div class="">
 
@@ -43,7 +45,7 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-2 text-center label-text">
-                    To
+                    <h4>To</h4>
                 </div>
                 <div class="col-xs-12 col-md-3">
                     <div class="date-group">
@@ -53,18 +55,16 @@
                 </div>
             </div>
             <div class="zero-margin desktop tablet small-margin-top">
-                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <div class="col-xs-12 col-md-8 col-md-offset-2 ">
                   <textarea class="form-control event-description-input" rows="6"></textarea>
                 </div>
             </div>
 
         </div>
-        <div class="zero-margin  menu-container menu-down">
-            <ul class="menu">
-                <li>
-                    <a href="" data-panel="second"><i class="fa fa-angle-down fa-5x"></i></a>
-                </li>
-            </ul>
+        <div class="zero-margin small-margin-top">
+            <div class="col-xs-12 col-md-8 col-md-offset-2 menu text-center">
+                <a href="" class="" data-panel="second"><i class="fa fa-angle-down fa-5x"></i></a>
+            </div>
         </div>
     </section>
 
@@ -79,7 +79,7 @@
                      </div>
                 </div>
                  <div class='row'>
-                    <div class='pull-left event-where col-md-12'></div>
+                    <div class='pull-left event-where col-md-12'></div> 
                 </div>
             </div>
             <div class="panel-body">
@@ -87,7 +87,7 @@
                     <h4>Who is invited?</h4>
                 </div>
                 <div class="zero-margin">
-                    <div class="text-center contact-input-container col-md-10 col-xs-10">
+                    <div class="text-center contact-input-container col-md-10 col-xs-10 no-padding">
                         <input type="text" class="contact-input form-control"
                         <%  if( features.indexOf('voice') != -1 )  { %>
                         data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
