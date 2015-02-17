@@ -60,27 +60,6 @@
       background-color: @panel4;
     }
 
-    .menu-down{
-      bottom: 1%;
-    }
-
-    .menu-container {
-      position: absolute;
-      text-align: center;
-      width: 100%;
-      .menu {
-        padding: 0;
-        margin:0;
-        list-style: none;
-        z-index: 1001;
-      }
-
-      .send{
-        width: 20%;
-        bottom: 20% !important;
-      }
-    }
-
     .timepicker{
       .btn{
         background-color: transparent !important;
@@ -90,6 +69,39 @@
     }
 
     .invite {
+      /*From here below these are generalizations for the invite screen with media queries*/
+      h1, h2, h3, h4, h5, h6 {
+        text-transform: uppercase;
+        @media(max-width:768px) {
+            font-size: 80% !important;
+          }
+      }
+      @media(max-width:768px) {
+        .row{
+          height: 40px;
+        }
+        .zero-margin{
+          height: 40px;
+        }
+      }
+
+      input[type='text'],
+      input[type='password'],
+      input[type='int'],
+      textarea
+      {
+        @media(max-width:768px) {
+          height: 30px !important;
+        }
+      }
+
+      .btn{
+         @media(max-width:768px) {
+            height: 30px;
+            padding: 5px;
+         }
+      }
+
       @media(max-width:768px) {
         .invite {
           font-size: 80%;
@@ -102,6 +114,10 @@
 
           .panel-heading{
             border-bottom: 1px solid @off-white !important;
+            @media(max-width:768px) {
+              padding: 1px 2px;
+
+            }
           }
           .panel-body{
             padding: 0px;
@@ -112,7 +128,11 @@
 
       .send-container {
           position: absolute;
-          bottom: 10px;
+          bottom: 80px;
+          @media(max-width:768px) {
+            bottom: 60px;
+
+          }
           .facebook_share {
             display: inline-block;
             padding-bottom: 10px;
@@ -247,13 +267,22 @@
             outline: none;
           }
         }
+        .event-start-date-formatted,
+        .event-end-date-formatted,
+        .event-where{
+            @media(max-width:768px) {
+              font-size: 80%;
+            }
+        }
 
 
         .contact-table-container {
           height: 60%;
           width: 100%;
           overflow-y: auto;
-
+          @media(max-width:768px) {
+            height: 40%;
+          }
 
           .contact-table {
             height: 100%;
@@ -270,6 +299,7 @@
             margin-top: 10px;
             .btn{
               padding: 4px 20px;
+              margin-top: 0px;
             }
           }
         }
@@ -482,24 +512,19 @@
     #view-container{
       overflow-x: hidden;
       .snap-panel{
-        top:10%;
+
         height: 85%;
       }
 
-
-
-      .menu-down{
-        top:70%;
+      .menu{
+        @media(max-width:768px) {
+          .fa-5x {
+            font-size: 2em !important;
+          }
+        }
 
         .fa-5x{
           font-size: 3em !important;
-        }
-      }
-
-      .menu-container{
-
-        .send{
-          width: 80%;
         }
       }
     }
@@ -554,10 +579,7 @@
 
 }
 
-.zero-margin{
-  margin-left: 0px;
-  margin-right: 0px;
-}
+
 
 .label_title{
     float:left;
