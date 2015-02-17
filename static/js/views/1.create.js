@@ -311,6 +311,10 @@ CreateView = SimpleView.extend({
     plugins: function(){
         $('#bt_toggle').bootstrapToggle();
 
+        //Contact Table Scrolling Patch
+        $('.contact-table-container').on('mousewheel', this.scrollTopPatch);
+
+
          //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datetimepicker({
             pickTime: false,
@@ -394,7 +398,7 @@ CreateView = SimpleView.extend({
                 displayKey: 'name',
                 source: substringMatcher(contacts_and_groups.contacts),
                 templates: {
-                    header: '<h5>Contacts</h5>',
+                    header: '<h5 class="typeahead-contact-header">Contacts</h5>',
                     suggestion: JST['contact_item_typeahead.html']
                 }
 
@@ -405,7 +409,7 @@ CreateView = SimpleView.extend({
                 displayKey: 'name',
                 source: substringGroupMatcher(contacts_and_groups.groups),
                 templates: {
-                    header: '<h5>Groups</h5>',
+                    header: '<h5 class="typeahead-group-header">Groups</h5>',
                     suggestion: _.template('<%- name %>')
                 }
 
@@ -471,5 +475,16 @@ CreateView = SimpleView.extend({
           autocomplete.setBounds(circle.getBounds());
         });
       }
-    }
+    },
+
+    scrollTopPatch: function(ev){
+        if (ev.originalEvent.wheelDelta >= 0) {
+            var scrollTop = $('.contact-table-container').scrollTop();
+            if(scrollTop == 0){
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+
+        }
+    },
 });
