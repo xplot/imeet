@@ -84,8 +84,10 @@
 
     </div>
 
-     <div class="block block2">
+     <div class="block block2 white-pattern">
         <div class="center-block">
+           
+            <div class="offer-title">Notify your friends or colleagues through every possible way</div>
             <div id="bx-pager">
               <a data-slide-index="0" href=""><i class="fa fa-circle"></i></a>
               <a data-slide-index="1" href=""><i class="fa fa-circle"></i></a>
@@ -94,7 +96,6 @@
             <ul class="home-slider">
               <li>
                   <div class="item-offer">
-                      <div class="offer-title">Notify your friends or colleagues through every possible way</div>
                       <div class="offer-group">
                           <div class="offer-icon">
                                <i class="fa fa-bubble"></i>
@@ -111,7 +112,6 @@
               </li>
               <li>
                   <div class="item-offer">
-                      <div class="offer-title">Notify your friends or colleagues through every possible way</div>
                       <div class="offer-group">
                           <div class="offer-icon">
                                <i class="fa fa-phone"></i>
@@ -128,7 +128,6 @@
               </li>
               <li>
                   <div class="item-offer">
-                      <div class="offer-title">Notify your friends or colleagues through every possible way</div>
                       <div class="offer-group">
                           <div class="offer-icon">
                                <i class="fa fa-email"></i>
@@ -149,13 +148,15 @@
     </div>
 
      <div class="block block3 body-background-2">
-        <div class="container">
-            <h1 class="main-h2">iMEET</h1>
-            <h1 class="description-h2">Makes it easier to organize your events with a group of people.</h1>
-        </div>
+        <div class="center-block">
+          <div class="container">
+              <h1 class="main-h2">iMEET</h1>
+              <h1 class="description-h2">Makes it easier to organize your events with a group of people.</h1>
+          </div>
+       </div>
     </div>
 
-    <div class="block block4">
+    <div class="block block4 white-pattern">
         <div class="images">
             <div class="img"><img class="round" src="/img/face1.jpg"></div>
             <div class="img"><img src="/img/face2.jpg"></div>
@@ -169,9 +170,11 @@
     </div>
 
     <div class="block block5 body-background-4">
-        <div class="container">
+        <div class="center-block">
+          <div class="container">
 
-        </div>
+          </div>
+      </div>
     </div>
 
     <div class="block block6">
@@ -192,8 +195,12 @@
     <script>
         function block(el, ratio) {
             var h = $(window).height();
-            if(ratio != null)
-                h = h*ratio;
+            if (ratio === 'half')
+              h = h/2;
+            else if (ratio == 'quarter')
+              h = h/3;
+            else
+                h = h;
 
             $(el).css('height',h);
         }
@@ -201,9 +208,9 @@
         $(function() {
 
             block('.body-background-1');
+            block('.body-background-2', 'half');
             $('.home-slider').bxSlider({
                 controls: false,
-                mode: 'fade',
                 captions: true,
                 pagerCustom: '#bx-pager',
                 infiniteLoop: true,
@@ -219,7 +226,7 @@
             });
 
             $(window).resize(function() {
-                block('.block');
+                block('.body-background-1');
             });
         });
 
