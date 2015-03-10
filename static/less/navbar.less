@@ -32,7 +32,7 @@
 .navbar {
     font-weight: 100 !important;
 
-	font-size: 150%;
+	font-size: 120%;
 	a:focus {
 		outline: none;
 	}
@@ -40,8 +40,7 @@
     .navbar-header{
       .beta {
           position: absolute;
-          left:20px;
-	      margin: -14px -20px;
+          left:27px;
           font-weight: bold;
           color: @body-frame;
           font-size: 10px;
@@ -60,19 +59,29 @@
 	.navbar-nav {
 		letter-spacing: 1px;
 		li {
+            a {
+              .animate(0.3s);
+            }
 			a:focus {
-				outline: none;
+		      outline: none;
+              background: #0F3E64;
 			}
             .dropdown-menu{
                 background-color: @nav-color;
                 border:none !important;
                 border-radius: 0px;
+                left: 0;
                 li{
                   a {
                     color: #ffffff !important;
+                    font-size: 110%;
+                    font-weight: 100;
+                    padding: 6px 20px;
+                    .animate(0.3s);
                   }
                   a:hover {
                       color: #ffffff !important;
+                      background: #0F3E64; 
                   }
                 }
 
@@ -90,6 +99,10 @@
                 border-color: transparent;
               }
 		}
+      
+        li.open > a {
+          background-color: #0F3E64 !important;
+        }
 	}
 }
 
