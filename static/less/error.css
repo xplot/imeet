@@ -2,6 +2,7 @@
 html,
 body {
   height: 100%;
+  overflow-x: hidden;
   font-weight: 400 !important;
   font-family: 'Roboto', sans-serif !important;
   font-size: 15px;
@@ -300,20 +301,19 @@ h5,
 h6 {
   font-weight: normal;
 }
-/*start - All*
+/*start - All*/
 .body-background-1 {
   background: url(/img/bg-2.jpg) right top;
   background-size: cover;
   background-attachment: fixed;
 }
-*/
 .body-background-2 {
-  background: url(/img/bg-8.jpg) right top;
+  background: url(/img/bg-1.jpg) right top;
   background-size: cover;
   background-attachment: fixed;
 }
 .body-background-4 {
-  background: url(/img/bg-6.jpg) right top;
+  background: url(/img/bg-4.jpg) right top;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -323,62 +323,14 @@ h6 {
   width: 100%;
 }
 .block .center-block {
-  vertical-align: middle;
   display: table-cell;
+  vertical-align: middle;
 }
 .white-pattern {
   background-image: url(../img/bg-white-pattern.jpg);
 }
 /*end - All*/
 /*start - Block1*/
-.block1 .home-imgs {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  height: 700px;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-.block1 .home-imgs li {
-  opacity: 0;
-  visibility: hidden;
-  position: fixed;
-  z-index: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  -ms-background-size: cover;
-  background-size: cover;
-  -webkit-transition: all 1s linear;
-  -moz-transition: all 1s linear;
-  -ms-transition: all 1s linear;
-  -o-transition: all 1s linear;
-  transition: all 1s linear;
-}
-.block1 .home-imgs li.home-imgs-1 {
-  background-image: url(/img/bg-10.jpg);
-}
-.block1 .home-imgs li.home-imgs-2 {
-  background-image: url(/img/bg-11.jpg);
-}
-.block1 .home-imgs li.home-imgs-3 {
-  background-image: url(/img/bg-5.jpg);
-}
-.block1 .home-imgs .active {
-  z-index: 1;
-  opacity: 1;
-  visibility: visible;
-}
 .block1 .center-block .main-h1 {
   background-color: rgba(1, 87, 155, 0.7);
   color: #eeeeee;
@@ -432,7 +384,7 @@ h6 {
 /*end - Block1*/
 /*start - Block2*/
 .block2 {
-  padding: 100px 20px;
+  padding: 180px 20px;
   display: block;
 }
 .block2 .center-block {
@@ -516,8 +468,9 @@ h6 {
 /*end - Block2*/
 /*start - Block3*/
 .block3 .container {
-  color: #000;
+  color: #eeeeee;
   font-size: 80px;
+  text-shadow: 0 0 5px #000;
 }
 @media (max-width: 1024px) {
   .block3 .container {
