@@ -66,15 +66,19 @@ ContactsView = SimpleView.extend({
                     url: "/api/contacts/csv",
                     type: "POST",
                     contentType: "application/json",
-                    data: '{"file_name": "{0}", "file": "{1}"}'.format(theFile.name, e.target.result),
+                    data: '{"user_id" : "{0}", "file_name": "{1}", "file": "{2}"}'.format(currentUser.id,
+                                                                                          theFile.name,
+                                                                                          e.target.result),
                     cache: false,
                     success: function() {
-                        alert_notification([{
+                        /*alert_notification([{
                             alertType:'success',
                             message: 'Contact created!'
-                        }]);
+                        }]);*/
 
-                        console.info("file uploaded correctly.")
+                        location.reload();
+
+                        console.info("file uploaded correctly.");
                     },
                     error: function(data) {
                         alert_notification([{
@@ -240,7 +244,7 @@ ContactItemView = SimpleView.extend({
         var unique_id = this.model.get('unique_id');
 
         $.ajax({
-            url: api.url + "api/contacts/" + unique_id + "/delete",
+            url: api.url + "api/contacts/" + currentUser.id + "/delete/" + unique_id,
             type: "DELETE",
             contentType: "application/json",
             cache: false,

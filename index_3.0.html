@@ -22,8 +22,6 @@
     <link href="/font-awesome-4.1.0/css/custom-font.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:100,200,700' rel='stylesheet' type='text/css'>
 
-    <script src="/js/external.min.js"></script>
-
 </head>
 
 <body id="page-top" class="index">
@@ -75,17 +73,24 @@
         </div>
     </nav>
 
-    <div class="block block1 body-background-1">
-
-            <div class="center-block">
-                <h1 class="main-h1">Make your special event the one to remember...</h1>
-                <a href="/new" class="btn btn-home main-btn imeet-btn">Create Event</a>
-            </div>
+    <div class="block block1 body-background-1 scrollme">
+    
+      <ul class="home-imgs clearfix">
+          <li class="home-imgs-1 active"></li>
+          <li class="home-imgs-2"></li>
+          <li class="home-imgs-3"></li>
+      </ul>
+      <div class="center-block">
+          <h1 class="main-h1 animateme" data-when="span" data-from="0" data-to="1" data-easing="linear" data-opacity="0" data-scale="0.1" data-translatey ="-800" >Make your special event the one to remember...</h1>
+          <a href="/new" class="btn btn-home main-btn imeet-btn animateme" data-when="span" data-from="0" data-to="1" data-easing="linear" data-translatey ="400" >Create Event</a>
+      </div>
 
     </div>
 
-     <div class="block block2">
+     <div class="block block2 white-pattern">
         <div class="center-block">
+           
+            <div class="offer-title">Notify your friends or colleagues through every possible way</div>
             <div id="bx-pager">
               <a data-slide-index="0" href=""><i class="fa fa-circle"></i></a>
               <a data-slide-index="1" href=""><i class="fa fa-circle"></i></a>
@@ -94,7 +99,6 @@
             <ul class="home-slider">
               <li>
                   <div class="item-offer">
-                      <div class="offer-title">Notify your friends or colleagues through every possible way</div>
                       <div class="offer-group">
                           <div class="offer-icon">
                                <i class="fa fa-bubble"></i>
@@ -111,7 +115,6 @@
               </li>
               <li>
                   <div class="item-offer">
-                      <div class="offer-title">Notify your friends or colleagues through every possible way</div>
                       <div class="offer-group">
                           <div class="offer-icon">
                                <i class="fa fa-phone"></i>
@@ -128,7 +131,6 @@
               </li>
               <li>
                   <div class="item-offer">
-                      <div class="offer-title">Notify your friends or colleagues through every possible way</div>
                       <div class="offer-group">
                           <div class="offer-icon">
                                <i class="fa fa-email"></i>
@@ -149,13 +151,15 @@
     </div>
 
      <div class="block block3 body-background-2">
-        <div class="container">
-            <h1 class="main-h2">iMEET</h1>
-            <h1 class="description-h2">Makes it easier to organize your events with a group of people.</h1>
-        </div>
+        <div class="center-block">
+          <div class="container">
+              <h1 class="main-h2">iMEET</h1>
+              <h1 class="description-h2">Makes it easier to organize your events with a group of people.</h1>
+          </div>
+       </div>
     </div>
 
-    <div class="block block4">
+    <div class="block block4 white-pattern">
         <div class="images">
             <div class="img"><img class="round" src="/img/face1.jpg"></div>
             <div class="img"><img src="/img/face2.jpg"></div>
@@ -169,12 +173,14 @@
     </div>
 
     <div class="block block5 body-background-4">
-        <div class="container">
+        <div class="center-block">
+          <div class="container">
 
-        </div>
+          </div>
+      </div>
     </div>
 
-    <div class="block block6">
+    <div class="block block6 white-pattern">
         <div class="center-block">
             <h1 class="footer-h1">iMEET</h1>
             <h2 class="footer-h2">Get started for free</h2>
@@ -188,22 +194,28 @@
             <h2 class="footer-city">Miami, FL</h2>
         </div>
     </div>
-
+    <script src="/js/external.min.js"></script>
+    <script src="/js/external/jquery-scrollme.js"></script>
     <script>
         function block(el, ratio) {
             var h = $(window).height();
-            if(ratio != null)
-                h = h*ratio;
+            if (ratio === 'half')
+              h = h/2;
+            else if (ratio == 'quarter')
+              h = h/3;
+            else
+                h = h;
 
             $(el).css('height',h);
         }
 
         $(function() {
 
-            block('.body-background-1');
+            block('.body-background-1', 'full');
+            block('.home-imgs', 'full');
+            block('.body-background-2', 'half');
             $('.home-slider').bxSlider({
                 controls: false,
-                mode: 'fade',
                 captions: true,
                 pagerCustom: '#bx-pager',
                 infiniteLoop: true,
@@ -219,8 +231,30 @@
             });
 
             $(window).resize(function() {
-                block('.block');
+                block('.body-background-1', 'full');
+                block('.home-imgs', 'full');
+                block('.body-background-2', 'half');
             });
+          
+            /* Homepage Fade Images */
+            var $slider = $(".home-imgs"),
+                sliderIndex = 2,
+                sliderActiveIndex = 0;
+      
+            function kuSlider () {
+                sliderActive = $slider.children(".active");
+                sliderActiveIndex = sliderActive.index();
+                if ( sliderIndex <= sliderActiveIndex ) {
+                    sliderActive.removeClass("active");
+                    $slider.children(":first").addClass("active");
+                } else {
+                    sliderActive.removeClass("active").next().addClass("active");
+                }
+            }     
+            setInterval(function(){
+              kuSlider();
+            }, 6000);
+          
         });
 
 
@@ -242,6 +276,10 @@
                     alert_notification(notifications);
             });
         {% endif %}
+        
+        
+        
+        $(".imeet-btn").attr("data-translatey", $(window).height() /2 - 100);  
 
     </script>
 
