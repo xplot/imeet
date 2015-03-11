@@ -321,6 +321,7 @@ h6 {
   display: table;
   text-align: center;
   width: 100%;
+  transform: translate(0, 0);
 }
 .block .center-block {
   vertical-align: middle;
