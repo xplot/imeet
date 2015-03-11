@@ -344,8 +344,6 @@ h6 {
   padding: 0;
 }
 .block1 .home-imgs li {
-  opacity: 0;
-  visibility: hidden;
   position: fixed;
   z-index: 0;
   top: 0;
@@ -359,25 +357,20 @@ h6 {
   -o-background-size: cover;
   -ms-background-size: cover;
   background-size: cover;
-  -webkit-transition: all 1s linear;
-  -moz-transition: all 1s linear;
-  -ms-transition: all 1s linear;
-  -o-transition: all 1s linear;
-  transition: all 1s linear;
 }
 .block1 .home-imgs li.home-imgs-1 {
   background-image: url(/img/bg-10.jpg);
 }
 .block1 .home-imgs li.home-imgs-2 {
   background-image: url(/img/bg-11.jpg);
+  display: none;
 }
 .block1 .home-imgs li.home-imgs-3 {
   background-image: url(/img/bg-5.jpg);
+  display: none;
 }
 .block1 .home-imgs .active {
   z-index: 1;
-  opacity: 1;
-  visibility: visible;
 }
 .block1 .center-block .main-h1 {
   background-color: rgba(1, 87, 155, 0.7);
