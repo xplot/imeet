@@ -2,7 +2,6 @@
 html,
 body {
   height: 100%;
-  overflow-x: hidden;
   font-weight: 400 !important;
   font-family: 'Roboto', sans-serif !important;
   font-size: 15px;
@@ -12,14 +11,6 @@ ul {
 }
 label {
   font-weight: normal;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  text-transform: uppercase;
 }
 a,
 input[type='text'],
@@ -217,7 +208,7 @@ p.small {
 /*Responsive CSS triangles. Resize the Result section to see the triangles in action.*/
 .navbar {
   font-weight: 100 !important;
-  font-size: 150%;
+  font-size: 120%;
 }
 .navbar a:focus {
   outline: none;
@@ -243,19 +234,37 @@ p.small {
 .navbar .navbar-nav {
   letter-spacing: 1px;
 }
+.navbar .navbar-nav li a {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
 .navbar .navbar-nav li a:focus {
   outline: none;
+  background: #0F3E64;
 }
 .navbar .navbar-nav li .dropdown-menu {
   background-color: #01579b;
   border: none !important;
   border-radius: 0px;
+  left: 0;
 }
 .navbar .navbar-nav li .dropdown-menu li a {
   color: #ffffff !important;
+  font-size: 110%;
+  font-weight: 100;
+  padding: 6px 20px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 .navbar .navbar-nav li .dropdown-menu li a:hover {
   color: #ffffff !important;
+  background: #0F3E64;
 }
 .navbar .navbar-nav li button {
   padding-top: 19.5px;
@@ -267,6 +276,9 @@ p.small {
 .navbar .navbar-nav li button:active {
   border: none;
   border-color: transparent;
+}
+.navbar .navbar-nav li.open > a {
+  background-color: #0F3E64 !important;
 }
 .navbar-default,
 .navbar-inverse {

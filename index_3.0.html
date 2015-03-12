@@ -22,8 +22,6 @@
     <link href="/font-awesome-4.1.0/css/custom-font.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:100,200,700' rel='stylesheet' type='text/css'>
 
-    <script src="/js/external.min.js"></script>
-
 </head>
 
 <body id="page-top" class="index">
@@ -75,12 +73,17 @@
         </div>
     </nav>
 
-    <div class="block block1 body-background-1">
-
-            <div class="center-block">
-                <h1 class="main-h1">Make your special event the one to remember...</h1>
-                <a href="/new" class="btn btn-home main-btn imeet-btn">Create Event</a>
-            </div>
+    <div class="block block1 body-background-1 scrollme">
+    
+      <ul class="home-imgs clearfix">
+          <li class="home-imgs-1 active"></li>
+          <li class="home-imgs-2"></li>
+          <li class="home-imgs-3"></li>
+      </ul>
+      <div class="center-block">
+          <h1 class="main-h1 animateme" data-when="span" data-from="0" data-to="1" data-easing="linear" data-opacity="0" data-scale="0.1" data-translatey ="-800" >Make your special event the one to remember...</h1>
+          <a href="/new" class="btn btn-home main-btn imeet-btn animateme" data-when="span" data-from="0" data-to="1" data-easing="linear" data-translatey ="400" >Create Event</a>
+      </div>
 
     </div>
 
@@ -177,7 +180,7 @@
       </div>
     </div>
 
-    <div class="block block6">
+    <div class="block block6 white-pattern">
         <div class="center-block">
             <h1 class="footer-h1">iMEET</h1>
             <h2 class="footer-h2">Get started for free</h2>
@@ -191,7 +194,8 @@
             <h2 class="footer-city">Miami, FL</h2>
         </div>
     </div>
-
+    <script src="/js/external.min.js"></script>
+    <script src="/js/external/jquery-scrollme.js"></script>
     <script>
         function block(el, ratio) {
             var h = $(window).height();
@@ -207,7 +211,8 @@
 
         $(function() {
 
-            block('.body-background-1');
+            block('.body-background-1', 'full');
+            block('.home-imgs', 'full');
             block('.body-background-2', 'half');
             $('.home-slider').bxSlider({
                 controls: false,
@@ -226,8 +231,30 @@
             });
 
             $(window).resize(function() {
-                block('.body-background-1');
+                block('.body-background-1', 'full');
+                block('.home-imgs', 'full');
+                block('.body-background-2', 'half');
             });
+          
+            /* Homepage Fade Images */
+            var $slider = $(".home-imgs"),
+                sliderIndex = 2,
+                sliderActiveIndex = 0;
+            
+            function kuSlider () {
+                sliderActive = $slider.children(".active");
+                sliderActiveIndex = sliderActive.index();
+                if ( sliderIndex <= sliderActiveIndex ) {
+                    sliderActive.removeClass("active").fadeOut(2000);
+                    $slider.children(":first").addClass("active").fadeIn(2000);
+                } else {
+                    sliderActive.removeClass("active").fadeOut(2000).next().addClass("active").fadeIn(2000);
+                }
+            }     
+            setInterval(function(){
+              kuSlider();
+            }, 6000);
+          
         });
 
 
@@ -249,6 +276,10 @@
                     alert_notification(notifications);
             });
         {% endif %}
+        
+        
+        
+        $(".imeet-btn").attr("data-translatey", $(window).height() /2 - 100);  
 
     </script>
 

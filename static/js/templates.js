@@ -126,6 +126,16 @@ __p += '<div class="form-horizontal contacts-form">\n  <div class="form-group">\
 return __p
 };
 
+this["JST"]["error.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>error pages</title>\n  <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->\n  <link href="/css/index.min.css" rel="stylesheet">\n\n  <!-- Custom Fonts -->\n  <link href="/font-awesome-4.1.0/css/custom-font.css" rel="stylesheet" type="text/css">\n  <link href=\'http://fonts.googleapis.com/css?family=Roboto:100,200,700\' rel=\'stylesheet\' type=\'text/css\'>\n</head>\n<body>\n  \n</body>\n</html>';
+
+}
+return __p
+};
+
 this["JST"]["group-item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
