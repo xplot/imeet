@@ -75,7 +75,13 @@ module.exports = function (grunt) {
 			options: {
                 compress:true,
                 beautify:false,
-		mangle: true
+		        mangle: true
+			},
+            header_js: {
+				src: [
+                    '../static/js/external/modernizr.min.js',
+                ],
+                dest: '../static/js/imeet_header.min.js'
 			},
             external: {
 				src: [
@@ -160,6 +166,7 @@ module.exports = function (grunt) {
                 files: ['../static/js/external/*.js'],
 				tasks: [
                     'uglify:external',
+                    'uglify:header_js',
                 ]
 			},
             application_scripts: {

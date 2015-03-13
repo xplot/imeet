@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 */
 .body-background-2 {
-  background: url(/img/bg-8.jpg) right top;
+  background: url(/img/bg-8.jpg) left center;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -30,7 +30,11 @@ h1, h2, h3, h4, h5, h6 {
   background-size: cover;
   background-attachment: fixed;
 }
-
+.touch {
+  .body-background-2, .body-background-4 {
+    background-attachment: inherit;
+  }
+}
 .block{
   display: table;
   text-align: center;
@@ -234,10 +238,6 @@ h1, h2, h3, h4, h5, h6 {
 
     color: #000;
     font-size: 80px;
-
-    @media(max-width:1024px) {
-      padding-top: 20%;
-    }
     .main-h2{
       font-size: 120%;
       @media(max-width:1024px) {
@@ -318,6 +318,9 @@ h1, h2, h3, h4, h5, h6 {
 		-o-filter: grayscale(0%); 
 		filter: grayscale(0%);
 	  }
+      @media(max-width:768px) {
+        padding: 0 2px;
+      }
     }
   }
 

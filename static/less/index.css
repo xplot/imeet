@@ -308,7 +308,7 @@ h6 {
 }
 */
 .body-background-2 {
-  background: url(/img/bg-8.jpg) right top;
+  background: url(/img/bg-8.jpg) left center;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -316,6 +316,10 @@ h6 {
   background: url(/img/bg-6.jpg) right top;
   background-size: cover;
   background-attachment: fixed;
+}
+.touch .body-background-2,
+.touch .body-background-4 {
+  background-attachment: inherit;
 }
 .block {
   display: table;
@@ -512,11 +516,6 @@ h6 {
   color: #000;
   font-size: 80px;
 }
-@media (max-width: 1024px) {
-  .block3 .container {
-    padding-top: 20%;
-  }
-}
 .block3 .container .main-h2 {
   font-size: 120%;
 }
@@ -608,6 +607,11 @@ h6 {
   -ms-filter: grayscale(0%);
   -o-filter: grayscale(0%);
   filter: grayscale(0%);
+}
+@media (max-width: 768px) {
+  .block4 .images .img {
+    padding: 0 2px;
+  }
 }
 /*end - Block4*/
 /*start - Block5*/
