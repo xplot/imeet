@@ -21,7 +21,8 @@
     <!-- Custom Fonts -->
     <link href="/font-awesome-4.1.0/css/custom-font.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:100,200,700' rel='stylesheet' type='text/css'>
-
+    
+    <script src="/js/imeet_header.min.js"></script>
 </head>
 
 <body id="page-top" class="index">
@@ -87,15 +88,15 @@
 
     </div>
 
-     <div class="block block2 white-pattern">
+     <section class="block block2 white-pattern">
         <div class="center-block">
            
-            <div class="offer-title">Notify your friends or colleagues through every possible way</div>
             <div id="bx-pager">
               <a data-slide-index="0" href=""><i class="fa fa-circle"></i></a>
               <a data-slide-index="1" href=""><i class="fa fa-circle"></i></a>
               <a data-slide-index="2" href=""><i class="fa fa-circle"></i></a>
             </div>
+            <div class="offer-title">Notify your friends or colleagues through every possible way</div>
             <ul class="home-slider">
               <li>
                   <div class="item-offer">
@@ -148,52 +149,90 @@
             </ul>
 
         </div>
-    </div>
+    </section>
 
-     <div class="block block3 body-background-2">
+     <aside class="block block3 body-background-2 scrollme">
         <div class="center-block">
-          <div class="container">
+          <div class="container animateme"
+            data-when="span"
+            data-from="1"
+            data-to="0"
+            data-easing="easeinout"
+            data-translatey ="200"
+            data-opacity="0">
               <h1 class="main-h2">iMEET</h1>
-              <h1 class="description-h2">Makes it easier to organize your events with a group of people.</h1>
+              <h2 class="description-h2">Makes it easier to organize your events with a group of people.</h2>
           </div>
        </div>
-    </div>
+    </aside>
 
-    <div class="block block4 white-pattern">
-        <div class="images">
-            <div class="img img1"><img class="round" src="/img/face1.jpg"></div>
-            <div class="img img2"><img src="/img/face2.jpg"></div>
-            <div class="img desktop tablet"><img src="/img/face3.jpg"></div>
-            <div class="img desktop tablet"><img src="/img/face4.jpg"></div>
+    <section class="block block4 white-pattern scrollme">
+        <div class="images clearfix">
+            <div class="img animateme"
+              data-when="span"
+              data-from="1"
+              data-to="0"
+              data-crop="true"
+              data-easing="linear"
+              data-scale ="1.2"
+              data-translatex ="-80"
+              data-opacity="0.5"><img src="/img/face1.jpg"></div>
+            <div class="img animateme"
+              data-when="span"
+              data-from="1"
+              data-to="0"
+              data-crop="false"
+              data-easing="linear"
+              data-scale ="1.2"
+              data-translatex ="-20"
+              data-opacity="0.5"><img src="/img/face2.jpg"></div>
+            <div class="img animateme"
+              data-when="span"
+              data-from="1"
+              data-to="0"
+              data-crop="true"
+              data-easing="linear"
+              data-scale ="1.2"
+              data-translatex ="20"
+              data-opacity="0.5"><img src="/img/face3.jpg"></div>
+            <div class="img animateme"
+              data-when="span"
+              data-from="1"
+              data-to="0"
+              data-crop="false"
+              data-easing="linear"
+              data-scale ="1.2"
+              data-translatex ="80"
+              data-opacity="0.5"><img src="/img/face4.jpg"></div>
         </div>
         <h1 class="main-h3">Share with friends, family and colleagues</h1>
         <h1 class="description">
             iMeet is smart and will enable you to use templates, process your recipients' RSVPs, keep track of your events and much more.
         </h1>
-    </div>
+    </section>
 
-    <div class="block block5 body-background-4">
+    <aside class="block block5 body-background-4">
         <div class="center-block">
           <div class="container">
 
           </div>
       </div>
-    </div>
+    </aside>
 
-    <div class="block block6 white-pattern">
+    <section class="block block6 white-pattern">
         <div class="center-block">
             <h1 class="footer-h1">iMEET</h1>
             <h2 class="footer-h2">Get started for free</h2>
             <a href="/new" class="btn btn-home footer-btn">Create Event</a>
         </div>
-    </div>
+    </section>
 
-    <div class="block block7 footer">
+    <section class="block block7 footer">
         <div class="center-block">
             <h1 class="footer-copyright">Copyright 2014 © iMeet Inc. All rights reserved.</h1>
             <h2 class="footer-city">Miami, FL</h2>
         </div>
-    </div>
+    </section>
     <script src="/js/external.min.js"></script>
     <script src="/js/external/jquery-scrollme.js"></script>
     <script>
