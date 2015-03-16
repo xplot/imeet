@@ -219,7 +219,7 @@ p.small {
   font-weight: bold;
   color: #01579b;
   font-size: 10px;
-  margin-top: -3px;
+  margin-top: -5px;
   margin-left: -100px;
   text-align: center;
   width: 190px;
@@ -230,6 +230,12 @@ p.small {
   /* Chrome, Safari, Opera */
   transform: rotate(-45deg);
   background-color: #ffffff;
+}
+@media (max-width: 768px) {
+  .navbar .navbar-header .beta {
+    left: 18px;
+    margin-top: -15px;
+  }
 }
 .navbar .navbar-nav {
   letter-spacing: 1px;

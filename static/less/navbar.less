@@ -44,7 +44,7 @@
           font-weight: bold;
           color: @body-frame;
           font-size: 10px;
-          margin-top:-3px;
+          margin-top:-5px;
           margin-left:-100px;
           text-align:center;
           width: 190px;
@@ -53,6 +53,10 @@
           -webkit-transform: rotate(-45deg); /* Chrome, Safari, Opera */
           transform: rotate(-45deg);
           background-color: @text-color;
+          @media (max-width: 768px) {
+            left: 18px;
+            margin-top: -15px;
+          }
       }
     }
 

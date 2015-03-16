@@ -128,7 +128,7 @@ h1, h2, h3, h4, h5, h6 {
       color: @off-white;
       background-color: @nav-bg-color;
       border-bottom: 4px solid @off-white;
-      .animate(0.6s);
+      .animate(0.6s); 
     }
   }
 }
@@ -147,11 +147,11 @@ h1, h2, h3, h4, h5, h6 {
     text-align: left;
   }
   .offer-title {
-    font-size: 28px;
+    font-size: 22px;
   }
 
   #bx-pager {
-    padding: 20px 0 0 30px;
+    padding: 20px 0 0 0;
     a {
       color: @nav-bg-color;
       i:before {
@@ -167,31 +167,35 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .bx-wrapper {
-    margin-top:3%;
     -webkit-box-shadow: none;
     box-shadow: none;
     border: none;
     background: transparent;
+    padding: 20px 0;
+    margin: 0;
 
     .home-slider {
-      margin: 0;
-      padding: 0;
+      margin: -20px 0 0 0;
+      padding: 10px 0;
       li {
         .item-offer {
-
           text-align: left;
+          padding: 20px 0;
 
           .offer-group {
             float: left;
             height: 100%;
-
+            padding: 10px 0;
             .offer-inner-group {
               float: left;
               width: 80%;
 
               .offer-type {
-                font-size: 50px;
+                font-size: 40px;
                 color: @nav-bg-color;
+                @media (max-width: 768px) {
+                  margin-top: 20px;
+                }
               }
 
               .offer-description {
@@ -207,19 +211,21 @@ h1, h2, h3, h4, h5, h6 {
               width: 20%;
 
               i {
-                color: @nav-bg-color;
+                color: #fff;
+                background-color: @nav-bg-color;
+                font-size: 85px;
+                border-radius: 50%;
+                padding: 20px 25px;
 
-                font-size: 120px;
-
-                @media (max-width: 1366px) {
-                  font-size: 160px;
-                }
                 @media (max-width: 1024px) {
-                  font-size: 120px;
+                  
                 }
                 @media (max-width: 768px) {
-                  display: none;
+                  font-size: 50px;
                 }
+              }
+              i:before{
+                vertical-align: -12px;
               }
 
             }
@@ -234,6 +240,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /*start - Block3*/
 .block3 {
+  overflow: hidden;
   .container{
 
     color: #000;
@@ -292,8 +299,6 @@ h1, h2, h3, h4, h5, h6 {
   .images{
     width: 100%;
 	max-width: 700px;
-    margin-bottom: 5%;
-	overflow: hidden;
     text-align: center;
     margin: auto;
 
