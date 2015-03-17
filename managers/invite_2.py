@@ -9,18 +9,18 @@ from google.appengine.ext import ndb
 from models.models import Invite, Contact, ContactInvite, Comment
 from boilerplate.models import User
 
+class InviteMapper(object):
+    def get_from_id(self, unique_id):
+        """Get the invite by id"""
+        invite = Invite.query(Invite.unique_id == unique_id).get()
+        if invite is None:
+            raise Exception('Invite not found with id: ' + unique_id)
+        return self._build(invite)
 
-class InviteManager(object):
-    invite_index = 'invite_index'
-
-    def __init__(self, invite=None, invite_dict=None, user=None):
-        self.user = user
-        self.invite_dict = invite_dict
-        self.invite = invite
-
-    def create(self):
+    @classmethod
+    def get_from_dict(cls, data_dict):
         """
-        Creates an invitation out of the supplied dictionary
+        Creates an InviteModel out of the supplied dictionary
         This is a valid data-format:
         {
             'contacts': [
@@ -44,47 +44,69 @@ class InviteManager(object):
         }
         """
         invite = Invite()
-        invite.unique_id = str(uuid.uuid4()).replace('-', '')
-        self.invite_dict['inviteId'] = invite.unique_id
-        invite.title = self.invite_dict['title']
-        invite.description = self.invite_dict.get('description', None)
-        invite.where = self.invite_dict.get('where', None)
+        invite.unique_id = data_dict.get('unique_id', None)
+        invite.title = data_dict.get('title', None)
+        invite.description = data_dict.get('description', None)
+        invite.where = data_dict.get('where', None)
+        invite.shared_on_facebook = self.sharing_options(invite_dict)
 
         #12/09/2014 12:00 AM
-        invite.start = datetime.datetime.strptime(self.invite_dict['start'], "%m/%d/%Y %H:%M %p")
-        if self.invite_dict.get('end', None):
-            invite.end = datetime.datetime.strptime(self.invite_dict['end'], "%m/%d/%Y %H:%M %p")
+        invite.start = datetime.datetime.strptime(data_dict['start'], "%m/%d/%Y %H:%M %p")
+        if start < datetime.datetime.now():
+                raise Exception("Start date cannot be in the past")
+        if data_dict.get('end', None):
+            end = datetime.datetime.strptime(data_dict['end'], "%m/%d/%Y %H:%M %p")
+            if end < start:
+                raise Exception("End date cannot be lower than Start Date")
+            invite.end = end
 
-        if self.user:
-            invite.user = self.user.key
+        return invite
 
-        invite.put()
-
-        db_contacts = []
-        db_invite_contacts = []
-        for x in self.invite_dict.get('contacts', []):
+    @classmethod
+    def get_contacts_list_from_dict(cls, contact_list):
+        result = []
+        for x in contact_list:
             contact = Contact()
-            contact.unique_id = str(uuid.uuid4()).replace('-', '')
-            x['contactId'] = contact.unique_id
-            contact.name = x['name']
-            contact.phone = x['phone']
-            contact.email = x['email']
+            contact.unique_id = x.get('unique_id')
+            contact.name = x.get('name')
+            contact.phone = x.get('phone')
+            contact.email = x.get('email')
+            result.append(contact)
+        return result
 
-            db_contacts.append(contact)
-            db_invite_contacts.append(
+
+class InviteModel(object):
+    invite_index = 'invite_index'
+
+    def __init__(self, invite, contacts=[], user=None):
+        self.user = user
+        self.invite = invite
+        self.contacts = contacts
+
+    def put(self):
+        """Creates/Updates an invite"""
+        if self.user:
+            self.invite.user = self.user.key
+        self.invite.put()
+
+        self.put_contacts()
+
+        #Finally we index the Document
+        self._index_document(self.invite)
+
+    def put_contacts(self):
+        puts = []
+        contact_invite_puts = []
+        for contact in self.contacts:
+            puts.append(contact)
+            contact_invite_puts.append(
                 ContactInvite(
                     invite_id=invite.unique_id,
                     contact_id=contact.unique_id
                 )
             )
-        ndb.put_multi(db_contacts)
-        ndb.put_multi(db_invite_contacts)
-
-        #Finally we index the Document
-        self._index_document(invite)
-
-        self.invite = invite
-        return invite.unique_id
+        ndb.put_multi(puts)
+        ndb.put_multi(contact_invite_puts)
 
     def _index_document(self, invite):
         """
@@ -102,34 +124,37 @@ class InviteManager(object):
         )
         index.put(inviteSearch)
 
-    def send(self, invite_template, extra_data={}):
 
-        invite_dict = self.invite_dict
-        invite_dict['EmailTemplate'] = invite_template
-        invite_dict['ExtraContextData'] = extra_data
-        invite_dict['sharingOptions'] = self.sharing_options(invite_dict)
+class InviteService(object):
 
-        import logging
-        logging.info("Invite to Send")
-        logging.info(invite_dict)
-
-        """Send the invite out"""
+    def send_to_all_async(self, invite_id, extra_data={}):
+        """Enqueue the invite creation"""
         taskqueue.add(
-            url='/api/invite/post',
+            url='/api/invite/send_to_all',
             headers={
                 'Date':'test'
             },
             params={
-                'invite': json.dumps(invite_dict)
+                'unique_id': invite_id,
+                'extra_data': json.dumps(extra_data)
             }
         )
 
-    def get(self, id):
-        """Get the invite by id"""
-        invite = Invite.query(Invite.unique_id == id).get()
-        if invite is None:
-            raise Exception('Invite not found with id: ' + id)
-        return self._build(invite)
+    def send_to_list_async(self, invite_id, contacts, extra_data={}):
+        """Enqueue the invite creation"""
+        taskqueue.add(
+            url='/api/invite/send_to_list',
+            headers={
+                'Date':'test'
+            },
+            params={
+                'unique_id': invite_id,
+                'contacts': contacts,
+                'extra_data': json.dumps(extra_data)
+            }
+        )
+
+
 
     def get_by_user_id(self, user_id):
         """Search all the invites by user_id"""
@@ -203,7 +228,6 @@ class InviteManager(object):
 
     def get_comments(self, id):
         invite = Invite.query(Invite.unique_id == id).get()
-
         return {
             'comments': [{
                 'author': c.author,

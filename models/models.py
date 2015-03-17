@@ -70,8 +70,13 @@ class Invite(BaseModel):
     description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
     where = ndb.StringProperty(required=False)
+    shared_on_facebook = ndb.BooleanProperty(required=True)
     facebook_post_id = ndb.StringProperty(required=False)
     comments = ndb.StructuredProperty(Comment, repeated=True)
+    email_template = ndb.StringProperty(required=False)
+    sms_template = ndb.StringProperty(required=False)
+    voice_template = ndb.StringProperty(required=False)
+    poster_picture = ndb.StringProperty(required=False)
 
 class InviteIndex(ndb.Model):
     doc_id = ndb.StringProperty()
