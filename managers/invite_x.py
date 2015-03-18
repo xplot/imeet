@@ -1,4 +1,3 @@
-__author__ = 'javi830810'
 import datetime
 import json
 import uuid

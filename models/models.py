@@ -70,13 +70,35 @@ class Invite(BaseModel):
     description = ndb.StringProperty(required=False)
     user = ndb.KeyProperty(kind=User)
     where = ndb.StringProperty(required=False)
-    shared_on_facebook = ndb.BooleanProperty(required=True)
+    shared_on_facebook = ndb.BooleanProperty(required=False)
     facebook_post_id = ndb.StringProperty(required=False)
     comments = ndb.StructuredProperty(Comment, repeated=True)
     email_template = ndb.StringProperty(required=False)
     sms_template = ndb.StringProperty(required=False)
     voice_template = ndb.StringProperty(required=False)
     poster_picture = ndb.StringProperty(required=False)
+
+    @classmethod
+    def get_by_unique_id(cls, unique_id):
+        return Invite.query(Invite.unique_id == unique_id).get()
+
+    @classmethod
+    def get_contacts_by_invite_id(cls, unique_id):
+        contacts_invites = {
+            x.contact_id:x for x in ContactInvite.query(
+                ContactInvite.invite_id == unique_id
+            ).fetch()
+        }
+
+        if contacts_invites:
+            return Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
+        return []
+
+    @classmethod
+    def get_contact_invites_by_invite_id(cls, unique_id):
+        return ContactInvite.query(
+                ContactInvite.invite_id == unique_id
+            ).fetch()
 
 class InviteIndex(ndb.Model):
     doc_id = ndb.StringProperty()

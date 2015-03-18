@@ -7,42 +7,51 @@ import base64
 
 from datetime import datetime
 from base import JsonHandler
-from managers.invite import InviteManager
 from config import config
+from managers.template import TemplateModel
 from managers.auth import user_context, request_with_subscription
-
+from managers.invite import InviteMapper, InviteModel
+from models.models import Invite
 
 class InviteHandler(JsonHandler):
 
     @user_context
     @request_with_subscription
     def send(self):
-        data = self._data()
+        invite_dict = self._data()
 
-        invite_manager = InviteManager(invite_dict=data, user=self.user)
-        invite_id = invite_manager.create(),
-        invite_manager.send(
-            invite_template={
-                'Url': "http://imeet.io/template/default_invite_template.html",
+        #Mapping
+        invite_entity = InviteMapper.get_from_dict(invite_dict)
+        invite_contacts = InviteMapper.get_contacts_from_dict(invite_dict)
 
-            },
-            extra_data={
-                'email_response_url': "http://imeet.io/template/default_invite_response.html",
-            }
-        )
+        invite_model = InviteModel(invite_entity, user=self.user)
+        invite_id = invite_model.put()
+        invite_model.add_contacts(invite_contacts)
+
+        #Just a temporary Model_ID
+        #In the future this should be selected in the UI
+        template_model = TemplateModel(0)
+
+        invite_model.send_async(template_model)
+        invite_model.notify_people_async(invite_contacts)
 
         return invite_id
 
-    def view(self, id=0):
-        invite_manager = InviteManager()
-        return invite_manager.get(id)
+    def view(self, id):
+        invite_entity = Invite.get_by_unique_id(id)
+
+        if invite_entity is None:
+            raise Exception("Invite not found with id: %s" % id)
+
+        invite_model = InviteModel(invite_entity)
+        return InviteMapper.invite_to_dict(invite_model)
 
     def search(self, user_id):
         term = self.request.get('term', None)
         invite_manager = InviteManager()
         return invite_manager.search(user_id, term)
 
-    def accept_response(self,invite_id, contact_id):
+    def accept_response(self, invite_id, contact_id):
         data = self._data()
         invite_manager = InviteManager()
         return invite_manager.accept(
@@ -59,8 +68,6 @@ class InviteHandler(JsonHandler):
         dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
         authToken = "Voiceflows " + base64.b64encode(dig).decode()
 
-        logging.info(authToken)
-
         headers = {
             'Content-type': 'application/json',
             'Accept': 'text/plain',
@@ -68,7 +75,9 @@ class InviteHandler(JsonHandler):
             'Authorization': authToken
         }
 
-        invite_json = self.request.get('invite')
+        invite = Invite.get_by_unique_id(self.request.get('invite_id'))
+        invite_model = InviteModel(invite_entity)
+        invite_json = InviteMapper.invite_to_dict(invite_model)
 
         logging.info(invite_json)
 
