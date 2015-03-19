@@ -15,7 +15,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-from handlers import base, invite, profile, contacts, group
+from handlers import base, invite, profile, contacts, group, test_server_api
 from config import config
 
 
@@ -62,22 +62,21 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/taskqueue-send-email/', base.SendEmailHandler, name='taskqueue-send-email', strict_slash=True),
 
     #Contact
-    Route('/contact_form', base.EmailHandler, name='contact',
-          handler_method='send', methods=['POST']),
+    Route('/contact_form', base.EmailHandler, name='contact', handler_method='send', methods=['POST']),
 
     #Invite
     Route('/api/invite', invite.InviteHandler, name='send', handler_method='send', methods=['POST']),
-    Route('/api/invite/post', invite.InviteHandler, name='post_to_voiceflows',
-          handler_method='post_to_voiceflows', methods=['POST']),
-    Route('/api/invite/search/<user_id>', invite.InviteHandler, name='search',
-          handler_method='search'),
-
-    Route('/api/invite/<id>', invite.InviteHandler, name='view',
-          handler_method='view', methods=['GET']),
-    Route('/api/<invite_id>/contact/<contact_id>/response', invite.InviteHandler, name='accept_response',
-          handler_method='accept_response', methods=['POST']),
+    Route('/api/invite/post_invite', invite.InviteHandler, name='post_to_notifications_api', handler_method='post_to_notifications_api', methods=['POST']),
+    Route('/api/invite/add_contacts', invite.InviteHandler, name='post_contacts_to_notifications_api', handler_method='post_contacts_to_notifications_api', methods=['POST']),
+    Route('/api/invite/search/<user_id>', invite.InviteHandler, name='search', handler_method='search'),
+    Route('/api/invite/<id>', invite.InviteHandler, name='view', handler_method='view', methods=['GET']),
+    Route('/api/<invite_id>/contact/<contact_id>/response', invite.InviteHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
     Route('/api/invite/<id>/comment', invite.InviteHandler, name='add_comment', handler_method='add_comment', methods=['POST']),
     Route('/api/invite/<id>/comments', invite.InviteHandler, name='get_comments', handler_method='get_comments', methods=['GET']),
+
+    #Test API
+    Route('/api/test/invite', test_server_api.VoiceflowsAPI, name='post_invite', handler_method='post_invite', methods=['POST']),
+    Route('/api/test/invite/contacts', test_server_api.VoiceflowsAPI, name='post_contacts', handler_method='post_contacts', methods=['POST']),
 
     #Groups
     Route('/api/group', group.ApiGroupHandler, name='get_groups', handler_method='get', methods=['GET']),

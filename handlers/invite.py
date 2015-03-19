@@ -1,5 +1,6 @@
 import logging
 
+import json
 import requests
 import hmac
 import hashlib
@@ -18,6 +19,7 @@ class InviteHandler(JsonHandler):
     @user_context
     @request_with_subscription
     def send(self):
+        """Send the invite out"""
         invite_dict = self._data()
 
         #Mapping
@@ -28,23 +30,20 @@ class InviteHandler(JsonHandler):
         invite_id = invite_model.put()
         invite_model.add_contacts(invite_contacts)
 
-        #Just a temporary Model_ID
-        #In the future this should be selected in the UI
-        template_model = TemplateModel(0)
-
-        invite_model.send_async(template_model)
-        invite_model.notify_people_async(invite_contacts)
+        invite_model.send_async()
+        invite_model.notify_contacts_async(invite_contacts)
 
         return invite_id
 
     def view(self, id):
+        """Get the full invite, with contacts and responses"""
         invite_entity = Invite.get_by_unique_id(id)
 
         if invite_entity is None:
             raise Exception("Invite not found with id: %s" % id)
 
         invite_model = InviteModel(invite_entity)
-        return InviteMapper.invite_to_dict(invite_model)
+        return InviteMapper.invite_to_dict_with_contact_responses(invite_model)
 
     def search(self, user_id):
         term = self.request.get('term', None)
@@ -61,29 +60,34 @@ class InviteHandler(JsonHandler):
             data['response']
         )
 
-    def post_to_voiceflows(self):
+    def post_to_notifications_api(self):
+        """Will post the invite to The API"""
         url = config.get('api_url')
-        now = datetime.utcnow().strftime("%a, %d %b %Y %H:%M:00 GMT")
-        secret = '8\x0c7_\x01\t/{C)6V`\x1c!'
-        dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
-        authToken = "Voiceflows " + base64.b64encode(dig).decode()
+        headers = self._get_api_headers()
+        data = self._data()
 
-        headers = {
-            'Content-type': 'application/json',
-            'Accept': 'text/plain',
-            'Date': now,
-            'Authorization': authToken
-        }
-
-        invite = Invite.get_by_unique_id(self.request.get('invite_id'))
+        invite_entity = Invite.get_by_unique_id(data.get('invite_id'))
         invite_model = InviteModel(invite_entity)
-        invite_json = InviteMapper.invite_to_dict(invite_model)
-
-        logging.info(invite_json)
+        invite_json = json.dumps(InviteMapper.invite_to_dict(invite_model))
 
         r = requests.post(
             url,
             data=invite_json,
+            headers=headers
+        )
+
+        if r.status_code != 200:
+            logging.error(r.text)
+        r.raise_for_status()
+
+    def post_contacts_to_notifications_api(self):
+        """Will post the contact notifications to The API"""
+        url = config.get('api_url') + "/contacts"
+        headers = self._get_api_headers()
+
+        r = requests.post(
+            url,
+            data=self.request.body,
             headers=headers
         )
 
@@ -108,5 +112,16 @@ class InviteHandler(JsonHandler):
     def get_comments(self, id):
         return InviteManager().get_comments(id)
 
+    def _get_api_headers(self):
+        now = datetime.utcnow().strftime("%a, %d %b %Y %H:%M:00 GMT")
+        secret = '8\x0c7_\x01\t/{C)6V`\x1c!'
+        dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
+        authToken = "Voiceflows " + base64.b64encode(dig).decode()
 
+        return  {
+            'Content-type': 'application/json',
+            'Accept': 'text/plain',
+            'Date': now,
+            'Authorization': authToken
+        }
 

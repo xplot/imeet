@@ -74,6 +74,7 @@ class Invite(BaseModel):
     facebook_post_id = ndb.StringProperty(required=False)
     comments = ndb.StructuredProperty(Comment, repeated=True)
     email_template = ndb.StringProperty(required=False)
+    email_response_template = ndb.StringProperty(required=False)
     sms_template = ndb.StringProperty(required=False)
     voice_template = ndb.StringProperty(required=False)
     poster_picture = ndb.StringProperty(required=False)

@@ -1,3 +1,5 @@
+import logging
+
 import datetime
 import json
 import uuid
@@ -8,6 +10,7 @@ from google.appengine.ext import ndb
 from boilerplate.models import User
 from managers.dispatcher import EventDispatcher
 from models.models import Invite, Contact, ContactInvite, Comment
+from managers.invite import InviteMapper
 
 class InviteModel(object):
     invite_index = 'invite_index'
@@ -48,6 +51,7 @@ class InviteModel(object):
         #Finally we index the Document
         self._index_document(self.invite)
 
+        logging.info(self.invite.unique_id)
         return self.invite.unique_id
 
     def add_contacts(self, contacts):
@@ -68,27 +72,25 @@ class InviteModel(object):
         ndb.put_multi(puts)
         ndb.put_multi(contact_invite_puts)
 
-    def send_async(self, template_model):
-        #Event Dispatch
+    def send_async(self):
+        """Push the invite send to the async queue"""
         EventDispatcher.push_event(
-            endpoint='/api/event/post_invite',
+            endpoint='/api/invite/post_invite',
             data={
-                'unique_id': self.unique_id,
-                'template': {
-                    'email_url': template_model.get_email_template_url(),
-                    'email_response_url': template_model.get_email_template_url()
-                }
+                'invite_id': self.unique_id,
             }
         )
 
-    def notify_people_async(self, contacts):
-        #Event Dispatch
+    def notify_contacts_async(self, contacts):
+        """Push the contact notification send to the async queue"""
+        body = {
+            'invite_id': self.unique_id,
+        }
+        body.update(InviteMapper.contacts_to_dict(contacts))
+
         EventDispatcher.push_event(
-            endpoint='/api/event/add_contacts',
-            data={
-                'unique_id': self.unique_id,
-                'contacts': InviteMapper.contacts_to_dict(contacts)
-            }
+            endpoint='/api/invite/add_contacts',
+            data=body
         )
 
     def _index_document(self, invite):

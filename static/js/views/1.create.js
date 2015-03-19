@@ -247,6 +247,7 @@ CreateView = SimpleView.extend({
             data: JSON.stringify(event),
             cache: false,
             success: function(data) {
+
                 alert_notification([{
                     alertType:'success',
                     message: 'Event sent!'
@@ -255,7 +256,7 @@ CreateView = SimpleView.extend({
 //                if(currentUser == null) //If Anonymous we will give people a link to follow the invite
 //                    Backbone.history.navigate('sent/' + data[0], true);
 //                else
-                Backbone.history.navigate('view/' + data[0], true);
+                Backbone.history.navigate('view/' + data, true);
             },
             error: function(data) {
                 alert_notification([{
