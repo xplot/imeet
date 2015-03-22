@@ -75,21 +75,24 @@ class InviteModel(object):
     def send_async(self):
         """Push the invite send to the async queue"""
         EventDispatcher.push_event(
-            endpoint='/api/invite/post_invite',
-            data={
-                'invite_id': self.unique_id,
-            }
+            endpoint='/api/invite/notifications',
+            data=InviteMapper.invite_to_dict(self)
         )
 
-    def notify_contacts_async(self, contacts):
+    def invite_contacts_async(self, contacts):
         """Push the contact notification send to the async queue"""
         body = {
             'invite_id': self.unique_id,
+            'uniquecall_id': str(uuid.uuid4()).replace('-', ''),
+            'email_template': {
+                'url': self.invite.email_template,
+                'subject': "You have been invited to {title}"
+            }
         }
         body.update(InviteMapper.contacts_to_dict(contacts))
 
         EventDispatcher.push_event(
-            endpoint='/api/invite/add_contacts',
+            endpoint='/api/invite/notifications/contacts',
             data=body
         )
 

@@ -39,5 +39,5 @@ config = {
     'salt': 's3l3ct3d_s41t',
     'aes_key':'s3l3ct3d_43s_k3y',
 
-    'api_url': "http://localhost:8003/api/test/invite"
+    'api_url': "http://192.168.1.11/damascus/api/invite"
 }

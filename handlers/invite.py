@@ -31,7 +31,7 @@ class InviteHandler(JsonHandler):
         invite_model.add_contacts(invite_contacts)
 
         invite_model.send_async()
-        invite_model.notify_contacts_async(invite_contacts)
+        invite_model.invite_contacts_async(invite_contacts)
 
         return invite_id
 
@@ -60,41 +60,6 @@ class InviteHandler(JsonHandler):
             data['response']
         )
 
-    def post_to_notifications_api(self):
-        """Will post the invite to The API"""
-        url = config.get('api_url')
-        headers = self._get_api_headers()
-        data = self._data()
-
-        invite_entity = Invite.get_by_unique_id(data.get('invite_id'))
-        invite_model = InviteModel(invite_entity)
-        invite_json = json.dumps(InviteMapper.invite_to_dict(invite_model))
-
-        r = requests.post(
-            url,
-            data=invite_json,
-            headers=headers
-        )
-
-        if r.status_code != 200:
-            logging.error(r.text)
-        r.raise_for_status()
-
-    def post_contacts_to_notifications_api(self):
-        """Will post the contact notifications to The API"""
-        url = config.get('api_url') + "/contacts"
-        headers = self._get_api_headers()
-
-        r = requests.post(
-            url,
-            data=self.request.body,
-            headers=headers
-        )
-
-        if r.status_code != 200:
-            logging.error(r.text)
-        r.raise_for_status()
-
     @user_context
     def add_comment(self, id):
         data = self._data()
@@ -112,16 +77,5 @@ class InviteHandler(JsonHandler):
     def get_comments(self, id):
         return InviteManager().get_comments(id)
 
-    def _get_api_headers(self):
-        now = datetime.utcnow().strftime("%a, %d %b %Y %H:%M:00 GMT")
-        secret = '8\x0c7_\x01\t/{C)6V`\x1c!'
-        dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
-        authToken = "Voiceflows " + base64.b64encode(dig).decode()
 
-        return  {
-            'Content-type': 'application/json',
-            'Accept': 'text/plain',
-            'Date': now,
-            'Authorization': authToken
-        }
 
