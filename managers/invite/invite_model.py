@@ -11,7 +11,7 @@ from google.appengine.ext import ndb
 
 from config import config
 from boilerplate.models import User
-from handlers.event import EventQueue
+from managers.event import EventQueue
 from models.models import Invite, Contact, ContactInvite, Comment
 from managers.invite import InviteMapper
 
@@ -22,7 +22,7 @@ def get_voiceflows_headers():
     dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
     authToken = "Voiceflows " + base64.b64encode(dig).decode()
 
-    return  {
+    return {
         'Content-type': 'application/json',
         'Accept': 'text/plain',
         'Date': now,
@@ -113,7 +113,9 @@ class InviteModel(object):
         EventQueue.push_event(
             endpoint=config.get('api_url') + "/contacts",
             headers=get_voiceflows_headers(),
-            payload=body
+            payload=body,
+            group_id=self.unique_id,
+            priority=1
         )
 
     def _index_document(self, invite):

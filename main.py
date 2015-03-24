@@ -86,6 +86,6 @@ app = webapp2.WSGIApplication([
     Route('/api/contacts/groups', group.ApiGroupHandler, handler_method='get_all_groups_and_contacts', methods=['GET']),
 
     #Events
-    Route('/api/event/process', event.EventDispatcher, handler_method='process_queue', name='process_queue'),
+    Route('/api/event/process', event.EventCronHandler, handler_method='process_queue', name='process_queue'),
 
 ], config=config,debug=True)
