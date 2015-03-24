@@ -1,0 +1,3 @@
+queue:
+- name: webhook-event
+  mode: pull

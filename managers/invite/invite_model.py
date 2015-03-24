@@ -1,5 +1,7 @@
 import logging
-
+import base64
+import hmac
+import hashlib
 import datetime
 import json
 import uuid
@@ -7,10 +9,26 @@ import uuid
 from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
 
+from config import config
 from boilerplate.models import User
-from managers.dispatcher import EventDispatcher
+from handlers.event import EventQueue
 from models.models import Invite, Contact, ContactInvite, Comment
 from managers.invite import InviteMapper
+
+
+def get_voiceflows_headers():
+    now = datetime.datetime.utcnow().strftime("%a, %d %b %Y %H:%M:00 GMT")
+    secret = '8\x0c7_\x01\t/{C)6V`\x1c!'
+    dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
+    authToken = "Voiceflows " + base64.b64encode(dig).decode()
+
+    return  {
+        'Content-type': 'application/json',
+        'Accept': 'text/plain',
+        'Date': now,
+        'Authorization': authToken
+    }
+
 
 class InviteModel(object):
     invite_index = 'invite_index'
@@ -74,9 +92,10 @@ class InviteModel(object):
 
     def send_async(self):
         """Push the invite send to the async queue"""
-        EventDispatcher.push_event(
-            endpoint='/api/invite/notifications',
-            data=InviteMapper.invite_to_dict(self)
+        EventQueue.push_event(
+            endpoint=config.get('api_url'),
+            headers=get_voiceflows_headers(),
+            payload=InviteMapper.invite_to_dict(self)
         )
 
     def invite_contacts_async(self, contacts):
@@ -91,9 +110,10 @@ class InviteModel(object):
         }
         body.update(InviteMapper.contacts_to_dict(contacts))
 
-        EventDispatcher.push_event(
-            endpoint='/api/invite/notifications/contacts',
-            data=body
+        EventQueue.push_event(
+            endpoint=config.get('api_url') + "/contacts",
+            headers=get_voiceflows_headers(),
+            payload=body
         )
 
     def _index_document(self, invite):

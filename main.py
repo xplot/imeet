@@ -15,7 +15,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-from handlers import base, invite, profile, contacts, group, test_server_api, voiceflows
+from handlers import base, invite, profile, contacts, group, test_server_api, event
 from config import config
 
 
@@ -72,11 +72,6 @@ app = webapp2.WSGIApplication([
     Route('/api/invite/<id>/comment', invite.InviteHandler, name='add_comment', handler_method='add_comment', methods=['POST']),
     Route('/api/invite/<id>/comments', invite.InviteHandler, name='get_comments', handler_method='get_comments', methods=['GET']),
 
-    #Notifications API
-    Route('/api/invite/notifications', voiceflows.VoiceflowsHandler, name='post_to_notifications_api', handler_method='post_invite_to_notifications_api', methods=['POST']),
-    Route('/api/invite/notifications/contacts', voiceflows.VoiceflowsHandler, name='post_contacts_to_notifications_api', handler_method='post_contacts_to_notifications_api', methods=['POST']),
-    Route('/api/invite/notifications/cancel/<invite_id>', voiceflows.VoiceflowsHandler, name='post_invite_cancel_to_notifications_api', handler_method='post_invite_cancel_to_notifications_api', methods=['POST']),
-
     #Test API
     Route('/api/test/invite', test_server_api.VoiceflowsAPI, name='post_invite', handler_method='post_invite', methods=['POST']),
     Route('/api/test/invite/contacts', test_server_api.VoiceflowsAPI, name='post_contacts', handler_method='post_contacts', methods=['POST']),
@@ -89,5 +84,8 @@ app = webapp2.WSGIApplication([
     Route('/api/group/<group_id>/<contact_id>', group.ApiGroupHandler, name='add_contact', handler_method='add_contact_to_group', methods=['POST']),
 
     Route('/api/contacts/groups', group.ApiGroupHandler, handler_method='get_all_groups_and_contacts', methods=['GET']),
+
+    #Events
+    Route('/api/event/process', event.EventDispatcher, handler_method='process_queue', name='process_queue'),
 
 ], config=config,debug=True)

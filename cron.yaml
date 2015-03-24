@@ -1,0 +1,4 @@
+cron:
+- description: Process queue with events
+  url: /api/event/process
+  schedule: every 1 minutes
