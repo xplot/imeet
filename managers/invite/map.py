@@ -149,3 +149,16 @@ class InviteMapper(object):
                 'email':   x.email,
             } for x in contacts]
         }
+
+
+class CommentMapper(object):
+
+    @classmethod
+    def comments_to_dict(cls, comments):
+        return {
+                'comments': [{
+                    'author': c.author,
+                    'comment': c.comment,
+                    'on': c.commentedOn.strftime("%Y-%m-%d %H:%M")
+                } for c in comments]
+            }

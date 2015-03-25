@@ -55,6 +55,9 @@ class ContactInvite(ndb.Model):
     voice_response = ndb.StringProperty()
     sms_response = ndb.StringProperty()
     email_response = ndb.StringProperty()
+    voice_response_datetime = ndb.DateTimeProperty()
+    sms_response_datetime = ndb.DateTimeProperty()
+    email_response_datetime = ndb.DateTimeProperty()
 
 class Comment(BaseModel):
     author = ndb.StringProperty(required=True)

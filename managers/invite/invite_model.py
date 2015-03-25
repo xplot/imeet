@@ -12,8 +12,9 @@ from google.appengine.ext import ndb
 from config import config
 from boilerplate.models import User
 from managers.event import EventQueue
+from managers.utils import guid
 from models.models import Invite, Contact, ContactInvite, Comment
-from managers.invite import InviteMapper
+from managers.invite import InviteMapper, CommentMapper
 
 
 def get_voiceflows_headers():
@@ -62,7 +63,7 @@ class InviteModel(object):
             self.invite.user = self.user.key
 
         if self.invite.unique_id is None:
-            self.invite.unique_id = str(uuid.uuid4()).replace('-', '')
+            self.invite.unique_id = guid()
 
         self.invite.put()
 
@@ -78,7 +79,7 @@ class InviteModel(object):
         contact_invite_puts = []
         for contact in contacts:
             if contact.unique_id is None:
-                contact.unique_id = str(uuid.uuid4()).replace('-', '')
+                contact.unique_id = guid()
 
             puts.append(contact)
             contact_invite_puts.append(
@@ -102,10 +103,11 @@ class InviteModel(object):
         """Push the contact notification send to the async queue"""
         body = {
             'invite_id': self.unique_id,
-            'uniquecall_id': str(uuid.uuid4()).replace('-', ''),
+            'uniquecall_id': guid(),
             'email_template': {
                 'url': self.invite.email_template,
-                'subject': "You have been invited to {title}"
+                'subject': "You have been invited to {{title}}",
+                'responseRedirectURL': self.invite.email_response_template
             }
         }
         body.update(InviteMapper.contacts_to_dict(contacts))
@@ -134,6 +136,9 @@ class InviteModel(object):
         )
         index.put(inviteSearch)
 
+    def get_comments(self):
+        return CommentMapper.comments_to_dict(self.invite.comments)
+
     def add_comment(self, author, text):
         """Add a comment to the invite"""
         invite = self.invite
@@ -148,6 +153,35 @@ class InviteModel(object):
         invite.comments.append(comment)
         invite.put()
 
+    def accept(self, contact_id, channel):
+        self._mark_response(contact_id, channel, 'YES')
+
+    def deny(self, contact_id, channel):
+        self._mark_response(contact_id, channel, 'NO')
+
+    def _mark_response(self, contact_id, channel, response):
+        """Will update the contact RSVP"""
+        contact_invite = ContactInvite.query(
+            ndb.AND(
+                ContactInvite.invite_id == self.unique_id,
+                ContactInvite.contact_id == contact_id
+            )
+        ).get()
+
+        if contact_invite is None:
+            raise Exception('No contact was found with the following id: ' + contact_id)
+
+        if channel == 'sms':
+            contact_invite.sms_response = response
+            contact_invite.sms_response_datetime = datetime.datetime.now()
+        elif channel == 'voice':
+            contact_invite.voice_response = response
+            contact_invite.voice_response_datetime = datetime.datetime.now()
+        elif channel == 'email':
+            contact_invite.email_response = response
+            contact_invite.email_response_datetime = datetime.datetime.now()
+
+        contact_invite.put()
 #
 # class InviteService(object):
 #

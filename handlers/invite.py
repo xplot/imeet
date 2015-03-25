@@ -37,13 +37,9 @@ class InviteHandler(JsonHandler):
 
     def view(self, id):
         """Get the full invite, with contacts and responses"""
-        invite_entity = Invite.get_by_unique_id(id)
-
-        if invite_entity is None:
-            raise Exception("Invite not found with id: %s" % id)
-
-        invite_model = InviteModel(invite_entity)
-        return InviteMapper.invite_to_dict_with_contact_responses(invite_model)
+        return InviteMapper.invite_to_dict_with_contact_responses(
+            self._get_invite_model(id)
+        )
 
     def search(self, user_id):
         term = self.request.get('term', None)
@@ -52,13 +48,12 @@ class InviteHandler(JsonHandler):
 
     def accept_response(self, invite_id, contact_id):
         data = self._data()
-        invite_manager = InviteManager()
-        return invite_manager.accept(
-            invite_id,
-            contact_id,
-            data['channel'],
-            data['response']
-        )
+
+        invite_model = self._get_invite_model(invite_id)
+        if data.get('response', 'no').lower() == 'yes':
+            invite_model.accept(contact_id, data.get('channel', 'email'))
+        else:
+            invite_model.deny(contact_id, data.get('channel', 'email'))
 
     @user_context
     def add_comment(self, id):
@@ -67,7 +62,8 @@ class InviteHandler(JsonHandler):
         if self.user is not None:
             data['author'] = self.user.fullname()
 
-        InviteManager().add_comment(id, data['author'], data['comment'])
+        invite_model = self._get_invite_model(id)
+        invite_model.add_comment(data['author'], data['comment'])
 
         return {
             'author': data['author'],
@@ -75,8 +71,14 @@ class InviteHandler(JsonHandler):
         }
 
     def get_comments(self, id):
-        return []
-        #return InviteManager().get_comments(id)
+        invite_model = self._get_invite_model(id)
+        return invite_model.get_comments()
 
+    def _get_invite_model(self, invite_id):
+        invite_entity = Invite.get_by_unique_id(invite_id)
 
+        if invite_entity is None:
+            raise Exception("Invite not found with id: %s" % invite_id)
+
+        return InviteModel(invite_entity)
 
