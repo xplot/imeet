@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/invite-workflows.iml" filepath="$PROJECT_DIR$/.idea/invite-workflows.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../work/kapx_site/.idea/kapx_site.iml" filepath="$PROJECT_DIR$/../work/kapx_site/.idea/kapx_site.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../work/kapx_courses/tests/.idea/tests.iml" filepath="$PROJECT_DIR$/../work/kapx_courses/tests/.idea/tests.iml" />
     </modules>
   </component>
 </project>
