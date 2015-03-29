@@ -13,7 +13,7 @@ from config import config
 from boilerplate.models import User
 from managers.event import EventQueue
 from managers.utils import guid
-from models.models import Invite, Contact, ContactInvite, Comment
+from models import Invite, Contact, ContactInvite, Comment
 from managers.invite import InviteMapper, CommentMapper
 
 
@@ -30,6 +30,11 @@ def get_voiceflows_headers():
         'Authorization': authToken
     }
 
+class InviteUserRole:
+    ORGANIZER = 'organizer'
+    ATTENDEE = 'attendee'
+    UNKNOWN = 'unknown'
+
 
 class InviteModel(object):
     invite_index = 'invite_index'
@@ -37,6 +42,8 @@ class InviteModel(object):
     def __init__(self, invite, user=None):
         self.user = user
         self.invite = invite
+        if self.user is None and self.invite.user is not None:
+            self.user = self.invite.user.get()
 
     def __getattr__(self, name):
         """
@@ -49,13 +56,32 @@ class InviteModel(object):
 
     def get_contacts(self):
         return Invite.get_contacts_by_invite_id(
-            self.invite.unique_id
+            self.unique_id
         )
 
     def get_contact_invites(self):
         return Invite.get_contact_invites_by_invite_id(
-            self.invite.unique_id
+            self.unique_id
         )
+
+    def get_user_role_by_id(self, id):
+        if str(self.user.get_id()) == id:
+            return InviteUserRole.ORGANIZER
+
+        #TODO, invites has to keep a relation of it' attendees, to actual, iMeet users
+        #hence we could iterate such list and try to find a user by id
+
+        return InviteUserRole.UNKNOWN
+
+    def get_user_role_by_contact_channel(self, contact_channel):
+        if self.user.email == email:
+            return InviteUserRole.ORGANIZER
+
+        for contact in self.get_contacts():
+            if contact.email == contact_channel or contact.phone == contact_channel:
+                return InviteUserRole.ATTENDEE
+
+        return InviteUserRole.UNKNOWN
 
     def put(self):
         """Creates/Updates an invite"""

@@ -6,25 +6,12 @@ import csv
 import StringIO
 
 from managers.auth import user_context
-from boilerplate.basehandler import BaseHandler
 from base import JsonHandler
 from google.appengine.ext import ndb
 from managers.contact import ContactManager
-from models.models import Contact
+from models import Contact
 from boilerplate.models import User
 from managers.group import GroupManager
-
-class ContactHandler(BaseHandler):
-    def get(self):
-        if self.user is None:
-            return self.redirect_to('home')
-
-        group_manager = GroupManager(self.user_key)
-
-        return self.render_template(
-            'contacts.html',
-            contact_groups=group_manager.get_contacts_sorted_by_group()
-        )
 
 class ApiContactHandler(JsonHandler):
 
@@ -92,6 +79,5 @@ class ApiContactHandler(JsonHandler):
             contact_mgr.add_or_update_contact(contact)
 
         return True
-
 
 

@@ -1,0 +1,63 @@
+@import "base";
+@import "navbar";
+
+/*--------------------------------------------------
+              New Design
+---------------------------------------------------*/
+body{
+  font-weight: 100 !important;
+
+  .container{
+    position: absolute;
+    bottom: 0px;
+    top:0px;
+    width: 100%;
+    //padding: 0px;
+  }
+
+  .navbar-separator{
+    height: 60px;
+  }
+
+}
+
+.block {
+  display: table;
+  text-align: center;
+  width: 100%;
+
+  .center-block {
+    vertical-align: middle;
+    display: table-cell;
+
+    .main-h1 {
+      background-color: rgba(1, 87, 155, 0.7);
+      color: @off-white;
+      max-width: 60%;
+      margin: 20px auto;
+      padding: 20px;
+      font-size: 27px;
+      font-weight: normal;
+      text-transform: none;
+      @media (max-width: 1024px) {
+        font-size: 100%;
+      }
+      @media (max-width: 768px) {
+        font-size: 110%;
+      }
+    }
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+/*start - All*/
+.body-background-1 {
+  background: url(/img/default_image.jpg) right top;
+  background-size: cover;
+}
+
+/* Header */
+

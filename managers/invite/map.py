@@ -1,7 +1,7 @@
 import datetime
 
 from managers.template import TemplateModel
-from models.models import Invite, Contact
+from models import Invite, Contact
 
 
 class InviteMapper(object):

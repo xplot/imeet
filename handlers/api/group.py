@@ -7,7 +7,7 @@ from managers.auth import user_context
 from boilerplate.basehandler import BaseHandler
 from base import JsonHandler
 from google.appengine.ext import ndb
-from models.models import Contact
+from models import Contact
 
 
 class ApiGroupHandler(JsonHandler):

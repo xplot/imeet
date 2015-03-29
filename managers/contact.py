@@ -1,5 +1,5 @@
 import uuid
-from models.models import Contact
+from models import Contact
 from google.appengine.ext import ndb
 
 __author__ = 'ajadex'

@@ -41,6 +41,9 @@ function init_app() {
     });
 
     //Report
+    admin_view = new AdminInviteView({
+        el: "#invite-edit"
+    });
     invite_view = new InviteView({
         el: "#view-container"
     });
@@ -77,8 +80,9 @@ function init_app() {
             'login': 'login',
             'profile/edit': 'edit_profile',
             'register': 'register',
-            'view/:id': 'view_as_organizer',
-            'view/:id/:contact_id': 'view_as_contact',
+            'view/:id': 'view_as_contact',
+            'view/:id/edit': 'view_as_organizer',
+            //'view/:id/:contact_id': 'view_as_contact',
 
             'contacts' : 'contacts',
             'contacts/new' : 'contacts_new'
@@ -116,7 +120,9 @@ function init_app() {
             search_view.render();
         },
         view_as_organizer: function (id) {
-            invite_view.render({'invite_id': id});
+            admin_view.render(
+                invite
+            );
         },
         view_as_contact: function(id, contact_id){
             invite_view.render({'invite_id': id, 'contact_id': contact_id});

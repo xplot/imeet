@@ -1,3 +1,4 @@
+
 Contact = Backbone.Model.extend({
       defaults: {
         name: '',
@@ -54,3 +55,18 @@ GroupList = Backbone.Collection.extend({
       });
     }
  });
+
+InviteModel = Backbone.Model.extend({
+  defaults: {
+        'title': '',
+        'start_date': '',
+        'start_time': '',
+        'end_date': '',
+        'end_time': '',
+        'description': '',
+        'where': '',
+        'contacts': new ContactList(),
+        'all_contacts': new ContactList(),
+        'all_groups': new ContactList(),
+    }
+});

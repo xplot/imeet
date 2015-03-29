@@ -235,5 +235,3 @@ var colorInverter = function invertHex(hexnum){
 }
 
 
-
-

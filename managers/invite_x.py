@@ -5,7 +5,7 @@ import uuid
 from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
 
-from models.models import Invite, Contact, ContactInvite, Comment
+from models import Invite, Contact, ContactInvite, Comment
 from boilerplate.models import User
 
 

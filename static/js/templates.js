@@ -219,6 +219,18 @@ __p += '<div class="invite-view">\n    <div class="panel">\n         <div class=
 return __p
 };
 
+this["JST"]["invite_header.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="block block1 body-background-1">\n    <div class="center-block">\n          <h1 class="main-h1">' +
+__e( title ) +
+'</h1>\n     </div>\n</div>\n';
+
+}
+return __p
+};
+
 this["JST"]["invite_report.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;

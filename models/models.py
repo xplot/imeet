@@ -104,6 +104,16 @@ class Invite(BaseModel):
                 ContactInvite.invite_id == unique_id
             ).fetch()
 
+    @classmethod
+    def get_contacts_by_invite_id(cls, unique_id):
+        contact_unique_ids = [
+            x.contact_id for x in ContactInvite.query(
+                ContactInvite.invite_id == unique_id
+            ).fetch()
+        ]
+        return Contact.query(Contact.unique_id.IN(contact_unique_ids))
+
+
 class InviteIndex(ndb.Model):
     doc_id = ndb.StringProperty()
     title = ndb.StringProperty()

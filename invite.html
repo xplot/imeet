@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block css %}invite_edit{% endblock %}
+{% block title %}Invite{% endblock %}
+{% block content %}
+
+<div class="navbar-separator"></div>
+
+<div id="invite-header"></div>
+<div id="invite-edit"></div>
+
+{% endblock %}
+
+{% block initScript %}
+<script type="text/javascript">
+    var invite = {{invite}};
+</script>
+
+
+<script>
+        function block(el, ratio) {
+            var h = $(window).height();
+            if (ratio === 'half')
+              h = h/2;
+            else if (ratio == 'quarter')
+              h = h/3;
+            else
+                h = h;
+
+            $(el).css('height',h);
+        }
+
+        $(function() {
+
+            block('.body-background-1', 'half');
+
+            $(window).resize(function() {
+                block('.body-background-1', 'half');
+
+            });
+
+            /* Homepage Fade Images */
+            var $slider = $(".home-imgs"),
+                sliderIndex = 2,
+                sliderActiveIndex = 0;
+
+            function kuSlider () {
+                sliderActive = $slider.children(".active");
+                sliderActiveIndex = sliderActive.index();
+                if ( sliderIndex <= sliderActiveIndex ) {
+                    sliderActive.removeClass("active").fadeOut(2000);
+                    $slider.children(":first").addClass("active").fadeIn(2000);
+                } else {
+                    sliderActive.removeClass("active").fadeOut(2000).next().addClass("active").fadeIn(2000);
+                }
+            }
+            setInterval(function(){
+              kuSlider();
+            }, 6000);
+
+        });
+
+
+        var features = [
+               {% for item in subscription_features %}
+                    '{{ item }}',
+                {% endfor %}
+        ];
+
+        {% if messages|safe %}
+            $(function() {
+                var notifications = [];
+                {%
+                    for message in messages %}
+                    notifications.push({
+                        alertType: '{{ message[1]|safe }}',
+                        message: "{{ message[0]|safe }}" });
+                    {%endfor %}
+                    alert_notification(notifications);
+            });
+        {% endif %}
+
+    </script>
+
+    <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-55798503-1', 'auto');
+          ga('invite_edit', 'pageview');
+
+</script>
+{% endblock %}
