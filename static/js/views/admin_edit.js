@@ -2,10 +2,16 @@ AdminInviteView = SimpleView.extend({
     template: JST['inviteReport.html'],
     inviteId:null,
     author: "Organizer",
+    contacts: null,
 
     initialize: function(options){
         this.options = options || {};
         this.inviteId = this.options.id;
+    },
+
+    events: {
+        "keypress .invite-newComment": "addNewComment",
+        'change .share_to_facebook': 'share_on_facebook_auth',
     },
 
     render: function(data){
@@ -13,134 +19,87 @@ AdminInviteView = SimpleView.extend({
         this.model = new InviteModel(data);
 
         this.inviteId = data.invite_id;
-        var contactId = data.contact_id;
 
         if(this.inviteId == null)
             console.error('Invite Id is null, check routing');
 
-        this.$el.html(this.template());
+        var invite_json = this.model.toJSON();
 
-        console.log(this.model.toJSON());
         this.$invite_header = $('#invite-header');
-        this.$invite_header.html(JST['invite_header.html'](this.model.toJSON()) );
+        this.$invite_edit = $('#invite-edit');
+        this.$invite_contacts = $('#invite-attendees');
 
+        this.$invite_header.html(JST['invite_header.html'](invite_json) );
+        this.$invite_edit.html(JST['invite_edit.html'](invite_json) );
+        var invite_attendees = new InviteAttendeesView();
+        this.$invite_contacts.html(invite_attendees.render({
+            contacts: data.contacts
+        }));
 
-        var self = this;
-
-        $('.invite-title').html(data.title);
-        $('.invite-location').html(data.where);
-        $('.invite-date').html(data.start);
-
-        self.loadContacts(data.contacts, contactId);
-        self.currentCommentIndex = data.comments.length;
-
-        self.loadComments(data.comments);
-        setInterval(function(){self.getComments(self.inviteId, data.comments.length, self.loadComments)}, 60000);
+        this.plugins();
     },
 
-    addNewComment: function(eventData){
-        if(eventData.charCode == 13 && eventData.target.value !== ""){
-            var author = (currentUser!=null)? currentUser.fullname : this.author;
-            var commentText = eventData.target.value;
-            eventData.target.value = "";
+    share_on_facebook_auth: function(){
+        //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
 
-            $('.invite-comments').scrollTop(1000000);
-
-            $.ajax({
-                url: "/api/invite/{0}/comment".format(this.inviteId),
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(
-                {
-                    user_id: (currentUser == null)? null: currentUser.id,
-                    author: author,
-                    comment: commentText
-                }),
-                cache: false,
-                success: function(data){
-                    $('.invite-comments').append(JST['comment.html'](data));
-                },
-                error: function(data) {
-                    if(data.status != 200)
-                        alert_notification([{
-                            alertType:'danger',
-                            message: data.responseText
-                        }]);
-                }
-            });
-        }
-    },
-    getComments: function(inviteId, currentCommentIndex, loadComments){
-        $.ajax({
-            url: "/api/invite/{0}/comments".format(inviteId),
-            type: "GET",
-            contentType: "application/json",
-            cache: false,
-            success: function(data) {
-                loadComments(data.comments, currentCommentIndex);
-            },
-            error: function(data) {
-
-            }
-        });
-    },
-    loadContacts: function(contacts, contactId){
-        var contact_html = "\
-            <div class='row contact-row small-margin' data-contact='{0},{1},{2}' > \
-                    <div class='col-xs-2 col-md-1'> \
-                        <i class='fa fa-like fa-1_2x {3}'></i> \
-                    </div>\
-                    <div class='col-xs-10 col-md-11'> \
-                             {0} {1} {2} \
-                    </div> \
-            </div> ";
-
-        var inviteTable = $('.invite-table');
-        var self = this;
-        contacts.forEach(function(contact){
-
-            if(contact.id == contactId)
-                self.author = contact.name || contact.email || contact.phone || "User";
-
-            var status = "";
-            if(contact.sms_response == null & contact.voice_reponse == null & contact.email_response == null)
-                status = "hidden";
-
-            inviteTable.append(contact_html.format(
-                contact.name || '',
-                contact.email || '',
-                contact.phone || '',
-                status
-            ));
-
-        });
+        if((currentUser != null && currentUser.social_sharing.facebook)
+            || !$('#bt_toggle').is(':checked'))
+            return;
+        window.open(
+            api.url + "/social_sharing/facebook",
+            "_blank",
+            "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500"
+        );
     },
 
-    loadComments: function(comments, currentCommentIndex){
-        var inviteCommentsElement = $('.invite-comments');
-        var commentsHTML = "";
-        var index = 1;
+    plugins: function(){
+        $('#bt_toggle').bootstrapToggle();
+
+//         //DatePicker
+//        this.$el.find('.event-start-date, .event-end-date').datetimepicker({
+//            pickTime: false,
+//        });
+//        this.$el.find('.event-start-time, .event-end-time').datetimepicker({
+//            pickDate: false,
+//        });
+//
+//        this.initWhere();
+    },
+
+    initWhere: function () {
         var that = this;
-        var initial = currentCommentIndex == null;
+        if(typeof google === 'undefined')
+            return;
+        this.$where = this.$el.find('.event-where-input');
 
-        comments.forEach(function(comment){
-            var should_animate = "";
-            if(!initial && index >= currentCommentIndex)
-                should_animate = "animate_comment";
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {HTMLInputElement} */(that.$where[0]),
+            { types: ['geocode'] }
+        );
 
-            commentsHTML = commentsHTML.concat(JST['comment.html']({
-                author: comment.author,
-                comment: comment.comment
-            }));
+        var fillAddress = function() {
+            var place = autocomplete.getPlace();
+            that.model.set('where',place.formatted_address);
+        };
 
-            index++;
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            fillAddress();
         });
-        inviteCommentsElement.html(commentsHTML);
-        that.currentCommentIndex = comments.lenght;
-
-        inviteCommentsElement.scrollTop(1000000);
     },
-    events: {
-        "keypress .invite-newComment": "addNewComment"
-    }
+
+    // Bias the autocomplete object to the user's geographical location,
+    // as supplied by the browser's 'navigator.geolocation' object.
+    geoLocateWhere: function () {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var geolocation = new google.maps.LatLng(
+              position.coords.latitude, position.coords.longitude);
+          var circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          autocomplete.setBounds(circle.getBounds());
+        });
+      }
+    },
 });

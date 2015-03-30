@@ -219,6 +219,41 @@ __p += '<div class="invite-view">\n    <div class="panel">\n         <div class=
 return __p
 };
 
+this["JST"]["invite_attendees.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="zero-margin">\n    <div class="text-center contact-input-container col-md-10 col-xs-10 no-padding">\n        <input type="text" class="contact-input form-control"\n        ';
+  if( features.indexOf('voice') != -1 )  { ;
+__p += '\n        data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n        ';
+ } else { ;
+__p += '\n        data-validation=\'required,email\' placeholder=\'Email Address\'\n        ';
+ } ;
+__p += '>\n    </div>\n    <div class="col-xs-3 col-md-2 no-padding col-xs-2">\n        <button type="button" class="btn new-contact-button form-control">ADD</button>\n    </div>\n</div>\n<div class="zero-margin contact-table-container">\n    <div class="contact-table text-center"></div>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["invite_edit.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="invite-edit-box col-md-6">\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Start Time</h5></div>\n        <div class="col-md-6"><h5>Event End Time</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6">' +
+__e( start ) +
+'</div>\n        <div class="col-md-6">' +
+__e( end ) +
+'</div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-12"><h5>Location</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-10">' +
+__e( where ) +
+'</div>\n        <div class="col-md-2"><i class="fa fa-circle"></i></div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Details</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-12">' +
+__e( description ) +
+'</div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="facebook_share col-md-12">\n                <div>Share on Facebook\n                <input type="checkbox"\n                   data-toggle="toggle"\n                   id="bt_toggle"\n                   class="share_to_facebook"\n                   data-style="android"\n                   data-on=" " data-off=" "\n                   data-onstyle="info"\n                   data-onstyle="success" data-offstyle="danger" />\n                </div>\n            </div>\n    </div>\n    <div class="row medium-margin-top">\n        <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success edit-button">Edit</button></div>\n    </div>\n</div>';
+
+}
+return __p
+};
+
 this["JST"]["invite_header.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;

@@ -45,7 +45,7 @@ SearchView = SimpleView.extend({
                     data.forEach(function(invite){
 
                         results.append(that.invite_string.format(
-                            invite.unique_id,
+                            invite.invite_id,
                             invite.title,
                             invite.start,
                             invite.end

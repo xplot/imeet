@@ -9,10 +9,13 @@ import base64
 from datetime import datetime
 from base import JsonHandler
 from config import config
+from google.appengine.api import search
+from google.appengine.ext import ndb
 from managers.template import TemplateModel
 from managers.auth import user_context, request_with_subscription
 from managers.invite import InviteMapper, InviteModel
 from models import Invite
+from boilerplate.models import  User
 
 class InviteHandler(JsonHandler):
 
@@ -44,9 +47,31 @@ class InviteHandler(JsonHandler):
         return InviteMapper.invite_to_dict_with_contact_responses()
 
     def search(self, user_id):
+        """Search all the invites with the given term in the title"""
         term = self.request.get('term', None)
-        invite_manager = InviteManager()
-        return invite_manager.search(user_id, term)
+
+        if term is None:
+            return self.get_by_user_id(user_id)
+
+        user = User.get_by_id(long(user_id))
+        if not user:
+            raise Exception("Please provide a valid user")
+
+        index = search.Index(name=InviteModel.invite_index)
+        invite_query = index.search(term)
+        invite_ids = [x.doc_id for x in invite_query]
+
+        if not invite_ids:
+            return []
+
+        invites = Invite.query(
+            ndb.AND(
+                Invite.unique_id.IN(invite_ids),
+                Invite.user == user.key
+            )
+        ).fetch() or []
+
+        return [InviteMapper.invite_to_dict(InviteModel(x)) for x in invites]
 
     def accept_response(self, invite_id, contact_id):
         data = self._data()

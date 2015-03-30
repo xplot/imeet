@@ -12,7 +12,7 @@ body{
     bottom: 0px;
     top:0px;
     width: 100%;
-    //padding: 0px;
+    padding: 0px  ;
   }
 
   .navbar-separator{
@@ -60,4 +60,114 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Header */
+#invite-header{
 
+}
+/*Edit */
+
+#invite-body{
+  position: relative;
+  padding-top: 2%;
+
+  #invite-edit {
+    display: table;
+    text-align: center;
+
+    .invite-edit-box {
+      vertical-align: middle;
+      display: table-cell;
+      text-align: left;
+
+      background-color: lightgrey;
+      padding: 15px;
+
+      .row {
+
+      }
+      .small-margin-top {
+        margin-top: 10px;
+      }
+      .medium-margin-top {
+        margin-top: 20px;
+      }
+
+      .col-no-padding{
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      .facebook_share {
+        display: inline-block;
+        padding-bottom: 10px;
+
+        .toggle-on{
+          background-color: green;
+        }
+        .btn{
+
+        }
+        .toggle{
+          height: 25px !important;
+          font-size: 70% !important;
+        }
+
+        div {
+          display: table-cell;
+          float: none;
+          vertical-align: middle;
+        }
+      }
+
+
+    }
+
+  }
+
+  #invite-attendees{
+
+      .twitter-typeahead{
+        width: 100%;
+
+      }
+
+      .tt-dropdown-menu {
+        width:100%;
+        padding: 2px 0;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+           -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        font-weight: 400;
+        max-height: 400px;
+        overflow-y: auto;
+
+        .tt-suggestion {
+          padding: 3px 20px;
+          line-height: 24px;
+
+        }
+        .tt-cursor {
+          color: @off-white;
+          background-color: @nav-bg-color;
+          cursor: pointer;
+        }
+
+        .typeahead-contact-header{
+          background-color: @nav-bg-color;
+          color: @off-white;
+          font-weight: bold !important;
+          font-size: 110%;
+        }
+
+        .typeahead-group-header{
+          background-color: @nav-bg-color;
+          color: @off-white;
+          font-weight: bold !important;
+          font-size: 110%;
+
+        }
+    }
+  }
+}

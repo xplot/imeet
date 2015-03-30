@@ -1,0 +1,19 @@
+<div class="row text-center">
+    <div class="col-md-12 text-left"><h4>Invite People</h4></div>
+</div>
+<div class="zero-margin">
+    <div class="text-center contact-input-container col-md-10 col-xs-10 no-padding">
+        <input type="text" class="contact-input form-control"
+        <%  if( features.indexOf('voice') != -1 )  { %>
+        data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
+        <% } else { %>
+        data-validation='required,email' placeholder='Email Address'
+        <% } %>>
+    </div>
+    <div class="col-xs-3 col-md-2 no-padding col-xs-2">
+        <button type="button" class="btn new-contact-button form-control">ADD</button>
+    </div>
+</div>
+<div class="zero-margin contact-table-container">
+    <div class="contact-table text-center"></div>
+</div>
