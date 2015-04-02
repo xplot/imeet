@@ -42,7 +42,7 @@ function init_app() {
 
     //Report
     admin_view = new AdminInviteView({
-        el: "#invite-edit"
+        el: "#invite-body"
     });
     invite_view = new InviteView({
         el: "#view-container"

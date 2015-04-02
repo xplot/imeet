@@ -1,17 +1,44 @@
+
+
 <div class="invite-edit-box col-md-6">
     <div class="row small-margin-top">
         <div class="col-md-6"><h5>Event Start Time</h5></div>
         <div class="col-md-6"><h5>Event End Time</h5></div>
     </div>
     <div class="row">
-        <div class="col-md-6"><%- start %></div>
-        <div class="col-md-6"><%- end %></div>
+        <div class="col-md-6">
+            <%  if( !edit_view )  { %>
+                    <%- start %>
+            <% } else { %>
+                <div class="date-group" id="start-date-group">
+                    <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="<%-start_date %>">
+                    <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="<%-start_time %>">
+                </div>
+            <% } %>
+
+        </div>
+        <div class="col-md-6">
+            <%  if( !edit_view )  { %>
+                    <%- end %>
+            <% } else { %>
+                <div class="date-group" id="end-date-group">
+                    <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="<%-end_date %>">
+                    <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="<%-end_time %>">
+                </div>
+            <% } %>
+        </div>
     </div>
     <div class="row small-margin-top">
         <div class="col-md-12"><h5>Location</h5></div>
     </div>
     <div class="row">
-        <div class="col-md-10"><%- where %></div>
+        <%  if( !edit_view )  { %>
+            <div class="col-md-10"><%- where %></div>
+        <% } else { %>
+            <div class="col-md-10">
+                <input type="text" class="form-control event-where-input" placeholder="Location...."  >
+            </div>
+        <% } %>
         <div class="col-md-2"><i class="fa fa-circle"></i></div>
     </div>
     <div class="row small-margin-top">
@@ -35,6 +62,11 @@
             </div>
     </div>
     <div class="row medium-margin-top">
-        <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success edit-button">Edit</button></div>
+        <%  if( !edit_view )  { %>
+            <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success edit-button">Edit</button></div>
+        <% } else { %>
+            <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success save-button">Save</button></div>
+        <% } %>
+
     </div>
 </div>

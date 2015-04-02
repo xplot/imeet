@@ -10,6 +10,16 @@ __p += '<div class="modal addGroup-modal" tabindex="-1" >\n    <div class="modal
 return __p
 };
 
+this["JST"]["admin_edit.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="container">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6" id="invite-attendees"></div>\n        <div class="col-md-6" id="invite-edit"></div>\n    </div>\n</div>\n\n';
+
+}
+return __p
+};
+
 this["JST"]["comment.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -36,13 +46,13 @@ __e( name) +
 __e(email) +
 ' ' +
 __e(phone ) +
-'\'>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0\'> ' +
+'\'>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-10 col-md-offset-0\'>\n        <b>' +
 __e(name ) +
-'</div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-3 col-md-offset-0\'> ' +
+'</b> ' +
 __e(email ) +
-'</div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-3 col-md-offset-0\'> ' +
+' ' +
 __e(phone ) +
-'</div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-2 col-md-offset-0\'>\n        <button type=\'button\' class=\'btn btn-danger remove-contact\' data-rowid=\'' +
+'\n    </div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-2 col-md-offset-0\'>\n        <button type=\'button\' class=\'btn btn-danger remove-contact\' data-rowid=\'' +
 __e(unique_id ) +
 '\'>-</button>\n    </div>\n</div>\n';
 
@@ -224,13 +234,13 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="zero-margin">\n    <div class="text-center contact-input-container col-md-10 col-xs-10 no-padding">\n        <input type="text" class="contact-input form-control"\n        ';
+__p += '<div class="invite-attendees-box">\n<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="zero-margin">\n    <div class="text-center contact-input-container col-md-10 col-xs-10 no-padding">\n        <input type="text" class="contact-input form-control"\n        ';
   if( features.indexOf('voice') != -1 )  { ;
 __p += '\n        data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n        ';
  } else { ;
 __p += '\n        data-validation=\'required,email\' placeholder=\'Email Address\'\n        ';
  } ;
-__p += '>\n    </div>\n    <div class="col-xs-3 col-md-2 no-padding col-xs-2">\n        <button type="button" class="btn new-contact-button form-control">ADD</button>\n    </div>\n</div>\n<div class="zero-margin contact-table-container">\n    <div class="contact-table text-center"></div>\n</div>';
+__p += '>\n    </div>\n    <div class="col-xs-3 col-md-2 no-padding col-xs-2">\n        <button type="button" class="btn new-contact-button form-control">ADD</button>\n    </div>\n</div>\n<div class="zero-margin contact-table-container">\n    <div class="contact-table text-center"></div>\n</div>\n</div>';
 
 }
 return __p
@@ -238,17 +248,50 @@ return __p
 
 this["JST"]["invite_edit.html"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="invite-edit-box col-md-6">\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Start Time</h5></div>\n        <div class="col-md-6"><h5>Event End Time</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6">' +
+__p += '\n\n<div class="invite-edit-box col-md-6">\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Start Time</h5></div>\n        <div class="col-md-6"><h5>Event End Time</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6">\n            ';
+  if( !edit_view )  { ;
+__p += '\n                    ' +
 __e( start ) +
-'</div>\n        <div class="col-md-6">' +
+'\n            ';
+ } else { ;
+__p += '\n                <div class="date-group" id="start-date-group">\n                    <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
+__e(start_date ) +
+'">\n                    <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
+__e(start_time ) +
+'">\n                </div>\n            ';
+ } ;
+__p += '\n\n        </div>\n        <div class="col-md-6">\n            ';
+  if( !edit_view )  { ;
+__p += '\n                    ' +
 __e( end ) +
-'</div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-12"><h5>Location</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-10">' +
+'\n            ';
+ } else { ;
+__p += '\n                <div class="date-group" id="end-date-group">\n                    <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="' +
+__e(end_date ) +
+'">\n                    <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="' +
+__e(end_time ) +
+'">\n                </div>\n            ';
+ } ;
+__p += '\n        </div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-12"><h5>Location</h5></div>\n    </div>\n    <div class="row">\n        ';
+  if( !edit_view )  { ;
+__p += '\n            <div class="col-md-10">' +
 __e( where ) +
-'</div>\n        <div class="col-md-2"><i class="fa fa-circle"></i></div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Details</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-12">' +
+'</div>\n        ';
+ } else { ;
+__p += '\n            <div class="col-md-10">\n                <input type="text" class="form-control event-where-input" placeholder="Location...."  >\n            </div>\n        ';
+ } ;
+__p += '\n        <div class="col-md-2"><i class="fa fa-circle"></i></div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Details</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-12">' +
 __e( description ) +
-'</div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="facebook_share col-md-12">\n                <div>Share on Facebook\n                <input type="checkbox"\n                   data-toggle="toggle"\n                   id="bt_toggle"\n                   class="share_to_facebook"\n                   data-style="android"\n                   data-on=" " data-off=" "\n                   data-onstyle="info"\n                   data-onstyle="success" data-offstyle="danger" />\n                </div>\n            </div>\n    </div>\n    <div class="row medium-margin-top">\n        <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success edit-button">Edit</button></div>\n    </div>\n</div>';
+'</div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="facebook_share col-md-12">\n                <div>Share on Facebook\n                <input type="checkbox"\n                   data-toggle="toggle"\n                   id="bt_toggle"\n                   class="share_to_facebook"\n                   data-style="android"\n                   data-on=" " data-off=" "\n                   data-onstyle="info"\n                   data-onstyle="success" data-offstyle="danger" />\n                </div>\n            </div>\n    </div>\n    <div class="row medium-margin-top">\n        ';
+  if( !edit_view )  { ;
+__p += '\n            <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success edit-button">Edit</button></div>\n        ';
+ } else { ;
+__p += '\n            <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success save-button">Save</button></div>\n        ';
+ } ;
+__p += '\n\n    </div>\n</div>';
 
 }
 return __p

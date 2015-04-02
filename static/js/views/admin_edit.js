@@ -1,5 +1,5 @@
 AdminInviteView = SimpleView.extend({
-    template: JST['inviteReport.html'],
+    template: JST['admin_edit.html'],
     inviteId:null,
     author: "Organizer",
     contacts: null,
@@ -25,16 +25,21 @@ AdminInviteView = SimpleView.extend({
 
         var invite_json = this.model.toJSON();
 
-        this.$invite_header = $('#invite-header');
-        this.$invite_edit = $('#invite-edit');
-        this.$invite_contacts = $('#invite-attendees');
+        this.$el.html(this.template(invite_json));
 
-        this.$invite_header.html(JST['invite_header.html'](invite_json) );
-        this.$invite_edit.html(JST['invite_edit.html'](invite_json) );
-        var invite_attendees = new InviteAttendeesView();
-        this.$invite_contacts.html(invite_attendees.render({
-            contacts: data.contacts
-        }));
+        var invite_attendees = new InviteAttendeesView({
+            el:'#invite-attendees'
+        });
+        var invite_header = new InviteHeaderView({
+            el:'#invite-header'
+        });
+        var invite_edit_details = new InviteEditDetailsView({
+            el:'#invite-edit'
+        });
+
+        invite_attendees.render({contacts: data.contacts});
+        invite_header.render(this.model);
+        invite_edit_details.render(this.model);
 
         this.plugins();
     },
@@ -55,14 +60,7 @@ AdminInviteView = SimpleView.extend({
     plugins: function(){
         $('#bt_toggle').bootstrapToggle();
 
-//         //DatePicker
-//        this.$el.find('.event-start-date, .event-end-date').datetimepicker({
-//            pickTime: false,
-//        });
-//        this.$el.find('.event-start-time, .event-end-time').datetimepicker({
-//            pickDate: false,
-//        });
-//
+
 //        this.initWhere();
     },
 

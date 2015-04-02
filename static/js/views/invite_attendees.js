@@ -1,6 +1,7 @@
 InviteAttendeesView = Backbone.View.extend({
     template: JST['invite_attendees.html'],
     contacts: null,
+    last_selected_item: null,
 
     initialize: function(options){
         this.options = options || {};
@@ -8,14 +9,13 @@ InviteAttendeesView = Backbone.View.extend({
     },
 
     events: {
-        'click' : 'xxx'
-        /*
+
         'click .new-contact' : 'newContact',
         'click .remove-contact': 'removeContact',
         'keyup .contact-input': 'newContactEnter',
         'click .new-contact-button': 'newContactClick',
         'click .contact-input-container': 'focusOnClick'
-        */
+
     },
 
     render: function(data){
@@ -23,6 +23,7 @@ InviteAttendeesView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.plugins();
 
+        this.$newContact = $('.contact-input');
         return this.$el.html();
     },
 
@@ -37,12 +38,10 @@ InviteAttendeesView = Backbone.View.extend({
         this.listenTo(this.model, 'add', this.newContact);
         this.listenTo(this.model, 'remove', this.removeContact_DOM);
     },
-    xxx: function(evt) {
-      console.log('click');
-    },
 
-    last_selected_item: null,
+
     newContactEnter: function(evt) {
+
         if (evt.keyCode != 13) {
             return;
         }
@@ -50,8 +49,6 @@ InviteAttendeesView = Backbone.View.extend({
         this.newContactClick();
     },
     newContactClick: function() {
-        console.log('x');
-
         var contact = null;
         var group = null;
         if(this.last_selected_item != null && this.last_selected_item.is_group)
@@ -141,7 +138,6 @@ InviteAttendeesView = Backbone.View.extend({
 
     setupContactsTypeahead: function(){
         var that = this;
-        that.$newContact = $('.contact-input');
 
         var substringMatcher = function(strs) {
             return function findMatches(q, cb) {
@@ -224,5 +220,29 @@ InviteAttendeesView = Backbone.View.extend({
 
             }
         });
+    },
+
+    parsePhoneAndEmail: function(addressString){
+        var trimmedAddressString = addressString.trim();
+        var addresses = addressString.split(';');
+        if(addresses.length == 1)
+            addresses = addressString.split(',');
+
+        for(var i=0; i < addresses.length; i++)
+            addresses[i] = addresses[i].trim();
+
+        //only 1 address (phone or email)
+        if(addresses.length == 1){
+            if(isNaN(addresses[0]))
+                return {email: addresses[0], phone: ''};
+            else
+                return {phone: addresses[0], email: ''};
+        }
+        else{ //phone and email at the same time.
+            if(isNaN(addresses[0]))
+                return {email: addresses[0], phone: addresses[1]};
+            else
+                return {phone: addresses[0], email: addresses[1]};
+        }
     },
 });

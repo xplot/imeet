@@ -57,16 +57,37 @@ GroupList = Backbone.Collection.extend({
  });
 
 InviteModel = Backbone.Model.extend({
-  defaults: {
+    defaults: {
         'title': '',
-        'start_date': '',
-        'start_time': '',
-        'end_date': '',
-        'end_time': '',
+        'start': '',
+
+        'end': '',
         'description': '',
         'where': '',
         'contacts': new ContactList(),
         'all_contacts': new ContactList(),
         'all_groups': new ContactList(),
+    },
+
+    format_date: function(property, format){
+        var _date = this.get(property);
+
+        if(_date == '' || _date == null)
+            return null;
+
+        return moment(_date).format(format);
+    },
+
+    toJSON: function(){
+        var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
+
+        json['start_date'] = this.format_date('start', 'MM/DD/YYYY');
+        json['start_time'] = this.format_date('start', 'HH:MM');
+
+        json['end_date'] = this.format_date('end', 'MM/DD/YYYY');
+        json['end_time'] = this.format_date('end', 'HH:MM');
+
+        return json;
     }
+
 });
