@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-6">
             <%  if( !edit_view )  { %>
-                    <%- start %>
+                    <%- start_date %> <%- start_time %>
             <% } else { %>
                 <div class="date-group" id="start-date-group">
                     <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="<%-start_date %>">
@@ -19,7 +19,7 @@
         </div>
         <div class="col-md-6">
             <%  if( !edit_view )  { %>
-                    <%- end %>
+                    <%- end_date %> <%- end_time %>
             <% } else { %>
                 <div class="date-group" id="end-date-group">
                     <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="<%-end_date %>">
@@ -39,27 +39,34 @@
                 <input type="text" class="form-control event-where-input" placeholder="Location...."  >
             </div>
         <% } %>
-        <div class="col-md-2"><i class="fa fa-circle"></i></div>
+        <div class="col-md-2"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
     </div>
     <div class="row small-margin-top">
         <div class="col-md-6"><h5>Event Details</h5></div>
     </div>
-    <div class="row">
-        <div class="col-md-12"><%- description %></div>
+    <div class="row description">
+        <div class="col-md-12">
+            <%  if( !edit_view )  { %>
+                <%- description %>
+            <% } else { %>
+                <textarea class="event-description-input"></textarea>
+            <% } %>
+        </div>
     </div>
     <div class="row small-margin-top">
-        <div class="facebook_share col-md-12">
-                <div>Share on Facebook
-                <input type="checkbox"
-                   data-toggle="toggle"
-                   id="bt_toggle"
-                   class="share_to_facebook"
-                   data-style="android"
-                   data-on=" " data-off=" "
-                   data-onstyle="info"
-                   data-onstyle="success" data-offstyle="danger" />
-                </div>
-            </div>
+        <div class="facebook_share col-md-6">
+            Share on Facebook
+        </div>
+        <div class="col-md-6">
+            <input type="checkbox"
+               data-toggle="toggle"
+               id="bt_toggle"
+               class="share_to_facebook"
+               data-style="android"
+               data-on=" " data-off=" "
+               data-onstyle="info"
+               data-onstyle="success" data-offstyle="danger" />
+        </div>
     </div>
     <div class="row medium-margin-top">
         <%  if( !edit_view )  { %>

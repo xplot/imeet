@@ -84,6 +84,8 @@ class Invite(BaseModel):
 
     @classmethod
     def get_by_unique_id(cls, unique_id):
+        if not unique_id:
+            return None
         return Invite.query(Invite.unique_id == unique_id).get()
 
     @classmethod
@@ -111,6 +113,9 @@ class Invite(BaseModel):
                 ContactInvite.invite_id == unique_id
             ).fetch()
         ]
+
+        if not contact_unique_ids:
+            return []
         return Contact.query(Contact.unique_id.IN(contact_unique_ids))
 
 

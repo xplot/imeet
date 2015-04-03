@@ -1,6 +1,6 @@
 
 // First, checks if it isn't implemented yet.
-if (!String.prototype.format)
+if (!String.prototype.format){
   String.prototype.format = function() {
     var args = arguments;
     return this.replace(/{(\d+)}/g, function(match, number) {
@@ -10,6 +10,11 @@ if (!String.prototype.format)
       ;
     });
   };
+}
+
+function isNullOrEmpty(x_string){
+  return x_string == null || x_string === '';
+};
 
 Backbone.Model.prototype.toJSON2 = function() {
   var json = _.clone(this.attributes);

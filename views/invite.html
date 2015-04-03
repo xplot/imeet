@@ -1,5 +1,3 @@
-
-
 <div class="snap-panel invite-create">
     <section data-panel="first" class="invite first">
         <div class="zero-margin text-center invite-content ">
@@ -61,49 +59,7 @@
             </div>
 
         </div>
-        <div class="zero-margin small-margin-top">
-            <div class="col-xs-12 col-md-8 col-md-offset-2 menu text-center">
-                <a href="" class="" data-panel="second"><i class="fa fa-angle-down fa-5x"></i></a>
-            </div>
-        </div>
-    </section>
 
-    <section data-panel="second" class="invite second ">
-        <div class="panel col-xs-12 col-xs-offset-0 col-md-8 col-md-offset-2 invite-content">
-            <div class="panel-heading">
-                <div class="row">
-                     <div class='pull-left col-xs-3 col-md-6'><h4 class='event-name'><%- title %></h4></div>
-                     <div class='col-xs-9 col-md-6 text-right'>
-                        <div class='col-xs-12 col-md-12 event-start-date-formatted'></div>
-                        <div class='col-xs-12 col-md-12 event-end-date-formatted'></div>
-                     </div>
-                </div>
-                 <div class='row'>
-                    <div class='pull-left event-where col-md-12'></div> 
-                </div>
-            </div>
-            <div class="panel-body">
-                <div class="row text-center">
-                    <h4>Who is invited?</h4>
-                </div>
-                <div class="zero-margin">
-                    <div class="text-center contact-input-container col-md-10 col-xs-10 no-padding">
-                        <input type="text" class="contact-input form-control"
-                        <%  if( features.indexOf('voice') != -1 )  { %>
-                        data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
-                        <% } else { %>
-                        data-validation='required,email' placeholder='Email Address'
-                        <% } %>>
-                    </div>
-                    <div class="col-xs-3 col-md-2 no-padding col-xs-2">
-                        <button type="button" class="btn new-contact-button form-control">+</button>
-                    </div>
-                </div>
-                <div class="zero-margin contact-table-container">
-                    <div class="contact-table text-center"></div>
-                </div>
-            </div>
-        </div>
         <div class='row send-container col-xs-offset-0 col-xs-12 col-md-8 col-md-offset-2'>
             <div class="facebook_share pull-right">
                 <div>Share on Facebook</div>
@@ -118,24 +74,9 @@
                 </div>
             </div>
             <div class="">
-                <button type="button" class="btn form-control btn-success send">Send</button>
+                <button type="button" class="btn form-control btn-success send">Create</button>
             </div>
 
         </div>
     </section>
 </div>
-
-
-<!--&lt;!&ndash; Footer &ndash;&gt;-->
-<!--<div class="section-container footer desktop navbar-fixed-bottom">-->
-<!--<div class="footer-below">-->
-    <!--<div class="container">-->
-      <!--<div class="row">-->
-          <!--<div class="col-lg-12">-->
-              <!--Miami, FL<br/>-->
-              <!--Copyright 2014 &copy; iMeet Inc. All rights reserved.-->
-          <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--</div>-->

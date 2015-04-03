@@ -42,9 +42,10 @@ class InviteMapper(object):
             'user_id': u'5302669702856704' #Not mandatory, could be anonymous
         }
         """
+        unique_id = data_dict.get('invite_id', None)
+        invite = Invite.get_by_unique_id(unique_id) or Invite()
 
-        invite = Invite()
-        invite.unique_id = data_dict.get('unique_id', None)
+        invite.unique_id = unique_id # only for create cases
         invite.title = data_dict.get('title', None)
         invite.description = data_dict.get('description', None)
         invite.where = data_dict.get('where', None)

@@ -59,34 +59,66 @@ GroupList = Backbone.Collection.extend({
 InviteModel = Backbone.Model.extend({
     defaults: {
         'title': '',
-        'start': '',
-
-        'end': '',
+        'start_date': '',
+        'start_time': '',
+        'end_date': '',
+        'end_time': '',
         'description': '',
         'where': '',
         'contacts': new ContactList(),
         'all_contacts': new ContactList(),
-        'all_groups': new ContactList(),
+        'all_groups': new ContactList()
+    },
+
+    initialize: function (options) {
+        if(options == null)
+            return;
+        var start_datetime = this.parse_datetime(options.start);
+        var end_datetime = this.parse_datetime(options.end);
+
+        this.set('start_date', start_datetime.date);
+        this.set('start_time', start_datetime.time);
+        this.set('end_date', end_datetime.date);
+        this.set('end_time', end_datetime.time);
     },
 
     format_date: function(property, format){
         var _date = this.get(property);
 
-        if(_date == '' || _date == null)
+        if(isNullOrEmpty(_date))
             return null;
 
         return moment(_date).format(format);
     },
 
+    get_datetime: function(property){
+        var time = this.get(property+'_time');
+        var date = this.get(property+'_date');
+
+        if(isNullOrEmpty(time)|| isNullOrEmpty(date))
+            return null;
+        return date + " " + time;
+    },
+
+    parse_datetime: function(datetime){
+        if(isNullOrEmpty(datetime))
+            return {
+                date : null,
+                time: null
+            };
+
+        var moment_obj = moment(datetime);
+
+        return {
+            date: moment_obj.format('MM/D/YYYY'),
+            time: moment_obj.format('hh:mm A')
+        };
+    },
+
     toJSON: function(){
         var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
-
-        json['start_date'] = this.format_date('start', 'MM/DD/YYYY');
-        json['start_time'] = this.format_date('start', 'HH:MM');
-
-        json['end_date'] = this.format_date('end', 'MM/DD/YYYY');
-        json['end_time'] = this.format_date('end', 'HH:MM');
-
+        json['start'] = this.get_datetime('start');
+        json['end'] = this.get_datetime('end');
         return json;
     }
 

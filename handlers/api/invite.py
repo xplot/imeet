@@ -20,6 +20,21 @@ from boilerplate.models import  User
 class InviteHandler(JsonHandler):
 
     @user_context
+    def save(self):
+        """Save the invite"""
+        invite_dict = self._data()
+
+        #Mapping
+        invite_entity = InviteMapper.get_from_dict(invite_dict)
+
+        logging.info(invite_entity)
+
+        invite_model = InviteModel(invite_entity, user=self.user)
+        invite_id = invite_model.put()
+
+        return invite_id
+
+    @user_context
     @request_with_subscription
     def send(self):
         """Send the invite out"""

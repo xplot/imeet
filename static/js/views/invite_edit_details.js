@@ -3,46 +3,15 @@ InviteEditDetailsView = SimpleView.extend({
     bindings: {
         '.event-name': 'title',
         '.event-name-input': 'title',
-        '.event-end-date': 'end',
-        '.event-end-time': 'end',
         '.event-description': 'description',
         '.event-description-input': 'description',
         '.event-where': 'where',
         '.event-where-input': 'where',
 
-        '.event-start-date': {
-            observe: ['start'],
-            onGet: function(values) {
-                if(values.length == 0 || values[0] == '')
-                    return null;
-                return moment(values[0]).format('MM/D/YYYY');
-            },
-            onSet: function(value) {
-                return null; //we will do this manually later
-            }
-        },
-
-        '.event-start-time': {
-            observe: ['start'],
-            onGet: function(values) {
-                if(values.length == 0 || values[0] == '')
-                    return null;
-
-                return moment(values[0]).format('hh:mm A');
-            },
-            onSet: function(value, options) {
-                var current_date = moment(options.view.model.get('start'));
-                var new_time = moment(value);
-                console.log(value);
-                current_date.hour(new_time.hour());
-                current_date.minutes(new_time.minutes());
-
-                console.log(current_date.format('MM/D/YYYY hh:mm A'));
-                return current_date.format('MM/D/YYYY hh:mm A'); //we will do this manually later
-            }
-        }
-
-
+        '.event-start-date': 'start_date',
+        '.event-start-time': 'start_time',
+        '.event-end-date': 'end_date',
+        '.event-end-time': 'end_time',
     },
     initialize: function(options){
         this.options = options || {};
@@ -64,6 +33,9 @@ InviteEditDetailsView = SimpleView.extend({
             this.edit_plugins();
             this.stickit();
         }
+        else{
+            this.read_plugins();
+        }
 
     },
 
@@ -73,33 +45,28 @@ InviteEditDetailsView = SimpleView.extend({
     },
 
     save: function(){
-        if(!validator.validateItems('.valid-before-submit') ||
-            this.model.attributes.contacts.length == 0){
+        if(!validator.validateItems('.valid-before-submit')){
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
-
-        console.log(this.model.get('start_date'));
-        console.log(this.model.get('start_time'));
-
-        this.model.set('start', this.model.get('start_date') + " " + this.model.get('start_time'));
-        console.log(this.model.get('start'));
-
-        this.model.set('end', this.model.get('end_date') + " " + this.model.get('end_time'));
-        this.render(this.model, false)
+        //Finally submitt to server
+        this.submit();
     },
 
     submit: function(){
         var that = this;
+        var invite = this.model.toJSON();
+        if(currentUser != null)
+            invite.user_id = currentUser.id;
+
         $.ajax({
             url: "/api/invite",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify(this.model.toJSON()),
+            data: JSON.stringify(invite),
             cache: false,
             success: function(data) {
-
-              console.log(data);
+              that.render(that.model, false);
             },
             error: function(data) {
                 alert_notification([{
@@ -108,6 +75,10 @@ InviteEditDetailsView = SimpleView.extend({
                 }]);
             }
         });
+    },
+
+    read_plugins: function(){
+        $('#bt_toggle').bootstrapToggle();
     },
 
     edit_plugins: function(){
@@ -119,6 +90,8 @@ InviteEditDetailsView = SimpleView.extend({
         });
 
         this.initWhere();
+
+        $('#bt_toggle').bootstrapToggle();
     },
 
     initWhere: function () {
@@ -158,4 +131,17 @@ InviteEditDetailsView = SimpleView.extend({
         });
       }
     },
+
+    share_on_facebook_auth: function(){
+        //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
+
+        if((currentUser != null && currentUser.social_sharing.facebook)
+            || !$('#bt_toggle').is(':checked'))
+            return;
+        window.open(
+            api.url + "/social_sharing/facebook",
+            "_blank",
+            "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500"
+        );
+    }
 });

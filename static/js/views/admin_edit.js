@@ -44,60 +44,8 @@ AdminInviteView = SimpleView.extend({
         this.plugins();
     },
 
-    share_on_facebook_auth: function(){
-        //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
-
-        if((currentUser != null && currentUser.social_sharing.facebook)
-            || !$('#bt_toggle').is(':checked'))
-            return;
-        window.open(
-            api.url + "/social_sharing/facebook",
-            "_blank",
-            "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500"
-        );
-    },
-
     plugins: function(){
-        $('#bt_toggle').bootstrapToggle();
 
-
-//        this.initWhere();
     },
 
-    initWhere: function () {
-        var that = this;
-        if(typeof google === 'undefined')
-            return;
-        this.$where = this.$el.find('.event-where-input');
-
-        autocomplete = new google.maps.places.Autocomplete(
-            /** @type {HTMLInputElement} */(that.$where[0]),
-            { types: ['geocode'] }
-        );
-
-        var fillAddress = function() {
-            var place = autocomplete.getPlace();
-            that.model.set('where',place.formatted_address);
-        };
-
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            fillAddress();
-        });
-    },
-
-    // Bias the autocomplete object to the user's geographical location,
-    // as supplied by the browser's 'navigator.geolocation' object.
-    geoLocateWhere: function () {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          var geolocation = new google.maps.LatLng(
-              position.coords.latitude, position.coords.longitude);
-          var circle = new google.maps.Circle({
-            center: geolocation,
-            radius: position.coords.accuracy
-          });
-          autocomplete.setBounds(circle.getBounds());
-        });
-      }
-    },
 });

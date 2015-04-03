@@ -58,7 +58,8 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/social_sharing/facebook', html.SocialSharingHandler, name='social-sharing-facebook', handler_method='facebook', strict_slash=True),
 
     #Invite
-    Route('/api/invite', api.InviteHandler, name='send', handler_method='send', methods=['POST']),
+    Route('/api/invite', api.InviteHandler, name='save', handler_method='save', methods=['POST']),
+    Route('/api/invite/send', api.InviteHandler, name='send', handler_method='send', methods=['POST']),
     Route('/api/invite/search/<user_id>', api.InviteHandler, name='search', handler_method='search'),
     Route('/api/invite/<id>', api.InviteHandler, name='view', handler_method='view', methods=['GET']),
     Route('/api/<invite_id>/contact/<contact_id>/response', api.InviteHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
