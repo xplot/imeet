@@ -38,7 +38,7 @@ this["JST"]["contact-item-invite-create.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div id=\'' +
+__p += '<!--<div id=\'' +
 __e( unique_id ) +
 '\'  class=\'contact-row col-md-12\' data-contact=\'' +
 __e( name) +
@@ -46,15 +46,25 @@ __e( name) +
 __e(email) +
 ' ' +
 __e(phone ) +
-'\'>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-10 col-md-offset-0\'>\n        <b>' +
+'\'>-->\n    <!--<div class=\'col-xs-8 col-xs-offset-2 col-md-10 col-md-offset-0\'>-->\n        <!--<b>' +
 __e(name ) +
 '</b> ' +
 __e(email ) +
 ' ' +
 __e(phone ) +
-'\n    </div>\n    <div class=\'col-xs-8 col-xs-offset-2 col-md-2 col-md-offset-0\'>\n        <button type=\'button\' class=\'btn btn-danger remove-contact\' data-rowid=\'' +
+'-->\n    <!--</div>-->\n    <!--<div class=\'col-xs-8 col-xs-offset-2 col-md-2 col-md-offset-0\'>-->\n        <!--<button type=\'button\' class=\'btn btn-danger remove-contact\' data-rowid=\'' +
 __e(unique_id ) +
-'\'>-</button>\n    </div>\n</div>\n';
+'\'>-</button>-->\n    <!--</div>-->\n<!--</div>-->\n\n<div class="col-md-12 contact-item-details" id=\'' +
+__e( unique_id ) +
+'\'>\n    <span class="details"><b>' +
+__e(name ) +
+'</b> ' +
+__e(email ) +
+' ' +
+__e(phone ) +
+'</span>\n    <button type=\'button\' class=\'btn btn-danger remove-contact pull-right\' data-rowid=\'' +
+__e(unique_id ) +
+'\'>-</button>\n</div>\n';
 
 }
 return __p
@@ -102,15 +112,15 @@ this["JST"]["contact_item_typeahead.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row" data-id="' +
+__p += '<span class="details" data-id="' +
 __e( unique_id ) +
-'">\n    <div class="editable col-sm-4 col-xs-8">\n        ' +
-__e( name ) +
-'\n    </div>\n    <div class="editable desktop tablet col-sm-4">' +
-__e( email ) +
-'</div>\n    <div class="editable desktop tablet col-sm-2">' +
-__e( phone ) +
-'</div>\n</div>';
+'"><b>' +
+__e(name ) +
+'</b> ' +
+__e(email ) +
+' ' +
+__e(phone ) +
+'</span>';
 
 }
 return __p
@@ -226,13 +236,13 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="invite-attendees-box">\n<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="zero-margin">\n    <div class="text-center contact-input-container col-md-10 col-xs-10 no-padding">\n        <input type="text" class="contact-input form-control"\n        ';
+__p += '<div class="invite-attendees-box">\n<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="row">\n    <div class="contact-input-container col-md-12">\n        <input type="text" class="contact-input form-control"\n        ';
   if( features.indexOf('voice') != -1 )  { ;
 __p += '\n        data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n        ';
  } else { ;
 __p += '\n        data-validation=\'required,email\' placeholder=\'Email Address\'\n        ';
  } ;
-__p += '>\n    </div>\n    <div class="col-xs-3 col-md-2 no-padding col-xs-2">\n        <button type="button" class="btn new-contact-button form-control">ADD</button>\n    </div>\n</div>\n<div class="zero-margin contact-table-container">\n    <div class="contact-table text-center"></div>\n</div>\n</div>';
+__p += '>\n        <button type="button" class="btn new-contact-button form-control">+</button>\n    </div>\n</div>\n<div class="row contact-table-container">\n    <div class="contact-table"></div>\n</div>\n</div>';
 
 }
 return __p

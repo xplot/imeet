@@ -156,6 +156,18 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   #invite-attendees{
+      .contact-input-container{
+
+        .contact-input{
+          float: left;
+        }
+        .new-contact-button{
+          width: 15%;
+          float: right;
+        }
+      }
+
+
 
       .invite-attendees-box {
         vertical-align: middle;
@@ -167,8 +179,8 @@ h1, h2, h3, h4, h5, h6 {
       }
 
       .twitter-typeahead{
-        width: 100%;
-
+        width: 80%;
+        font-size: 80%;
       }
 
       .tt-dropdown-menu {
@@ -196,19 +208,37 @@ h1, h2, h3, h4, h5, h6 {
         }
 
         .typeahead-contact-header{
-          background-color: @nav-bg-color;
-          color: @off-white;
+          background-color: lightgrey;
           font-weight: bold !important;
           font-size: 110%;
+          text-align: center;
         }
 
         .typeahead-group-header{
-          background-color: @nav-bg-color;
-          color: @off-white;
+          background-color: lightgrey;
           font-weight: bold !important;
           font-size: 110%;
-
+          text-align: center;
         }
+    }
+
+    .contact-table-container{
+      margin-top: 20px;
+
+      .contact-item-details{
+        margin-top: 5px;
+        font-size: 80%;
+        font-weight: 400;
+        height: 20px;
+        .details{
+          width: 80%;
+        }
+
+        .btn{
+          width: 15%;
+          padding: 0px;
+        }
+      }
     }
   }
 }

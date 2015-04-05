@@ -1,8 +1,7 @@
 import uuid
 from models import Contact
 from google.appengine.ext import ndb
-
-__author__ = 'ajadex'
+from managers.utils import guid
 
 
 class ContactManager:
@@ -22,16 +21,15 @@ class ContactManager:
         else:
             return self.update_contact(current_contact, contact)
 
-
     def add_contact(self, contact):
-        current_contact = Contact()
-        current_contact.unique_id = str(uuid.uuid4()).replace('-', '')
-        current_contact.name = contact.name
-        current_contact.email = contact.email
-        current_contact.phone = contact.phone
-        current_contact.user = self.user_key
-        current_contact.put()
-        return current_contact.unique_id
+        x = Contact(
+            unique_id=guid(),
+            name=contact.name,
+            email=contact.email,
+            user=self.user_key
+        )
+        x.put()
+        return x.unique_id
 
     def update_contact(self, current_contact, contact):
         current_contact.name = contact.name

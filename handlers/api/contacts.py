@@ -41,9 +41,7 @@ class ApiContactHandler(JsonHandler):
         contact.name = contact_data['name']
         contact.email = contact_data['email']
         contact.phone = contact_data['phone']
-        current_contact = contact_mgr.add_or_update_contact(contact)
-
-        return current_contact.unique_id
+        return contact_mgr.add_or_update_contact(contact)
 
     def update_contact(self, unique_id):
         data = self._data()
