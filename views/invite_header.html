@@ -1,5 +1,15 @@
-<div class="block block1 body-background-1">
+<div class="block block1 invite-background" style="background-image: url(/image/<%- poster_image_id %>)">
     <div class="center-block">
-          <h1 class="main-h1"><%- title %></h1>
-     </div>
+       <div class="invite-title-container">
+       </div>
+       <div class="upload">
+            <form id="upload_image_form" data-id="<%- invite_id %>" method="POST" enctype="multipart/form-data">
+                <input type="file" name="upload_image_file" id="upload_image_file" >
+                <input type="hidden" name="user_id" value="<%- currentUser.id %>">
+            </form>
+            <button id="image_select_btn" class="btn btn-success">Change cover</button>
+       </div>
+
+    </div>
+
 </div>

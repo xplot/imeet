@@ -303,9 +303,13 @@ this["JST"]["invite_header.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="block block1 body-background-1">\n    <div class="center-block">\n          <h1 class="main-h1">' +
-__e( title ) +
-'</h1>\n     </div>\n</div>\n';
+__p += '<div class="block block1 invite-background" style="background-image: url(/image/' +
+__e( poster_image_id ) +
+')">\n    <div class="center-block">\n       <div class="invite-title-container">\n       </div>\n       <div class="upload">\n            <form id="upload_image_form" data-id="' +
+__e( invite_id ) +
+'" method="POST" enctype="multipart/form-data">\n                <input type="file" name="upload_image_file" id="upload_image_file" >\n                <input type="hidden" name="user_id" value="' +
+__e( currentUser.id ) +
+'">\n            </form>\n            <button id="image_select_btn" class="btn btn-success">Change cover</button>\n       </div>\n\n    </div>\n\n</div>\n';
 
 }
 return __p

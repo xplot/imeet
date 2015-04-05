@@ -65,6 +65,7 @@ InviteModel = Backbone.Model.extend({
         'end_time': '',
         'description': '',
         'where': '',
+        'poster_image_id': '',
         'contacts': new ContactList(),
         'all_contacts': new ContactList(),
         'all_groups': new ContactList()
@@ -120,6 +121,30 @@ InviteModel = Backbone.Model.extend({
         json['start'] = this.get_datetime('start');
         json['end'] = this.get_datetime('end');
         return json;
-    }
+    },
+
+    submit: function(callback, view){
+        var that = this;
+        var invite = this.toJSON();
+        if(currentUser != null)
+            invite.user_id = currentUser.id;
+
+        $.ajax({
+            url: "/api/invite",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(invite),
+            cache: false,
+            success: function(data) {
+              callback(view, data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
 
 });

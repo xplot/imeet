@@ -11,7 +11,7 @@ from main import JINJA_ENVIRONMENT
 from boilerplate.basehandler import BaseHandler
 from managers.invite import InviteModel, InviteMapper, InviteUserRole
 from models import Invite
-
+from handlers.api import ImageUploadHandler
 
 class IndexHandler(BaseHandler):
 

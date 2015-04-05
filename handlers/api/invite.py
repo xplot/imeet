@@ -15,7 +15,7 @@ from managers.template import TemplateModel
 from managers.auth import user_context, request_with_subscription
 from managers.invite import InviteMapper, InviteModel
 from models import Invite
-from boilerplate.models import  User
+from boilerplate.models import User
 
 class InviteHandler(JsonHandler):
 
@@ -25,14 +25,13 @@ class InviteHandler(JsonHandler):
         invite_dict = self._data()
 
         #Mapping
-        invite_entity = InviteMapper.get_from_dict(invite_dict)
+        posted_entity = InviteMapper.get_from_dict(invite_dict)
+        real_invite = Invite.get_by_unique_id(invite_dict.get('invite_id', None))
 
-        logging.info(invite_entity)
+        invite_model = InviteModel(real_invite, user=self.user)
+        invite_model.copy_over(posted_entity)
 
-        invite_model = InviteModel(invite_entity, user=self.user)
-        invite_id = invite_model.put()
-
-        return invite_id
+        return invite_model.unique_id
 
     @user_context
     @request_with_subscription

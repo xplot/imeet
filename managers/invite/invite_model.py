@@ -13,7 +13,7 @@ from config import config
 from boilerplate.models import User
 from managers.event import EventQueue
 from managers.utils import guid
-from models import Invite, Contact, ContactInvite, Comment
+from models import Invite, Contact, ContactInvite, Comment, Image
 from managers.invite import InviteMapper, CommentMapper
 
 
@@ -53,6 +53,10 @@ class InviteModel(object):
         after usual checking of attributes in the object
         """
         return getattr(self.invite, name)
+
+    def copy_over(self, invite):
+        InviteMapper.invite_safe_copy(invite, self.invite)
+        self.put()
 
     def get_contacts(self):
         return Invite.get_contacts_by_invite_id(
@@ -96,7 +100,6 @@ class InviteModel(object):
         #Finally we index the Document
         self._index_document(self.invite)
 
-        logging.info(self.invite.unique_id)
         return self.invite.unique_id
 
     def add_contacts(self, contacts):
@@ -177,6 +180,16 @@ class InviteModel(object):
         comment.comment = text
         comment.commentedOn = datetime.datetime.now()
         invite.comments.append(comment)
+        invite.put()
+
+    def change_poster_picture(self, image_key):
+        image = Image()
+        image.unique_id = guid()
+        image.image_key = image_key
+        image.put()
+
+        invite = self.invite
+        invite.poster_picture = image.key
         invite.put()
 
     def accept(self, contact_id, channel):

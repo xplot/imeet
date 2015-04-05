@@ -2,7 +2,7 @@ import datetime
 
 from managers.template import TemplateModel
 from models import Invite, Contact
-
+from managers.utils import guid
 
 class InviteMapper(object):
 
@@ -42,10 +42,7 @@ class InviteMapper(object):
             'user_id': u'5302669702856704' #Not mandatory, could be anonymous
         }
         """
-        unique_id = data_dict.get('invite_id', None)
-        invite = Invite.get_by_unique_id(unique_id) or Invite()
-
-        invite.unique_id = unique_id # only for create cases
+        invite = Invite()
         invite.title = data_dict.get('title', None)
         invite.description = data_dict.get('description', None)
         invite.where = data_dict.get('where', None)
@@ -138,6 +135,7 @@ class InviteMapper(object):
             'end':          invite.end.strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',
             'description':  invite.description,
             'where':        invite.where,
+            'poster_image_id': invite.poster_picture.urlsafe() if invite.poster_picture else None
         }
 
     @classmethod
@@ -151,6 +149,19 @@ class InviteMapper(object):
             } for x in contacts]
         }
 
+    @classmethod
+    def invite_safe_copy(cls, object_source, object_destiny):
+        import logging
+        for x in InviteMapper.non_empty_properties(object_source):
+            logging.info(x)
+            logging.info(getattr(object_source,x))
+            setattr(object_destiny, x, getattr(object_source,x))
+
+    @classmethod
+    def non_empty_properties(cls, object_source):
+        for cls_property in object_source._properties:
+            if getattr(object_source,cls_property):
+                yield cls_property
 
 class CommentMapper(object):
 

@@ -50,31 +50,11 @@ InviteEditDetailsView = SimpleView.extend({
             return;
         }
         //Finally submitt to server
-        this.submit();
+        this.model.submit(this.submitSuccess, this);
     },
 
-    submit: function(){
-        var that = this;
-        var invite = this.model.toJSON();
-        if(currentUser != null)
-            invite.user_id = currentUser.id;
-
-        $.ajax({
-            url: "/api/invite",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(invite),
-            cache: false,
-            success: function(data) {
-              that.render(that.model, false);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
-            }
-        });
+    submitSuccess: function(view,  result){
+        view.render(view.model, false);
     },
 
     read_plugins: function(){

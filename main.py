@@ -78,4 +78,9 @@ app = webapp2.WSGIApplication([
     #Events
     Route('/api/event/process', api.EventCronHandler, handler_method='process_queue', name='process_queue'),
 
+    #Image
+    Route('/image/<invite_id>/upload_url', api.ImageUploadUrlHandler),
+    Route('/image/<invite_id>/upload', api.ImageUploadHandler),
+    Route('/image/<image_id>', api.ImageServeHandler),
+
 ], config=config,debug=True)

@@ -5,7 +5,7 @@ import json
 from datetime import time
 from google.appengine.api import memcache
 from google.appengine.ext import ndb, db
-
+from google.appengine.ext.blobstore import BlobKey
 from boilerplate.models import User
 
 
@@ -49,6 +49,12 @@ class BaseModel(ndb.Model):
         result = json.dumps(model_dict, default=data_type_handler, indent = 4)
         return result
 
+    @classmethod
+    def get_by_unique_id(cls, unique_id):
+        if not unique_id:
+            return None
+        return cls.query(cls.unique_id == unique_id).get()
+
 class ContactInvite(ndb.Model):
     contact_id = ndb.StringProperty()
     invite_id = ndb.StringProperty()
@@ -63,6 +69,10 @@ class Comment(BaseModel):
     author = ndb.StringProperty(required=True)
     comment = ndb.StringProperty(required=True)
     commentedOn = ndb.DateTimeProperty(required=True)
+
+class Image(BaseModel):
+    unique_id = ndb.StringProperty(required=True)
+    image_key = ndb.BlobKeyProperty(required=True)
 
 
 class Invite(BaseModel):
@@ -80,7 +90,7 @@ class Invite(BaseModel):
     email_response_template = ndb.StringProperty(required=False)
     sms_template = ndb.StringProperty(required=False)
     voice_template = ndb.StringProperty(required=False)
-    poster_picture = ndb.StringProperty(required=False)
+    poster_picture = ndb.KeyProperty(required=False, kind=Image)
 
     @classmethod
     def get_by_unique_id(cls, unique_id):
@@ -162,3 +172,5 @@ class GroupedContact(BaseModel):
     user = ndb.KeyProperty(kind=User)
     group_unique_id = ndb.StringProperty(required=True)
     contact_unique_id = ndb.StringProperty(required=True)
+
+
