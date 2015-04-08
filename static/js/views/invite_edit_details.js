@@ -29,7 +29,7 @@ InviteEditDetailsView = SimpleView.extend({
         invite_json['edit_view'] = edit_view;
         this.$el.html(this.template(invite_json));
 
-        if(edit_view){
+        if(edit_view){ 
             this.edit_plugins();
             this.stickit();
         }
