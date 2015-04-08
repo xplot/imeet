@@ -123,7 +123,7 @@ InviteModel = Backbone.Model.extend({
         return json;
     },
 
-    submit: function(callback, view){
+    submit: function(callback, view, enableNotifications){
         var that = this;
         var invite = this.toJSON();
         if(currentUser != null)
@@ -136,7 +136,12 @@ InviteModel = Backbone.Model.extend({
             data: JSON.stringify(invite),
             cache: false,
             success: function(data) {
-              callback(view, data)
+                if(enableNotifications)
+                    alert_notification([{
+                        alertType:'success',
+                        message: 'Event saved successfully!'
+                    }]);
+                callback(view, data)
             },
             error: function(data) {
                 alert_notification([{

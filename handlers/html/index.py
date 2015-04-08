@@ -47,7 +47,7 @@ class IndexHandler(BaseHandler):
 
         return self.render_template(
             'invite.html',
-            invite=json.dumps(InviteMapper.invite_to_dict_with_contact_responses(invite_model))
+            invite=json.dumps(InviteMapper.invite_to_dict_with_attendee_responses(invite_model))
         )
 
     def blank(self):

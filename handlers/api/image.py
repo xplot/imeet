@@ -27,7 +27,6 @@ class ImageUploadUrlHandler(JsonHandler):
 
 class ImageUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
-    @user_context
     def post(self, invite_id):
         #TODO Catch exceptions and remove orphaned upload sessions
 
@@ -35,7 +34,7 @@ class ImageUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         blob_info = upload_files[0]
 
         invite = Invite.query(Invite.unique_id == invite_id).get()
-        invite_model = InviteModel(invite, user=self.user)
+        invite_model = InviteModel(invite)
         image_key = blob_info.key()
         invite_model.change_poster_picture(image_key)
         self.response.write(invite_model.poster_picture.urlsafe())

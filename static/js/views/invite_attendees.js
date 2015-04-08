@@ -21,9 +21,8 @@ InviteAttendeesView = Backbone.View.extend({
     render: function(data){
         this.loadContactsModel(data.contacts);
         this.$el.html(this.template(this.model.toJSON()));
-        this.plugins();
-
         this.$newContact = $('.contact-input');
+        this.plugins();
         return this.$el.html();
     },
 

@@ -8,10 +8,11 @@ import StringIO
 from managers.auth import user_context
 from base import JsonHandler
 from google.appengine.ext import ndb
-from managers.contact import ContactManager
+from managers.contact_model import ContactModel
 from models import Contact
 from boilerplate.models import User
 from managers.group import GroupManager
+
 
 class ApiContactHandler(JsonHandler):
 
@@ -41,6 +42,8 @@ class ApiContactHandler(JsonHandler):
         contact.name = contact_data['name']
         contact.email = contact_data['email']
         contact.phone = contact_data['phone']
+
+
         current_contact = contact_mgr.add_or_update_contact(contact)
 
         return current_contact.unique_id

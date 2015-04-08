@@ -13,9 +13,10 @@ from config import config
 from boilerplate.models import User
 from managers.event import EventQueue
 from managers.utils import guid
-from models import Invite, Contact, ContactInvite, Comment, Image
+from models import Invite, Contact, InviteAttendee, InviteAttendeeNotification, Comment, Image
 from managers.invite import InviteMapper, CommentMapper
-
+from managers.contact_model import ContactModel
+from managers.base_model import BaseModel
 
 def get_voiceflows_headers():
     now = datetime.datetime.utcnow().strftime("%a, %d %b %Y %H:%M:00 GMT")
@@ -30,33 +31,30 @@ def get_voiceflows_headers():
         'Authorization': authToken
     }
 
+
 class InviteUserRole:
     ORGANIZER = 'organizer'
     ATTENDEE = 'attendee'
     UNKNOWN = 'unknown'
 
 
-class InviteModel(object):
+class InviteModel(BaseModel):
     invite_index = 'invite_index'
 
     def __init__(self, invite, user=None):
+        super(InviteModel, self).__init__(invite)
+
         self.user = user
         self.invite = invite
+
         if self.user is None and self.invite.user is not None:
             self.user = self.invite.user.get()
 
-    def __getattr__(self, name):
-        """
-        Every property that doesnt match this class properties,
-        will be delegated into the Entity
-        Remember _getattr_ will be invoked
-        after usual checking of attributes in the object
-        """
-        return getattr(self.invite, name)
+    def copy_over(self, new_invite):
+        if self.user is not None:
+            self.invite.user = self.user.key
 
-    def copy_over(self, invite):
-        InviteMapper.invite_safe_copy(invite, self.invite)
-        self.put()
+        super(InviteModel, self).copy_over(new_invite)
 
     def get_contacts(self):
         return Invite.get_contacts_by_invite_id(
@@ -69,13 +67,11 @@ class InviteModel(object):
         )
 
     def get_user_role_by_id(self, id):
-        if str(self.user.get_id()) == id:
-            return InviteUserRole.ORGANIZER
-
-        #TODO, invites has to keep a relation of it' attendees, to actual, iMeet users
-        #hence we could iterate such list and try to find a user by id
-
-        return InviteUserRole.UNKNOWN
+        """
+            Implement logic here
+            on how to obtain roles per user on the invitation
+        """
+        return InviteUserRole.ORGANIZER
 
     def get_user_role_by_contact_channel(self, contact_channel):
         if self.user.email == email:
@@ -102,51 +98,12 @@ class InviteModel(object):
 
         return self.invite.unique_id
 
-    def add_contacts(self, contacts):
-        """Creates/Updates contacts in database"""
-        puts = []
-        contact_invite_puts = []
-        for contact in contacts:
-            if contact.unique_id is None:
-                contact.unique_id = guid()
-
-            puts.append(contact)
-            contact_invite_puts.append(
-                ContactInvite(
-                    invite_id=self.invite.unique_id,
-                    contact_id=contact.unique_id
-                )
-            )
-        ndb.put_multi(puts)
-        ndb.put_multi(contact_invite_puts)
-
     def send_async(self):
         """Push the invite send to the async queue"""
         EventQueue.push_event(
             endpoint=config.get('api_url'),
             headers=get_voiceflows_headers(),
             payload=InviteMapper.invite_to_dict(self)
-        )
-
-    def invite_contacts_async(self, contacts):
-        """Push the contact notification send to the async queue"""
-        body = {
-            'invite_id': self.unique_id,
-            'uniquecall_id': guid(),
-            'email_template': {
-                'url': self.invite.email_template,
-                'subject': "You have been invited to {{title}}",
-                'responseRedirectURL': self.invite.email_response_template
-            }
-        }
-        body.update(InviteMapper.contacts_to_dict(contacts))
-
-        EventQueue.push_event(
-            endpoint=config.get('api_url') + "/contacts",
-            headers=get_voiceflows_headers(),
-            payload=body,
-            group_id=self.unique_id,
-            priority=1
         )
 
     def _index_document(self, invite):
@@ -192,19 +149,16 @@ class InviteModel(object):
         invite.poster_picture = image.key
         invite.put()
 
-    def accept(self, contact_id, channel):
-        self._mark_response(contact_id, channel, 'YES')
+    def accept(self, invite_contact_id, channel):
+        self._mark_response(invite_contact_id, channel, 'YES')
 
-    def deny(self, contact_id, channel):
-        self._mark_response(contact_id, channel, 'NO')
+    def deny(self, invite_contact_id, channel):
+        self._mark_response(invite_contact_id, channel, 'NO')
 
-    def _mark_response(self, contact_id, channel, response):
+    def _mark_response(self, invite_contact_id, channel, response):
         """Will update the contact RSVP"""
         contact_invite = ContactInvite.query(
-            ndb.AND(
-                ContactInvite.invite_id == self.unique_id,
-                ContactInvite.contact_id == contact_id
-            )
+            ContactInvite.unique_id == invite_contact_id
         ).get()
 
         if contact_invite is None:
@@ -221,84 +175,12 @@ class InviteModel(object):
             contact_invite.email_response_datetime = datetime.datetime.now()
 
         contact_invite.put()
-#
-# class InviteService(object):
-#
-#     def __init__(self, user=None):
-#         self.user = user
-#
-#     def send_to_list_async(self, invite_id, contacts, extra_data={}):
-#         """Enqueue the invite creation"""
-#         EventDispatcher.push_event(
-#             endpoint='/api/invite/send_to_list',
-#             data={
-#                 'unique_id': invite_id,
-#                 'contacts': contacts,
-#                 'extra_data': json.dumps(extra_data)
-#             }
-#         )
-#
-#     def get_by_user_id(self, user_id):
-#         """Search all the invites by user_id"""
-#         user = User.get_by_id(long(user_id))
-#         invites = Invite.query(
-#             Invite.user == user.key
-#         ).fetch() or []
-#         return [self._build(x) for x in invites]
-#
-#     def search(self, user_id, term=None):
-#         """Search all the invites with the given term in the title"""
-#
-#         if term is None:
-#             return self.get_by_user_id(user_id)
-#
-#         user = User.get_by_id(long(user_id))
-#         if user is None:
-#             raise Exception("Please provide a valid user")
-#
-#         index = search.Index(name=self.invite_index)
-#         invite_query = index.search(term)
-#         invite_ids = [x.doc_id for x in invite_query]
-#
-#         if not invite_ids:
-#             return []
-#
-#         invites = Invite.query(
-#             ndb.AND(
-#                 Invite.unique_id.IN(invite_ids),
-#                 Invite.user == user.key
-#             )
-#         ).fetch() or []
-#
-#         return [self._build(x) for x in invites]
-#
-#     def accept(self, invite_id, contact_id, channel, response):
-#         contact_invite = ContactInvite.query(
-#             ndb.AND(
-#                 ContactInvite.invite_id == invite_id,
-#                 ContactInvite.contact_id == contact_id
-#             )
-#         ).get()
-#
-#         if contact_invite is None:
-#             raise Exception('No contact was found with the following id: ' + contact_id)
-#
-#         if channel == 'sms':
-#             contact_invite.sms_response = response
-#         elif channel == 'voice':
-#             contact_invite.voice_response = response
-#         elif channel == 'email':
-#             contact_invite.email_response = response
-#
-#         contact_invite.put()
-#
-#     def get_comments(self, id):
-#         invite = Invite.query(Invite.unique_id == id).get()
-#         return {
-#             'comments': [{
-#                 'author': c.author,
-#                 'comment': c.comment,
-#                 'on': c.commentedOn.strftime("%Y-%m-%d %H:%M")
-#             } for c in invite.comments]
-#         }
-#
+
+    @classmethod
+    def create_from_id(cls, invite_id):
+        invite_entity = Invite.get_by_unique_id(invite_id)
+
+        if invite_entity is None:
+            raise Exception("Invite not found with id: %s" % invite_id)
+
+        return InviteModel(invite_entity)

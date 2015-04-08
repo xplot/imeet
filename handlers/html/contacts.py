@@ -8,7 +8,6 @@ import StringIO
 from managers.auth import user_context
 from boilerplate.basehandler import BaseHandler
 from google.appengine.ext import ndb
-from managers.contact import ContactManager
 from models import Contact
 from boilerplate.models import User
 from managers.group import GroupManager

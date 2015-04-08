@@ -7,7 +7,7 @@ from google.appengine.api import memcache
 from google.appengine.ext import ndb, db
 from google.appengine.ext.blobstore import BlobKey
 from boilerplate.models import User
-
+from managers.utils import guid
 
 def data_type_handler(obj):
     if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date):
@@ -55,20 +55,23 @@ class BaseModel(ndb.Model):
             return None
         return cls.query(cls.unique_id == unique_id).get()
 
-class ContactInvite(ndb.Model):
-    contact_id = ndb.StringProperty()
-    invite_id = ndb.StringProperty()
-    voice_response = ndb.StringProperty()
-    sms_response = ndb.StringProperty()
-    email_response = ndb.StringProperty()
-    voice_response_datetime = ndb.DateTimeProperty()
-    sms_response_datetime = ndb.DateTimeProperty()
-    email_response_datetime = ndb.DateTimeProperty()
+    @classmethod
+    def create_new_with_id(cls):
+        return cls(unique_id=guid())
+
+class Contact(BaseModel):
+    unique_id = ndb.StringProperty(required=True)
+    name = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    email = ndb.StringProperty()
+    user = ndb.KeyProperty(kind=User)
+
 
 class Comment(BaseModel):
     author = ndb.StringProperty(required=True)
     comment = ndb.StringProperty(required=True)
     commentedOn = ndb.DateTimeProperty(required=True)
+
 
 class Image(BaseModel):
     unique_id = ndb.StringProperty(required=True)
@@ -129,20 +132,42 @@ class Invite(BaseModel):
         return Contact.query(Contact.unique_id.IN(contact_unique_ids))
 
 
+class InviteAttendee(ndb.Model):
+    unique_id = ndb.StringProperty(required=True)
+    contact = ndb.KeyProperty(kind=Contact)
+    invite = ndb.KeyProperty(kind=Invite)
+
+
+class InviteAttendeeNotification(ndb.Model):
+    """
+        This is meant to be a historic table
+        Each record being a 'ping' to a given contact in any of the channels,
+        remember a contact could be just an email if the user never updates,
+        the name of the contact while sending the invite
+    """
+    unique_id = ndb.StringProperty(required=True)
+    attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
+    invite = ndb.KeyProperty(kind=Invite, required=True)
+    email = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    voice_response = ndb.StringProperty()
+    sms_response = ndb.StringProperty()
+    email_response = ndb.StringProperty()
+    voice_response_datetime = ndb.DateTimeProperty()
+    sms_response_datetime = ndb.DateTimeProperty()
+    email_response_datetime = ndb.DateTimeProperty()
+
+    def attendee_id(self):
+        return self.attendee.key.id()
+
+
+
 class InviteIndex(ndb.Model):
     doc_id = ndb.StringProperty()
     title = ndb.StringProperty()
     invite_id = ndb.StringProperty()
     when = ndb.DateTimeProperty()
     language = ndb.StringProperty()
-
-
-class Contact(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
-    name = ndb.StringProperty()
-    phone = ndb.StringProperty()
-    email = ndb.StringProperty()
-    user = ndb.KeyProperty(kind=User)
 
 class Subscription(BaseModel):
     unique_id = ndb.StringProperty(required=True)

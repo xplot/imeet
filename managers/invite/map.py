@@ -1,7 +1,7 @@
 import datetime
 
 from managers.template import TemplateModel
-from models import Invite, Contact
+from models import Invite, Contact, InviteAttendeeNotification
 from managers.utils import guid
 
 class InviteMapper(object):
@@ -66,55 +66,95 @@ class InviteMapper(object):
         return invite
 
     @classmethod
-    def get_contacts_from_dict(cls, data_dict):
+    def get_attendees_model_from_dict(cls, invite_model, attendees):
         """
         Creates a List of contacts from the supplied dictionary
         This is a valid data-format:
-        {
-            'contacts': [
-                {
-                    'phone': '',
-                    'email': 'javi@javi.com',
-                    'name': u''
-                }
-            ]
-        }
-        """
+        [
+            {
+                'phone': '',
+                'email': 'javi@javi.com',
+                'name': u''
+            }
+        ]
 
-        contacts = data_dict.get('contacts', [])
+        """
         result = []
-        for contact in contacts:
-            x = Contact()
-            x.email = contact.get('email', None)
-            x.phone = contact.get('phone', None)
-            x.name = contact.get('name', None)
-            result.append(x)
+        for attendee in attendees:
+            result.append(
+                InviteAttendeeModel.create_from_raw_data(
+                    invite_model,
+                    contact_unique_id=attendee.get('contact_unique_id', None),
+                    name=attendee.get('name', None),
+                    email=attendee.get('email', None),
+                    phone=attendee.get('phone', None)
+                )
+            )
         return result
 
     @classmethod
-    def invite_to_dict_with_contact_responses(cls, invite_model):
+    def invite_attendee_notifications_to_dict(cls, invite_attendee_notifications):
+        """
+        Returns a list of Invite Attendee Notifications
+        This is a valid data-format:
+        [
+            {
+                'phone': '',
+                'email': 'javi@javi.com',
+                'name': u'',
+                notifications:[
+                    {
+                        'name': u'',
+                        'phone': '',
+                        'email': 'javi@javi.com',
+                        'sms_response': '',
+                        'voice_response': '',
+                        'email_response': '',
+                    }
+                ]
+            }
+        ]
+        """
+        result = []
+        for x in invite_attendee_notifications:
+            notification = {
+                'phone': x.phone,
+                'email': x.email,
+                'sms_response': x.sms_response,
+                'voice_response': x.voice_response,
+                'email_response': x.email_response,
+            }
+
+            if result.get(x.attendee_id):
+                result[x.attendee_id]['notifications'].append(notification)
+            else:
+                invite_attendee = x.attendee.get()
+                invite_attendee_contact = invite_attendee.contact.get()
+                result[x.attendee_id] = {
+                    'name': invite_attendee_contact.name,
+                    'notifications': [notification]
+                }
+        return result
+
+    @classmethod
+    def invite_to_dict_with_attendee_responses(cls, invite_model):
         invite = invite_model.invite
 
         if invite.comments is None:
             invite.comments = []
 
-        invite_contacts = invite_model.get_contacts()
-        contacts_invites = {
-            x.contact_id:x for x in invite_model.get_contact_invites()
-        }
+        invite_notifications = [
+            x for x in InviteAttendeeNotification.query(
+                InviteAttendeeNotification.invite == invite_model.invite.key
+            )
+        ]
 
         result = cls.invite_to_dict(invite_model)
 
         result.update({
-            'contacts':     [{
-                'unique_id': x.unique_id,
-                'name':     x.name,
-                'phone':    x.phone,
-                'email':   x.email,
-                'sms_response': contacts_invites[x.unique_id].sms_response,
-                'voice_response': contacts_invites[x.unique_id].voice_response,
-                'email_response': contacts_invites[x.unique_id].email_response,
-            } for x in invite_contacts],
+            'contacts':  cls.invite_attendee_notifications_to_dict(
+                invite_notifications
+            ),
             'comments':     [{
                 'author':   c.author,
                 'comment':  c.comment,
@@ -147,6 +187,15 @@ class InviteMapper(object):
                 'phone':    x.phone,
                 'email':   x.email,
             } for x in contacts]
+        }
+
+    @classmethod
+    def invite_attendee_notification_to_dict(cls, invite_attendee_notification):
+        return {
+            'attendee_id':      invite_attendee_notification.unique_id,
+            'name':             invite_attendee_notification.name,
+            'phone':            invite_attendee_notification.phone,
+            'email':            invite_attendee_notification.email,
         }
 
     @classmethod

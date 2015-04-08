@@ -73,59 +73,11 @@ CreateView = SimpleView.extend({
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
-        var invite = this.model.toJSON();
-        if(currentUser != null)
-            invite.user_id = currentUser.id;
-
-        $.ajax({
-            url: "/api/invite/send",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(invite),
-            cache: false,
-            success: function(data) {
-                alert_notification([{
-                    alertType:'success',
-                    message: 'Event sent!'
-                }]);
-
-//                if(currentUser == null) //If Anonymous we will give people a link to follow the invite
-//                    Backbone.history.navigate('sent/' + data[0], true);
-//                else
-                Backbone.history.navigate('view/' + data, true);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
-            }
-        });
+        this.model.submit(this.inviteSubmitted, this, true);
     },
 
-
-    parsePhoneAndEmail: function(addressString){
-        var trimmedAddressString = addressString.trim();
-        var addresses = addressString.split(';');
-        if(addresses.length == 1)
-            addresses = addressString.split(',');
-
-        for(var i=0; i < addresses.length; i++)
-            addresses[i] = addresses[i].trim();
-
-        //only 1 address (phone or email)
-        if(addresses.length == 1){
-            if(isNaN(addresses[0]))
-                return {email: addresses[0], phone: ''};
-            else
-                return {phone: addresses[0], email: ''};
-        }
-        else{ //phone and email at the same time.
-            if(isNaN(addresses[0]))
-                return {email: addresses[0], phone: addresses[1]};
-            else
-                return {phone: addresses[0], email: addresses[1]};
-        }
+    inviteSubmitted: function(view, result){
+        Backbone.history.navigate('view/' + result, true);
     },
 
     share_on_facebook_auth: function(){

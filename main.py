@@ -58,13 +58,18 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/social_sharing/facebook', html.SocialSharingHandler, name='social-sharing-facebook', handler_method='facebook', strict_slash=True),
 
     #Invite
-    Route('/api/invite', api.InviteHandler, name='save', handler_method='save', methods=['POST']),
-    Route('/api/invite/send', api.InviteHandler, name='send', handler_method='send', methods=['POST']),
+    Route('/api/invite', api.InviteHandler),
+    Route('/api/invite/<invite_id>', api.InviteHandler),
     Route('/api/invite/search/<user_id>', api.InviteHandler, name='search', handler_method='search'),
-    Route('/api/invite/<id>', api.InviteHandler, name='view', handler_method='view', methods=['GET']),
-    Route('/api/<invite_id>/contact/<contact_id>/response', api.InviteHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
-    Route('/api/invite/<id>/comment', api.InviteHandler, name='add_comment', handler_method='add_comment', methods=['POST']),
-    Route('/api/invite/<id>/comments', api.InviteHandler, name='get_comments', handler_method='get_comments', methods=['GET']),
+
+    #Invite_Contacts
+    Route('/api/<invite_id>/contacts/', api.InviteAttendeeHandler, name='add_attendees', handler_method='add_attendees', methods=['POST']),
+    Route('/api/<invite_id>/contacts/notify', api.InviteAttendeeHandler, name='notify_some', handler_method='notify_some', methods=['POST']),
+    Route('/api/<invite_id>/contacts/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
+    Route('/api/<invite_id>/contact/<invite_contact_id>/response', api.InviteAttendeeHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
+
+    #Invite_Comments
+    Route('/api/invite/<invite_id>/comments', api.InviteCommentHandler),
 
     #Groups
     Route('/api/group', api.ApiGroupHandler, name='get_groups', handler_method='get', methods=['GET']),
