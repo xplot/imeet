@@ -32,3 +32,25 @@ class ContactModel:
     def delete(self):
         self.contact.key.delete()
         return unique_id
+
+    @classmethod
+    def search_by_email_or_phone(cls, email=None, phone=None):
+
+        #Let's try to lookup a contact with the same details
+        if phone and email:
+            contact_in_address_book = Contact.query(
+                ndb.OR(
+                    Contact.email == email,
+                    Contact.phone == phone
+                )
+            ).get()
+        elif phone and not email:
+            contact_in_address_book = Contact.query(
+                Contact.phone == phone
+            ).get()
+        elif email and not phone:
+            contact_in_address_book = Contact.query(
+                Contact.email == email
+            ).get()
+        else:
+            return None

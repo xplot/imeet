@@ -65,13 +65,15 @@ class InviteMapper(object):
 
         return invite
 
+
+
     @classmethod
-    def get_attendees_model_from_dict(cls, invite_model, attendees):
+    def attendees_model_to_dict(cls, attendees):
         """
-        Creates a List of contacts from the supplied dictionary
-        This is a valid data-format:
+        Returns
         [
             {
+                'unique_id': 'id',
                 'phone': '',
                 'email': 'javi@javi.com',
                 'name': u''
@@ -82,13 +84,12 @@ class InviteMapper(object):
         result = []
         for attendee in attendees:
             result.append(
-                InviteAttendeeModel.create_from_raw_data(
-                    invite_model,
-                    contact_unique_id=attendee.get('contact_unique_id', None),
-                    name=attendee.get('name', None),
-                    email=attendee.get('email', None),
-                    phone=attendee.get('phone', None)
-                )
+                {
+                    'unique_id': attendee.unique_id,
+                    'name': attendee.name,
+                    'phone': attendee.phone,
+                    'email': attendee.email,
+                }
             )
         return result
 

@@ -63,10 +63,10 @@ app = webapp2.WSGIApplication([
     Route('/api/invite/search/<user_id>', api.InviteHandler, name='search', handler_method='search'),
 
     #Invite_Contacts
-    Route('/api/<invite_id>/contacts/', api.InviteAttendeeHandler, name='add_attendees', handler_method='add_attendees', methods=['POST']),
-    Route('/api/<invite_id>/contacts/notify', api.InviteAttendeeHandler, name='notify_some', handler_method='notify_some', methods=['POST']),
-    Route('/api/<invite_id>/contacts/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
-    Route('/api/<invite_id>/contact/<invite_contact_id>/response', api.InviteAttendeeHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
+    Route('/api/<invite_id>/attendees/', api.InviteAttendeeHandler),
+    Route('/api/<invite_id>/attendees/notify', api.InviteAttendeeHandler, name='notify_some', handler_method='notify_some', methods=['POST']),
+    Route('/api/<invite_id>/attendees/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
+    Route('/api/<invite_id>/attendees/<invite_contact_id>/response', api.InviteAttendeeHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
 
     #Invite_Comments
     Route('/api/invite/<invite_id>/comments', api.InviteCommentHandler),

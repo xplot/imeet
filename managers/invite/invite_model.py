@@ -56,15 +56,16 @@ class InviteModel(BaseModel):
 
         super(InviteModel, self).copy_over(new_invite)
 
-    def get_contacts(self):
-        return Invite.get_contacts_by_invite_id(
-            self.unique_id
-        )
-
-    def get_contact_invites(self):
-        return Invite.get_contact_invites_by_invite_id(
-            self.unique_id
-        )
+    def get_attendees(self):
+        """
+            Will get the invite attendees
+        """
+        return [
+            InviteAttendeeModel.create_from_entity(x)
+            for x in InviteAttendee.query(
+                InviteAttendee.invite == self.key
+            ).fetch()
+        ]
 
     def get_user_role_by_id(self, id):
         """
@@ -74,14 +75,11 @@ class InviteModel(BaseModel):
         return InviteUserRole.ORGANIZER
 
     def get_user_role_by_contact_channel(self, contact_channel):
-        if self.user.email == email:
-            return InviteUserRole.ORGANIZER
-
-        for contact in self.get_contacts():
-            if contact.email == contact_channel or contact.phone == contact_channel:
-                return InviteUserRole.ATTENDEE
-
-        return InviteUserRole.UNKNOWN
+        """
+            Implement logic here
+            on how to obtain roles per user on the invitation
+        """
+        return InviteUserRole.ORGANIZER
 
     def put(self):
         """Creates/Updates an invite"""
@@ -184,3 +182,138 @@ class InviteModel(BaseModel):
             raise Exception("Invite not found with id: %s" % invite_id)
 
         return InviteModel(invite_entity)
+
+
+class BulkInviteAttendeeModel:
+
+    def __init__(self, invite_model):
+        self.invite_model = invite_model
+
+    def include_attendees(self, invite_attendee_models):
+
+        for attendee in invite_attendee_models:
+            attendee.include_in_invite(self.invite_model)
+
+    def notify_all(self):
+        self._notify_attendees(invite_model.get_attendees())
+
+    def notify_attendees(self, attendee_ids):
+        invite_attendee_models = [
+            InviteAttendeeModel(x)
+            for x in InviteAttendee.query(
+                InviteAttendee.unique_id.IN(attendee_ids)
+            ).fetch()
+        ]
+        self._notify_attendees(invite_attendee_models)
+
+    def _notify_attendees(self, invite_attendee_models):
+        body = {
+            'invite_id': self.invite_model.unique_id,
+            'uniquecall_id': guid(),
+            'email_template': {
+                'url': self.invite_model.email_template,
+                'subject': "You have been invited to {{title}}",
+                'responseRedirectURL': self.invite.email_response_template
+            },
+            'contacts': []
+        }
+        bulk_notifications = []
+        for attendee in invite_attendee_models:
+            attendee_notification = attendee.notify(False)
+            bulk_notifications.append(attendee_notification)
+
+            notification_dict = InviteMapper.invite_attendee_to_dict(attendee)
+            notification_dict['unique_id'] = attendee_notification.unique_id
+            body['contacts'].append(notification_dict)
+
+        #Save in Database the Invitation to this contact
+        ndb.put_multi(contact_invites)
+
+        EventQueue.push_event(
+            endpoint=config.get('api_url') + "/contacts",
+            headers=get_voiceflows_headers(),
+            payload=body,
+            group_id=self.unique_id,
+            priority=1
+        )
+
+
+class InviteAttendeeModel(object):
+
+    def __init__(self, unique_id=None ,name=None, email=None, phone=None, contact_unique_id=None):
+        self.unique_id = unique_id
+        self.contact_unique_id = contact_unique_id
+        self.name = name
+        self.email = email
+        self.phone = phone
+
+        if not name and not email and not phone and not contact_unique_id:
+            raise Exception(
+                "At least one of the properties of the Invite Attendee"
+                "has to be filled (name, email, phone)"
+            )
+
+    @classmethod
+    def create_from_entity(self, invite_attendee):
+        contact = invite_attendee.contact.get()
+        return InviteAttendeeModel(
+            invite_attendee.unique_id,
+            contact_unique_id=contact.unique_id,
+            name=contact.name,
+            email=contact.email,
+            phone=contact.phone
+        )
+
+    def include_in_invite(self, invite_model):
+        """
+            This will include the attendee in the invite
+            Finally saving the record in DB, plus trying to make connections
+            between the sender contacts or current iMeet users
+            
+            TODO
+            Has to take into account contacts for the user
+        """
+
+        contact_in_address_book = None
+        if self.contact_unique_id:
+            contact_in_address_book = Contact.get_by_unique_id(contact_unique_id).get()
+        else:
+            contact_in_address_book = ContactModel.search_by_email_or_phone(
+                email=self.email,
+                phone=self.phone
+            )
+
+        if not contact_in_address_book:
+            contact_in_address_book = Contact(
+                unique_id=guid(),
+                name=self.name,
+                email=self.email,
+                phone=self.phone
+            )
+            contact_in_address_book.put()
+        if not self.unique_id:
+            self.unique_id = guid()
+
+        invite_attendee = InviteAttendee(
+            unique_id=self.unique_id,
+            contact=contact_in_address_book.key,
+            invite=invite_model.invite.key
+        )
+
+        invite_attendee.put()
+
+    def notify(self, put=True):
+        attendee_notification = InviteAttendeeNotification(
+            unique_id=guid(),
+            invite=self.invite,
+            attendee=self.key.id(),
+            email=email,
+            phone=phone,
+        )
+        if put:
+            attendee_notification.put()
+        return attendee_notification
+
+    def exclude_from_invite(self):
+        self.invite_attendee.key.delete()
+        return unique_id
