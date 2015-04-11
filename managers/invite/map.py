@@ -170,7 +170,7 @@ class InviteMapper(object):
         invite = invite_model.invite
 
         return {
-            'invite_id':    invite.unique_id,
+            'unique_id':    invite.unique_id,
             'title':        invite.title,
             'start':        invite.start.strftime("%Y-%m-%d %H:%M"),
             'end':          invite.end.strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',

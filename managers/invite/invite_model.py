@@ -37,7 +37,6 @@ class InviteUserRole:
     ATTENDEE = 'attendee'
     UNKNOWN = 'unknown'
 
-
 class InviteModel(BaseModel):
     invite_index = 'invite_index'
 
@@ -269,7 +268,7 @@ class InviteAttendeeModel(object):
             This will include the attendee in the invite
             Finally saving the record in DB, plus trying to make connections
             between the sender contacts or current iMeet users
-            
+
             TODO
             Has to take into account contacts for the user
         """

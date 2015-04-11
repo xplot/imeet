@@ -316,7 +316,7 @@ with (obj) {
 __p += '<div class="block block1 invite-background" style="background-image: url(/image/' +
 __e( poster_image_id ) +
 ')">\n    <div class="center-block">\n       <div class="invite-title-container">\n       </div>\n       <div class="upload">\n            <form id="upload_image_form" data-id="' +
-__e( invite_id ) +
+__e( unique_id ) +
 '" method="POST" enctype="multipart/form-data">\n                <input type="file" name="upload_image_file" id="upload_image_file" >\n            </form>\n            <button id="image_select_btn" class="btn btn-success">Change cover</button>\n       </div>\n\n    </div>\n\n</div>\n';
 
 }

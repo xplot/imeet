@@ -30,7 +30,7 @@ class BaseModel(object):
     @classmethod
     def entity_safe_copy(cls, object_source, object_destiny):
         for x in cls.non_empty_properties(object_source):
-            setattr(object_destiny, x, getattr(object_source,x))
+            setattr(object_destiny, x, getattr(object_source, x))
 
     @classmethod
     def non_empty_properties(cls, object_source):

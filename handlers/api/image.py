@@ -1,4 +1,4 @@
-from managers.invite import InviteModel
+from managers.invite.commands import UpdateInviteCoverImage
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from managers.utils import guid
@@ -32,9 +32,7 @@ class ImageUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 
         upload_files = self.get_uploads('upload_image_file')  # 'file' is file upload field in the form
         blob_info = upload_files[0]
-
-        invite = Invite.query(Invite.unique_id == invite_id).get()
-        invite_model = InviteModel(invite)
         image_key = blob_info.key()
-        invite_model.change_poster_picture(image_key)
-        self.response.write(invite_model.poster_picture.urlsafe())
+
+        command = UpdateInviteCoverImage(invite_id, image_key)
+        self.response.write(command.execute())

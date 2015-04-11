@@ -18,9 +18,9 @@ AdminInviteView = SimpleView.extend({
         this.hidePanels();
         this.model = new InviteModel(data);
 
-        this.inviteId = data.invite_id;
+        this.unique_id = data.unique_id;
 
-        if(this.inviteId == null)
+        if(this.unique_id== null)
             console.error('Invite Id is null, check routing');
 
         var invite_json = this.model.toJSON();

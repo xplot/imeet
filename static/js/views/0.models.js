@@ -58,6 +58,7 @@ GroupList = Backbone.Collection.extend({
 
 InviteModel = Backbone.Model.extend({
     defaults: {
+        'unique_id': '',
         'title': '',
         'start_date': '',
         'start_time': '',
@@ -128,9 +129,12 @@ InviteModel = Backbone.Model.extend({
         var invite = this.toJSON();
         if(currentUser != null)
             invite.user_id = currentUser.id;
+        var url = "/api/invite/";
+        if(this.get('unique_id')!==null)
+            url += this.get('unique_id');
 
         $.ajax({
-            url: "/api/invite",
+            url: url,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(invite),
