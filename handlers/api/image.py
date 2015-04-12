@@ -1,4 +1,4 @@
-from managers.invite.commands import UpdateInviteCoverImage
+from commands import UpdateInviteCoverImageCommand
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from managers.utils import guid
@@ -34,5 +34,5 @@ class ImageUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         blob_info = upload_files[0]
         image_key = blob_info.key()
 
-        command = UpdateInviteCoverImage(invite_id, image_key)
+        command = UpdateInviteCoverImageCommand(invite_id, image_key)
         self.response.write(command.execute())

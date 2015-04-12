@@ -13,29 +13,31 @@ from google.appengine.api import search
 from google.appengine.ext import ndb
 from managers.template import TemplateModel
 from managers.auth import user_context, request_with_subscription
-from managers.invite import InviteMapper, InviteModel, BulkInviteAttendeeModel, InviteAttendeeModel
 from models import Invite
 from boilerplate.models import User
-
-
+import query
+import commands
 class InviteAttendeeHandler(JsonHandler):
 
     def get(self, invite_id):
         """Will get the invite attendees"""
-        invite_model = InviteModel.create_from_id(invite_id)
-        return InviteMapper.attendees_model_to_dict(
-            invite_model.get_attendees()
-        )
+        return query.InviteAttendeesQuery(invite_unique_id=invite_id).query()
 
     #@request_with_subscription
     def post(self, invite_id):
-        """Creates many invite attendees"""
-        invite_model = InviteModel.create_from_id(invite_id)
-        attendees = InviteAttendeeHandler.get_list_from_dict(
-            self._data().get('contacts', []) #Will be contacts for now
+        """Includes an Attendee in the Invite"""
+        command = commands.BulkAddInviteAttendeeCommand.read_from_dict(
+            invite_id,
+            self._data().get('attendees')
         )
-        bulk_invite = BulkInviteAttendeeModel(invite_model)
-        bulk_invite.include_attendees(attendees)
+        command.execute()
+        return invite_id
+
+    def delete(self, unique_id):
+        """Includes an Attendee in the Invite"""
+        command = commands.RemoveAttendeeCommand(unique_id)
+        command.execute()
+        return unique_id
 
     @user_context
     @request_with_subscription

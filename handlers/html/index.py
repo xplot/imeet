@@ -9,7 +9,7 @@ from webapp2 import RequestHandler
 import boilerplate
 from main import JINJA_ENVIRONMENT
 from boilerplate.basehandler import BaseHandler
-from managers.invite import InviteModel, InviteMapper, InviteUserRole
+import query
 from models import Invite
 from handlers.api import ImageUploadHandler
 
@@ -40,14 +40,14 @@ class IndexHandler(BaseHandler):
         if not id:
             return self.redirect_to('home')
 
-        invite_model = self._get_invite_model(id)
+        invite_query = query.CompleteInviteQuery(id)
 
-        if invite_model.get_user_role_by_id(self.user_id) != InviteUserRole.ORGANIZER:
-            return self.redirect('/')
+        # if invite_model.get_user_role_by_id(self.user_id) != InviteUserRole.ORGANIZER:
+        #     return self.redirect('/')
 
         return self.render_template(
             'invite.html',
-            invite=json.dumps(InviteMapper.invite_to_dict_with_attendee_responses(invite_model))
+            invite=json.dumps(invite_query.query())
         )
 
     def blank(self):

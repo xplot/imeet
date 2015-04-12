@@ -9,7 +9,6 @@ from webapp2 import RequestHandler
 import boilerplate
 from main import JINJA_ENVIRONMENT
 from boilerplate.basehandler import BaseHandler
-from managers.invite import InviteModel, InviteMapper
 from models import Invite
 
 

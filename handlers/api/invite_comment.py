@@ -3,7 +3,7 @@ from datetime import datetime
 from base import JsonHandler
 from config import config
 from google.appengine.ext import ndb
-from managers.invite import InviteMapper, InviteModel
+#from managers.invite import InviteMapper, InviteModel
 from boilerplate.models import User
 from managers.auth import user_context
 

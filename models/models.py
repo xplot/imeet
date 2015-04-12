@@ -59,6 +59,7 @@ class BaseModel(ndb.Model):
     def create_new_with_id(cls):
         return cls(unique_id=guid())
 
+
 class Contact(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     name = ndb.StringProperty()
@@ -95,50 +96,19 @@ class Invite(BaseModel):
     voice_template = ndb.StringProperty(required=False)
     poster_picture = ndb.KeyProperty(required=False, kind=Image)
 
-    @classmethod
-    def get_by_unique_id(cls, unique_id):
-        if not unique_id:
-            return None
-        return Invite.query(Invite.unique_id == unique_id).get()
+    def get_attendees(self):
+        return InviteAttendee.query(InviteAttendee.invite == self.key).fetch()
 
-    @classmethod
-    def get_contacts_by_invite_id(cls, unique_id):
-        contacts_invites = {
-            x.contact_id:x for x in ContactInvite.query(
-                ContactInvite.invite_id == unique_id
-            ).fetch()
-        }
-
-        if contacts_invites:
-            return Contact.query(Contact.unique_id.IN(contacts_invites.keys())).fetch()
-        return []
-
-    @classmethod
-    def get_contact_invites_by_invite_id(cls, unique_id):
-        return ContactInvite.query(
-                ContactInvite.invite_id == unique_id
-            ).fetch()
-
-    @classmethod
-    def get_contacts_by_invite_id(cls, unique_id):
-        contact_unique_ids = [
-            x.contact_id for x in ContactInvite.query(
-                ContactInvite.invite_id == unique_id
-            ).fetch()
-        ]
-
-        if not contact_unique_ids:
-            return []
-        return Contact.query(Contact.unique_id.IN(contact_unique_ids))
-
-
-class InviteAttendee(ndb.Model):
+class InviteAttendee(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     contact = ndb.KeyProperty(kind=Contact)
     invite = ndb.KeyProperty(kind=Invite)
+    name = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    email = ndb.StringProperty()
 
 
-class InviteAttendeeNotification(ndb.Model):
+class InviteAttendeeNotification(BaseModel):
     """
         This is meant to be a historic table
         Each record being a 'ping' to a given contact in any of the channels,

@@ -30,7 +30,7 @@ InviteView = SimpleView.extend({
                 $('.invite-location').html(data.where);
                 $('.invite-date').html(data.start);
 
-                self.loadContacts(data.contacts, contactId);
+                self.loadContacts(data.attendees, contactId);
                 self.currentCommentIndex = data.comments.length;
 
                 self.loadComments(data.comments);
@@ -43,8 +43,6 @@ InviteView = SimpleView.extend({
             var author = (currentUser!=null)? currentUser.fullname : this.author;
             var commentText = eventData.target.value;
             eventData.target.value = "";
-
-
 
             $('.invite-comments').scrollTop(1000000);
 

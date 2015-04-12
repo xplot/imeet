@@ -1,11 +1,41 @@
 
 Contact = Backbone.Model.extend({
-      defaults: {
+    defaults: {
+        unique_id: '',
         name: '',
         email: '',
         phone: ''
-      }
-    });
+    },
+
+    includeInInvite: function(invite_id, view, callback){
+        var url = "/api/invite/" + invite_id + "/attendees/";
+        //this.set('contact_unique_id', this.get('unique_id'));
+        var attendees = [this.toJSON()];
+
+        var post = {
+            user_id: currentUser.id,
+            attendees: attendees
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function(data) {
+                if(callback)
+                    callback(view, data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    }
+});
 
 ContactList = Backbone.Collection.extend({
     model: Contact,
@@ -67,7 +97,7 @@ InviteModel = Backbone.Model.extend({
         'description': '',
         'where': '',
         'poster_image_id': '',
-        'contacts': new ContactList(),
+        'attendees': new ContactList(),
         'all_contacts': new ContactList(),
         'all_groups': new ContactList()
     },
@@ -82,6 +112,12 @@ InviteModel = Backbone.Model.extend({
         this.set('start_time', start_datetime.time);
         this.set('end_date', end_datetime.date);
         this.set('end_time', end_datetime.time);
+
+        var attendees = new ContactList();
+        options.attendees.forEach(function(item){
+            attendees.push(new Contact(item));
+        });
+        this.set('attendees', attendees);
     },
 
     format_date: function(property, format){

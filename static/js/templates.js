@@ -242,7 +242,21 @@ __p += '\n        data-validation=\'required,email|phone\' placeholder=\'Name, P
  } else { ;
 __p += '\n        data-validation=\'required,email\' placeholder=\'Email Address\'\n        ';
  } ;
-__p += '>\n        <button type="button" class="btn new-contact-button form-control">+</button>\n    </div>\n</div>\n<div class="row contact-table-container">\n    <div class="contact-table"></div>\n</div>\n</div>';
+__p += '>\n        <button type="button" class="btn new-contact-button form-control">+</button>\n    </div>\n</div>\n<div class="row contact-table-container">\n    <div class="contact-table">\n\n        ';
+ _.each( attendees, function( item ){ ;
+__p += '\n            <div class="col-md-12 contact-item-details" id=\'' +
+__e( item.unique_id ) +
+'\'>\n                <span class="details"><b>' +
+__e(item.name ) +
+'</b> ' +
+__e(item.email ) +
+' ' +
+__e(item.phone ) +
+'</span>\n                <button type=\'button\' class=\'btn btn-danger remove-contact pull-right\' data-rowid=\'' +
+__e(item.unique_id ) +
+'\'>-</button>\n            </div>\n        ';
+ }); ;
+__p += '\n\n    </div>\n</div>\n</div>';
 
 }
 return __p

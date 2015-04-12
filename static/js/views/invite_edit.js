@@ -37,7 +37,12 @@ AdminInviteView = SimpleView.extend({
             el:'#invite-edit'
         });
 
-        invite_attendees.render({contacts: data.contacts});
+        invite_attendees.render(
+            {
+                invite_id: data.unique_id,
+                attendees: this.model.get('attendees')
+            }
+        );
         invite_header.render(this.model);
         invite_edit_details.render(this.model);
 

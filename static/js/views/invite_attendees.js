@@ -19,34 +19,31 @@ InviteAttendeesView = Backbone.View.extend({
     },
 
     render: function(data){
-        this.loadContactsModel(data.contacts);
-        this.$el.html(this.template(this.model.toJSON()));
+        this.model = data.attendees;
+        this.invite_id = data.invite_id;
+        var json = {
+            attendees: this.model.toJSON()
+        };
+        this.$el.html(this.template(json));
+
+        this.$table = this.$el.find('.contact-table');
         this.$newContact = $('.contact-input');
         this.plugins();
-        return this.$el.html();
-    },
-
-    loadContactsModel: function(contacts){
-        this.model = new ContactList();
-
-        var self = this;
-        contacts.forEach(function(item){
-           self.model.add(new Contact(item))
-        });
 
         this.listenTo(this.model, 'add', this.newContact);
         this.listenTo(this.model, 'remove', this.removeContact_DOM);
+
+        return this.$el.html();
     },
 
-
     newContactEnter: function(evt) {
-
         if (evt.keyCode != 13) {
             return;
         }
         this.$newContact.trigger('blur');
         this.newContactClick();
     },
+
     newContactClick: function() {
         var contact = null;
         var group = null;
@@ -115,6 +112,7 @@ InviteAttendeesView = Backbone.View.extend({
             JST['contact-item-invite-create.html'](contactModel.toJSON())
         );
 
+        contactModel.includeInInvite(this.invite_id);
         return false;
     },
     //end-AddContact
