@@ -1,9 +1,11 @@
 import datetime
+from config import config
 from managers.utils import copy_over, guid
 from managers.template import TemplateModel
+from managers.event import EventQueue
 from models import Invite, Image
 from commands.invite.utils import index_invite
-
+from commands.invite.PostInviteToVoiceflowsCommand import PostInviteToVoiceflowsCommand
 
 class CreateInviteCommand(object):
 
@@ -52,8 +54,8 @@ class CreateInviteCommand(object):
         """
         command = CreateInviteCommand(
             title=data_dict.get('title', None),
-            description = data_dict.get('description', None),
-            where = data_dict.get('where', None),
+            description=data_dict.get('description', None),
+            where=data_dict.get('where', None),
             share_on_facebook = data_dict.get('facebook_share', None),
             start=datetime.datetime.strptime(data_dict['start'], "%m/%d/%Y %H:%M %p")
         )
@@ -86,6 +88,8 @@ class CreateInviteCommand(object):
         invite.put()
 
         index_invite(invite)
+
+        command = PostInviteToVoiceflowsCommand(invite)
+        command.execute()
+
         return invite.unique_id
-
-

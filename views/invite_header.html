@@ -1,4 +1,11 @@
-<div class="block block1 invite-background" style="background-image: url(/image/<%- poster_image_id %>)">
+<div class="block block1 invite-background"
+     <% if (poster_image_id != null) {
+         print("style='background-image: url(/image/" + poster_image_id + ")'")
+    }
+    else {
+         print("style='background-image: url(/img/default_image.jpg)'")
+    } %>
+>
     <div class="center-block">
        <div class="invite-title-container">
        </div>

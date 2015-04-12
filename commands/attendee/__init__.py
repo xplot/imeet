@@ -2,3 +2,4 @@ from AddInviteAttendeeCommand import AddInviteAttendeeCommand
 from NotifyAttendeesCommand import NotifyAttendeesCommand
 from RemoveAttendeeCommand import RemoveAttendeeCommand
 from BulkAddInviteAttendeeCommand import BulkAddInviteAttendeeCommand
+from AddGroupAttendeesCommand import AddGroupAttendeesCommand

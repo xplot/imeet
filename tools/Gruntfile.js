@@ -74,8 +74,8 @@ module.exports = function (grunt) {
 	//
 		uglify: {
 			options: {
-                compress:true,
-                beautify:false,
+                compress:false,
+                beautify:true,
 		        mangle: true
 			},
             header_js: {

@@ -24,6 +24,7 @@ class InviteAttendeeHandler(JsonHandler):
         return query.InviteAttendeesQuery(invite_unique_id=invite_id).query()
 
     #@request_with_subscription
+    @user_context
     def post(self, invite_id):
         """Includes an Attendee in the Invite"""
         command = commands.BulkAddInviteAttendeeCommand.read_from_dict(
@@ -33,11 +34,26 @@ class InviteAttendeeHandler(JsonHandler):
         command.execute()
         return invite_id
 
+    @user_context
     def delete(self, unique_id):
         """Includes an Attendee in the Invite"""
         command = commands.RemoveAttendeeCommand(unique_id)
         command.execute()
         return unique_id
+
+    #@request_with_subscription
+    @user_context
+    def post_group(self, invite_id):
+        """Includes all contacts in the group as attendees"""
+        group_id = self._data().get('unique_id')
+
+        command = commands.AddGroupAttendeesCommand(
+            invite_unique_id=invite_id,
+            group_unique_id=group_id,
+            user=self.user
+        )
+        command.execute()
+        return invite_id
 
     @user_context
     @request_with_subscription

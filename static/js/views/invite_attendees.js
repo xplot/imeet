@@ -10,7 +10,7 @@ InviteAttendeesView = Backbone.View.extend({
 
     events: {
 
-        'click .new-contact' : 'newContact',
+        'click .new-contact' : 'newAttendee',
         'click .remove-contact': 'removeContact',
         'keyup .contact-input': 'newAttendeeEnter',
         'click .new-contact-button': 'newAttendeeButtonClick',
@@ -28,10 +28,17 @@ InviteAttendeesView = Backbone.View.extend({
 
         this.$table = this.$el.find('.contact-table');
         this.$newContact = $('.contact-input');
-        this.plugins();
 
-        this.listenTo(this.model, 'add', this.newContact);
+        this.listenTo(this.model, 'add', this.newAttendee);
         this.listenTo(this.model, 'remove', this.removeContact_DOM);
+
+        var that = this;
+        fetchGroupDistributionForCurrentUser(function(contacts_and_groups){
+            that.all_contacts = new ContactList(contacts_and_groups.contacts);
+            that.all_groups = new GroupList(contacts_and_groups.groups);
+
+            that.setupContactsTypeahead();
+        });
 
         return this.$el.html();
     },
@@ -72,13 +79,15 @@ InviteAttendeesView = Backbone.View.extend({
         this.last_selected_item = null;
 
         if(contact != null){
-            this.model.add(new Contact(contact));
+            var contactModel = new Contact(contact);
+            this.model.add(contactModel);
             contactModel.includeInInvite(this.invite_id);
         }
 
         if(group != null){
             var group = new Group({unique_id: group.unique_id});
-            group.fetchContacts($.proxy(this.addAttendeesFromGroup));
+            group.fetchContacts($.proxy(this.addAttendeesFromGroup, this));
+            group.includeInInvite(this.invite_id)
         }
 
         this.$newContact.focus();
@@ -86,13 +95,14 @@ InviteAttendeesView = Backbone.View.extend({
 
     addAttendeesFromGroup: function(contactList){
         var that = this;
-        data.forEach(function(item){
-            that.model.add(contact);
+        console.log(this);
+        contactList.forEach(function(item){
+            that.model.add(item);
         });
     },
 
     //start-AddContact
-    newContact: function(contactModel){
+    newAttendee: function(contactModel){
         if(this.$table == null)
             this.$table = this.$el.find('.contact-table');
         this.$table.prepend(
@@ -115,44 +125,40 @@ InviteAttendeesView = Backbone.View.extend({
     },
     //end-RemoveContact
 
-    plugins: function(){
-        this.setupContactsTypeahead();
-    },
-
     setupContactsTypeahead: function(){
         var that = this;
 
-        var substringMatcher = function(strs) {
+        var substringMatcher = function(contacts) {
             return function findMatches(q, cb) {
                 var matches, substrRegex;
                 matches = [];
                 substrRegex = new RegExp(q, 'i');
 
-                $.each(strs, function(i, contact) {
-                    if (substrRegex.test(contact.name) || substrRegex.test(contact.email) || substrRegex.test(contact.phone))
-                        matches.push(contact);
+                contacts.each(function(contact) {
+                    if (substrRegex.test(contact.get('name')) || substrRegex.test(contact.get('email')) || substrRegex.test(contact.get('phone')))
+                        matches.push(contact.toJSON());
                 });
             cb(matches);
             };
         };
 
-        var substringGroupMatcher = function(strs) {
+        var substringGroupMatcher = function(groups) {
             return function findMatches(q, cb) {
                 var matches, substrRegex;
                 matches = [];
                 substrRegex = new RegExp(q, 'i');
 
-                $.each(strs, function(i, group) {
-                    if (substrRegex.test(group.name)){
-                        group.is_group = true;
-                        matches.push(group);
+                groups.each(function(group) {
+                    if (substrRegex.test(group.get('name'))){
+                        group.set('is_group', true);
+                        matches.push(group.toJSON());
                     }
                 });
             cb(matches);
             };
         };
 
-        var setupTypeAhead = function(contacts_and_groups){
+        var setupTypeAhead = function(contacts, groups){
             that.$newContact.typeahead({
                 hint: true,
                 highlight: true,
@@ -162,7 +168,7 @@ InviteAttendeesView = Backbone.View.extend({
                 autoselect: true,
                 name: 'contacts',
                 displayKey: 'name',
-                source: substringMatcher(contacts_and_groups.contacts),
+                source: substringMatcher(contacts),
                 templates: {
                     header: '<h5 class="typeahead-contact-header">Contacts</h5>',
                     suggestion: JST['contact_item_typeahead.html']
@@ -172,7 +178,7 @@ InviteAttendeesView = Backbone.View.extend({
                 autoselect: true,
                 name: 'groups',
                 displayKey: 'name',
-                source: substringGroupMatcher(contacts_and_groups.groups),
+                source: substringGroupMatcher(groups),
                 templates: {
                     header: '<h5 class="typeahead-group-header">Groups</h5>',
                     suggestion: _.template('<%- name %>')
@@ -187,13 +193,7 @@ InviteAttendeesView = Backbone.View.extend({
             });
         };
 
-        if(currentUser == null){
-            setupTypeAhead([]);
-            return;
-        }
-
-        that.all_contacts = new ContactList();
-        that.model.fetchForCurrentUser(setupTypeAhead);
+        setupTypeAhead(that.all_contacts, that.all_groups);
     },
 
     parsePhoneAndEmail: function(addressString){

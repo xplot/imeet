@@ -21,7 +21,6 @@ InviteHeaderView = SimpleView.extend({
             contentType: false,
             success: function(data) {
                 var url = '/image/'+ data + '?'+ new Date().getTime();
-                console.log('http://localhost:8003' + url);
                 $invite_cover_image.css('background-image','url('+ url + ')');
             },
             error: function(data) {

@@ -1,4 +1,28 @@
 
+//Didnt find where to put this
+var fetchGroupDistributionForCurrentUser = function(callback){
+    if(currentUser == null){
+        callback({
+            contacts: [],
+            groups: []
+        });
+    }
+    else{
+        $.ajax({
+            url: "/api/contacts/groups?user_id="+currentUser.id,
+            type: "GET",
+            success: function(data) {
+                    if(callback != null)
+                        callback(data);
+            },
+            error: function(data) {
+
+            }
+    });
+    }
+
+};
+
 Contact = Backbone.Model.extend({
     defaults: {
         unique_id: '',
@@ -54,7 +78,9 @@ ContactList = Backbone.Collection.extend({
       return this.map(function(model){
           return model.toJSON2()
       });
-    }
+    },
+
+
  });
 
 
@@ -67,7 +93,7 @@ Group = Backbone.Model.extend({
 
     fetchContacts: function(callback){
         $.ajax({
-            url: "/api/group/" + this.unique_id + "?user_id="+currentUser.id,
+            url: "/api/group/" + this.get('unique_id') + "?user_id="+currentUser.id,
             type: "GET",
             success: function(data) {
                 var contactList = new ContactList();
@@ -81,6 +107,33 @@ Group = Backbone.Model.extend({
                 alert_notification([{
                     alertType:'danger',
                     message: "There was an error getting the contacts for the group"
+                }]);
+            }
+        });
+    },
+
+    includeInInvite: function(invite_id, callback){
+        var url = "/api/invite/" + invite_id + "/group/";
+
+        var post = {
+            user_id: currentUser.id,
+            unique_id: this.get('unique_id')
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function(data) {
+                if(callback)
+                    callback(view, data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
                 }]);
             }
         });
@@ -217,26 +270,6 @@ InviteModel = Backbone.Model.extend({
         });
     },
 
-    fetchGroupDistributionForCurrentUser: function(callback){
-        var self = this;
-        $.ajax({
-            url: "/api/contacts/groups?user_id="+currentUser.id,
-            type: "GET",
-            success: function(data) {
 
-                if(data != null)
-                    data.forEach(function(item){
-                       this.add(item)
-                    });
-
-                callback(data);
-                //that.all_contacts = new ContactList(data);
-                //setupTypeAhead(data);
-            },
-            error: function(data) {
-
-            }
-        });
-    }
 
 });

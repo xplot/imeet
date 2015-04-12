@@ -33,7 +33,7 @@ class InviteHandler(JsonHandler):
 
         command = None
         if not invite_id:
-            command = CreateInviteCommand.read_from_dict(invite_dict)
+            command = CreateInviteCommand.read_from_dict(invite_dict, self.user)
         else:
             command = UpdateInviteCommand.read_from_dict(invite_id, invite_dict)
         return command.execute()

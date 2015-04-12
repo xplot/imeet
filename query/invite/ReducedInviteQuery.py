@@ -15,27 +15,10 @@ class ReducedInviteQuery(object):
 
     def query(self):
         """
-        Returns a full fledge invite in a dictionary form
+        Returns a partial invite in a dictionary form
         It also contains attendees and responses from attendees
         {
-            'invite_unique_id
-            'attendees': [
-                {
-                    'phone': '',
-                    'email': 'javi@javi.com',
-                    'name': u'',
-                    notifications:[
-                        {
-                            'name': u'',
-                            'phone': '',
-                            'email': 'javi@javi.com',
-                            'sms_response': '',
-                            'voice_response': '',
-                            'email_response': '',
-                        }
-                    ]
-                }
-            ],
+            'unique_id,
             'email_template':{
                 'id': 0, #This number represents the TemplateModelId
             },
@@ -56,6 +39,8 @@ class ReducedInviteQuery(object):
             self.invite = Invite.get_by_unique_id(self.invite_unique_id)
         invite = self.invite
 
+        email_template_model = TemplateModel()
+
         return {
             'unique_id':    invite.unique_id,
             'title':        invite.title,
@@ -64,5 +49,12 @@ class ReducedInviteQuery(object):
             'description':  invite.description,
             'where':        invite.where,
             'poster_image_id': invite.poster_picture.urlsafe() if invite.poster_picture else None,
+            'email_template': {
+                'url': email_template_model.get_email_template_url(),
+                'response_url': email_template_model.get_email_response_url(),
+            },
+            'SmsTemplate':{
+                'text': "Hello world"
+            },
             #'user_id':      None if not invite.user else invite.user.get().id()
         }

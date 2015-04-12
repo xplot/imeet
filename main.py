@@ -59,6 +59,7 @@ app = webapp2.WSGIApplication([
 
     #Invite_Contacts
     Route('/api/invite/<invite_id>/attendees/', api.InviteAttendeeHandler),
+    Route('/api/invite/<invite_id>/group/', api.InviteAttendeeHandler, name='post_group', handler_method='post_group', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify', api.InviteAttendeeHandler, name='notify_some', handler_method='notify_some', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/<invite_contact_id>/response', api.InviteAttendeeHandler, name='accept_response', handler_method='accept_response', methods=['POST']),

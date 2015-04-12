@@ -325,11 +325,17 @@ return __p
 
 this["JST"]["invite_header.html"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="block block1 invite-background" style="background-image: url(/image/' +
-__e( poster_image_id ) +
-')">\n    <div class="center-block">\n       <div class="invite-title-container">\n       </div>\n       <div class="upload">\n            <form id="upload_image_form" data-id="' +
+__p += '<div class="block block1 invite-background"\n     ';
+ if (poster_image_id != null) {
+         print("style='background-image: url(/image/" + poster_image_id + ")'")
+    }
+    else {
+         print("style='background-image: url(/img/default_image.jpg)'")
+    } ;
+__p += '\n>\n    <div class="center-block">\n       <div class="invite-title-container">\n       </div>\n       <div class="upload">\n            <form id="upload_image_form" data-id="' +
 __e( unique_id ) +
 '" method="POST" enctype="multipart/form-data">\n                <input type="file" name="upload_image_file" id="upload_image_file" >\n            </form>\n            <button id="image_select_btn" class="btn btn-success">Change cover</button>\n       </div>\n\n    </div>\n\n</div>\n';
 
