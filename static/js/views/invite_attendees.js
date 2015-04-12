@@ -12,8 +12,8 @@ InviteAttendeesView = Backbone.View.extend({
 
         'click .new-contact' : 'newContact',
         'click .remove-contact': 'removeContact',
-        'keyup .contact-input': 'newContactEnter',
-        'click .new-contact-button': 'newContactClick',
+        'keyup .contact-input': 'newAttendeeEnter',
+        'click .new-contact-button': 'newAttendeeButtonClick',
         'click .contact-input-container': 'focusOnClick'
 
     },
@@ -36,15 +36,15 @@ InviteAttendeesView = Backbone.View.extend({
         return this.$el.html();
     },
 
-    newContactEnter: function(evt) {
+    newAttendeeEnter: function(evt) {
         if (evt.keyCode != 13) {
             return;
         }
         this.$newContact.trigger('blur');
-        this.newContactClick();
+        this.newAttendeeButtonClick();
     },
 
-    newContactClick: function() {
+    newAttendeeButtonClick: function() {
         var contact = null;
         var group = null;
         if(this.last_selected_item != null && this.last_selected_item.is_group)
@@ -71,36 +71,23 @@ InviteAttendeesView = Backbone.View.extend({
         this.$newContact.val('');
         this.last_selected_item = null;
 
-        if(contact != null)
+        if(contact != null){
             this.model.add(new Contact(contact));
-        if(group != null)
-            this.addContactsFromGroup(group.unique_id);
+            contactModel.includeInInvite(this.invite_id);
+        }
+
+        if(group != null){
+            var group = new Group({unique_id: group.unique_id});
+            group.fetchContacts($.proxy(this.addAttendeesFromGroup));
+        }
 
         this.$newContact.focus();
     },
 
-    addContactsFromGroup: function(group_id){
+    addAttendeesFromGroup: function(contactList){
         var that = this;
-        $.ajax({
-            url: "/api/group/" + group_id + "?user_id="+currentUser.id,
-            type: "GET",
-            success: function(data) {
-                if(data.length == 0){
-                    alert_notification([{alertType: 'warning', message: 'No contacts in the selected group!'}]);
-                    return;
-                }
-
-                data.forEach(function(item){
-                    var contact = new Contact(item);
-                    that.model.add(contact);
-                });
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: "There was an error getting the contacts for the group"
-                }]);
-            }
+        data.forEach(function(item){
+            that.model.add(contact);
         });
     },
 
@@ -112,7 +99,6 @@ InviteAttendeesView = Backbone.View.extend({
             JST['contact-item-invite-create.html'](contactModel.toJSON())
         );
 
-        contactModel.includeInInvite(this.invite_id);
         return false;
     },
     //end-AddContact
@@ -206,17 +192,8 @@ InviteAttendeesView = Backbone.View.extend({
             return;
         }
 
-        $.ajax({
-            url: "/api/contacts/groups?user_id="+currentUser.id,
-            type: "GET",
-            success: function(data) {
-                that.all_contacts = new ContactList(data);
-                setupTypeAhead(data);
-            },
-            error: function(data) {
-
-            }
-        });
+        that.all_contacts = new ContactList();
+        that.model.fetchForCurrentUser(setupTypeAhead);
     },
 
     parsePhoneAndEmail: function(addressString){

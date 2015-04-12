@@ -60,9 +60,32 @@ ContactList = Backbone.Collection.extend({
 
 Group = Backbone.Model.extend({
     defaults: {
+        unique_id: '',
         name: '',
         contacts: new ContactList()
+    },
+
+    fetchContacts: function(callback){
+        $.ajax({
+            url: "/api/group/" + this.unique_id + "?user_id="+currentUser.id,
+            type: "GET",
+            success: function(data) {
+                var contactList = new ContactList();
+                data.forEach(function(item){
+                    contactList.add(new Contact(item));
+                });
+
+                callback(contactList)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: "There was an error getting the contacts for the group"
+                }]);
+            }
+        });
     }
+
 });
 
 GroupList = Backbone.Collection.extend({
@@ -83,7 +106,9 @@ GroupList = Backbone.Collection.extend({
       return this.map(function(model){
           return model.toJSON2()
       });
-    }
+    },
+
+
  });
 
 InviteModel = Backbone.Model.extend({
@@ -191,5 +216,27 @@ InviteModel = Backbone.Model.extend({
             }
         });
     },
+
+    fetchGroupDistributionForCurrentUser: function(callback){
+        var self = this;
+        $.ajax({
+            url: "/api/contacts/groups?user_id="+currentUser.id,
+            type: "GET",
+            success: function(data) {
+
+                if(data != null)
+                    data.forEach(function(item){
+                       this.add(item)
+                    });
+
+                callback(data);
+                //that.all_contacts = new ContactList(data);
+                //setupTypeAhead(data);
+            },
+            error: function(data) {
+
+            }
+        });
+    }
 
 });
