@@ -236,13 +236,13 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="invite-attendees-box">\n<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="row">\n    <div class="contact-input-container col-md-12">\n        <input type="text" class="contact-input form-control"\n        ';
+__p += '<div class="invite-attendees-box">\n<div class="row text-center">\n    <div class="col-md-12 text-left">\n        <button type=\'button\' class=\'notify-all btn btn-success pull-right\'>Notify All</button>\n    </div>\n</div>\n<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="row">\n    <div class="contact-input-container col-md-12">\n        <input type="text" class="contact-input form-control"\n        ';
   if( features.indexOf('voice') != -1 )  { ;
 __p += '\n        data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n        ';
  } else { ;
 __p += '\n        data-validation=\'required,email\' placeholder=\'Email Address\'\n        ';
  } ;
-__p += '>\n        <button type="button" class="btn new-contact-button form-control">+</button>\n    </div>\n</div>\n<div class="row contact-table-container">\n    <div class="contact-table">\n\n        ';
+__p += '>\n        <button type="button" class="btn new-contact-button form-control">+</button>\n    </div>\n</div>\n<div class="row contact-table-container">\n    <div class="contact-table">\n        ';
  _.each( attendees, function( item ){ ;
 __p += '\n            <div class="col-md-12 contact-item-details" id=\'' +
 __e( item.unique_id ) +

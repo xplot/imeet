@@ -50,11 +50,17 @@ class ReducedInviteQuery(object):
             'where':        invite.where,
             'poster_image_id': invite.poster_picture.urlsafe() if invite.poster_picture else None,
             'email_template': {
+                'subject': 'You have been invited to {{title}}',
                 'url': email_template_model.get_email_template_url(),
                 'response_url': email_template_model.get_email_response_url(),
             },
-            'SmsTemplate':{
-                'text': "Hello world"
+            'response_email_template': {
+                'subject': "Thank you {{name}} for your response",
+                'url':  email_template_model.get_email_response_url(),
+                'redirect_url':email_template_model.get_email_response_url(),
+            },
+            'sms_template':{
+                'body': "Hello world" #Not used for now
             },
             #'user_id':      None if not invite.user else invite.user.get().id()
         }

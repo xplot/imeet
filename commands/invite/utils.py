@@ -1,5 +1,6 @@
 from google.appengine.api import search
 
+
 def index_invite(invite):
     """
     Stores the document in the datastore index

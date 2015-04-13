@@ -11,8 +11,11 @@ AdminInviteView = SimpleView.extend({
 
     events: {
         "keypress .invite-newComment": "addNewComment",
+        'click .notify-all': 'notifyAll',
         'change .share_to_facebook': 'share_on_facebook_auth',
     },
+
+
 
     render: function(data){
         this.hidePanels();
@@ -48,6 +51,17 @@ AdminInviteView = SimpleView.extend({
 
         this.plugins();
     },
+
+    notifyAll: function(){
+        this.model.notifyAll($.proxy(this.notifyAllCallback, this));
+    },
+    notifyAllCallback:function(result){
+        alert_notification([{
+            alertType:'success',
+            message: "Everyone in the invite is going to be notified in the next few minutes"
+        }]);
+    },
+
 
     plugins: function(){
 

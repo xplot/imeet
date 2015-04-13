@@ -11,7 +11,7 @@ InviteAttendeesView = Backbone.View.extend({
     events: {
 
         'click .new-contact' : 'newAttendee',
-        'click .remove-contact': 'removeContact',
+        'click .remove-contact': 'removeAttendee',
         'keyup .contact-input': 'newAttendeeEnter',
         'click .new-contact-button': 'newAttendeeButtonClick',
         'click .contact-input-container': 'focusOnClick'
@@ -30,7 +30,7 @@ InviteAttendeesView = Backbone.View.extend({
         this.$newContact = $('.contact-input');
 
         this.listenTo(this.model, 'add', this.newAttendee);
-        this.listenTo(this.model, 'remove', this.removeContact_DOM);
+        this.listenTo(this.model, 'remove', this.removeAttendee_DOM);
 
         var that = this;
         fetchGroupDistributionForCurrentUser(function(contacts_and_groups){
@@ -95,7 +95,7 @@ InviteAttendeesView = Backbone.View.extend({
 
     addAttendeesFromGroup: function(contactList){
         var that = this;
-        console.log(this);
+
         contactList.forEach(function(item){
             that.model.add(item);
         });
@@ -114,11 +114,14 @@ InviteAttendeesView = Backbone.View.extend({
     //end-AddContact
 
     //start-RemoveContact
-    removeContact:function(e){
+    removeAttendee:function(e){
         var dataId = $(e.currentTarget).data('rowid');
+        var contactModel = this.model.getById(dataId);
+        contactModel.removeFromInvite(this.invite_id);
+
         this.model.removeBy(dataId);
     },
-    removeContact_DOM: function (contact) {
+    removeAttendee_DOM: function (contact) {
         if(this.$table == null)
             this.$table = this.$el.find('.contact-table');
         this.$table.find('#' + contact.attributes.unique_id).remove();

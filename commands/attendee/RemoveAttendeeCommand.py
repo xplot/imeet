@@ -17,3 +17,8 @@ class RemoveAttendeeCommand(object):
             self.attendee_unique_id
         )
         invite_attendee.key.delete()
+
+        #TODO
+        #If this person has AttendeeNotifications
+        #It means he has been notified
+        #It has to be notified that he's no longer on the invite

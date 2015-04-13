@@ -35,7 +35,7 @@ class InviteAttendeeHandler(JsonHandler):
         return invite_id
 
     @user_context
-    def delete(self, unique_id):
+    def delete(self, invite_id, unique_id):
         """Includes an Attendee in the Invite"""
         command = commands.RemoveAttendeeCommand(unique_id)
         command.execute()
@@ -59,20 +59,21 @@ class InviteAttendeeHandler(JsonHandler):
     @request_with_subscription
     def notify_all(self, invite_id):
         """Send the invite out to all the contacts"""
-        bulk_invite = BulkInviteAttendeeModel(
-            InviteModel.create_from_id(invite_id)
-        )
-        bulk_invite.notify_all()
+        invite_all = commands.NotifyAllAttendeesCommand(invite_unique_id=invite_id)
+        invite_all.execute()
+        return invite_id
 
     @user_context
     @request_with_subscription
     def notify_some(self, invite_id):
         """Send the invite out to some of the contacts"""
         attendees = self._data()
-        bulk_invite = BulkInviteAttendeeModel(
-            InviteModel.create_from_id(invite_id)
+        invite_some = commands.BulkNotifyAttendeesCommand(
+            invite_unique_id=self.invite_id,
+            attendees_unique_ids=attendees
         )
-        bulk_invite.notify_attendees(attendees)
+        invite_some.execute()
+        return invite_id
 
     def accept_response(self, invite_id, invite_contact_id):
         data = self._data()

@@ -58,6 +58,31 @@ Contact = Backbone.Model.extend({
                 }]);
             }
         });
+    },
+
+    removeFromInvite: function(invite_id, callback){
+        var url = "/api/invite/" + invite_id + "/attendees/" + this.get('unique_id');
+        var post = {
+            user_id: currentUser.id
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function(data) {
+                if(callback)
+                    callback(view, data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
     }
 });
 
@@ -67,7 +92,7 @@ ContactList = Backbone.Collection.extend({
     getById: function(unique_id){
         return this.filter(function(val) {
             return val.get("unique_id") === unique_id;
-        });
+        })[0];
     },
 
     removeBy: function(unique_id){
@@ -79,8 +104,6 @@ ContactList = Backbone.Collection.extend({
           return model.toJSON2()
       });
     },
-
-
  });
 
 
@@ -260,6 +283,26 @@ InviteModel = Backbone.Model.extend({
                         message: 'Event saved successfully!'
                     }]);
                 callback(view, data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
+    notifyAll: function(callback){
+
+        $.ajax({
+            url: "/api/invite/" + this.get('unique_id') + "/attendees/notify/all",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(invite),
+            cache: false,
+            success: function(data) {
+                callback(data)
             },
             error: function(data) {
                 alert_notification([{

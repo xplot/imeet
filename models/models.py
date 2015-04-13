@@ -118,6 +118,7 @@ class InviteAttendeeNotification(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
+    name = ndb.StringProperty()
     email = ndb.StringProperty()
     phone = ndb.StringProperty()
     voice_response = ndb.StringProperty()

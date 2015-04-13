@@ -1,5 +1,10 @@
 <div class="invite-attendees-box">
 <div class="row text-center">
+    <div class="col-md-12 text-left">
+        <button type='button' class='notify-all btn btn-success pull-right'>Notify All</button>
+    </div>
+</div>
+<div class="row text-center">
     <div class="col-md-12 text-left"><h4>Invite People</h4></div>
 </div>
 <div class="row">
@@ -15,7 +20,6 @@
 </div>
 <div class="row contact-table-container">
     <div class="contact-table">
-
         <% _.each( attendees, function( item ){ %>
             <div class="col-md-12 contact-item-details" id='<%- item.unique_id %>'>
                 <span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span>
