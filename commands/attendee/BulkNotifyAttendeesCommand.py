@@ -43,12 +43,13 @@ class BulkNotifyAttendeesCommand(object):
             ).query())
             bulk_notifications.append(attendee_notification)
 
+        group_id = EventQueue.get_group_id(self.invite.unique_id)
         EventQueue.push_event(
             endpoint=config.get('api_url') + "/attendees",
             headers=get_voiceflows_headers(),
             payload=body,
-            group_id=guid(),
-            priority=1
+            group_id=group_id, #Same Group as Invite Creation
+            priority=1 #Lower priority than Invite Creation
         )
 
         ndb.put_multi(bulk_notifications)

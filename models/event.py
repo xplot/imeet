@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 
 MAX_RETRIES = 6
 
+
 class EventStatus(object):
     CREATED = 'created'
     IN_PROCESS = 'in_process'
@@ -9,17 +10,22 @@ class EventStatus(object):
     FAILED = 'failure'
 
 
+class EventGroup(ndb.Model):
+    unique_id = ndb.StringProperty(required=True)
+    grouper_unique_id = ndb.StringProperty(required=True)
+
+
 class Event(ndb.Model):
     unique_id = ndb.StringProperty()
     endpoint = ndb.StringProperty()
-    headers = ndb.TextProperty()
-    method = ndb.StringProperty()
-    payload = ndb.TextProperty()
-    created = ndb.DateTimeProperty(auto_now_add=True)
-    retries = ndb.IntegerProperty(default=0)
-    status = ndb.StringProperty()
-    priority = ndb.IntegerProperty(default=0, required=True)
-    group_id = ndb.StringProperty()
+    headers = ndb.TextProperty(indexed=False)
+    method = ndb.StringProperty(indexed=False)
+    payload = ndb.TextProperty(indexed=False)
+    created = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
+    retries = ndb.IntegerProperty(default=0, indexed=False)
+    status = ndb.StringProperty(indexed=False)
+    priority = ndb.IntegerProperty(default=0, required=True, indexed=False)
+    group_id = ndb.StringProperty(indexed=False)
 
     @classmethod
     def get_by_unique_id(cls, unique_id):

@@ -56,7 +56,7 @@ class InviteAttendeeHandler(JsonHandler):
         return invite_id
 
     @user_context
-    @request_with_subscription
+    #@request_with_subscription
     def notify_all(self, invite_id):
         """Send the invite out to all the contacts"""
         invite_all = commands.NotifyAllAttendeesCommand(invite_unique_id=invite_id)

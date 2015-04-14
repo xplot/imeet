@@ -47,6 +47,7 @@ InviteAttendeesView = Backbone.View.extend({
         if (evt.keyCode != 13) {
             return;
         }
+
         this.$newContact.trigger('blur');
         this.newAttendeeButtonClick();
     },
@@ -75,9 +76,6 @@ InviteAttendeesView = Backbone.View.extend({
             };
         }
 
-        this.$newContact.val('');
-        this.last_selected_item = null;
-
         if(contact != null){
             var contactModel = new Contact(contact);
             this.model.add(contactModel);
@@ -90,6 +88,9 @@ InviteAttendeesView = Backbone.View.extend({
             group.includeInInvite(this.invite_id)
         }
 
+        this.last_selected_item = null;
+        this.$newContact.val('');
+        this.$newContact.typeahead('val', '');
         this.$newContact.focus();
     },
 
@@ -190,9 +191,11 @@ InviteAttendeesView = Backbone.View.extend({
             }
             ).on('typeahead:selected', function (obj, data) {
                 that.last_selected_item = data;
+
             })
             .on('keypress keydown input', function($e) {
                 $e.stopPropagation();
+
             });
         };
 

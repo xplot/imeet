@@ -7,7 +7,7 @@ import json
 from google.appengine.api import taskqueue
 
 from managers.utils import guid
-from models.event import Event, EventStatus
+from models.event import Event, EventStatus, EventGroup
 
 MEMCACHED_KEY = "WebHookApi_MEM_KEY_TXY"
 QUEUE_NAME = "webhook-event"
@@ -71,6 +71,24 @@ class EventQueue(object):
     def _get_cutie_task_name(cls, event_id):
         return "event_" + event_id
 
+    @classmethod
+    def create_event_group(cls, unique_object_id):
+        group_id = EventGroup.get_group_id(unique_object_id)
+        if group_id:
+            return group_id
+        group = EventGroup(
+            unique_id=guid(),
+            unique_object_id=unique_object_id
+        )
+        group.put_async()
+        return group.unique_object_id
+
+    @classmethod
+    def get_group_id(cls, unique_object_id):
+        group = EventGroup.query(EventGroup.grouper_unique_id == unique_object_id).get()
+        if group:
+            return group.grouper_unique_id
+        return None
 
 class EventDispatcher(object):
     """

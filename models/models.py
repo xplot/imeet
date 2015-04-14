@@ -70,31 +70,31 @@ class Contact(BaseModel):
 
 class Comment(BaseModel):
     author = ndb.StringProperty(required=True)
-    comment = ndb.StringProperty(required=True)
-    commentedOn = ndb.DateTimeProperty(required=True)
+    comment = ndb.StringProperty(required=True, indexed=False)
+    commentedOn = ndb.DateTimeProperty(required=True, indexed=False)
 
 
 class Image(BaseModel):
     unique_id = ndb.StringProperty(required=True)
-    image_key = ndb.BlobKeyProperty(required=True)
+    image_key = ndb.BlobKeyProperty(required=True, indexed=False)
 
 
 class Invite(BaseModel):
     unique_id = ndb.StringProperty(required=True)
-    start = ndb.DateTimeProperty(required=True)
-    end = ndb.DateTimeProperty()
-    title = ndb.StringProperty(required=True)
-    description = ndb.StringProperty(required=False)
+    start = ndb.DateTimeProperty(required=True, indexed=False)
+    end = ndb.DateTimeProperty(indexed=False)
+    title = ndb.StringProperty(required=True,indexed=False)
+    description = ndb.StringProperty(required=False, indexed=False)
     user = ndb.KeyProperty(kind=User)
     where = ndb.StringProperty(required=False)
-    shared_on_facebook = ndb.BooleanProperty(required=False)
+    shared_on_facebook = ndb.BooleanProperty(required=False, indexed=False)
     facebook_post_id = ndb.StringProperty(required=False)
-    comments = ndb.StructuredProperty(Comment, repeated=True)
-    email_template = ndb.StringProperty(required=False)
-    email_response_template = ndb.StringProperty(required=False)
-    sms_template = ndb.StringProperty(required=False)
-    voice_template = ndb.StringProperty(required=False)
-    poster_picture = ndb.KeyProperty(required=False, kind=Image)
+    comments = ndb.StructuredProperty(Comment, repeated=True, indexed=False)
+    email_template = ndb.StringProperty(required=False, indexed=False)
+    email_response_template = ndb.StringProperty(required=False, indexed=False)
+    sms_template = ndb.StringProperty(required=False, indexed=False)
+    voice_template = ndb.StringProperty(required=False, indexed=False)
+    poster_picture = ndb.KeyProperty(required=False, kind=Image, indexed=False)
 
     def get_attendees(self):
         return InviteAttendee.query(InviteAttendee.invite == self.key).fetch()
@@ -103,9 +103,9 @@ class InviteAttendee(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     contact = ndb.KeyProperty(kind=Contact)
     invite = ndb.KeyProperty(kind=Invite)
-    name = ndb.StringProperty()
-    phone = ndb.StringProperty()
-    email = ndb.StringProperty()
+    name = ndb.StringProperty(indexed=False)
+    phone = ndb.StringProperty(indexed=False)
+    email = ndb.StringProperty(indexed=False)
 
 
 class InviteAttendeeNotification(BaseModel):
@@ -118,15 +118,15 @@ class InviteAttendeeNotification(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
-    name = ndb.StringProperty()
-    email = ndb.StringProperty()
-    phone = ndb.StringProperty()
-    voice_response = ndb.StringProperty()
-    sms_response = ndb.StringProperty()
-    email_response = ndb.StringProperty()
-    voice_response_datetime = ndb.DateTimeProperty()
-    sms_response_datetime = ndb.DateTimeProperty()
-    email_response_datetime = ndb.DateTimeProperty()
+    name = ndb.StringProperty(indexed=False)
+    email = ndb.StringProperty(indexed=False)
+    phone = ndb.StringProperty(indexed=False)
+    voice_response = ndb.StringProperty(indexed=False)
+    sms_response = ndb.StringProperty(indexed=False)
+    email_response = ndb.StringProperty(indexed=False)
+    voice_response_datetime = ndb.DateTimeProperty(indexed=False)
+    sms_response_datetime = ndb.DateTimeProperty(indexed=False)
+    email_response_datetime = ndb.DateTimeProperty(indexed=False)
 
     def attendee_id(self):
         return self.attendee.key.id()
@@ -143,14 +143,14 @@ class InviteIndex(ndb.Model):
 class Subscription(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     name = ndb.StringProperty(required=True)
-    price = ndb.FloatProperty(required=True)
+    price = ndb.FloatProperty(required=True, indexed=False)
 
 
 class UserSubscription(BaseModel):
     user = ndb.KeyProperty(kind=User, required=True)
-    subscription = ndb.StringProperty(required=True)
-    started_on = ndb.DateTimeProperty(required=True)
-    is_trial = ndb.BooleanProperty(required=True)
+    subscription = ndb.StringProperty(required=True, indexed=False)
+    started_on = ndb.DateTimeProperty(required=True, indexed=False)
+    is_trial = ndb.BooleanProperty(required=True, indexed=False)
 
 
 class Feature(BaseModel):
