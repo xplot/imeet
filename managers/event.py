@@ -73,21 +73,21 @@ class EventQueue(object):
 
     @classmethod
     def create_event_group(cls, unique_object_id):
-        group_id = EventGroup.get_group_id(unique_object_id)
+        group_id = EventQueue.get_group_id(unique_object_id)
         if group_id:
             return group_id
         group = EventGroup(
             unique_id=guid(),
-            unique_object_id=unique_object_id
+            grouper_unique_id=unique_object_id
         )
         group.put_async()
-        return group.unique_object_id
+        return group.unique_id
 
     @classmethod
     def get_group_id(cls, unique_object_id):
         group = EventGroup.query(EventGroup.grouper_unique_id == unique_object_id).get()
         if group:
-            return group.grouper_unique_id
+            return group.unique_id
         return None
 
 class EventDispatcher(object):

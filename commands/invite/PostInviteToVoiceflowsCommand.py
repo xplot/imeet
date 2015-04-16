@@ -20,7 +20,7 @@ class PostInviteToVoiceflowsCommand(object):
         invite_query_dict['invite_unique_id'] = self.invite.unique_id
         invite_query_dict['uniquecall_id'] = guid()
 
-        group_id = EventQueue.create_event_group(invite.unique_id)
+        group_id = EventQueue.create_event_group(self.invite.unique_id)
         EventQueue.push_event(
             endpoint=config.get('api_url'),
             headers=get_voiceflows_headers(),
