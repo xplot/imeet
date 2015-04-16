@@ -45,7 +45,7 @@ function init_app() {
         el: "#invite-body"
     });
     invite_view = new InviteView({
-        el: "#view-container"
+        el: "#invite-body"
     });
 
     sent_view = new SentView({
@@ -125,7 +125,11 @@ function init_app() {
             );
         },
         view_as_contact: function(id, contact_id){
-            invite_view.render({'invite_id': id, 'contact_id': contact_id});
+            invite_view.render({
+                'invite_id': id,
+                'contact_id': contact_id,
+                'invite': invite //this is the initial json payload sent from the server.
+            });
         },
         contacts: function(){
             contacts_view.render({contactList: contactList, groupList: groupList});

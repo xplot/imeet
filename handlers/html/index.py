@@ -33,7 +33,12 @@ class IndexHandler(BaseHandler):
     def view_invite(self, id, contact_id=0):
         if not id:
             return self.redirect_to('home')
-        return self.render_template('index.html')
+
+        invite_query = query.CompleteInviteQuery(id)
+        return self.render_template(
+            'invite.html',
+            invite=json.dumps(invite_query.query())
+        )
 
     def edit_invite_view(self, id=0):
         """Get the full invite, with contacts and responses"""
