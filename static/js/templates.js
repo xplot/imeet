@@ -10,16 +10,6 @@ __p += '<div class="modal addGroup-modal" tabindex="-1" >\n    <div class="modal
 return __p
 };
 
-this["JST"]["admin_edit.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<div class="container">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6" id="invite-attendees"></div>\n        <div class="col-md-6" id="invite-edit"></div>\n    </div>\n</div>\n\n';
-
-}
-return __p
-};
-
 this["JST"]["comment.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -198,34 +188,19 @@ return __p
 
 this["JST"]["invite.html"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
+var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="snap-panel invite-create">\n    <section data-panel="first" class="invite first">\n        <div class="zero-margin text-center invite-content ">\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <h4>Event</h4>\n                </div>\n            </div>\n            <div class="">\n\n                ';
-  if( currentUser == null )  { ;
-__p += '\n                    <label class="small-text">\n                    Note: For sms/calls to work, you have to be a registered\n                    <br/>\n                    Note2: Sms/calls will be free only during the beta phase. After that a subscription base fee will be offered\n                    </label>\n                ';
- } ;
-__p += '\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <input type="text" class="form-control event-name-input valid-before-submit" placeholder="Event" autofocus data-validation="required" value="' +
-__e(title) +
-'" >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <h4>Details</h4>\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <input type="text" class="form-control event-where-input" placeholder="Location...."  >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12  col-md-3 col-md-offset-2">\n                    <div class="date-group" id="start-date-group">\n                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
-__e(start_date ) +
-'">\n                        <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
-__e(start_time ) +
-'">\n                    </div>\n                </div>\n                <div class="col-xs-12 col-md-2 text-center label-text">\n                    <h4>To</h4>\n                </div>\n                <div class="col-xs-12 col-md-3">\n                    <div class="date-group">\n                        <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" value="' +
-__e(end_date ) +
-'">\n                        <input readonly="true" required type="text" class="time event-end-time" placeholder="00:00 AM"  value="' +
-__e(end_time ) +
-'">\n                    </div>\n                </div>\n            </div>\n            <div class="zero-margin desktop tablet small-margin-top">\n                <div class="col-xs-12 col-md-8 col-md-offset-2 ">\n                  <textarea class="form-control event-description-input" rows="6"></textarea>\n                </div>\n            </div>\n\n        </div>\n\n        <div class=\'row send-container col-xs-offset-0 col-xs-12 col-md-8 col-md-offset-2\'>\n            <div class="facebook_share pull-right">\n                <div>Share on Facebook</div>\n                <div><input type="checkbox"\n                   data-toggle="toggle"\n                   id="bt_toggle"\n                   class="share_to_facebook"\n                   data-style="android"\n                   data-on=" " data-off=" "\n                   data-onstyle="info"\n                   data-onstyle="success" data-offstyle="danger" />\n                </div>\n            </div>\n            <div class="">\n                <button type="button" class="btn form-control btn-success send">Create</button>\n            </div>\n\n        </div>\n    </section>\n</div>\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="panel">\n         <div class="panel-heading" >\n            <div class="zero-margin">\n                 <div class=\'pull-left col-xs-3 col-md-6\'><h2 class=\'invite-title\'></h2></div>\n                 <div class=\'col-xs-9 col-md-4 text-right\'>\n                    <div class=\'col-xs-12 col-md-12 invite-date\'></div>\n                 </div>\n            </div>\n         </div>\n        <div class="panel-body">\n            <div class="invite-view-content zero-margin small-margin-top">\n                <div class="col-md-6 attendees">\n                    <div class="row">\n                        <h4><b>Attendees</b></h4>\n                    </div>\n                    <div class="row invite-table">\n\n                    </div>\n                </div>\n                <div class="col-md-6 hangout">\n                    <h4><b>Hangout</b></h4>\n                    <div class="row invite-comments">\n                    </div>\n                    <input placeholder="Write a comment..." class="invite-newComment form-control ">\n                </div>\n            </div>\n        </div>\n     </div>\n\n    <!--<div class="invite-location"></div>-->\n\n\n</div>\n\n\n\n';
 
 }
 return __p
 };
 
-this["JST"]["inviteReport.html"] = function(obj) {
+this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="panel">\n         <div class="panel-heading" >\n            <div class="zero-margin">\n                 <div class=\'pull-left col-xs-3 col-md-6\'><h2 class=\'invite-title\'></h2></div>\n                 <div class=\'col-xs-9 col-md-4 text-right\'>\n                    <div class=\'col-xs-12 col-md-12 invite-date\'></div>\n                 </div>\n            </div>\n         </div>\n        <div class="panel-body">\n            <div class="invite-view-content zero-margin small-margin-top">\n                <div class="col-md-6 attendees">\n                    <div class="row">\n                        <h4><b>Attendees</b></h4>\n                    </div>\n                    <div class="row invite-table">\n\n                    </div>\n                </div>\n                <div class="col-md-6 hangout">\n                    <h4><b>Hangout</b></h4>\n                    <div class="row invite-comments">\n                    </div>\n                    <input placeholder="Write a comment..." class="invite-newComment form-control ">\n                </div>\n            </div>\n        </div>\n     </div>\n\n    <!--<div class="invite-location"></div>-->\n\n\n</div>\n\n\n\n';
+__p += '<div class="container">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6" id="invite-attendees"></div>\n        <div class="col-md-6" id="invite-details"></div>\n    </div>\n</div>\n\n';
 
 }
 return __p
@@ -262,7 +237,7 @@ __p += '\n\n    </div>\n</div>\n</div>';
 return __p
 };
 
-this["JST"]["invite_edit.html"] = function(obj) {
+this["JST"]["invite_details.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -343,24 +318,14 @@ __e( unique_id ) +
 return __p
 };
 
-this["JST"]["invite_report.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<style>\n  .toggle.android { border-radius: 0px;}\n  .toggle.android .toggle-handle { border-radius: 0px; }\n</style>\n\n<div class="row equidistant invite_report">\n    <div class="col-xs-12 col-md-8 col-md-offset-2">\n\n    </div>\n</div>\n';
-
-}
-return __p
-};
-
 this["JST"]["invite_sent.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="modal-content">\n    <form id="registerForm">\n        <div class="close-modal" data-action="dismiss">\n            <div class="lr">\n                <div class="rl">\n                </div>\n            </div>\n        </div>\n\n        <div class="container">\n            <div class="row">\n                Invite Link <a href="http://imeet.io/view/';
+__p += '<div class="modal-content">\n    <form id="registerForm">\n        <div class="close-modal" data-action="dismiss">\n            <div class="lr">\n                <div class="rl">\n                </div>\n            </div>\n        </div>\n\n        <div class="container">\n            <div class="row">\n                Invite Link <a href="http://imeet.io/invite/';
   print(invite_id) ;
-__p += '"><h5 class="text-lowercase">http://imeet.io/view/';
+__p += '"><h5 class="text-lowercase">http://imeet.io/invite/';
   print(invite_id) ;
 __p += '</h5></a>\n            </div>\n            <div class="row small-margin-top"></div>\n            <div class="row">\n               Register\n               <div class="controls">\n                   <div class="col-sm-3"></div>\n                    <div class="col-sm-6">\n                        <div class="col-sm-9">\n                            <input required type="email" class="form-control register-email" placeholder="Enter email..." data-validation="email">\n                        </div>\n                        <div class="col-sm-3">\n                            <button type="button" class="btn btn-success form-control submit-register">Go</button>\n                        </div>\n                    </div>\n                    <div class="col-sm-3"></div>\n                </div>\n           </div>\n        </div>\n    </form>\n</div>\n';
 
@@ -373,6 +338,31 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="row medium-margin-top">\n   <div class="col-md-12 section-item contact-table equidistant">\n      <form id="loginForm" action="/login" method="post">\n          <section class="section">\n              <div class="row controls">\n                  <div class="col-sm-4"></div>\n                  <div class="col-sm-4 medium-margin">\n                      <h4>Login</h4>\n                      <fieldset>\n                          <div class="row">\n                              <div class="col-sm-1"></div>\n                              <div class="col-sm-10">\n                                  <input id="username" name="username" required type="text" class="form-control small-margin" placeholder="Username">\n                                  <input id="password" name="password" required type="password" class="form-control small-margin" placeholder="Password">\n                              </div>\n                              <div class="col-sm-1"></div>\n\n                          </div>\n                          <div class="row">\n                              <div class="col-sm-1"></div>\n                              <div class="col-sm-10">\n                                  <label class="remember pull-right" style="padding: 10px">\n                                    Remember me?\n                                    <input type="checkbox" name="remember_me" id="remember_me" value="on">\n                                  </label>\n                              </div>\n                              <div class="col-sm-1"></div>\n                          </div>\n                          <div class="row">\n                              <div class="col-sm-1"></div>\n                              <div class="col-sm-10"><button type="submit" class="btn btn-success form-control pull-right">Login</button></div>\n                              <div class="col-sm-1"></div>\n                          </div>\n\n                          <div class="row" style="margin-top: 20px">\n                              <div class="col-sm-1"></div>\n                              <div class="col-sm-10">\n                                  <div id="third_party_login">\n                                      <ul class="social-login-icons">\n                                          <li style="width: auto">\n\n                                          </li>\n                                          <li>\n                                              <a href="/social_login/google">\n                                                  <i class="fa fa-google fa-2x"></i>\n                                              </a>\n                                          </li>\n                                          <li>\n\n                                              <a href="/social_login/facebook">\n                                                  <i class="fa fa-facebook fa-2x"></i>\n                                              </a>\n                                          </li>\n                                      </ul>\n                                  </div>\n                              </div>\n                              <div class="col-sm-1"></div>\n                          </div>\n\n                          <div class="row" style="margin-top: 20px">\n                              <div class="col-sm-1"></div>\n\n                              <div class="col-sm-1"></div>\n                          </div>\n\n                          <div class="row">\n                              <div class="col-sm-1"></div>\n                              <div class="col-sm-10">\n                                  <label class="remember pull-right">\n                                      Don\'t have an account?\n                                      <a href="/register" class="">Sign Up - It\'s Free.</a>\n                                  </label>\n                              </div>\n                              <div class="col-sm-1"></div>\n                          </div>\n                      </fieldset>\n                  </div>\n                  <div class="col-sm-4"></div>\n              </div>\n          </section>\n        </form>\n    </div>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["new.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="snap-panel invite-create">\n    <section data-panel="first" class="invite first">\n        <div class="zero-margin text-center invite-content ">\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <h4>Event</h4>\n                </div>\n            </div>\n            <div class="">\n\n                ';
+  if( currentUser == null )  { ;
+__p += '\n                    <label class="small-text">\n                    Note: For sms/calls to work, you have to be a registered\n                    <br/>\n                    Note2: Sms/calls will be free only during the beta phase. After that a subscription base fee will be offered\n                    </label>\n                ';
+ } ;
+__p += '\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <input type="text" class="form-control event-name-input valid-before-submit" placeholder="Event" autofocus data-validation="required" value="' +
+__e(title) +
+'" >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <h4>Details</h4>\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <input type="text" class="form-control event-where-input" placeholder="Location...."  >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12  col-md-3 col-md-offset-2">\n                    <div class="date-group" id="start-date-group">\n                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
+__e(start_date ) +
+'">\n                        <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
+__e(start_time ) +
+'">\n                    </div>\n                </div>\n                <div class="col-xs-12 col-md-2 text-center label-text">\n                    <h4>To</h4>\n                </div>\n                <div class="col-xs-12 col-md-3">\n                    <div class="date-group">\n                        <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" value="' +
+__e(end_date ) +
+'">\n                        <input readonly="true" required type="text" class="time event-end-time" placeholder="00:00 AM"  value="' +
+__e(end_time ) +
+'">\n                    </div>\n                </div>\n            </div>\n            <div class="zero-margin desktop tablet small-margin-top">\n                <div class="col-xs-12 col-md-8 col-md-offset-2 ">\n                  <textarea class="form-control event-description-input" rows="6"></textarea>\n                </div>\n            </div>\n\n        </div>\n\n        <div class=\'row send-container col-xs-offset-0 col-xs-12 col-md-8 col-md-offset-2\'>\n            <div class="facebook_share pull-right">\n                <div>Share on Facebook</div>\n                <div><input type="checkbox"\n                   data-toggle="toggle"\n                   id="bt_toggle"\n                   class="share_to_facebook"\n                   data-style="android"\n                   data-on=" " data-off=" "\n                   data-onstyle="info"\n                   data-onstyle="success" data-offstyle="danger" />\n                </div>\n            </div>\n            <div class="">\n                <button type="button" class="btn form-control btn-success send">Create</button>\n            </div>\n\n        </div>\n    </section>\n</div>\n';
 
 }
 return __p

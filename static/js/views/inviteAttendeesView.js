@@ -1,5 +1,6 @@
 InviteAttendeesView = Backbone.View.extend({
     template: JST['invite_attendees.html'],
+    el:'#invite-attendees',
     contacts: null,
     last_selected_item: null,
 

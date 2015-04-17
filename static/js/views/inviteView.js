@@ -1,5 +1,5 @@
 InviteView = SimpleView.extend({
-    template: JST['inviteReport.html'],
+    template: JST['invite.html'],
     inviteId:null,
     author: "Organizer",
 
@@ -20,9 +20,7 @@ InviteView = SimpleView.extend({
         this.$el.html(this.template());
         var self = this;
 
-        var invite_header = new InviteHeaderView({
-            el:'#invite-header'
-        });
+        var invite_header = new InviteHeaderView();
         invite_header.render(new InviteModel(data.invite));
 
         $.ajax({

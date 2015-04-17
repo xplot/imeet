@@ -28,10 +28,10 @@ app = webapp2.WSGIApplication([
     Route('/new/from/<source_invite_id>', html.IndexHandler, handler_method='new'),
     Route('/new/<invite_name>/from/<source_invite_id>', html.IndexHandler, handler_method='new'),
     Route('/search', html.IndexHandler, handler_method='search'),
-    Route('/view', html.IndexHandler, handler_method='view_invite'),
-    Route('/view/<id>', html.IndexHandler, handler_method='view_invite'),
-    Route('/view/<id>/edit', html.IndexHandler, handler_method='edit_invite_view', methods=['GET']),
-    Route('/view/<id>/<contact_id>', html.IndexHandler, handler_method='view_invite'),
+    Route('/invite', html.IndexHandler, handler_method='view_invite'),
+    Route('/invite/<id>', html.IndexHandler, handler_method='view_invite'),
+    Route('/invite/<id>/edit', html.IndexHandler, handler_method='edit_invite_view', methods=['GET']),
+    Route('/invite/<id>/<contact_id>', html.IndexHandler, handler_method='view_invite'),
     Route('/sent/<id>', html.IndexHandler, handler_method='view_invite'),
 
 

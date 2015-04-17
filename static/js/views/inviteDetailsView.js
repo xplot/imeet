@@ -1,5 +1,6 @@
-InviteEditDetailsView = SimpleView.extend({
-    template: JST['invite_edit.html'],
+InviteDetailsView = SimpleView.extend({
+    template: JST['invite_details.html'],
+    el:'#invite-edit',
     bindings: {
         '.event-name': 'title',
         '.event-name-input': 'title',

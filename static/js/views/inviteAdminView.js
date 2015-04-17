@@ -1,5 +1,5 @@
-AdminInviteView = SimpleView.extend({
-    template: JST['admin_edit.html'],
+InviteAdminView = SimpleView.extend({
+    template: JST['invite_admin.html'],
     inviteId:null,
     author: "Organizer",
     contacts: null,
@@ -30,15 +30,9 @@ AdminInviteView = SimpleView.extend({
 
         this.$el.html(this.template(invite_json));
 
-        var invite_attendees = new InviteAttendeesView({
-            el:'#invite-attendees'
-        });
-        var invite_header = new InviteHeaderView({
-            el:'#invite-header'
-        });
-        var invite_edit_details = new InviteEditDetailsView({
-            el:'#invite-edit'
-        });
+        var invite_attendees = new InviteAttendeesView();
+        var invite_header = new InviteHeaderView({is_admin: true});
+        var invite_details = new InviteDetailsView();
 
         invite_attendees.render(
             {
@@ -47,7 +41,7 @@ AdminInviteView = SimpleView.extend({
             }
         );
         invite_header.render(this.model);
-        invite_edit_details.render(this.model);
+        invite_details.render(this.model);
 
         this.plugins();
     },

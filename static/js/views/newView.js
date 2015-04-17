@@ -1,13 +1,4 @@
-
-
-CreateContactView = Backbone.View.extend({
-    //Will have to do it
-});
-ReadContactView = Backbone.View.extend({
-    //Will have to do it, ugly and quick for now
-});
-
-CreateView = SimpleView.extend({
+NewView = SimpleView.extend({
     el: '#view-container',
 
     initialize: function(options){
@@ -31,7 +22,7 @@ CreateView = SimpleView.extend({
         '.event-end-date': 'end_date',
         '.event-end-time': 'end_time'
     },
-    template: JST['invite.html'],
+    template: JST['new.html'],
     contacts: null,
 
     render: function(options) {
@@ -77,7 +68,7 @@ CreateView = SimpleView.extend({
     },
 
     inviteSubmitted: function(view, result){
-        Backbone.history.navigate('view/' + result, true);
+        Backbone.history.navigate('invite/' + result, true);
     },
 
     share_on_facebook_auth: function(){
