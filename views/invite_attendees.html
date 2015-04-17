@@ -1,32 +1,19 @@
-<div class="invite-attendees-box">
-<div class="row text-center">
-    <div class="col-md-12 text-left">
-        <button type='button' class='notify-all btn btn-success pull-right'>Notify All</button>
-    </div>
-</div>
-<div class="row text-center">
-    <div class="col-md-12 text-left"><h4>Invite People</h4></div>
-</div>
 <div class="row">
-    <div class="contact-input-container col-md-12">
-        <input type="text" class="contact-input form-control"
-        <%  if( features.indexOf('voice') != -1 )  { %>
-        data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
-        <% } else { %>
-        data-validation='required,email' placeholder='Email Address'
-        <% } %>>
-        <button type="button" class="btn new-contact-button form-control">+</button>
-    </div>
+  <div class="panel panel-default">
+  <div class="panel-heading">Are you coming?</div>
+  <div class="panel-body">
+    <input class="invite-attendees-acknowledge invite-attendees-acknowledge-yes" type="button" value="YES"></input>
+    <input class="invite-attendees-acknowledge invite-attendees-acknowledge-no" type="button" value="NO"></input>
+  </div>
 </div>
-<div class="row contact-table-container">
-    <div class="contact-table">
-        <% _.each( attendees, function( item ){ %>
+</div>
+
+<div class="row">
+    <% _.each( attendees, function( item ){ %>
             <div class="col-md-12 contact-item-details" id='<%- item.unique_id %>'>
                 <span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span>
                 <button type='button' class='btn btn-danger remove-contact pull-right' data-rowid='<%-item.unique_id %>'>-</button>
             </div>
         <% }); %>
+</div>
 
-    </div>
-</div>
-</div>

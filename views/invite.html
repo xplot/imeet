@@ -1,39 +1,44 @@
 <div class="invite-view">
     <div class="row">
-        <div id="invite-header"></div>
-    </div>
-    <div class="panel">
-         <div class="panel-heading" >
-            <div class="zero-margin">
-                 <div class='pull-left col-xs-3 col-md-6'><h2 class='invite-title'></h2></div>
-                 <div class='col-xs-9 col-md-4 text-right'>
-                    <div class='col-xs-12 col-md-12 invite-date'></div>
-                 </div>
-            </div>
-         </div>
-        <div class="panel-body">
-            <div class="invite-view-content zero-margin small-margin-top">
-                <div class="col-md-6 attendees">
-                    <div class="row">
-                        <h4><b>Attendees</b></h4>
-                    </div>
-                    <div class="row invite-table">
-
-                    </div>
-                </div>
-                <div class="col-md-6 hangout">
-                    <h4><b>Hangout</b></h4>
-                    <div class="row invite-comments">
-                    </div>
-                    <input placeholder="Write a comment..." class="invite-newComment form-control ">
-                </div>
-            </div>
+        <div id="invite-header">
+            <!--using invite_header.html subview-->
         </div>
-     </div>
+    </div>
+    <div class="row">
+        <div class="invite-subheader-banner">
+            <div class="col-md-2"/>
+            <div class='pull-left col-xs-3 col-md-4 invite-date'></div>
+             <div class='col-xs-9 col-md-4'>
+                <i class="fa fa-map-pin-streamline fa-15x"></i>
+                Location
+             </div>
+            <div class="col-md-2"/>
+        </div>
+    </div>
 
-    <!--<div class="invite-location"></div>-->
+    <div class="row">
+                <div class="col-md-2"/>
+                <div class="col-md-4 attendees">
+                    <div id="invite-attendees">
+                        <!--using invite_attendees.html subview-->
+                    </div>
+                </div>
 
+                <div class="col-md-4 hangout">
+                    <div class="row">
+                        <h4><b>Message from the host</b></h4>
+                        <div id="invite-description"/>
+                    </div>
+                    <div class="row">
+                        <h4><b>Comments</b></h4>
+                        <div class="row invite-comments">
+                        </div>
+                        <input placeholder="Add comment" class="invite-newComment form-control ">
+                    </div>
 
+                </div>
+                <div class="col-md-2"/>
+    </div>
 </div>
 
 

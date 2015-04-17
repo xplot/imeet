@@ -68,7 +68,7 @@ NewView = SimpleView.extend({
     },
 
     inviteSubmitted: function(view, result){
-        Backbone.history.navigate('invite/' + result, true);
+        Backbone.history.navigate('invite/' + result + '/edit', true);
     },
 
     share_on_facebook_auth: function(){

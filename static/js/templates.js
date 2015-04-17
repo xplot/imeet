@@ -190,7 +190,7 @@ this["JST"]["invite.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="panel">\n         <div class="panel-heading" >\n            <div class="zero-margin">\n                 <div class=\'pull-left col-xs-3 col-md-6\'><h2 class=\'invite-title\'></h2></div>\n                 <div class=\'col-xs-9 col-md-4 text-right\'>\n                    <div class=\'col-xs-12 col-md-12 invite-date\'></div>\n                 </div>\n            </div>\n         </div>\n        <div class="panel-body">\n            <div class="invite-view-content zero-margin small-margin-top">\n                <div class="col-md-6 attendees">\n                    <div class="row">\n                        <h4><b>Attendees</b></h4>\n                    </div>\n                    <div class="row invite-table">\n\n                    </div>\n                </div>\n                <div class="col-md-6 hangout">\n                    <h4><b>Hangout</b></h4>\n                    <div class="row invite-comments">\n                    </div>\n                    <input placeholder="Write a comment..." class="invite-newComment form-control ">\n                </div>\n            </div>\n        </div>\n     </div>\n\n    <!--<div class="invite-location"></div>-->\n\n\n</div>\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row">\n        <div class="invite-subheader-banner">\n            <div class="col-md-2"/>\n            <div class=\'pull-left col-xs-3 col-md-4 invite-date\'></div>\n             <div class=\'col-xs-9 col-md-4\'>\n                <i class="fa fa-map-pin-streamline fa-15x"></i>\n                Location\n             </div>\n            <div class="col-md-2"/>\n        </div>\n    </div>\n\n    <div class="row">\n                <div class="col-md-2"/>\n                <div class="col-md-4 attendees">\n                    <div id="invite-attendees">\n                        <!--using invite_attendees.html subview-->\n                    </div>\n                </div>\n\n                <div class="col-md-4 hangout">\n                    <div class="row">\n                        <h4><b>Message from the host</b></h4>\n                        <div id="invite-description"/>\n                    </div>\n                    <div class="row">\n                        <h4><b>Comments</b></h4>\n                        <div class="row invite-comments">\n                        </div>\n                        <input placeholder="Add comment" class="invite-newComment form-control ">\n                    </div>\n\n                </div>\n                <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
 
 }
 return __p
@@ -200,13 +200,13 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="container">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6" id="invite-attendees"></div>\n        <div class="col-md-6" id="invite-details"></div>\n    </div>\n</div>\n\n';
+__p += '<div class="container">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6" id="invite-admin-attendees"></div>\n        <div class="col-md-6" id="invite-details"></div>\n    </div>\n</div>\n\n';
 
 }
 return __p
 };
 
-this["JST"]["invite_attendees.html"] = function(obj) {
+this["JST"]["invite_admin_attendees.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
@@ -232,6 +232,31 @@ __e(item.unique_id ) +
 '\'>-</button>\n            </div>\n        ';
  }); ;
 __p += '\n\n    </div>\n</div>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["invite_attendees.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="row">\n  <div class="panel panel-default">\n  <div class="panel-heading">Are you coming?</div>\n  <div class="panel-body">\n    <input class="invite-attendees-acknowledge invite-attendees-acknowledge-yes" type="button" value="YES"></input>\n    <input class="invite-attendees-acknowledge invite-attendees-acknowledge-no" type="button" value="NO"></input>\n  </div>\n</div>\n</div>\n\n<div class="row">\n    ';
+ _.each( attendees, function( item ){ ;
+__p += '\n            <div class="col-md-12 contact-item-details" id=\'' +
+__e( item.unique_id ) +
+'\'>\n                <span class="details"><b>' +
+__e(item.name ) +
+'</b> ' +
+__e(item.email ) +
+' ' +
+__e(item.phone ) +
+'</span>\n                <button type=\'button\' class=\'btn btn-danger remove-contact pull-right\' data-rowid=\'' +
+__e(item.unique_id ) +
+'\'>-</button>\n            </div>\n        ';
+ }); ;
+__p += '\n</div>\n\n';
 
 }
 return __p
