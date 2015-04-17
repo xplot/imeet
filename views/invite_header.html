@@ -1,0 +1,21 @@
+<div class="block block1 invite-background"
+     <% if (poster_image_id != null) {
+         print("style='background-image: url(/image/" + poster_image_id + ")'")
+    }
+    else {
+         print("style='background-image: url(/img/default_image.jpg)'")
+    } %>
+>
+    <div class="center-block">
+       <div class="invite-title-container">
+       </div>
+       <div class="upload">
+            <form id="upload_image_form" data-id="<%- unique_id %>" method="POST" enctype="multipart/form-data">
+                <input type="file" name="upload_image_file" id="upload_image_file" >
+            </form>
+            <button id="image_select_btn" class="btn btn-success">Change cover</button>
+       </div>
+
+    </div>
+
+</div>

@@ -30,8 +30,6 @@ def request_with_subscription(handler):
     """
     def check_phone_on_free_subscription(self, *args, **kwargs):
 
-        logging.info(self.user)
-
         subscription_manager = SubscriptionManager(self.user)
         features = subscription_manager.get_features_for_user()
         logging.info(features)
@@ -40,7 +38,7 @@ def request_with_subscription(handler):
             contacts = body.get('contacts', None)
             if contacts is not None:
                 for x in contacts:
-                    if x['phone']:
+                    if x.get('phone', None):
                         self.response.write(
                             'This is a not valid '
                             'request for your subscription'

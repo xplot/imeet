@@ -5,8 +5,8 @@ import uuid
 from google.appengine.api import search, taskqueue
 from google.appengine.ext import ndb
 
-from models.models import Group
-from models.models import Contact, User, Group, GroupedContact
+from models import Group
+from models import Contact, User, Group, GroupedContact
 
 
 class GroupManager(object):

@@ -17,3 +17,19 @@
 * Run the `Invite` instance with GoogleAppEngine.
 
 Done!!! Go to localhost:8080
+
+
+####### Conventions
+
+* The URL dictates the name of the View, Template, etc. The only exception is the / (index) which could use a meaningful name.
+
+* All javascript classes will have the type at the end of the word always. Ex. InviteHeaderView.
+
+* You should strive for convention over configuration. Every javascript classes should define their properties as much as it can.
+Ex. InviteHeaderView = SimpleView.extend({
+        template: JST['invite_header.html'],
+        el: '#invite-header',
+        ....
+        }
+ here template and el are defined instead of passed as a parameter.
+
