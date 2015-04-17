@@ -30,11 +30,11 @@ InviteAdminView = SimpleView.extend({
 
         this.$el.html(this.template(invite_json));
 
-        var invite_attendees = new InviteAttendeesView();
+        var invite_admin_attendees = new InviteAdminAttendeesView();
         var invite_header = new InviteHeaderView({is_admin: true});
         var invite_details = new InviteDetailsView();
 
-        invite_attendees.render(
+        invite_admin_attendees.render(
             {
                 invite_id: data.unique_id,
                 attendees: this.model.get('attendees')

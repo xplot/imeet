@@ -13,6 +13,7 @@ InviteView = SimpleView.extend({
 
         this.inviteId = data.invite.unique_id;
         var contactId = data.contact_id;
+        var inviteModel = new InviteModel(data.invite);
 
         if(this.inviteId == null)
             console.error('Invite Id is null, check routing');
@@ -21,7 +22,19 @@ InviteView = SimpleView.extend({
         var self = this;
 
         var invite_header = new InviteHeaderView();
-        invite_header.render(new InviteModel(data.invite));
+        var invite_attendees = new InviteAttendeesView();
+
+        invite_header.render(inviteModel);
+        invite_attendees.render(
+            {
+                invite_id: data.unique_id,
+                attendees: inviteModel.get('attendees')
+            }
+        );
+
+        $('.invite-location').html(data.invite.where);
+        $('.invite-date').html(data.invite.start);
+        $('#invite-description').html(data.invite.description)
 
         $.ajax({
             url: "/api/invite/" + self.inviteId,
@@ -29,9 +42,6 @@ InviteView = SimpleView.extend({
             cache: false,
             success: function(data) {
 
-                $('.invite-title').html(data.title);
-                $('.invite-location').html(data.where);
-                $('.invite-date').html(data.start);
 
                 self.loadContacts(data.attendees, contactId);
                 self.currentCommentIndex = data.comments.length;

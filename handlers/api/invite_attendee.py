@@ -110,3 +110,15 @@ class InviteAttendeeHandler(JsonHandler):
                 )
             )
         return result
+
+    def acknowledge(self):
+        """Acknowledge attending the event or not"""
+        group_id = self._data().get('unique_id')
+
+        command = commands.AddGroupAttendeesCommand(
+            invite_unique_id=invite_id,
+            group_unique_id=group_id,
+            user=self.user
+        )
+        command.execute()
+        return invite_id
