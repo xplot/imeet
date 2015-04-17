@@ -1,5 +1,6 @@
 InviteHeaderView = SimpleView.extend({
     template: JST['invite_header.html'],
+    el: '#invite-header',
 
     initialize: function(options){
         this.options = options || {};
@@ -36,6 +37,11 @@ InviteHeaderView = SimpleView.extend({
         this.model = invite_model;
         var invite_json = this.model.toJSON();
         this.$el.html(this.template(invite_json));
+
+        if(this.options.is_admin)
+            $('#image_select_btn').show();
+        else
+            $('#image_select_btn').hide();
 
         this.$image_file = this.$el.find('#upload_image_file');
         this.$image_form = this.$el.find('#upload_image_form');
