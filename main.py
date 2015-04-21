@@ -57,7 +57,7 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/social_login/<provider_name>/delete', html.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),
     RedirectRoute('/social_sharing/facebook', html.SocialSharingHandler, name='social-sharing-facebook', handler_method='facebook', strict_slash=True),
 
-    #Invite_Contacts
+    #Invite_Attendees
     Route('/api/invite/<invite_id>/attendees/', api.InviteAttendeeHandler),
     Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['POST']),
     Route('/api/invite/<invite_id>/group/', api.InviteAttendeeHandler, name='post_group', handler_method='post_group', methods=['POST']),
@@ -65,14 +65,20 @@ app = webapp2.WSGIApplication([
     Route('/api/invite/<invite_id>/attendees/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/<invite_contact_id>/response', api.InviteAttendeeHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
 
+
+    Route('/api/notification/<attendee_notification_id>', api.AttendeeNotificationHandler, handler_method='acknowledge', methods=['POST']),
+
     #Invite_Comments
     Route('/api/invite/<invite_id>/comments', api.InviteCommentHandler),
+    Route('/api/invite/<invite_id>/comment', api.InviteCommentHandler, methods=['POST']),
+
+    #Invite_Acknowledge
+    #Route('/api/invite/<invite_id>/ack', api.InviteCommentHandler, methods=['POST']),
 
     #Invite
     Route('/api/invite/', api.InviteHandler),
     Route('/api/invite/<invite_id>', api.InviteHandler),
     Route('/api/invite/search/<user_id>', api.InviteHandler, name='search', handler_method='search'),
-
 
     #Groups
     Route('/api/group', api.ApiGroupHandler, name='get_groups', handler_method='get', methods=['GET']),

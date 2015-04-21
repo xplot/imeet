@@ -26,9 +26,26 @@ InviteAttendeesView = Backbone.View.extend({
     },
 
     attendeeComingClick: function(event) {
-        if(event.target.classList.contains('invite-attendees-acknowledge-yes'))
-            alert('yes!');
-        else
-            alert('no!');
+        var attending = event.target.classList.contains('invite-attendees-acknowledge-yes');
+        $.ajax({
+            url: "/api/notification/{0}".format(this.attendee_notification_id), //?
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(
+            {
+                attending: attending
+            }),
+            cache: false,
+            success: function(data){
+                alert('success');
+            },
+            error: function(data) {
+                if(data.status != 200)
+                    alert_notification([{
+                        alertType:'danger',
+                        message: data.responseText
+                    }]);
+            }
+        });
     }
 });

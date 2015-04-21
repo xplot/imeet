@@ -1,19 +1,53 @@
 <div class="row">
   <div class="panel panel-default">
-  <div class="panel-heading">Are you coming?</div>
-  <div class="panel-body">
-    <input class="invite-attendees-acknowledge invite-attendees-acknowledge-yes" type="button" value="YES"></input>
-    <input class="invite-attendees-acknowledge invite-attendees-acknowledge-no" type="button" value="NO"></input>
-  </div>
-</div>
+      <div class="panel-heading">Are you coming?</div>
+      <div class="panel-body">
+        <input class="invite-attendees-acknowledge invite-attendees-acknowledge-yes" type="button" value="YES"></input>
+        <input class="invite-attendees-acknowledge invite-attendees-acknowledge-no" type="button" value="NO"></input>
+      </div>
+   </div>
 </div>
 
 <div class="row">
-    <% _.each( attendees, function( item ){ %>
-            <div class="col-md-12 contact-item-details" id='<%- item.unique_id %>'>
-                <span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span>
-                <button type='button' class='btn btn-danger remove-contact pull-right' data-rowid='<%-item.unique_id %>'>-</button>
-            </div>
+    <div class="panel panel-default no-border">
+      <div class="panel-heading">Who is coming?</div>
+      <div class="panel-body">
+        <table class="table">
+            <tbody>
+                <% _.each( attendees, function( item ){ %>
+                <tr><td><span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span></td></tr>
+            </tbody>
         <% }); %>
+        </table>
+      </div>
+   </div>
+
+    <div class="panel panel-default no-border">
+      <div class="panel-heading">Who is not coming?</div>
+      <div class="panel-body">
+        <table class="table">
+            <tbody>
+                <% _.each( attendees, function( item ){ %>
+                <tr><td><span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span></td></tr>
+            </tbody>
+        <% }); %>
+        </table>
+      </div>
+   </div>
+
+    <div class="panel panel-default no-border">
+      <div class="panel-heading">Who is invited?</div>
+      <div class="panel-body">
+        <table class="table">
+            <tbody>
+                <% _.each( attendees, function( item ){ %>
+                <tr><td><span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span></td></tr>
+            </tbody>
+        <% }); %>
+        </table>
+      </div>
+   </div>
+
+
 </div>
 
