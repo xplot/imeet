@@ -37,9 +37,13 @@ Contact = Backbone.Model.extend({
         var attendees = [this.toJSON()];
 
         var post = {
-            user_id: currentUser.id,
+
             attendees: attendees
         };
+
+        if(currentUser!=null){
+            post.user_id = currentUser.id; 
+        }
 
         $.ajax({
             url: url,
