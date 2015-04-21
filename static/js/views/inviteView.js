@@ -32,7 +32,7 @@ InviteView = SimpleView.extend({
             }
         );
 
-        $('.invite-location').html(data.invite.where);
+        $('#invite-location').html(data.invite.where);
         $('.invite-date').html(data.invite.start);
         $('#invite-description').html(data.invite.description)
 

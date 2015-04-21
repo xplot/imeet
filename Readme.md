@@ -30,6 +30,16 @@ Ex. InviteHeaderView = SimpleView.extend({
         template: JST['invite_header.html'],
         el: '#invite-header',
         ....
-        }
+    }
  here template and el are defined instead of passed as a parameter.
+
+ * Every Backbone View should initialize the expected properties for the options object in the initialize method. This is a way
+ to document what's going to be passed for the options object. Ex.
+ InviteTitleView = Backbone.View.extend({
+
+    initialize: function(options){
+        this.options = options || {is_editable: false}; //we are specifying that options will have an is_editable property.
+    },
+    ....
+   }
 
