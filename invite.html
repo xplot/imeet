@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% block css %}invite_edit{% endblock %}
+
+{% block css %}
+{% if edit %}invite_edit{%else %}invite{% endif %}{% endblock %}
 {% block title %}Invite{% endblock %}
 {% block content %}
 

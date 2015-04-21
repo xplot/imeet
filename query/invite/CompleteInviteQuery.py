@@ -56,6 +56,9 @@ class CompleteInviteQuery(object):
             self.invite = Invite.get_by_unique_id(self.invite_unique_id)
         invite = self.invite
 
+        if not invite:
+            raise query.InviteNotFoundException()
+
         result = {
             'unique_id':    invite.unique_id,
             'title':        invite.title,

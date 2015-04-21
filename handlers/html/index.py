@@ -52,6 +52,7 @@ class IndexHandler(BaseHandler):
 
         return self.render_template(
             'invite.html',
+            edit='True',
             invite=json.dumps(invite_query.query())
         )
 

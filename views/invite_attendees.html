@@ -1,16 +1,20 @@
-<div class="row">
+<div class="row rsvp small-margin-top">
   <div class="panel panel-default">
       <div class="panel-heading">Are you coming?</div>
       <div class="panel-body">
-        <input class="invite-attendees-acknowledge invite-attendees-acknowledge-yes" type="button" value="YES"></input>
-        <input class="invite-attendees-acknowledge invite-attendees-acknowledge-no" type="button" value="NO"></input>
+        <div class="col-md-6">
+            <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes">YES</button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no">NO</button>
+        </div>
       </div>
    </div>
 </div>
 
-<div class="row">
+<div class="row rsvp">
     <div class="panel panel-default no-border">
-      <div class="panel-heading">Who is coming?</div>
+      <div class="panel-heading yes">Who is coming?</div>
       <div class="panel-body">
         <table class="table">
             <tbody>
@@ -23,7 +27,7 @@
    </div>
 
     <div class="panel panel-default no-border">
-      <div class="panel-heading">Who is not coming?</div>
+      <div class="panel-heading no">Who is not coming?</div>
       <div class="panel-body">
         <table class="table">
             <tbody>

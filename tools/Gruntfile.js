@@ -65,6 +65,7 @@ module.exports = function (grunt) {
                     'tmp/css/index.css': '../static/less/index.less',
                     'tmp/css/contacts.css': '../static/less/contacts.less',
                     'tmp/css/invite_edit.css': '../static/less/invite_edit.less',
+                    'tmp/css/invite.css': '../static/less/invite.less',
 				}
 			}
 		},
@@ -131,6 +132,10 @@ module.exports = function (grunt) {
                     '../static/css/invite_edit.min.css': [
                         '../static/less/external/*.css',
                         'tmp/css/invite_edit.css'
+                    ],
+                    '../static/css/invite.min.css': [
+                        '../static/less/external/*.css',
+                        'tmp/css/invite.css'
                     ],
 				}
 			}
