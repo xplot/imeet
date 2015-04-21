@@ -15,8 +15,6 @@ InviteAdminView = SimpleView.extend({
         'change .share_to_facebook': 'share_on_facebook_auth',
     },
 
-
-
     render: function(data){
         this.hidePanels();
         this.model = new InviteModel(data);
