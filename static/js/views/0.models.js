@@ -37,7 +37,6 @@ Contact = Backbone.Model.extend({
         var attendees = [this.toJSON()];
 
         var post = {
-
             attendees: attendees
         };
 

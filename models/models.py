@@ -131,6 +131,12 @@ class InviteAttendeeNotification(BaseModel):
     def attendee_id(self):
         return self.attendee.key.id()
 
+    @classmethod
+    def get_by_invite(cls, invite):
+        return InviteAttendeeNotification.query(
+            InviteAttendeeNotification.invite == invite.key
+        ).fetch()
+
 
 
 class InviteIndex(ndb.Model):
