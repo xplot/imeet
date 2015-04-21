@@ -48,7 +48,8 @@ InviteHeaderView = SimpleView.extend({
         var that = this;
 
         var invite_title_view = new InviteTitleView({
-            el: '.invite-title-container'
+            el: '.invite-title-container',
+            is_editable: this.options.is_admin
         });
         invite_title_view.render(this.model);
 
@@ -75,6 +76,11 @@ InviteHeaderView = SimpleView.extend({
 });
 
 InviteTitleView = Backbone.View.extend({
+
+    initialize: function(options){
+        this.options = options || {is_editable: false};
+    },
+
     render: function(model, edit_view){
         var that = this;
         this.model = model;
@@ -82,11 +88,13 @@ InviteTitleView = Backbone.View.extend({
         if(!edit_view){
             var label = '<h1 class="main-h1">' + that.model.get('title') + '</h1>';
             this.$el.html(label);
-            var $label = this.$el.find('.main-h1');
-            $label.on('click', function(){
-               that.render(that.model, true);
-            });
 
+            if(this.options.is_editable) {
+                var $label = this.$el.find('.main-h1');
+                $label.on('click', function () {
+                    that.render(that.model, true);
+                });
+            }
         }
         else{
             var input = '<input type="text" class="edit-title-input" value="' + that.model.get('title') +  '">';

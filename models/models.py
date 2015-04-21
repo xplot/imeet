@@ -124,9 +124,11 @@ class InviteAttendeeNotification(BaseModel):
     voice_response = ndb.StringProperty(indexed=False)
     sms_response = ndb.StringProperty(indexed=False)
     email_response = ndb.StringProperty(indexed=False)
+    web_response = ndb.StringProperty(indexed=False)
     voice_response_datetime = ndb.DateTimeProperty(indexed=False)
     sms_response_datetime = ndb.DateTimeProperty(indexed=False)
     email_response_datetime = ndb.DateTimeProperty(indexed=False)
+    web_response_datetime = ndb.DateTimeProperty(indexed=False)
 
     def attendee_id(self):
         return self.attendee.key.id()
