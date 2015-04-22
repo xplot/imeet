@@ -370,9 +370,11 @@ __p += '\n            Your search didn\'t resolved any iMeets. <a href="/new" ty
  } ;
 __p += '\n\n        ';
  _.each( invites, function( item ){ ;
-__p += '\n                <div class="col-md-4 invite-card">\n                    <div class="row title">' +
+__p += '\n                <div class="col-md-3 invite-card">\n                    <div class="row title"><a href="#" class="invite-link" data-id=\'' +
+__e(item.unique_id ) +
+'\'>' +
 __e( item.title ) +
-' </div>\n                    <div class="row date">' +
+'</a> </div>\n                    <div class="row date">' +
 __e( item.start ) +
 ' </div>\n                    <div class="row description">' +
 __e( item.description ) +

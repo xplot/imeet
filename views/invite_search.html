@@ -16,8 +16,8 @@
         <% } %>
 
         <% _.each( invites, function( item ){ %>
-                <div class="col-md-4 invite-card">
-                    <div class="row title"><%- item.title %> </div>
+                <div class="col-md-3 invite-card">
+                    <div class="row title"><a href="#" class="invite-link" data-id='<%-item.unique_id %>'><%- item.title %></a> </div>
                     <div class="row date"><%- item.start %> </div>
                     <div class="row description"><%- item.description %> </div>
                     <div class="row actions">

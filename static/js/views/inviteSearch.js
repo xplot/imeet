@@ -5,11 +5,12 @@ SearchView = SimpleView.extend({
         this.options = options || {};
     },
     events: {
-       'click .search' : 'search_value',
-       'keypress #searchBox' : 'type_key',
-       'click .btn-duplicate' : 'duplicate',
+        'click .search' : 'search_value',
+        'keypress #searchBox' : 'type_key',
+        'click .btn-duplicate' : 'duplicate',
         'click .btn-edit' : 'edit',
         'click .btn-cancel' : 'cancel',
+        'click .invite-link': 'navigate'
     },
 
     render: function(invites) {
@@ -69,16 +70,22 @@ SearchView = SimpleView.extend({
     duplicate: function(evt){
         var $btn = $(evt.target);
         var invite_id = $btn.data('id');
-        console.log('here!');
         Backbone.history.navigate('new/from/' + invite_id, true);
     },
 
     edit: function(evt){
         var $btn = $(evt.target);
         var invite_id = $btn.data('id');
+        Backbone.history.navigate('invite/' + invite_id + "/edit", true);
+    },
 
-        window.location.href = 'invite/'+invite_id+'/edit';
+    navigate: function(evt){
+        var $btn = $(evt.target);
+        var invite_id = $btn.data('id');
+        Backbone.history.navigate('invite/' + invite_id, true);
+    },
+
+    cancel: function(evt){
+        alert("not ready yet");
     }
-
-
 });

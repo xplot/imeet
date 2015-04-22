@@ -120,15 +120,12 @@ function init_app() {
             search_view.render();
         },
         view_as_organizer: function (id) {
-            admin_view.render(
-                invite
-            );
+            var inviteX = (typeof(invite) != "undefined")?invite: null;
+            admin_view.render(id, inviteX);
         },
         view_as_contact: function(id, contact_id){
-            invite_view.render({
-                'contact_id': contact_id,
-                'invite': invite //this is the initial json payload sent from the server.
-            });
+            var inviteX = (typeof(invite) != "undefined")?invite: null;
+            invite_view.render(id, inviteX);
         },
         contacts: function(){
             contacts_view.render({contactList: contactList, groupList: groupList});

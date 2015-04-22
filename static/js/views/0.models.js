@@ -265,6 +265,18 @@ InviteModel = Backbone.Model.extend({
         return json;
     },
 
+    fetch: function(callback){
+        var that = this;
+        $.ajax({
+            url: "/api/invite/" + this.get('unique_id'),
+            type: "GET",
+            cache: false,
+            success: function(data) {
+                callback(that.get('unique_id'), data);
+            }
+        });
+    },
+
     submit: function(callback, view, enableNotifications){
         var that = this;
         var invite = this.toJSON();
