@@ -3,5 +3,3 @@ from UpdateInviteCommand import UpdateInviteCommand
 from UpdateInviteCoverImageCommand import UpdateInviteCoverImageCommand
 from PostInviteToVoiceflowsCommand import PostInviteToVoiceflowsCommand
 from AddCommentCommand import AddCommentCommand
-from AcknowledgeInviteCommand import AcknowledgeInviteCommand
-

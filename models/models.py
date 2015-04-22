@@ -99,6 +99,18 @@ class Invite(BaseModel):
     def get_attendees(self):
         return InviteAttendee.query(InviteAttendee.invite == self.key).fetch()
 
+class InviteAttendeeAcknowledge(BaseModel):
+    """
+        This is meant to be a historic table
+        Each record being a response from the attendee
+    """
+    unique_id = ndb.StringProperty(required=True)
+    attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
+    invite = ndb.KeyProperty(kind=Invite, required=True)
+    channel_type = ndb.StringProperty(indexed=False)
+    response = ndb.StringProperty(indexed=False)
+    respondedOn = ndb.DateTimeProperty(indexed=False)
+
 class InviteAttendee(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     contact = ndb.KeyProperty(kind=Contact)
@@ -106,6 +118,7 @@ class InviteAttendee(BaseModel):
     name = ndb.StringProperty(indexed=False)
     phone = ndb.StringProperty(indexed=False)
     email = ndb.StringProperty(indexed=False)
+    acknowledges = ndb.StructuredProperty(InviteAttendeeAcknowledge, repeated=True, indexed=False)
 
 
 class InviteAttendeeNotification(BaseModel):
@@ -118,17 +131,9 @@ class InviteAttendeeNotification(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
-    name = ndb.StringProperty(indexed=False)
-    email = ndb.StringProperty(indexed=False)
-    phone = ndb.StringProperty(indexed=False)
-    voice_response = ndb.StringProperty(indexed=False)
-    sms_response = ndb.StringProperty(indexed=False)
-    email_response = ndb.StringProperty(indexed=False)
-    web_response = ndb.StringProperty(indexed=False)
-    voice_response_datetime = ndb.DateTimeProperty(indexed=False)
-    sms_response_datetime = ndb.DateTimeProperty(indexed=False)
-    email_response_datetime = ndb.DateTimeProperty(indexed=False)
-    web_response_datetime = ndb.DateTimeProperty(indexed=False)
+    channel = ndb.StringProperty(indexed=False)
+    channel_type = ndb.StringProperty(indexed=False)
+    notifiedOn = ndb.DateTimeProperty(indexed=False)
 
     def attendee_id(self):
         return self.attendee.key.id()
@@ -176,5 +181,3 @@ class GroupedContact(BaseModel):
     user = ndb.KeyProperty(kind=User)
     group_unique_id = ndb.StringProperty(required=True)
     contact_unique_id = ndb.StringProperty(required=True)
-
-

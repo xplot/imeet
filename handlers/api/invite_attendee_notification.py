@@ -21,13 +21,13 @@ import commands
 
 class AttendeeNotificationHandler(JsonHandler):
 
-    def acknowledge(self, attendee_notification_id):
+    def acknowledge(self, attendee_id):
         """Acknowledge attending the event or not"""
 
         command = commands.AcknowledgeInviteCommand(
-            attendee_notification_id = attendee_notification_id,
+            attendee_id = attendee_id,
             attending = self._data().get('attending')
+            channel = self._data().get('channel')
         )
         command.execute()
         return attendee_notification_id
-

@@ -4,7 +4,6 @@ InviteAttendeesView = Backbone.View.extend({
 
     initialize: function(options){
         this.options = options || {};
-        this.inviteId = this.options.id;
     },
 
     events: {
@@ -13,7 +12,6 @@ InviteAttendeesView = Backbone.View.extend({
 
     render: function(data){
         this.model = data.attendees;
-        this.invite_id = data.invite_id;
         var json = {
             attendees: this.model.toJSON()
         };
@@ -28,7 +26,7 @@ InviteAttendeesView = Backbone.View.extend({
     attendeeComingClick: function(event) {
         var attending = event.target.classList.contains('invite-attendees-acknowledge-yes');
         $.ajax({
-            url: "/api/notification/{0}".format(this.attendee_notification_id), //?
+            url: "/api/notification",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(
