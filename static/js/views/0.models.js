@@ -218,9 +218,10 @@ InviteModel = Backbone.Model.extend({
         this.set('end_time', end_datetime.time);
 
         var attendees = new ContactList();
-        options.attendees.forEach(function(item){
-            attendees.push(new Contact(item));
-        });
+            if(options.attendees != null)
+            options.attendees.forEach(function(item){
+                attendees.push(new Contact(item));
+            });
         this.set('attendees', attendees);
     },
 
@@ -262,6 +263,18 @@ InviteModel = Backbone.Model.extend({
         json['start'] = this.get_datetime('start');
         json['end'] = this.get_datetime('end');
         return json;
+    },
+
+    fetch: function(callback){
+        var that = this;
+        $.ajax({
+            url: "/api/invite/" + this.get('unique_id'),
+            type: "GET",
+            cache: false,
+            success: function(data) {
+                callback(that.get('unique_id'), data);
+            }
+        });
     },
 
     submit: function(callback, view, enableNotifications){
@@ -316,6 +329,20 @@ InviteModel = Backbone.Model.extend({
         });
     },
 
-
-
 });
+
+InviteList = Backbone.Collection.extend({
+    model: InviteModel,
+
+    getById: function(unique_id){
+        return this.filter(function(val) {
+            return val.get("unique_id") === unique_id;
+        })[0];
+    },
+
+    collectionToJSON : function() {
+      return this.map(function(model){
+          return model.toJSON()
+      });
+    },
+ });

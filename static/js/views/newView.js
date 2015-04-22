@@ -47,7 +47,10 @@ NewView = SimpleView.extend({
             type: "GET",
             cache: false,
             success: function(data) {
-                this.render(data);
+                that.model = new InviteModel(data);
+                that.model.set('unique_id', '');
+
+                that.render(data);
             },
             error: function(data) {
                 alert_notification([{

@@ -1,6 +1,5 @@
 InviteAdminView = SimpleView.extend({
     template: JST['invite_admin.html'],
-    inviteId:null,
     author: "Organizer",
     contacts: null,
 
@@ -15,29 +14,40 @@ InviteAdminView = SimpleView.extend({
         'change .share_to_facebook': 'share_on_facebook_auth',
     },
 
-    render: function(data){
-        this.hidePanels();
-        this.model = new InviteModel(data);
+    hidePanels:function(){
+        //We hide all view containers
+        $('#body-container').hide();
+        $('#view-container').hide();
+        $('#modal_container').hide();
+        $('#invite-body').show();
+    },
 
-        this.unique_id = data.unique_id;
+    render: function(unique_id, invite){
+
+        this.hidePanels();
+        this.unique_id = unique_id;
 
         if(this.unique_id== null)
             console.error('Invite Id is null, check routing');
 
-        var invite_json = this.model.toJSON();
+        if(invite == null){
+            var inviteModel = new InviteModel({unique_id: this.unique_id});
+            inviteModel.fetch($.proxy(this.render, this));
+            return;
+        }
 
+        this.model = new InviteModel(invite);
+        var invite_json = this.model.toJSON();
         this.$el.html(this.template(invite_json));
 
         var invite_admin_attendees = new InviteAdminAttendeesView();
         var invite_header = new InviteHeaderView({is_admin: true});
         var invite_details = new InviteDetailsView();
 
-        invite_admin_attendees.render(
-            {
-                invite_id: data.unique_id,
-                attendees: this.model.get('attendees')
-            }
-        );
+        invite_admin_attendees.render({
+            invite_id: this.unique_id,
+            attendees: this.model.get('attendees')
+        });
         invite_header.render(this.model);
         invite_details.render(this.model);
 
@@ -54,9 +64,14 @@ InviteAdminView = SimpleView.extend({
         }]);
     },
 
-
     plugins: function(){
+        var that = this;
+        that.block('.invite-background', 'half');
 
+        $(window).resize(function() {
+            that.block('.invite-background', 'half');
+
+        });
     },
 
 });

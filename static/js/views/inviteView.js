@@ -8,18 +8,30 @@ InviteView = SimpleView.extend({
         this.inviteId = this.options.id;
     },
 
-    render: function(data){
-        this.hidePanels();
+    hidePanels:function(){
+        //We hide all view containers
+        $('#body-container').hide();
+        $('#view-container').hide();
+        $('#modal_container').hide();
+        $('#invite-body').show();
+    },
 
-        this.inviteId = data.invite.unique_id;
-        var contactId = data.contact_id;
-        var inviteModel = new InviteModel(data.invite);
+    render: function(unique_id, invite){
+        this.hidePanels();
+        var self = this;
+        this.inviteId = unique_id;
 
         if(this.inviteId == null)
             console.error('Invite Id is null, check routing');
 
+        if(invite == null){
+            var inviteModel = new InviteModel({unique_id: this.inviteId});
+            inviteModel.fetch($.proxy(this.render, this));
+            return;
+        }
+
+        var inviteModel = new InviteModel(invite);
         this.$el.html(this.template());
-        var self = this;
 
         var invite_header = new InviteHeaderView();
         var invite_attendees = new InviteAttendeesView();
@@ -27,29 +39,17 @@ InviteView = SimpleView.extend({
         invite_header.render(inviteModel);
         invite_attendees.render(
             {
-                invite_id: data.unique_id,
+                invite_id: this.inviteId,
                 attendees: inviteModel.get('attendees')
             }
         );
 
-        $('#invite-location').html(data.invite.where);
-        $('.invite-date').html(data.invite.start);
-        $('#invite-description').html(data.invite.description)
+        $('#invite-location').html(invite.where);
+        $('.invite-date').html(invite.start);
+        $('#invite-description').html(invite.description);
 
-        $.ajax({
-            url: "/api/invite/" + self.inviteId,
-            type: "GET",
-            cache: false,
-            success: function(data) {
+        this.plugins();
 
-
-                self.loadContacts(data.attendees, contactId);
-                self.currentCommentIndex = data.comments.length;
-
-                self.loadComments(data.comments);
-                setInterval(function(){self.getComments(self.inviteId, data.comments.length, self.loadComments)}, 60000);
-            }
-        });
     },
     addNewComment: function(eventData){
         if(eventData.charCode == 13 && eventData.target.value !== ""){
@@ -155,5 +155,15 @@ InviteView = SimpleView.extend({
     },
     events: {
         "keypress .invite-newComment": "addNewComment"
+    },
+
+    plugins: function(){
+        var that = this;
+        that.block('.invite-background', 'half');
+
+        $(window).resize(function() {
+            that.block('.invite-background', 'half');
+
+        });
     }
 });

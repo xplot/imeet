@@ -12,6 +12,15 @@ from boilerplate.basehandler import BaseHandler
 import query
 from models import Invite
 from handlers.api import ImageUploadHandler
+from datetime import datetime
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime):
+            return o.isoformat()
+        return json.JSONEncoder.default(self, o)
+
 
 class IndexHandler(BaseHandler):
 
@@ -37,7 +46,7 @@ class IndexHandler(BaseHandler):
         invite_query = query.CompleteInviteQuery(id)
         return self.render_template(
             'invite.html',
-            invite=json.dumps(invite_query.query())
+            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder)
         )
 
     def edit_invite_view(self, id=0):
@@ -53,7 +62,7 @@ class IndexHandler(BaseHandler):
         return self.render_template(
             'invite.html',
             edit='True',
-            invite=json.dumps(invite_query.query())
+            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder)
         )
 
     def blank(self):
