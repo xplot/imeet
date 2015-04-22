@@ -1,23 +1,29 @@
-from models import InviteAttendeeNotification
+from models import InviteAttendee, InviteAttendeeAcknowledge, AttendeeStatus
 import datetime
 
 
 class AcknowledgeInviteCommand:
-    '''Acknowledges the invite.'''
+    """Acknowledges the invite."""
 
-    def __init__(self, attendee_id, channel, attending):
-        self.attendee_id = attendee_id
+    def __init__(self, invite_attendee_id, channel, attending):
+        self.invite_attendee_id = invite_attendee_id
         self.channel = channel
         self.attending = attending
 
     def execute(self):
-        attendee = InviteAttendee.get_by_unique_id(self.attendee_id)
-        if attendee.acknowledges is None:
-            attendee.acknowledges = []
+        attendee = InviteAttendee.get_by_unique_id(self.invite_attendee_id)
 
         ack = InviteAttendeeAcknowledge()
         ack.response = self.attending
-        ack.respondedOn = datetime.datetime.now()
+        ack.responded_on = datetime.datetime.now()
         ack.channel = self.channel
-        attendee.acknowledges.append(ack)
+
+        if 'yes' in self.attending.lower():
+            attendee.attendee_status = AttendeeStatus.YES
+        elif 'no' in self.attending.lower():
+            attendee.attendee_status = AttendeeStatus.NO
+
+        attendee.last_response_on = datetime.datetime.now()
         attendee.put()
+
+

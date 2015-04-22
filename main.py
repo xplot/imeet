@@ -60,13 +60,11 @@ app = webapp2.WSGIApplication([
     #Invite_Attendees
     Route('/api/invite/<invite_id>/attendees/', api.InviteAttendeeHandler),
     Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['POST']),
+    Route('/api/invite/attendees/<invite_attendee_id>/response', api.InviteAttendeeResponseHandler, handler_method='acknowledge', methods=['POST']),
     Route('/api/invite/<invite_id>/group/', api.InviteAttendeeHandler, name='post_group', handler_method='post_group', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify', api.InviteAttendeeHandler, name='notify_some', handler_method='notify_some', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
-    Route('/api/invite/<invite_id>/attendees/<invite_contact_id>/response', api.InviteAttendeeHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
 
-
-    Route('/api/notification/<attendee_notification_id>', api.AttendeeNotificationHandler, handler_method='acknowledge', methods=['POST']),
 
     #Invite_Comments
     Route('/api/invite/<invite_id>/comments', api.InviteCommentHandler),

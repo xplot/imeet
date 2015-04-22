@@ -19,15 +19,22 @@ import query
 import commands
 
 
-class AttendeeNotificationHandler(JsonHandler):
+class InviteAttendeeResponseHandler(JsonHandler):
 
-    def acknowledge(self, attendee_id):
-        """Acknowledge attending the event or not"""
+    def acknowledge(self, invite_attendee_id):
+        """
+        Acknowledge attending the event or not
+        This is a valid post format:
+        {
+            'response': '',
+            'channel': ''
+        }
+        """
 
         command = commands.AcknowledgeInviteCommand(
-            attendee_id = attendee_id,
-            attending = self._data().get('attending')
-            channel = self._data().get('channel')
+            invite_attendee_id=invite_attendee_id,
+            attending=self._data().get('response'),
+            channel=self._data().get('channel')
         )
         command.execute()
-        return attendee_notification_id
+        return invite_attendee_id

@@ -24,16 +24,8 @@ class CompleteInviteQuery(object):
                     'phone': '',
                     'email': 'javi@javi.com',
                     'name': u'',
-                    notifications:[
-                        {
-                            'name': u'',
-                            'phone': '',
-                            'email': 'javi@javi.com',
-                            'sms_response': '',
-                            'voice_response': '',
-                            'email_response': '',
-                        }
-                    ]
+                    'status': '',
+                    'last_response_on': ''
                 }
             ],
             'email_template':{

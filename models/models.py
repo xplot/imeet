@@ -99,17 +99,12 @@ class Invite(BaseModel):
     def get_attendees(self):
         return InviteAttendee.query(InviteAttendee.invite == self.key).fetch()
 
-class InviteAttendeeAcknowledge(BaseModel):
-    """
-        This is meant to be a historic table
-        Each record being a response from the attendee
-    """
-    unique_id = ndb.StringProperty(required=True)
-    attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
-    invite = ndb.KeyProperty(kind=Invite, required=True)
-    channel_type = ndb.StringProperty(indexed=False)
-    response = ndb.StringProperty(indexed=False)
-    respondedOn = ndb.DateTimeProperty(indexed=False)
+
+class AttendeeStatus(object):
+    YES = "yes"
+    NO = "no"
+    NO_RESPONSE = "no_response"
+    MAYBE = "maybe"
 
 class InviteAttendee(BaseModel):
     unique_id = ndb.StringProperty(required=True)
@@ -118,22 +113,45 @@ class InviteAttendee(BaseModel):
     name = ndb.StringProperty(indexed=False)
     phone = ndb.StringProperty(indexed=False)
     email = ndb.StringProperty(indexed=False)
-    acknowledges = ndb.StructuredProperty(InviteAttendeeAcknowledge, repeated=True, indexed=False)
+    attendee_status = ndb.StringProperty(default=AttendeeStatus.NO_RESPONSE)
+    last_response_on = ndb.DateTimeProperty(indexed=False, required=False)
+
+    def get_notifications(self):
+        return InviteAttendeeNotification.query(
+            InviteAttendeeNotification.attendee == self.key
+        ).fetch()
+
+    def get_acknowledges(self):
+        return InviteAttendeeAcknowledge.query(
+            InviteAttendeeAcknowledge.attendee == self.key
+        ).fetch()
 
 
-class InviteAttendeeNotification(BaseModel):
+class InviteAttendeeAcknowledge(BaseModel):
     """
         This is meant to be a historic table
-        Each record being a 'ping' to a given contact in any of the channels,
-        remember a contact could be just an email if the user never updates,
-        the name of the contact while sending the invite
+        Each record being a response from the attendee
     """
     unique_id = ndb.StringProperty(required=True)
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
     channel = ndb.StringProperty(indexed=False)
     channel_type = ndb.StringProperty(indexed=False)
-    notifiedOn = ndb.DateTimeProperty(indexed=False)
+    response = ndb.StringProperty(indexed=False)
+    responded_on = ndb.DateTimeProperty(indexed=False)
+
+
+class InviteAttendeeNotification(BaseModel):
+    """
+        This is meant to be a historic table
+        Each record being a 'ping' to a given contact in any of the channels
+    """
+    unique_id = ndb.StringProperty(required=True)
+    attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
+    invite = ndb.KeyProperty(kind=Invite, required=True)
+    channel = ndb.StringProperty(indexed=False)
+    channel_type = ndb.StringProperty(indexed=False)
+    notified_on = ndb.DateTimeProperty(indexed=False)
 
     def attendee_id(self):
         return self.attendee.key.id()

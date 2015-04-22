@@ -1,7 +1,7 @@
 #Invite
 from invite import InviteHandler
 from invite_attendee import InviteAttendeeHandler
-from invite_attendee_notification import AttendeeNotificationHandler
+from invite_attendee_response import InviteAttendeeResponseHandler
 from invite_comment import InviteCommentHandler
 
 #User Contacts

@@ -3,7 +3,7 @@ from managers.utils import guid, get_voiceflows_headers
 from managers.event import EventQueue
 from models import Invite, InviteAttendee, InviteAttendeeNotification, Contact
 from google.appengine.ext import ndb
-from query.attendee.InviteAttendeeNotificationQuery import InviteAttendeeNotificationQuery
+from query.attendee.NotifyAttendeeQuery import NotifyAttendeeQuery
 
 
 class BulkNotifyAttendeesCommand(object):
@@ -29,19 +29,11 @@ class BulkNotifyAttendeesCommand(object):
         bulk_notifications = []
 
         for invite_attendee in invite_attendees:
-            attendee_notification = InviteAttendeeNotification(
-                unique_id=guid(),
-                invite=self.invite.key,
-                attendee=invite_attendee.key,
-                name=invite_attendee.name,
-                email=invite_attendee.email,
-                phone=invite_attendee.phone,
-            )
+            self.create_notification_records(invite_attendee)
 
-            body['attendees'].append(InviteAttendeeNotificationQuery(
-                attendee_notification
+            body['attendees'].append(NotifyAttendeeQuery(
+                invite_attendee
             ).query())
-            bulk_notifications.append(attendee_notification)
 
         group_id = EventQueue.get_group_id(self.invite.unique_id)
         EventQueue.push_event(
@@ -53,3 +45,36 @@ class BulkNotifyAttendeesCommand(object):
         )
 
         ndb.put_multi(bulk_notifications)
+
+    def create_notification_records(self, invite_attendee):
+        if invite_attendee.phone:
+            attendee_sms_notification = InviteAttendeeNotification(
+                unique_id=guid(),
+                invite=self.invite.key,
+                attendee=invite_attendee.key,
+                channel=invite_attendee.phone,
+                channel_type='sms',
+                notified_on=datetime.datetime.now
+            )
+
+            attendee_voice_notification = InviteAttendeeNotification(
+                unique_id=guid(),
+                invite=self.invite.key,
+                attendee=invite_attendee.key,
+                channel=invite_attendee.phone,
+                channel_type='phone',
+                notified_on=datetime.datetime.now
+            )
+            bulk_notifications.append(attendee_sms_notification)
+            bulk_notifications.append(attendee_voice_notification)
+
+        if invite_attendee.email:
+            attendee_email_notification = InviteAttendeeNotification(
+                unique_id=guid(),
+                invite=self.invite.key,
+                attendee=invite_attendee.key,
+                channel=invite_attendee.email,
+                channel_type='email',
+                notified_on=datetime.datetime.now
+            )
+            bulk_notifications.append(attendee_email_notification)

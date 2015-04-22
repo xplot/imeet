@@ -75,15 +75,6 @@ class InviteAttendeeHandler(JsonHandler):
         invite_some.execute()
         return invite_id
 
-    def accept_response(self, invite_id, invite_contact_id):
-        data = self._data()
-
-        invite_model = InviteModel.create_from_id(invite_id)
-        if data.get('response', 'no').lower() == 'yes':
-            invite_model.accept(invite_contact_id, data.get('channel', 'email'))
-        else:
-            invite_model.deny(contact_id, data.get('channel', 'email'))
-
     @classmethod
     def get_list_from_dict(cls, attendees):
         """
