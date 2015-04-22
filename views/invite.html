@@ -5,22 +5,21 @@
         </div>
     </div>
     <div class="row invite-subheader-banner">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-2"></div>
 
-            <div class='col-md-2'>
-                <div class="row title">Event Start Time</div>
-                <div class="row details invite-date"></div>
-            </div>
-            <div class='col-md-2'>
-                <div class="row title">Event End Time</div>
-                <div class="row details invite-date"></div>
-            </div>
-             <div class='col-md-4 invite-location-container'>
-                 <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
-                 <div class="title location-title">Location</div>
-                <div id="invite-location" class="details"/>
-             </div>
+        <div class='col-md-2 no-padding'>
+            <div class="title">Event Start Time</div>
+            <div class="details invite-date"></div>
         </div>
+        <div class='col-md-2 no-padding'>
+            <div class="title">Event End Time</div>
+            <div class="details invite-date"></div>
+        </div>
+         <div class='col-md-4 no-padding invite-location-container'>
+             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
+             <div class="title location-title">Location</div>
+            <div id="invite-location" class="details"></div>
+         </div>
     </div>
 
     <div class="row invite-body">
@@ -36,10 +35,18 @@
                 <h4>Message from the host</h4>
                 <div id="invite-description"/>
             </div>
+
+            <div class="row small-margin-top">
+                <h4>Comments</h4>
+            </div>
             <div class="row">
-                <h4><b>Comments</b></h4>
                 <input placeholder="Add comment" class="invite-newComment form-control ">
-                <input type="button" value="Add Comment"/>
+            </div>
+            <div class="row">
+                <button type="button" class="btn form-control btn-success">Add Comment</button>
+            </div>
+
+            <div class="row">
                 <div class="row invite-comments">
                 </div>
             </div>
