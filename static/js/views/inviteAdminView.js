@@ -1,6 +1,5 @@
 InviteAdminView = SimpleView.extend({
     template: JST['invite_admin.html'],
-    inviteId:null,
     author: "Organizer",
     contacts: null,
 

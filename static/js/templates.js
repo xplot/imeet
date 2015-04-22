@@ -359,6 +359,37 @@ __e( unique_id ) +
 return __p
 };
 
+this["JST"]["invite_search.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '\n<div class="search-view">\n    <div class="controls zero-margin">\n        <div class="col-sm-10">\n            <input id="searchBox" type="text" class="form-control event-name" placeholder="Invite Title" data-validation="required">\n        </div>\n        <div class="col-sm-2">\n            <button type="button" class="btn btn-success form-control search">Search</button>\n        </div>\n    </div>\n    <div class="" style="height: 50px"></div>\n    <div class="controls" id="search-result">\n\n        ';
+ if (invites.length == 0) { ;
+__p += '\n            Your search didn\'t resolved any iMeets. <a href="/new" type="button" class="btn btn-success">Start sending!</a>\n        ';
+ } ;
+__p += '\n\n        ';
+ _.each( invites, function( item ){ ;
+__p += '\n                <div class="col-md-4 invite-card">\n                    <div class="row title">' +
+__e( item.title ) +
+' </div>\n                    <div class="row date">' +
+__e( item.start ) +
+' </div>\n                    <div class="row description">' +
+__e( item.description ) +
+' </div>\n                    <div class="row actions">\n                        <button type=\'button\' class=\'btn btn-success btn-duplicate\' data-id=\'' +
+__e(item.unique_id ) +
+'\'>DUPLICATE</button>\n                        <button type=\'button\' class=\'btn btn-warning btn-edit\' data-id=\'' +
+__e(item.unique_id ) +
+'\'>EDIT</button>\n                        <button type=\'button\' class=\'btn btn-danger btn-cancel\' data-id=\'' +
+__e(item.unique_id ) +
+'\'>CANCEL</button>\n                    </div>\n                </div>\n        ';
+ }); ;
+__p += '\n    </div>\n</div>\n\n';
+
+}
+return __p
+};
+
 this["JST"]["invite_sent.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -414,16 +445,6 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="signup-container">\n    <div class="signup">\n        <h4>I want in!</h4>\n       <div class="row controls">\n           <div class="col-sm-3"></div>\n            <div class="col-sm-6">\n                <div class="col-sm-9">\n                    <input required type="email" class="form-control register-email" placeholder="Enter email..." data-validation="email">\n                </div>\n                <div class="col-sm-3">\n                    <button type="button" class="btn btn-success form-control submit-register">Go</button>\n                </div>\n            </div>\n            <div class="col-sm-3"></div>\n        </div>\n    </div>\n</div>\n\n<!-- Footer -->\n<div class="section-container footer desktop navbar-fixed-bottom">\n<div class="footer-below">\n    <div class="container">\n      <div class="row">\n          <div class="col-lg-12">\n              Miami, FL<br/>\n              Copyright 2014 &copy; iMeet Inc. All rights reserved.\n          </div>\n      </div>\n    </div>\n</div>\n</div>\n';
-
-}
-return __p
-};
-
-this["JST"]["search.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '\n<div class="search-view">\n    <div class="controls zero-margin">\n        <div class="col-sm-10">\n            <input id="searchBox" type="text" class="form-control event-name" placeholder="Invite Title" data-validation="required">\n        </div>\n        <div class="col-sm-2">\n            <button type="button" class="btn btn-success form-control search">Search</button>\n        </div>\n    </div>\n    <div class="" style="height: 50px"></div>\n    <div class="controls search-result">\n    </div>\n</div>\n\n';
 
 }
 return __p

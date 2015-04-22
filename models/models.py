@@ -96,6 +96,10 @@ class Invite(BaseModel):
     voice_template = ndb.StringProperty(required=False, indexed=False)
     poster_picture = ndb.KeyProperty(required=False, kind=Image, indexed=False)
 
+    @classmethod
+    def get_by_user(cls, user):
+        return Invite.query(Invite.user == user.key).fetch()
+
     def get_attendees(self):
         return InviteAttendee.query(InviteAttendee.invite == self.key).fetch()
 

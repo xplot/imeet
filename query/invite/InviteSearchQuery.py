@@ -14,7 +14,10 @@ class InviteSearchQuery(object):
     def query(self):
         """Returns a list of invites that matches the query"""
         if self.term is None:
-            return self.get_by_user_id(self.user_id)
+            return [
+                query.ReducedInviteQuery(invite=x).query()
+                for x in Invite.get_by_user(self.user)
+            ]
 
         index = search.Index(name='invite_index')
         invite_query = index.search(self.term)

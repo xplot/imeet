@@ -621,10 +621,7 @@
       font-weight: bold;
     }
   }
-
 }
-
-
 
 .animate_comment {
   -moz-transition: background-color 5s;
@@ -635,6 +632,49 @@
 }
 
 
-.search-result{
+#search-result{
   padding: 15px;
+  .btn-success{
+    color: @off-white;
+    font-weight: 200;
+  }
+  .btn-success:hover{
+    color: #000000;
+  }
+
+  .invite-card{
+    margin: 20px;
+    background-color: @invite-light-gray;
+    color: @off-black;
+    box-shadow: 10px 10px 5px #888888;
+    .title{
+
+      background-color: @invite-lighter-gray;
+      font-weight: 100;
+      font-size: 150%;
+      padding: 20px;
+    }
+
+    .date{
+      color: #000000;
+      background-color: @invite-darker-gray;
+      padding: 2px 20px ;
+      font-weight: 400px;
+    }
+
+    .description{
+      padding: 20px;
+
+    }
+
+    .actions{
+        padding: 20px;
+        .btn-duplicate{
+          margin-right: 20px;
+        }
+    }
+  }
 }
+
+
+
