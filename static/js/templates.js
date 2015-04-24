@@ -120,7 +120,7 @@ this["JST"]["editProfile.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="edit-profile-view">\n\n   <div class="col-xs-12 text-center">\n       <h4>Edit your profile</h4>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <div id="edit-profile-email">Email</div>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-name" type="text" class="form-control valid-before-submit" placeholder="John Smith..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-username" type="text" class="form-control valid-before-submit" placeholder="username..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control" placeholder="password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control" placeholder=" confirm password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <button type=\'button\' class=\'save-profile btn btn-info form-control\'>Save</button>\n    </div>\n\n</div>\n';
+__p += '<div class="edit-profile-view medium-margin-top">\n\n   <div class="col-xs-12 text-center">\n       <h4>Edit your profile</h4>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <div id="edit-profile-email"></div>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-name" type="text" class="form-control valid-before-submit" placeholder="John Smith..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-username" type="text" class="form-control valid-before-submit" placeholder="username..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control" placeholder="password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control" placeholder=" confirm password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <button type=\'button\' class=\'save-profile btn btn-info form-control\'>Save</button>\n    </div>\n\n</div>\n';
 
 }
 return __p
@@ -243,7 +243,7 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="row rsvp small-margin-top">\n  <div class="panel panel-default">\n      <div class="panel-heading">Are you coming?</div>\n      <div class="panel-body">\n        <div class="col-md-6">\n            <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes">YES</button>\n        </div>\n        <div class="col-md-6">\n            <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no">NO</button>\n        </div>\n      </div>\n   </div>\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
- _.each( attendees, function( item ){ ;
+ _.each( confirmed, function( item ){ ;
 __p += '\n                <tr><td><span class="details"><b>' +
 __e(item.name ) +
 '</b> ' +
@@ -253,7 +253,7 @@ __e(item.phone ) +
 '</span></td></tr>\n            </tbody>\n        ';
  }); ;
 __p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no">Who is not coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
- _.each( attendees, function( item ){ ;
+ _.each( negated, function( item ){ ;
 __p += '\n                <tr><td><span class="details"><b>' +
 __e(item.name ) +
 '</b> ' +
@@ -263,7 +263,7 @@ __e(item.phone ) +
 '</span></td></tr>\n            </tbody>\n        ';
  }); ;
 __p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">Who is invited?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
- _.each( attendees, function( item ){ ;
+ _.each( no_response, function( item ){ ;
 __p += '\n                <tr><td><span class="details"><b>' +
 __e(item.name ) +
 '</b> ' +

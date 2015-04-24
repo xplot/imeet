@@ -1,5 +1,12 @@
 import logging
+from boilerplate import models
+from boilerplate import utils
+from google.appengine.api import taskqueue
+from webapp2_extras import security
+from webapp2_extras.appengine.auth.models import Unique
+
 from base import JsonHandler
+
 
 class RegisterHandler(JsonHandler):
     """
@@ -39,7 +46,7 @@ class RegisterHandler(JsonHandler):
             "app_name": self.app.config.get('app_name'),
             "fullname": email,
             "activation_url": confirmation_url,
-            "support_url": self.uri_for("contact", _full=True)
+            "support_url": "no_support_url_as_of_yet"
         }
         body_path = "account_activation.html"
         body = self.get_template_rendered(body_path, **template_val)

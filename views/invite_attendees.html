@@ -18,7 +18,7 @@
       <div class="panel-body">
         <table class="table">
             <tbody>
-                <% _.each( attendees, function( item ){ %>
+                <% _.each( confirmed, function( item ){ %>
                 <tr><td><span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span></td></tr>
             </tbody>
         <% }); %>
@@ -31,7 +31,7 @@
       <div class="panel-body">
         <table class="table">
             <tbody>
-                <% _.each( attendees, function( item ){ %>
+                <% _.each( negated, function( item ){ %>
                 <tr><td><span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span></td></tr>
             </tbody>
         <% }); %>
@@ -44,7 +44,7 @@
       <div class="panel-body">
         <table class="table">
             <tbody>
-                <% _.each( attendees, function( item ){ %>
+                <% _.each( no_response, function( item ){ %>
                 <tr><td><span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span></td></tr>
             </tbody>
         <% }); %>

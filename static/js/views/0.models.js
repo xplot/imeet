@@ -93,9 +93,13 @@ ContactList = Backbone.Collection.extend({
     model: Contact,
 
     getById: function(unique_id){
-        return this.filter(function(val) {
+        var result = this.filter(function(val) {
             return val.get("unique_id") === unique_id;
-        })[0];
+        });
+
+        if(result.length > 0)
+            return result[0];
+        return null;
     },
 
     removeBy: function(unique_id){
@@ -172,9 +176,13 @@ GroupList = Backbone.Collection.extend({
     localStorage: new Store("backbone-group"),
 
     getById: function(unique_id){
-        return this.filter(function(val) {
+        var result = this.filter(function(val) {
             return val.get("unique_id") === unique_id;
         });
+
+        if(result.length > 0)
+            return result[0];
+        return null;
     },
 
     removeBy: function(unique_id){

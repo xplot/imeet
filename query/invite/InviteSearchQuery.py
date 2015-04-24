@@ -20,7 +20,7 @@ class InviteSearchQuery(object):
             ]
 
         index = search.Index(name='invite_index')
-        invite_query = index.search(self.term)
+        invite_query = index.search(self.term) #'title  %s' % self.term)
         invite_ids = [x.doc_id for x in invite_query]
 
         if not invite_ids:

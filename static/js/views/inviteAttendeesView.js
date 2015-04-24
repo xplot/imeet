@@ -1,20 +1,29 @@
 InviteAttendeesView = Backbone.View.extend({
     template: JST['invite_attendees.html'],
     el:'#invite-attendees',
+    confirmed: null,
+    negated: null,
+    no_response: null,
 
     initialize: function(options){
         this.options = options || {};
     },
 
     events: {
-        'click .invite-attendees-acknowledge': 'attendeeComingClick'
+        'click .invite-attendees-acknowledge-yes': 'yesButtonClick',
+        'click .invite-attendees-acknowledge-no': 'noButtonClick',
     },
 
     render: function(data){
         this.model = data.attendees;
+
+        this.separateAttendees();
         var json = {
-            attendees: this.model.toJSON()
+            no_response: this.no_response.collectionToJSON(),
+            confirmed: this.confirmed.collectionToJSON(),
+            negated: this.negated.collectionToJSON()
         };
+
         this.$el.html(this.template(json));
 
         this.$table = this.$el.find('.contact-table');
@@ -23,27 +32,43 @@ InviteAttendeesView = Backbone.View.extend({
         return this.$el.html();
     },
 
-    attendeeComingClick: function(event) {
-        var attending = event.target.classList.contains('invite-attendees-acknowledge-yes');
-        $.ajax({
-            url: "/api/notification",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(
-            {
-                attending: attending
-            }),
-            cache: false,
-            success: function(data){
-                alert('success');
-            },
-            error: function(data) {
-                if(data.status != 200)
-                    alert_notification([{
-                        alertType:'danger',
-                        message: data.responseText
-                    }]);
+    separateAttendees: function(){
+        this.no_response = new ContactList();
+        this.negated = new ContactList();
+        this.confirmed = new ContactList();
+        var that = this;
+
+        this.model.forEach(function(item){
+            var status = item.get('status');
+            if(status == 'yes'){
+                that.confirmed.add(item);
+            }
+            else if(status == 'no'){
+                that.negated.add(item);
+            }
+            else{
+                that.no_response.add(item);
             }
         });
+    },
+
+    yesButtonClick: function(event) {
+
+    },
+
+    noButtonClick: function(event) {
+
+    },
+
+    attendeeRSVP: function(event) {
+        //Here current user has to be matched against one of the attendees in the Invite
+        //If not invited the RSVP should not be shown
+
+        //This page in general, can only show if the Invite is "Public"
+        //The RSVP dialog can only be shown under the following conditions:
+        // 1 - The current User is included in the Invitation
+        // 2 - The invite is open to the Public, in which case, the current logged user has to be included in the Invite
+        // 3 - The invite is accessed using the attendee link, in which case, the attendee can be obtained directly from the pag.
+
     }
 });

@@ -95,4 +95,6 @@ app = webapp2.WSGIApplication([
     Route('/image/<invite_id>/upload', api.ImageUploadHandler),
     Route('/image/<image_id>', api.ImageServeHandler),
 
+     RedirectRoute('/taskqueue-send-email/', html.SendEmailHandler, name='taskqueue-send-email', strict_slash=True),
+
 ], config=config,debug=True)

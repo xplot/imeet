@@ -16,7 +16,7 @@ class BulkAddInviteAttendeeCommand(object):
             commands.append(
                 AddInviteAttendeeCommand(
                     invite_unique_id=invite_unique_id,
-                    contact_unique_id=x.get('contact_unique_id', None),
+                    contact_unique_id=x.get('unique_id', None),
                     name=x.get('name'),
                     email=x.get('email', None),
                     phone=x.get('phone', None)
@@ -36,9 +36,11 @@ class BulkAddInviteAttendeeCommand(object):
                 phone=command.phone
             )
             if command.contact_unique_id:
-                invite_attendee.contact = Contact.get_by_unique_id(
+                contact = Contact.get_by_unique_id(
                     command.contact_unique_id
-                ).key
+                )
+                if contact:
+                    invite_attendee.contact = contact.key
 
             invite_attendee.invite = invite.key
             bulk_add.append(invite_attendee)

@@ -86,11 +86,12 @@ GroupListView = Backbone.View.extend({
         var id = $group.data('id');
         var group = this.groupList.getById(id);
 
-        if(group.length > 0){
+        if(group != null){
             var contact_unique_id = ev.originalEvent.dataTransfer.getData("contact_id");
+
             var contact = this.contactList.getById(contact_unique_id);
-            if(contact.length > 0)
-                this.addContactToGroup(contact[0], group[0]);
+            if(contact != null)
+                this.addContactToGroup(contact, group);
         }
 
         $group.removeClass('group-drag-hover');
