@@ -310,6 +310,7 @@ InviteModel = Backbone.Model.extend({
     },
 
     notifyAll: function(callback){
+        var invite = this.toJSON();
 
         $.ajax({
             url: "/api/invite/" + this.get('unique_id') + "/attendees/notify/all",

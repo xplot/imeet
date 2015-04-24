@@ -1,3 +1,4 @@
+import datetime
 from config import config
 from managers.utils import guid, get_voiceflows_headers
 from managers.event import EventQueue
@@ -29,7 +30,7 @@ class BulkNotifyAttendeesCommand(object):
         bulk_notifications = []
 
         for invite_attendee in invite_attendees:
-            self.create_notification_records(invite_attendee)
+            bulk_notifications += self.create_notification_records(invite_attendee)
 
             body['attendees'].append(NotifyAttendeeQuery(
                 invite_attendee
@@ -47,6 +48,7 @@ class BulkNotifyAttendeesCommand(object):
         ndb.put_multi(bulk_notifications)
 
     def create_notification_records(self, invite_attendee):
+        records = []
         if invite_attendee.phone:
             attendee_sms_notification = InviteAttendeeNotification(
                 unique_id=guid(),
@@ -54,7 +56,7 @@ class BulkNotifyAttendeesCommand(object):
                 attendee=invite_attendee.key,
                 channel=invite_attendee.phone,
                 channel_type='sms',
-                notified_on=datetime.datetime.now
+                notified_on=datetime.datetime.now()
             )
 
             attendee_voice_notification = InviteAttendeeNotification(
@@ -63,10 +65,10 @@ class BulkNotifyAttendeesCommand(object):
                 attendee=invite_attendee.key,
                 channel=invite_attendee.phone,
                 channel_type='phone',
-                notified_on=datetime.datetime.now
+                notified_on=datetime.datetime.now()
             )
-            bulk_notifications.append(attendee_sms_notification)
-            bulk_notifications.append(attendee_voice_notification)
+            records.append(attendee_sms_notification)
+            records.append(attendee_voice_notification)
 
         if invite_attendee.email:
             attendee_email_notification = InviteAttendeeNotification(
@@ -75,6 +77,8 @@ class BulkNotifyAttendeesCommand(object):
                 attendee=invite_attendee.key,
                 channel=invite_attendee.email,
                 channel_type='email',
-                notified_on=datetime.datetime.now
+                notified_on=datetime.datetime.now()
             )
-            bulk_notifications.append(attendee_email_notification)
+            records.append(attendee_email_notification)
+
+        return records
