@@ -80,9 +80,10 @@ function init_app() {
             'login': 'login',
             'profile/edit': 'edit_profile',
             'register': 'register',
-            'invite/:id': 'view_as_contact',
+
             'invite/:id/edit': 'view_as_organizer',
-            //'view/:id/:contact_id': 'view_as_contact',
+            'invite/:id': 'view_as_attendee',
+            'invite/:id/:invite_attendee_id': 'view_as_attendee',
 
             'contacts' : 'contacts',
             'contacts/new' : 'contacts_new'
@@ -123,9 +124,11 @@ function init_app() {
             var inviteX = (typeof(invite) != "undefined")?invite: null;
             admin_view.render(id, inviteX);
         },
-        view_as_contact: function(id, contact_id){
+        view_as_attendee: function(id, invite_attendee_id){
+
             var inviteX = (typeof(invite) != "undefined")?invite: null;
-            invite_view.render(id, inviteX);
+            var invite_attendeex = (typeof(invite_attendee) != "undefined")?invite_attendee: null;
+            invite_view.render(id, inviteX, invite_attendeex);
         },
         contacts: function(){
             contacts_view.render({contactList: contactList, groupList: groupList});

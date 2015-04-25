@@ -88,15 +88,15 @@ this["JST"]["contact_item_typeahead.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<span class="details" data-id="' +
+__p += '<div class="details" data-id="' +
 __e( unique_id ) +
-'"><b>' +
+'">\n    <i class="fa fa-happy-face fa-2x"></i>\n    <b>' +
 __e(name ) +
 '</b> ' +
 __e(email ) +
 ' ' +
 __e(phone ) +
-'</span>';
+'\n</div>';
 
 }
 return __p
@@ -172,11 +172,25 @@ __p += '\n        </div>\n    </div>\n</div>\n\n';
 return __p
 };
 
+this["JST"]["group_item_typeahead.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="details" data-id="' +
+__e( unique_id ) +
+'">\n    <i class="fa fa-group fa-2x"></i>\n    <b>' +
+__e(name ) +
+'</b>\n</div>';
+
+}
+return __p
+};
+
 this["JST"]["invite.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row invite-subheader-banner">\n        <div class="col-md-2"></div>\n\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event Start Time</div>\n            <div class="details invite-date"></div>\n        </div>\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event End Time</div>\n            <div class="details invite-date"></div>\n        </div>\n         <div class=\'col-md-4 no-padding invite-location-container\'>\n             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n             <div class="title location-title">Location</div>\n            <div id="invite-location" class="details"></div>\n         </div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"/>\n                </div>\n\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row invite-subheader-banner">\n        <div class="col-md-2"></div>\n\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event Start Time</div>\n            <div class="details invite-date"></div>\n        </div>\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event End Time</div>\n            <div class="details invite-end-date"></div>\n        </div>\n         <div class=\'col-md-4 no-padding invite-location-container\'>\n             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n             <div class="title location-title">Location</div>\n            <div id="invite-location" class="details"></div>\n         </div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
 
 }
 return __p
@@ -230,7 +244,15 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="row rsvp small-margin-top">\n  <div class="panel panel-default">\n      ';
  if(attendee != null) {;
-__p += '\n          <div class="panel-heading">Are you coming?</div>\n          <div class="panel-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
+__p += '\n          <div class="panel-heading">\n              ';
+ if(attendee.status == 'no_response') {;
+__p += '\n                    Are you coming?\n              ';
+} else if(attendee.status == 'no') { ;
+__p += '\n                    Sad you can\' attend :(\n              ';
+} else if(attendee.status == 'yes') { ;
+__p += '\n                    Glad you coming :)\n              ';
+} ;
+__p += '\n          </div>\n          <div class="panel-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
 __e( attendee.status ) +
 '">YES</button>\n            </div>\n            <div class="col-md-6 no-button">\n                <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
 __e( attendee.status ) +

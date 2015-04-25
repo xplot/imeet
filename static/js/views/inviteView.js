@@ -16,10 +16,12 @@ InviteView = SimpleView.extend({
         $('#invite-body').show();
     },
 
-    render: function(unique_id, invite){
+    render: function(unique_id, invite, invite_attendee){
         this.hidePanels();
         var self = this;
         this.invite_id = unique_id;
+        if(invite_attendee != null)
+            this.current_attendee = new Contact(invite_attendee);
 
         if(this.invite_id == null)
             console.error('Invite Id is null, check routing');
@@ -42,18 +44,18 @@ InviteView = SimpleView.extend({
             {
                 invite_id: this.invite_id,
                 attendees: inviteModel.get('attendees'),
-                current_attendee: null
+                current_attendee: this.current_attendee
             }
         );
         invite_comments.render({
             invite_id: this.invite_id,
-            current_attendee: null,
+            current_attendee: this.current_attendee,
             comments: new CommentList(invite.comments)
         });
 
-
         $('#invite-location').html(invite.where);
         $('.invite-date').html(invite.start);
+        $('.invite-end-date').html(invite.end);
         $('#invite-description').html(invite.description);
 
         this.plugins();

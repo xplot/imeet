@@ -1,7 +1,15 @@
 <div class="row rsvp small-margin-top">
   <div class="panel panel-default">
       <% if(attendee != null) {%>
-          <div class="panel-heading">Are you coming?</div>
+          <div class="panel-heading">
+              <% if(attendee.status == 'no_response') {%>
+                    Are you coming?
+              <%} else if(attendee.status == 'no') { %>
+                    Sad you can' attend :(
+              <%} else if(attendee.status == 'yes') { %>
+                    Glad you coming :)
+              <%} %>
+          </div>
           <div class="panel-body">
             <div class="col-md-6 yes-button">
                 <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-<%- attendee.status %>">YES</button>

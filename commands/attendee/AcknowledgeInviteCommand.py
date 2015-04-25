@@ -1,4 +1,5 @@
 from models import InviteAttendee, InviteAttendeeAcknowledge, AttendeeStatus
+from managers.utils import guid
 import datetime
 
 
@@ -14,9 +15,12 @@ class AcknowledgeInviteCommand:
         attendee = InviteAttendee.get_by_unique_id(self.invite_attendee_id)
 
         ack = InviteAttendeeAcknowledge()
+        ack.unique_id = guid()
         ack.response = self.attending
         ack.responded_on = datetime.datetime.now()
         ack.channel = self.channel
+        ack.attendee = attendee.key
+        ack.invite = attendee.invite
 
         if 'yes' in self.attending.lower():
             attendee.attendee_status = AttendeeStatus.YES
@@ -24,6 +28,7 @@ class AcknowledgeInviteCommand:
             attendee.attendee_status = AttendeeStatus.NO
 
         attendee.last_response_on = datetime.datetime.now()
+        ack.put()
         attendee.put()
 
 

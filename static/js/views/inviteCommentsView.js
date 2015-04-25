@@ -45,7 +45,7 @@ InviteCommentsView = Backbone.View.extend({
 
         var comment = new CommentModel({
             comment: this.$comment_input.val(),
-            author: (this.current_attendee!=null)?this.current_attendee.get('name'):null
+            author: (this.current_attendee!=null)?this.current_attendee.someIdentifier():null
         });
         comment.submit(
             this.invite_id,

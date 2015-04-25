@@ -24,7 +24,7 @@ InviteAttendeesView = Backbone.View.extend({
             no_response: this.no_response.collectionToJSON(),
             confirmed: this.confirmed.collectionToJSON(),
             negated: this.negated.collectionToJSON(),
-            attendee: this.current_attendee
+            attendee: (this.current_attendee != null)? this.current_attendee.toJSON():null
         };
 
         this.$el.html(this.template(json));
@@ -56,22 +56,34 @@ InviteAttendeesView = Backbone.View.extend({
     },
 
     yesButtonClick: function(event) {
-
+        this.attendeeRSVP('yes');
     },
 
     noButtonClick: function(event) {
-
+        this.attendeeRSVP('no');
     },
 
-    attendeeRSVP: function(event) {
-        //Here current user has to be matched against one of the attendees in the Invite
-        //If not invited the RSVP should not be shown
+    attendeeRSVP: function(response) {
+        if(this.current_attendee == null){
+            alert_notification([{
+                    alertType:'danger',
+                    message: 'Something wrong happened, you shouldnt be able to SAY ' + response + " You are nobody!!!"
+            }]);
 
-        //This page in general, can only show if the Invite is "Public"
-        //The RSVP dialog can only be shown under the following conditions:
-        // 1 - The current User is included in the Invitation
-        // 2 - The invite is open to the Public, in which case, the current logged user has to be included in the Invite
-        // 3 - The invite is accessed using the attendee link, in which case, the attendee can be obtained directly from the pag.
+            return;
+        }
+        this.current_attendee.set('status', response);
 
+        this.current_attendee.acknowledgeInvite(response, $.proxy(this.attendeeRSVPCallback, this));
+    },
+
+    attendeeRSVPCallback: function(){
+        var attendee_model = this.model.getById(this.current_attendee.get('unique_id'));
+        attendee_model.set('status', this.current_attendee.get('status'));
+
+        this.render({
+            attendees: this.model,
+            current_attendee: this.current_attendee
+        });
     }
 });

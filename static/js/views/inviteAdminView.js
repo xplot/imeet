@@ -23,7 +23,6 @@ InviteAdminView = SimpleView.extend({
     },
 
     render: function(unique_id, invite){
-
         this.hidePanels();
         this.unique_id = unique_id;
 
@@ -35,6 +34,8 @@ InviteAdminView = SimpleView.extend({
             inviteModel.fetch($.proxy(this.render, this));
             return;
         }
+
+        this.validateInviteIsCurrent(invite.start);
 
         this.model = new InviteModel(invite);
         var invite_json = this.model.toJSON();
@@ -73,5 +74,18 @@ InviteAdminView = SimpleView.extend({
 
         });
     },
+
+    validateInviteIsCurrent: function(start){
+        var moment_obj = moment(start);
+        var now = moment();
+
+        if(moment_obj < now)
+        {
+            alert_notification([{
+                alertType:'warning',
+                message: "This invite is in the Past you cannot edit it anymore"
+            }]);
+        }
+    }
 
 });

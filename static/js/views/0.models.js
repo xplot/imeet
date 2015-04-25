@@ -88,15 +88,11 @@ Contact = Backbone.Model.extend({
 
     removeFromInvite: function(invite_id, callback){
         var url = "/api/invite/" + invite_id + "/attendees/" + this.get('unique_id');
-        var post = {
-            user_id: currentUser.id
-        };
 
         $.ajax({
             url: url,
             type: "DELETE",
             contentType: "application/json",
-            data: JSON.stringify(post),
             cache: false,
             success: function(data) {
                 if(callback)
@@ -109,6 +105,43 @@ Contact = Backbone.Model.extend({
                 }]);
             }
         });
+    },
+
+    acknowledgeInvite: function(response, callback){
+        var url = "/api/invite/attendees/" + this.get('unique_id') + '/response';
+        var post = {
+            response: response,
+            channel: 'web'
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function(data) {
+                if(callback != null)
+                    callback(data);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
+    someIdentifier: function(){
+        var name = this.get('name');
+        if(name != null && name !== '')
+            return name;
+        name = this.get('email');
+        if(name != null && name !== '')
+            return name;
+        name = this.get('phone');
+        return name;
     }
 });
 

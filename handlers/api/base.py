@@ -57,6 +57,10 @@ class JsonHandler(RequestHandler):
 
     def _data(self):
         try:
+            if self.request.method == 'DELETE':
+                self.request_data = {}
+                return
+
             if self.request_data is None:
                 data_string = self.request.body
                 self.request_data = json.loads(data_string)

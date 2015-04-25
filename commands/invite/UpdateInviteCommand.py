@@ -1,7 +1,11 @@
+from datetime import datetime
+
 from managers.utils import copy_over, guid
 from models import Invite, Image
 from commands.invite.utils import index_invite
 from commands.invite import CreateInviteCommand
+from commands.exceptions import InviteCannotBeEditedException
+
 
 class UpdateInviteCommand(CreateInviteCommand):
     def __init__(self):
@@ -21,6 +25,12 @@ class UpdateInviteCommand(CreateInviteCommand):
 
     def execute(self):
         invite = Invite.get_by_unique_id(self.unique_id)
+
+        if invite.start < datetime.now():
+            raise InviteCannotBeEditedException(
+                "This invite is in the past it cannot be edited anymore"
+            )
+
         copy_over(self, invite)
         invite.put()
         index_invite(invite)

@@ -36,7 +36,6 @@ class InviteAttendeeHandler(JsonHandler):
         command.execute()
         return invite_id
 
-    @user_context
     def delete(self, invite_id, unique_id):
         """Includes an Attendee in the Invite"""
         command = commands.RemoveAttendeeCommand(unique_id)
