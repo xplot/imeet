@@ -1,26 +1,22 @@
 from base import JsonHandler
 from managers.auth import user_context
 import commands
+import query
 
 
 class InviteCommentHandler(JsonHandler):
 
     def get(self, invite_id):
-        return "aaa"
-        #invite_model = InviteModel.create_from_id(invite_id)
-        #return invite_model.get_comments()
+        q = query.InviteCommentsQuery(invite_id)
+        return q.query()
 
-    @user_context
-    def post(self, invite_id):
+    def post(self, invite_id, invite_attendee_id=None):
+
         data = self._data()
 
-        if self.user is not None:
-            data['author'] = self.user.fullname()
-
-        add_comment_cmd = commands.AddCommentCommand(invite_id, data['author'], data['comment'])
+        add_comment_cmd = commands.AddCommentCommand.read_from_dict(
+            invite_id,
+            invite_attendee_id,
+            data
+        )
         add_comment_cmd.execute()
-
-        return {
-            'author': data['author'],
-            'comment': data['comment']
-        }

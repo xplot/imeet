@@ -40,6 +40,8 @@ class JsonHandler(RequestHandler):
     def __render_json__(self, data):
         if data is not None:
             self.response.write(json.dumps(data, cls=DateTimeEncoder))
+        else:
+            self.response.status = 204
 
     def api_success(self, data=None):
         self.response.status = 200

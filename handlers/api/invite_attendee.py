@@ -17,6 +17,8 @@ from models import Invite
 from boilerplate.models import User
 import query
 import commands
+
+
 class InviteAttendeeHandler(JsonHandler):
 
     def get(self, invite_id):

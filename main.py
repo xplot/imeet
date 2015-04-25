@@ -35,7 +35,7 @@ app = webapp2.WSGIApplication([
     Route('/sent/<id>', html.IndexHandler, handler_method='view_invite'),
 
 
-    #Contacts
+    # Contacts
     Route('/contacts', html.ContactHandler),
     Route('/contacts/new', html.ContactHandler),
     Route('/api/contacts', api.ApiContactHandler, handler_method='get', methods=['GET']),
@@ -44,7 +44,7 @@ app = webapp2.WSGIApplication([
     Route('/api/contacts/<unique_id>/edit', api.ApiContactHandler, handler_method='update_contact', methods=['PUT']),
     Route('/api/contacts/csv', api.ApiContactHandler, handler_method='import_csv', methods=['POST']),
 
-    #User Profile
+    # User Profile
     Route('/register', html.IndexHandler, name='register', handler_method='default_method'),
     Route('/register/email/<email>', api.RegisterHandler, handler_method='register_email'),
     RedirectRoute('/activate/<user_id>/<token>', html.AccountActivationHandler, name='account-activation', strict_slash=True),
@@ -57,18 +57,21 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/social_login/<provider_name>/delete', html.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),
     RedirectRoute('/social_sharing/facebook', html.SocialSharingHandler, name='social-sharing-facebook', handler_method='facebook', strict_slash=True),
 
-    #Invite_Attendees
+    # Invite_Attendees
     Route('/api/invite/<invite_id>/attendees/', api.InviteAttendeeHandler),
-    Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['POST']),
+    Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['DELETE']),
     Route('/api/invite/attendees/<invite_attendee_id>/response', api.InviteAttendeeResponseHandler, handler_method='acknowledge', methods=['POST']),
+
+
+    # Invite_Comments
+    #Get Invite Comments and if POST will execute Anonymous User Comment (Only for Public invites)
+    Route('/api/invite/<invite_id>/comment', api.InviteCommentHandler),
+    # Invite Attendee Comment Comment
+    Route('/api/invite/<invite_id>/attendees/<invite_attendee_id>/comment', api.InviteCommentHandler),
+
     Route('/api/invite/<invite_id>/group/', api.InviteAttendeeHandler, name='post_group', handler_method='post_group', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify', api.InviteAttendeeHandler, name='notify_some', handler_method='notify_some', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
-
-
-    #Invite_Comments
-    Route('/api/invite/<invite_id>/comments', api.InviteCommentHandler),
-    Route('/api/invite/<invite_id>/comment', api.InviteCommentHandler, methods=['POST']),
 
     #Invite_Acknowledge
     #Route('/api/invite/<invite_id>/ack', api.InviteCommentHandler, methods=['POST']),

@@ -23,6 +23,29 @@ var fetchGroupDistributionForCurrentUser = function(callback){
 
 };
 
+IMeetCollection = Backbone.Collection.extend({
+    getById: function(unique_id){
+        var result = this.filter(function(val) {
+            return val.get("unique_id") === unique_id;
+        });
+
+        if(result.length > 0)
+            return result[0];
+        return null;
+    },
+
+    removeBy: function(unique_id){
+        this.remove(this.getById(unique_id));
+    },
+
+    collectionToJSON : function() {
+      return this.map(function(model){
+          return model.toJSON2()
+      });
+    }
+ });
+
+
 Contact = Backbone.Model.extend({
     defaults: {
         unique_id: '',
@@ -71,7 +94,7 @@ Contact = Backbone.Model.extend({
 
         $.ajax({
             url: url,
-            type: "POST",
+            type: "DELETE",
             contentType: "application/json",
             data: JSON.stringify(post),
             cache: false,
@@ -89,28 +112,8 @@ Contact = Backbone.Model.extend({
     }
 });
 
-ContactList = Backbone.Collection.extend({
-    model: Contact,
-
-    getById: function(unique_id){
-        var result = this.filter(function(val) {
-            return val.get("unique_id") === unique_id;
-        });
-
-        if(result.length > 0)
-            return result[0];
-        return null;
-    },
-
-    removeBy: function(unique_id){
-        this.remove(this.getById(unique_id));
-    },
-
-    collectionToJSON : function() {
-      return this.map(function(model){
-          return model.toJSON2()
-      });
-    },
+ContactList = IMeetCollection.extend({
+    model: Contact
  });
 
 
@@ -171,31 +174,9 @@ Group = Backbone.Model.extend({
 
 });
 
-GroupList = Backbone.Collection.extend({
+GroupList = IMeetCollection.extend({
     model: Group,
     localStorage: new Store("backbone-group"),
-
-    getById: function(unique_id){
-        var result = this.filter(function(val) {
-            return val.get("unique_id") === unique_id;
-        });
-
-        if(result.length > 0)
-            return result[0];
-        return null;
-    },
-
-    removeBy: function(unique_id){
-        this.remove(this.getById(unique_id));
-    },
-
-    collectionToJSON : function() {
-      return this.map(function(model){
-          return model.toJSON2()
-      });
-    },
-
-
  });
 
 InviteModel = Backbone.Model.extend({
@@ -340,18 +321,73 @@ InviteModel = Backbone.Model.extend({
 
 });
 
-InviteList = Backbone.Collection.extend({
-    model: InviteModel,
-
-    getById: function(unique_id){
-        return this.filter(function(val) {
-            return val.get("unique_id") === unique_id;
-        })[0];
-    },
-
-    collectionToJSON : function() {
-      return this.map(function(model){
-          return model.toJSON()
-      });
-    },
+InviteList = IMeetCollection.extend({
+    model: InviteModel
  });
+
+
+CommentModel = Backbone.Model.extend({
+    defaults: {
+        on: null,
+        comment: '',
+        author: ''
+    },
+
+    initialize: function (options) {
+        if(typeof options == 'string')
+            this.set('comment', options)
+    },
+
+    submit: function(invite_id, invite_attendee_id){
+
+        var url = "/api/invite/{0}/comment".format(invite_id);
+        if(invite_attendee_id != null)
+            url = "/api/invite/{0}/attendees/{1}/comment".format(
+                invite_id,
+                invite_attendee_id
+            );
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                comment: this.get('comment')
+            }),
+            cache: false,
+            success: function(data){
+
+            },
+            error: function(data) {
+                if(data.status != 200)
+                    alert_notification([{
+                        alertType:'danger',
+                        message: data.responseText
+                    }]);
+            }
+        });
+    }
+});
+
+CommentList = IMeetCollection.extend({
+    model: CommentModel,
+
+    fetchFromInvite: function(invite_unique_id){
+        $.ajax({
+            url: "/api/invite/{0}/comment".format(invite_unique_id),
+            type: "GET",
+            contentType: "application/json",
+            cache: false,
+            success: function(data) {
+                var comments = new CommentList();
+                data.forEach(function(comment){
+                    comments.add(new CommentModel(comment));
+                });
+                return comments;
+            },
+            error: function(data) {
+
+            }
+        });
+    }
+});
