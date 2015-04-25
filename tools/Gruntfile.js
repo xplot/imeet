@@ -147,9 +147,6 @@ module.exports = function (grunt) {
 			jst: {
 			compile: {
 				options: {
-					templateSettings: {
-						interpolate : /\{\{(.+?)\}\}/g
-					},
 					processName: function(filepath) {
 						return filepath.substring(filepath.lastIndexOf("/") + 1);
   				}

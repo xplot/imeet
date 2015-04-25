@@ -4,6 +4,7 @@ InviteAttendeesView = Backbone.View.extend({
     confirmed: null,
     negated: null,
     no_response: null,
+    current_attendee: null,
 
     initialize: function(options){
         this.options = options || {};
@@ -16,12 +17,14 @@ InviteAttendeesView = Backbone.View.extend({
 
     render: function(data){
         this.model = data.attendees;
+        this.current_attendee = data.current_attendee;
 
         this.separateAttendees();
         var json = {
             no_response: this.no_response.collectionToJSON(),
             confirmed: this.confirmed.collectionToJSON(),
-            negated: this.negated.collectionToJSON()
+            negated: this.negated.collectionToJSON(),
+            attendee: this.current_attendee
         };
 
         this.$el.html(this.template(json));

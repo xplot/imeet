@@ -10,20 +10,6 @@ __p += '<div class="modal addGroup-modal" tabindex="-1" >\n    <div class="modal
 return __p
 };
 
-this["JST"]["comment.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<div class="col-md-12 invite-comment-row">\n    <div class="col-xs-4 col-md-2 invite-comment-author">' +
-__e(author) +
-'</div>\n    <div class="col-xs-8 col-md-10">' +
-__e(comment) +
-'</div>\n</div>';
-
-}
-return __p
-};
-
 this["JST"]["contact-item-invite-create.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -190,7 +176,7 @@ this["JST"]["invite.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row invite-subheader-banner">\n        <div class="col-md-2"></div>\n\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event Start Time</div>\n            <div class="details invite-date"></div>\n        </div>\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event End Time</div>\n            <div class="details invite-date"></div>\n        </div>\n         <div class=\'col-md-4 no-padding invite-location-container\'>\n             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n             <div class="title location-title">Location</div>\n            <div id="invite-location" class="details"></div>\n         </div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top">\n                <h4>Message from the host</h4>\n                <div id="invite-description"/>\n            </div>\n\n            <div class="row small-margin-top">\n                <h4>Comments</h4>\n            </div>\n            <div class="row">\n                <input placeholder="Add comment" class="invite-newComment form-control ">\n            </div>\n            <div class="row">\n                <button type="button" class="btn form-control btn-success">Add Comment</button>\n            </div>\n\n            <div class="row">\n                <div class="row invite-comments">\n                </div>\n            </div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row invite-subheader-banner">\n        <div class="col-md-2"></div>\n\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event Start Time</div>\n            <div class="details invite-date"></div>\n        </div>\n        <div class=\'col-md-2 no-padding\'>\n            <div class="title">Event End Time</div>\n            <div class="details invite-date"></div>\n        </div>\n         <div class=\'col-md-4 no-padding invite-location-container\'>\n             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n             <div class="title location-title">Location</div>\n            <div id="invite-location" class="details"></div>\n         </div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"/>\n                </div>\n\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
 
 }
 return __p
@@ -242,7 +228,17 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row rsvp small-margin-top">\n  <div class="panel panel-default">\n      <div class="panel-heading">Are you coming?</div>\n      <div class="panel-body">\n        <div class="col-md-6">\n            <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes">YES</button>\n        </div>\n        <div class="col-md-6">\n            <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no">NO</button>\n        </div>\n      </div>\n   </div>\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
+__p += '<div class="row rsvp small-margin-top">\n  <div class="panel panel-default">\n      ';
+ if(attendee != null) {;
+__p += '\n          <div class="panel-heading">Are you coming?</div>\n          <div class="panel-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
+__e( attendee.status ) +
+'">YES</button>\n            </div>\n            <div class="col-md-6 no-button">\n                <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
+__e( attendee.status ) +
+'">NO</button>\n            </div>\n          </div>\n      ';
+} else{;
+__p += '\n        <div class="panel-heading">Are you coming?</div>\n          <div class="panel-body">\n            You are not invited\n        </div>\n      ';
+};
+__p += '\n   </div>\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
  _.each( confirmed, function( item ){ ;
 __p += '\n                <tr><td><span class="details"><b>' +
 __e(item.name ) +
@@ -273,6 +269,46 @@ __e(item.phone ) +
 '</span></td></tr>\n            </tbody>\n        ';
  }); ;
 __p += '\n        </table>\n      </div>\n   </div>\n\n\n</div>\n\n';
+
+}
+return __p
+};
+
+this["JST"]["invite_comment.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="row ">\n    <span class="comment-date pull-right">' +
+__e(on) +
+'</span>\n    <div class="col-md-12 invite-comment-row">\n        <span class="comment-author">\n            ';
+ if(author == null) {;
+__p += '\n                Anonymous\n            ';
+} else { ;
+__p += '\n                ' +
+__e(author) +
+'\n            ';
+ };
+__p += '\n            </span> : ' +
+__e(comment) +
+'\n    </div>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["invite_comments.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="row small-margin-top">\n    <div class="col-md-12 no-margin">\n        <h4>Comments</h4>\n    </div>\n</div>\n\n<div class="row ">\n    <div class="col-md-12 no-margin">\n        <textarea class="invite-comment-input" placeholder="Add comment"></textarea>\n    </div>\n</div>\n\n<div class="row">\n    <div class="col-md-4 no-margin">\n        <button type="button" class="btn form-control btn-success add-comment">Add Comment</button>\n    </div>\n</div>\n\n<div class="row invite-comments">\n    <div class="col-md-12 invite-comments-container">\n        ';
+ _.each( comments, function( comment ){ ;
+__p += '\n            ' +
+((__t = ( partial('invite_comment.html', comment) )) == null ? '' : __t) +
+'\n        ';
+ }); ;
+__p += '\n    </div>\n</div>\n\n';
 
 }
 return __p

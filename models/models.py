@@ -69,9 +69,9 @@ class Contact(BaseModel):
 
 
 class Comment(BaseModel):
-    author = ndb.StringProperty(required=True)
+    author = ndb.StringProperty(required=False)
     comment = ndb.StringProperty(required=True, indexed=False)
-    commentedOn = ndb.DateTimeProperty(required=True, indexed=False)
+    commented_on = ndb.DateTimeProperty(required=True, indexed=False)
 
 
 class Image(BaseModel):

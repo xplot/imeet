@@ -237,6 +237,9 @@ var colorInverter = function invertHex(hexnum){
   }
 
   return resultnum;
-}
+};
 
+window.partial = function(which, data) {
+    return JST[which](data);
+};
 

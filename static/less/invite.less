@@ -132,18 +132,63 @@ h1, h2, h3, h4, h5, h6 {
           text-align: center;
           text-transform: uppercase;
       }
-      .yes{
-
+      .yes-button{
+        .response-no{
+          background-color: @invite-light-gray;
+          border-color: @invite-light-gray !important;
+          color:@off-black;
+        }
       }
-      .no{
 
+      .no-button{
+        .response-yes{
+          background-color: @invite-light-gray;
+          border-color: @invite-light-gray !important;
+          color:@off-black;
+        }
       }
+
     }
 
   }
 
-  .invite-newComment{
-    background: #ecf0f1;
+  #invite-comments{
+    .invite-comments {
+      margin: 10px 0px;
+
+
+      .invite-comment-row {
+        background-color: @invite-light-gray;
+        padding: 15px;
+
+        margin-bottom: 10px;
+
+        .comment-author {
+          font-weight: 400;
+          color: @btn-success;
+        }
+
+
+      }
+
+      .comment-date{
+        font-size:60%;
+        color:@off-black;
+        opacity: 70;
+      }
+    }
+
+    .invite-comment-input {
+      padding: 10px;
+      background-color: @invite-light-gray;
+      width: 100%;
+      min-height: 100px;
+      height: auto;
+      resize: none;
+    }
+
   }
+
+
 
 }
