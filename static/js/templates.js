@@ -243,7 +243,7 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="row rsvp small-margin-top">\n  <div class="panel panel-default">\n      ';
- if(attendee != null) {;
+ if(attendee != null && attendee.status != 'deleted') {;
 __p += '\n          <div class="panel-heading">\n              ';
  if(attendee.status == 'no_response') {;
 __p += '\n                    Are you coming?\n              ';
@@ -252,13 +252,15 @@ __p += '\n                    Sad you can\' attend :(\n              ';
 } else if(attendee.status == 'yes') { ;
 __p += '\n                    Glad you coming :)\n              ';
 } ;
-__p += '\n          </div>\n          <div class="panel-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
+__p += '\n          </div>\n\n          <div class="panel-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
 __e( attendee.status ) +
 '">YES</button>\n            </div>\n            <div class="col-md-6 no-button">\n                <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
 __e( attendee.status ) +
 '">NO</button>\n            </div>\n          </div>\n      ';
+} else if(attendee != null && attendee.status == 'deleted') {;
+__p += '\n        <div class="panel-heading"></div>\n          <div class="panel-body">\n            <b>The organizer removed you from this event</b>\n        </div>\n\n      ';
 } else{;
-__p += '\n        <div class="panel-heading">Are you coming?</div>\n          <div class="panel-body">\n            You are not invited\n        </div>\n      ';
+__p += '\n        \n      ';
 };
 __p += '\n   </div>\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
  _.each( confirmed, function( item ){ ;

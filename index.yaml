@@ -15,6 +15,11 @@ indexes:
   - name: user
   - name: name
 
+- kind: InviteAttendee
+  properties:
+  - name: invite
+  - name: attendee_status
+
 - kind: Request
   properties:
   - name: type

@@ -1,6 +1,6 @@
 <div class="row rsvp small-margin-top">
   <div class="panel panel-default">
-      <% if(attendee != null) {%>
+      <% if(attendee != null && attendee.status != 'deleted') {%>
           <div class="panel-heading">
               <% if(attendee.status == 'no_response') {%>
                     Are you coming?
@@ -10,6 +10,7 @@
                     Glad you coming :)
               <%} %>
           </div>
+
           <div class="panel-body">
             <div class="col-md-6 yes-button">
                 <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-<%- attendee.status %>">YES</button>
@@ -18,11 +19,14 @@
                 <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-<%- attendee.status %>">NO</button>
             </div>
           </div>
-      <%} else{%>
-        <div class="panel-heading">Are you coming?</div>
+      <%} else if(attendee != null && attendee.status == 'deleted') {%>
+        <div class="panel-heading"></div>
           <div class="panel-body">
-            You are not invited
+            <b>The organizer removed you from this event</b>
         </div>
+
+      <%} else{%>
+        
       <%}%>
    </div>
 </div>

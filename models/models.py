@@ -101,7 +101,13 @@ class Invite(BaseModel):
         return Invite.query(Invite.user == user.key).fetch()
 
     def get_attendees(self):
-        return InviteAttendee.query(InviteAttendee.invite == self.key).fetch()
+        return InviteAttendee.query(
+            ndb.AND(
+                InviteAttendee.invite == self.key,
+                InviteAttendee.attendee_status != AttendeeStatus.DELETED,
+            )
+
+        ).fetch()
 
 
 class AttendeeStatus(object):
@@ -109,6 +115,7 @@ class AttendeeStatus(object):
     NO = "no"
     NO_RESPONSE = "no_response"
     MAYBE = "maybe"
+    DELETED = "deleted"
 
 class InviteAttendee(BaseModel):
     unique_id = ndb.StringProperty(required=True)

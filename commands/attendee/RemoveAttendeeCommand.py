@@ -1,5 +1,5 @@
 from managers.utils import guid
-from models import InviteAttendee, InviteAttendeeNotification, Contact
+from models import InviteAttendee, InviteAttendeeNotification, AttendeeStatus
 
 
 class RemoveAttendeeCommand(object):
@@ -16,8 +16,8 @@ class RemoveAttendeeCommand(object):
         invite_attendee = InviteAttendee.get_by_unique_id(
             self.attendee_unique_id
         )
-        invite_attendee.key.delete()
-
+        invite_attendee.attendee_status = AttendeeStatus.DELETED
+        invite_attendee.put()
         #TODO
         #If this person has AttendeeNotifications
         #It means he has been notified
