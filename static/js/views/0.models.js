@@ -319,7 +319,7 @@ InviteModel = Backbone.Model.extend({
                     alert_notification([{
                         alertType:'success',
                         message: 'Event saved successfully!'
-                    }]);
+                    }], 3000);
                 callback(view, data)
             },
             error: function(data) {

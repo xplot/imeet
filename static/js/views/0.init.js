@@ -33,10 +33,8 @@ function guid(){
     });
 }
 
-function alert_notification(alerts){
-
+function alert_notification(alerts, timeout){
     $('.alert').remove();
-
     var alert_string = '' +
         '<div class="alert alert-{0} alert-dismissible flyover flyover-in" role="alert">'+
             '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
@@ -47,6 +45,14 @@ function alert_notification(alerts){
     alerts.forEach(function(alert){
         $alertDiv.prepend(alert_string.format(alert.alertType, alert.message));
     });
+
+    if(timeout!= null){
+        setTimeout(function(){
+            $('.alert').fadeOut(2000, function(){
+                $('.alert').remove();
+            });
+        }, timeout);
+    }
 }
 
 var validator = {

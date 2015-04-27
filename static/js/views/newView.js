@@ -93,9 +93,11 @@ NewView = SimpleView.extend({
          //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datetimepicker({
             pickTime: false,
+            minDate: moment()
         });
         this.$el.find('.event-start-time, .event-end-time').datetimepicker({
-            pickDate: false,  
+            pickDate: false,
+            minDate: moment()
         });
         this.initWhere();
     },

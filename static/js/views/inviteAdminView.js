@@ -62,7 +62,8 @@ InviteAdminView = SimpleView.extend({
         alert_notification([{
             alertType:'success',
             message: "Everyone in the invite is going to be notified in the next few minutes"
-        }]);
+        }],5000
+        );
     },
 
     plugins: function(){
@@ -84,7 +85,7 @@ InviteAdminView = SimpleView.extend({
             alert_notification([{
                 alertType:'warning',
                 message: "This invite is in the Past you cannot edit it anymore"
-            }]);
+            }], 5000);
         }
     }
 

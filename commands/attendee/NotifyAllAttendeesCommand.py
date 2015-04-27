@@ -12,6 +12,10 @@ class NotifyAllAttendeesCommand(object):
     def execute(self):
         if not self.invite:
             self.invite = Invite.get_by_unique_id(self.invite_unique_id)
+        invite_attendees = self.invite.get_attendees()
+
+        if not invite_attendees:
+            raise Exception("The invite has no attendees")
 
         bulk = BulkNotifyAttendeesCommand(
             invite=self.invite,

@@ -101,10 +101,20 @@ InviteTitleView = Backbone.View.extend({
             this.$el.html(input);
             this.$input = this.$el.find('.edit-title-input');
 
-            this.$input.on('blur', function(){
-                that.model.set('title', that.$input.val());
+            var update = function(value){
+                that.model.set('title', value);
                 that.model.submit(that.submitSuccess, that);
+            };
 
+            this.$input.on('blur', function(){
+                update(that.$input.val());
+            });
+
+            this.$input.on('keyup', function(evt){
+                if (evt.keyCode != 13) {
+                    return;
+                }
+                update(that.$input.val());
             });
 
         }

@@ -13,7 +13,7 @@ SearchView = SimpleView.extend({
         'click .invite-link': 'navigate'
     },
 
-    render: function(invites) {
+    render: function(invites, search) {
         this.hidePanels();
         this.model = invites;
 
@@ -27,6 +27,12 @@ SearchView = SimpleView.extend({
                 'invites': {}
             }));
             this.search();
+        }
+
+        if(search != null){
+            var $searchBox = this.$el.find('#searchBox')
+            $searchBox.val(search);
+            $searchBox.focus();
         }
     },
 
@@ -62,7 +68,7 @@ SearchView = SimpleView.extend({
                     });
 
                 }
-                that.render(invite_list);
+                that.render(invite_list, value);
             }
         });
     },
