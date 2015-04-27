@@ -90,12 +90,40 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0px;
     padding: 20px 0px;
 
+    .mobile-padding{
+      padding-left: 0px;
+
+      @media(max-width:1024px) {
+        padding-left: 15px !important;
+      }
+      @media(max-width:768px) {
+        padding-left: 15px !important;;
+      }
+    }
+
     .title{
       font-weight:400;
+      @media(max-width:768px) {
+        float: left;
+        width: 40%;
+      }
+
+      @media(max-width:1024px) {
+        float: left;
+        width: 40%;
+      }
     }
 
     .details{
       font-weight:100;
+      @media(max-width:768px){
+        float: left;
+        width: 40%;
+      }
+      @media(max-width:1024px){
+        float: left;
+        width: 40%;
+      }
     }
 
     .invite-location-container{
@@ -106,32 +134,64 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 3em;
         font-weight: 400;
         margin-right: 10px;
+
+        @media(max-width:1024px){
+          display: none;
+          width: 0px;
+        }
+        @media(max-width:768px) {
+          display: none;
+          width: 0px;
+        }
       }
       .location-title{
         float: left;
-
       }
       #invite-location{
         margin-top: -25px;
         width: 100%;
         float: left;
         margin-left: 60px;
+        @media(max-width:1024px) {
+          margin-left: 0px;
+          margin-top: 0px;
+          width: 60%;
+        }
+        @media(max-width:768px) {
+          margin-left: 0px;
+          margin-top: 0px;
+          width: 60%;
+        }
       }
     }
   }
 
-  .attendees{
+  .mobile-description{
+    padding: 15px;
+  }
 
+  .attendees{
+    padding: 5px;
+    
     .rsvp{
       width: 70%;
-      .panel-heading{
+      @media(max-width:768px) {
+        width:100%;
+      }
+      .panel{
+        .panel-heading{
           background-color: @invite-light-gray;
           padding: 15px;
           font-size: 110%;
           font-weight: 100;
           text-align: center;
           text-transform: uppercase;
+        }
+        .panel-body{
+          padding-left: 30px;
+        }
       }
+
       .yes-button{
         .response-no{
           background-color: @invite-light-gray;
@@ -152,11 +212,36 @@ h1, h2, h3, h4, h5, h6 {
 
   }
 
+  .hangout{
+    padding: 30px;
+    padding-top: 0px;
+
+    .small-margin-top{
+      @media(max-width:1024px) {
+          margin-top: 0px;
+          width: 60%;
+        }
+        @media(max-width:768px) {
+          margin-top: 0px;
+        }
+    }
+
+
+  }
   #invite-comments{
+    .small-margin-top{
+        @media(max-width:1024px) {
+            margin-top: 0px;
+            width: 60%;
+          }
+          @media(max-width:768px) {
+            margin-top: 0px;
+          }
+      }
+
     .invite-comments {
       margin: 10px 0px;
-
-
+      
       .invite-comment-row {
         background-color: @invite-light-gray;
         padding: 15px;

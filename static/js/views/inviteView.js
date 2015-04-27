@@ -56,7 +56,7 @@ InviteView = SimpleView.extend({
         $('#invite-location').html(invite.where);
         $('.invite-date').html(invite.start);
         $('.invite-end-date').html(invite.end);
-        $('#invite-description').html(invite.description);
+        $('.invite-description').html(invite.description);
 
         this.plugins();
     },
