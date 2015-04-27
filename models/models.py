@@ -69,9 +69,9 @@ class Contact(BaseModel):
 
 
 class Comment(BaseModel):
-    author = ndb.StringProperty(required=True)
+    author = ndb.StringProperty(required=False)
     comment = ndb.StringProperty(required=True, indexed=False)
-    commentedOn = ndb.DateTimeProperty(required=True, indexed=False)
+    commented_on = ndb.DateTimeProperty(required=True, indexed=False)
 
 
 class Image(BaseModel):
@@ -96,8 +96,26 @@ class Invite(BaseModel):
     voice_template = ndb.StringProperty(required=False, indexed=False)
     poster_picture = ndb.KeyProperty(required=False, kind=Image, indexed=False)
 
+    @classmethod
+    def get_by_user(cls, user):
+        return Invite.query(Invite.user == user.key).fetch()
+
     def get_attendees(self):
-        return InviteAttendee.query(InviteAttendee.invite == self.key).fetch()
+        return InviteAttendee.query(
+            ndb.AND(
+                InviteAttendee.invite == self.key,
+                InviteAttendee.attendee_status != AttendeeStatus.DELETED,
+            )
+
+        ).fetch()
+
+
+class AttendeeStatus(object):
+    YES = "yes"
+    NO = "no"
+    NO_RESPONSE = "no_response"
+    MAYBE = "maybe"
+    DELETED = "deleted"
 
 class InviteAttendee(BaseModel):
     unique_id = ndb.StringProperty(required=True)
@@ -106,30 +124,53 @@ class InviteAttendee(BaseModel):
     name = ndb.StringProperty(indexed=False)
     phone = ndb.StringProperty(indexed=False)
     email = ndb.StringProperty(indexed=False)
+    attendee_status = ndb.StringProperty(default=AttendeeStatus.NO_RESPONSE)
+    last_response_on = ndb.DateTimeProperty(indexed=False, required=False)
+
+    def get_notifications(self):
+        return InviteAttendeeNotification.query(
+            InviteAttendeeNotification.attendee == self.key
+        ).fetch()
+
+    def get_acknowledges(self):
+        return InviteAttendeeAcknowledge.query(
+            InviteAttendeeAcknowledge.attendee == self.key
+        ).fetch()
+
+
+class InviteAttendeeAcknowledge(BaseModel):
+    """
+        This is meant to be a historic table
+        Each record being a response from the attendee
+    """
+    unique_id = ndb.StringProperty(required=True)
+    attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
+    invite = ndb.KeyProperty(kind=Invite, required=True)
+    channel = ndb.StringProperty(indexed=False)
+    response = ndb.StringProperty(indexed=False)
+    responded_on = ndb.DateTimeProperty(indexed=False)
 
 
 class InviteAttendeeNotification(BaseModel):
     """
         This is meant to be a historic table
-        Each record being a 'ping' to a given contact in any of the channels,
-        remember a contact could be just an email if the user never updates,
-        the name of the contact while sending the invite
+        Each record being a 'ping' to a given contact in any of the channels
     """
     unique_id = ndb.StringProperty(required=True)
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
-    name = ndb.StringProperty(indexed=False)
-    email = ndb.StringProperty(indexed=False)
-    phone = ndb.StringProperty(indexed=False)
-    voice_response = ndb.StringProperty(indexed=False)
-    sms_response = ndb.StringProperty(indexed=False)
-    email_response = ndb.StringProperty(indexed=False)
-    voice_response_datetime = ndb.DateTimeProperty(indexed=False)
-    sms_response_datetime = ndb.DateTimeProperty(indexed=False)
-    email_response_datetime = ndb.DateTimeProperty(indexed=False)
+    channel = ndb.StringProperty(indexed=False)
+    channel_type = ndb.StringProperty()
+    notified_on = ndb.DateTimeProperty(indexed=False)
 
     def attendee_id(self):
         return self.attendee.key.id()
+
+    @classmethod
+    def get_by_invite(cls, invite):
+        return InviteAttendeeNotification.query(
+            InviteAttendeeNotification.invite == invite.key
+        ).fetch()
 
 
 
@@ -168,5 +209,3 @@ class GroupedContact(BaseModel):
     user = ndb.KeyProperty(kind=User)
     group_unique_id = ndb.StringProperty(required=True)
     contact_unique_id = ndb.StringProperty(required=True)
-
-

@@ -13,3 +13,6 @@ class TemplateModel(object):
 
     def get_email_response_url(self):
         return "http://imeet.io/template/default_invite_response.html"
+
+    def get_email_redirect_url(self):
+        return "http://imeet.io/invite/{{invite_unique_id}}/{{unique_id}}"

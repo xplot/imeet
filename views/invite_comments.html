@@ -1,0 +1,26 @@
+<div class="row small-margin-top">
+    <div class="col-md-12 no-margin">
+        <h4>Comments</h4>
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-md-12 no-margin">
+        <textarea class="invite-comment-input" placeholder="Add comment"></textarea>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 no-margin">
+        <button type="button" class="btn form-control btn-success add-comment">Add Comment</button>
+    </div>
+</div>
+
+<div class="row invite-comments">
+    <div class="col-md-12 invite-comments-container">
+        <% _.each( comments, function( comment ){ %>
+            <%= partial('invite_comment.html', comment) %>
+        <% }); %>
+    </div>
+</div>
+

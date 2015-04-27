@@ -1,6 +1,6 @@
 import json
 import logging
-
+from datetime import datetime
 import webapp2
 from google.appengine.api import mail
 from google.appengine.ext import ndb
@@ -10,6 +10,13 @@ import boilerplate
 from main import JINJA_ENVIRONMENT
 from boilerplate.basehandler import BaseHandler
 from models import Invite
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime):
+            return o.isoformat()
+        return json.JSONEncoder.default(self, o)
 
 
 class JsonHandler(RequestHandler):
@@ -32,7 +39,9 @@ class JsonHandler(RequestHandler):
 
     def __render_json__(self, data):
         if data is not None:
-            self.response.write(json.dumps(data))
+            self.response.write(json.dumps(data, cls=DateTimeEncoder))
+        else:
+            self.response.status = 204
 
     def api_success(self, data=None):
         self.response.status = 200
@@ -48,6 +57,10 @@ class JsonHandler(RequestHandler):
 
     def _data(self):
         try:
+            if self.request.method == 'DELETE':
+                self.request_data = {}
+                return
+
             if self.request_data is None:
                 data_string = self.request.body
                 self.request_data = json.loads(data_string)

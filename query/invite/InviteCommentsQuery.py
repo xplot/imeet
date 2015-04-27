@@ -25,10 +25,15 @@ class InviteCommentsQuery(object):
         if invite.comments is None:
             invite.comments = []
 
+        def date_compare(x, y):
+            if x.commented_on > y.commented_on:
+                return -1
+            return 1
+
         return [
             {
                 'author':   c.author,
                 'comment':  c.comment,
-                'on':       c.commentedOn.strftime("%Y-%m-%d %H:%M")
-            } for c in invite.comments
+                'on':       c.commented_on.strftime("%Y-%m-%d %H:%M")
+            } for c in sorted(invite.comments, cmp=date_compare)
         ]

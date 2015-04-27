@@ -44,6 +44,13 @@ textarea
 ::-webkit-input-placeholder {
    font-weight: 200;
 }
+a{
+  color: @brand-success;
+}
+a:hover{
+  color: @brand-success;
+}
+
 a,
 a:focus,
 a:active,
@@ -66,6 +73,11 @@ a.active{
 .btn-danger{
   background-color: @btn-danger;
   border: solid 1px @btn-danger !important;
+}
+
+.btn-warning{
+  background-color: @btn-warning;
+  border: solid 1px @btn-warning !important;
 }
 
 .quiet{
@@ -223,5 +235,18 @@ and (max-width : 1023px){
 .zero-margin{
   margin-left: 0px;
   margin-right: 0px;
+}
+
+.no-border{
+  border: 0px;
+  box-shadow :0 0 0;
+  -webkit-box-shadow: 0 0 0;
+}
+
+.w25{
+  width: 25%;
+}
+.w50{
+  width: 50%;
 }
 

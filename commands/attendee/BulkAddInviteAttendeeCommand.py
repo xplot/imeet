@@ -1,8 +1,9 @@
+from datetime import datetime
 from managers.utils import guid
 from models import InviteAttendee, InviteAttendeeNotification, Contact, Invite
 from google.appengine.ext import ndb
 from .AddInviteAttendeeCommand import AddInviteAttendeeCommand
-
+from commands.exceptions import InviteCannotBeEditedException
 
 class BulkAddInviteAttendeeCommand(object):
     def __init__(self, invite_unique_id, invite_attendee_commands):
@@ -16,7 +17,7 @@ class BulkAddInviteAttendeeCommand(object):
             commands.append(
                 AddInviteAttendeeCommand(
                     invite_unique_id=invite_unique_id,
-                    contact_unique_id=x.get('contact_unique_id', None),
+                    contact_unique_id=x.get('unique_id', None),
                     name=x.get('name'),
                     email=x.get('email', None),
                     phone=x.get('phone', None)
@@ -27,6 +28,11 @@ class BulkAddInviteAttendeeCommand(object):
     def execute(self):
         invite = Invite.get_by_unique_id(self.invite_unique_id)
 
+        if invite.start < datetime.now():
+            raise InviteCannotBeEditedException(
+                "This invite is in the past it cannot be edited anymore"
+            )
+
         bulk_add = []
         for command in self.commands:
             invite_attendee = InviteAttendee(
@@ -36,9 +42,11 @@ class BulkAddInviteAttendeeCommand(object):
                 phone=command.phone
             )
             if command.contact_unique_id:
-                invite_attendee.contact = Contact.get_by_unique_id(
+                contact = Contact.get_by_unique_id(
                     command.contact_unique_id
-                ).key
+                )
+                if contact:
+                    invite_attendee.contact = contact.key
 
             invite_attendee.invite = invite.key
             bulk_add.append(invite_attendee)

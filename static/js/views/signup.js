@@ -29,7 +29,7 @@ UserRegisterView = SimpleView.extend({
                     alertType:'success',
                     message: "Account Created Successfully, please check your email"
                 }]);
-                Backbone.pubSub.trigger('childClose', { 'view' : that } );
+                window.location.href = '/';
             },
             error:function(data) {
                 alert_notification([{

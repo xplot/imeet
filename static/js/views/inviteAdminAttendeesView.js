@@ -6,11 +6,10 @@ InviteAdminAttendeesView = Backbone.View.extend({
 
     initialize: function(options){
         this.options = options || {};
-        this.inviteId = this.options.id;
+        this.invite_id = this.options.id;
     },
 
     events: {
-
         'click .new-contact' : 'newAttendee',
         'click .remove-contact': 'removeAttendee',
         'keyup .contact-input': 'newAttendeeEnter',
@@ -175,7 +174,6 @@ InviteAdminAttendeesView = Backbone.View.extend({
                 displayKey: 'name',
                 source: substringMatcher(contacts),
                 templates: {
-                    header: '<h5 class="typeahead-contact-header">Contacts</h5>',
                     suggestion: JST['contact_item_typeahead.html']
                 }
             },
@@ -185,8 +183,7 @@ InviteAdminAttendeesView = Backbone.View.extend({
                 displayKey: 'name',
                 source: substringGroupMatcher(groups),
                 templates: {
-                    header: '<h5 class="typeahead-group-header">Groups</h5>',
-                    suggestion: _.template('<%- name %>')
+                    suggestion: JST['group_item_typeahead.html']
                 }
 
             }

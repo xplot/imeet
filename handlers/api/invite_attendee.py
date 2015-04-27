@@ -17,6 +17,8 @@ from models import Invite
 from boilerplate.models import User
 import query
 import commands
+
+
 class InviteAttendeeHandler(JsonHandler):
 
     def get(self, invite_id):
@@ -34,7 +36,6 @@ class InviteAttendeeHandler(JsonHandler):
         command.execute()
         return invite_id
 
-    @user_context
     def delete(self, invite_id, unique_id):
         """Includes an Attendee in the Invite"""
         command = commands.RemoveAttendeeCommand(unique_id)
@@ -75,15 +76,6 @@ class InviteAttendeeHandler(JsonHandler):
         invite_some.execute()
         return invite_id
 
-    def accept_response(self, invite_id, invite_contact_id):
-        data = self._data()
-
-        invite_model = InviteModel.create_from_id(invite_id)
-        if data.get('response', 'no').lower() == 'yes':
-            invite_model.accept(invite_contact_id, data.get('channel', 'email'))
-        else:
-            invite_model.deny(contact_id, data.get('channel', 'email'))
-
     @classmethod
     def get_list_from_dict(cls, attendees):
         """
@@ -110,15 +102,3 @@ class InviteAttendeeHandler(JsonHandler):
                 )
             )
         return result
-
-    def acknowledge(self):
-        """Acknowledge attending the event or not"""
-        group_id = self._data().get('unique_id')
-
-        command = commands.AddGroupAttendeesCommand(
-            invite_unique_id=invite_id,
-            group_unique_id=group_id,
-            user=self.user
-        )
-        command.execute()
-        return invite_id

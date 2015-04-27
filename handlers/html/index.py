@@ -12,6 +12,15 @@ from boilerplate.basehandler import BaseHandler
 import query
 from models import Invite
 from handlers.api import ImageUploadHandler
+from datetime import datetime
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime):
+            return o.isoformat()
+        return json.JSONEncoder.default(self, o)
+
 
 class IndexHandler(BaseHandler):
 
@@ -30,29 +39,38 @@ class IndexHandler(BaseHandler):
     def search(self):
         return self.render_template('index.html')
 
-    def view_invite(self, id, contact_id=0):
+    def view_invite(self, invite_id, invite_attendee_id=0):
         if not id:
             return self.redirect_to('home')
 
-        invite_query = query.CompleteInviteQuery(id)
+        invite_query = query.CompleteInviteQuery(invite_id)
+
+        invite_attendee = None
+        if invite_attendee_id:
+            invite_attendee = query.InviteAttendeeReportQuery(
+                invite_attendee_id
+            ).query()
+
         return self.render_template(
             'invite.html',
-            invite=json.dumps(invite_query.query())
+            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
+            invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder),
         )
 
-    def edit_invite_view(self, id=0):
+    def edit_invite_view(self, invite_id=0):
         """Get the full invite, with contacts and responses"""
         if not id:
             return self.redirect_to('home')
 
-        invite_query = query.CompleteInviteQuery(id)
+        invite_query = query.CompleteInviteQuery(invite_id)
 
         # if invite_model.get_user_role_by_id(self.user_id) != InviteUserRole.ORGANIZER:
         #     return self.redirect('/')
 
         return self.render_template(
             'invite.html',
-            invite=json.dumps(invite_query.query())
+            edit='True',
+            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder)
         )
 
     def blank(self):

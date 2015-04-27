@@ -1,0 +1,194 @@
+@import "base";
+@import "navbar";
+
+/*--------------------------------------------------
+              New Design
+---------------------------------------------------*/
+body{
+  font-weight: 100 !important;
+
+  .container, .invite-view{
+    position: absolute;
+    bottom: 0px;
+    top:0px;
+    width: 100%;
+    //padding: 0px  ;
+  }
+
+  .navbar-separator{
+    height: 60px;
+  }
+
+}
+
+.block {
+  display: table;
+  text-align: center;
+  width: 100%;
+
+  .center-block {
+    vertical-align: middle;
+    display: table-cell;
+
+    .main-h1 {
+      background-color: rgba(1, 87, 155, 0.7);
+      color: @off-white;
+      max-width: 60%;
+      margin: 20px auto;
+      padding: 20px;
+      font-size: 27px;
+      font-weight: normal;
+      text-transform: none;
+      @media (max-width: 1024px) {
+        font-size: 100%;
+      }
+      @media (max-width: 768px) {
+        font-size: 110%;
+      }
+    }
+
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+/*start - All*/
+.invite-background {
+  background-position: center;
+  background-size: cover;
+}
+
+/* Header */
+#invite-header{
+    .block-header{
+      img{
+        min-width: 100%;
+      }
+    }
+
+  form{
+    #upload_image_file{
+      visibility: hidden;
+      width: 0;
+    }
+  }
+}
+
+/*Edit */
+
+
+#invite-body{
+  position: relative;
+  padding-top: 2%;
+  
+  .invite-subheader-banner{
+    background-color: @invite-light-gray;
+    height: 100px;
+    width: 100%;
+    margin: 0px;
+    padding: 20px 0px;
+
+    .title{
+      font-weight:400;
+    }
+
+    .details{
+      font-weight:100;
+    }
+
+    .invite-location-container{
+      .location-image{
+        float: left;
+        width: 50px;
+        height: 50px;
+        font-size: 3em;
+        font-weight: 400;
+        margin-right: 10px;
+      }
+      .location-title{
+        float: left;
+
+      }
+      #invite-location{
+        margin-top: -25px;
+        width: 100%;
+        float: left;
+        margin-left: 60px;
+      }
+    }
+  }
+
+  .attendees{
+
+    .rsvp{
+      width: 70%;
+      .panel-heading{
+          background-color: @invite-light-gray;
+          padding: 15px;
+          font-size: 110%;
+          font-weight: 100;
+          text-align: center;
+          text-transform: uppercase;
+      }
+      .yes-button{
+        .response-no{
+          background-color: @invite-light-gray;
+          border-color: @invite-light-gray !important;
+          color:@off-black;
+        }
+      }
+
+      .no-button{
+        .response-yes{
+          background-color: @invite-light-gray;
+          border-color: @invite-light-gray !important;
+          color:@off-black;
+        }
+      }
+
+    }
+
+  }
+
+  #invite-comments{
+    .invite-comments {
+      margin: 10px 0px;
+
+
+      .invite-comment-row {
+        background-color: @invite-light-gray;
+        padding: 15px;
+
+        margin-bottom: 10px;
+
+        .comment-author {
+          font-weight: 400;
+          color: @btn-success;
+        }
+
+
+      }
+
+      .comment-date{
+        font-size:60%;
+        color:@off-black;
+        opacity: 70;
+      }
+    }
+
+    .invite-comment-input {
+      padding: 10px;
+      background-color: @invite-light-gray;
+      width: 100%;
+      min-height: 100px;
+      height: auto;
+      resize: none;
+    }
+
+  }
+
+
+
+}

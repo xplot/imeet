@@ -1,63 +1,23 @@
 {% extends "base.html" %}
-{% block css %}invite_edit{% endblock %}
+
+{% block css %}{% if edit %}invite_edit{%else %}invite{% endif %}{% endblock %}
 {% block title %}Invite{% endblock %}
 {% block content %}
 
 <div class="navbar-separator"></div>
 
 <div id="invite-body"></div>
+
 {% endblock %}
 
 {% block initScript %}
 <script type="text/javascript">
     var invite = {{invite}};
+    var invite_attendee = {% if invite_attendee %}{{invite_attendee}}{%else %}null{% endif %};
 </script>
 
 
 <script>
-        function block(el, ratio) {
-            var h = $(window).height();
-            if (ratio === 'half')
-              h = h/2;
-            else if (ratio == 'quarter')
-              h = h/3;
-            else
-                h = h;
-
-            $(el).css('height',h);
-        }
-
-        $(function() {
-
-            block('.invite-background', 'half');
-
-            $(window).resize(function() {
-                block('.invite-background', 'half');
-
-            });
-
-            /* Homepage Fade Images */
-            var $slider = $(".home-imgs"),
-                sliderIndex = 2,
-                sliderActiveIndex = 0;
-
-            function kuSlider () {
-                sliderActive = $slider.children(".active");
-                sliderActiveIndex = sliderActive.index();
-                if ( sliderIndex <= sliderActiveIndex ) {
-                    sliderActive.removeClass("active").fadeOut(2000);
-                    $slider.children(":first").addClass("active").fadeIn(2000);
-                } else {
-                    sliderActive.removeClass("active").fadeOut(2000).next().addClass("active").fadeIn(2000);
-                }
-            }
-            setInterval(function(){
-              kuSlider();
-            }, 6000);
-
-        });
-
-
         var features = [
                {% for item in subscription_features %}
                     '{{ item }}',
@@ -76,6 +36,8 @@
                     alert_notification(notifications);
             });
         {% endif %}
+
+
 
     </script>
 

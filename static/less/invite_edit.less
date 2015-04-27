@@ -7,12 +7,14 @@
 body{
   font-weight: 100 !important;
 
-  .container{
-    position: absolute;
-    bottom: 0px;
-    top:0px;
-    width: 100%;
-    //padding: 0px  ;
+  #invite-body{
+    .container{
+      position: absolute;
+      bottom: 0px;
+      top:0px;
+      width: 100%;
+      //padding: 0px  ;
+    }
   }
 
   .navbar-separator{
@@ -71,9 +73,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Header */
 #invite-header{
     .block-header{
-
-
-
       img{
         min-width: 100%;
       }
@@ -91,19 +90,12 @@ h1, h2, h3, h4, h5, h6 {
 
 
 #invite-body{
-  position: relative;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   padding-top: 2%;
   
-  .invite-subheader-banner{
-    background: #ecf0f1;
-    height: 75px;
-  }
-
-  .invite-newComment{
-    background: #ecf0f1;
-  }
-
-  #invite-edit {
+  #invite-details {
     display: block;
     text-align: center;
 
@@ -114,7 +106,7 @@ h1, h2, h3, h4, h5, h6 {
       margin-left: auto;
       margin-right: auto;
 
-      background-color: lightgrey;
+      background-color: @invite-darker-gray;
       padding: 15px;
       float: none;
 
@@ -165,7 +157,7 @@ h1, h2, h3, h4, h5, h6 {
     }
   }
 
-  #invite-attendees{
+  #invite-admin-attendees{
       .contact-input-container{
 
         .contact-input{
@@ -176,8 +168,6 @@ h1, h2, h3, h4, h5, h6 {
           float: right;
         }
       }
-
-
 
       .invite-attendees-box {
         vertical-align: middle;
@@ -212,9 +202,13 @@ h1, h2, h3, h4, h5, h6 {
 
         }
         .tt-cursor {
-          color: @off-white;
-          background-color: @nav-bg-color;
+          color: #000000 !important;
+          background-color: rgba(0,0,0,0.2);
           cursor: pointer;
+
+          .fa{
+            margin-top:5px;
+          }
         }
 
         .typeahead-contact-header{
@@ -241,8 +235,12 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 80%;
         font-weight: 400;
         height: 20px;
+
         .details{
+          
           width: 80%;
+
+
         }
 
         .btn{

@@ -11,3 +11,4 @@ from profile import (
     CallbackSocialLoginHandler,
     SocialSharingHandler
 )
+from base import SendEmailHandler

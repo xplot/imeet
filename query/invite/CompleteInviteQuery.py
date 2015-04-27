@@ -24,16 +24,8 @@ class CompleteInviteQuery(object):
                     'phone': '',
                     'email': 'javi@javi.com',
                     'name': u'',
-                    notifications:[
-                        {
-                            'name': u'',
-                            'phone': '',
-                            'email': 'javi@javi.com',
-                            'sms_response': '',
-                            'voice_response': '',
-                            'email_response': '',
-                        }
-                    ]
+                    'status': '',
+                    'last_response_on': ''
                 }
             ],
             'email_template':{
@@ -55,6 +47,9 @@ class CompleteInviteQuery(object):
         if not self.invite:
             self.invite = Invite.get_by_unique_id(self.invite_unique_id)
         invite = self.invite
+
+        if not invite:
+            raise query.InviteNotFoundException()
 
         result = {
             'unique_id':    invite.unique_id,

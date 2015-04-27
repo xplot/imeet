@@ -57,7 +57,7 @@ class ReducedInviteQuery(object):
             'response_email_template': {
                 'subject': "Thank you {{name}} for your response",
                 'url':  email_template_model.get_email_response_url(),
-                'redirect_url':email_template_model.get_email_response_url(),
+                'redirect_url': email_template_model.get_email_redirect_url(),
             },
             'sms_template':{
                 'body': "Hello world" #Not used for now

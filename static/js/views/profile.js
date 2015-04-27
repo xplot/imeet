@@ -24,6 +24,7 @@ UserProfileView = SimpleView.extend({
             type: "GET",
             cache: false,
             success: function(data) {
+                console.log(data);
                 if(data.email != null){
                     that.$email.html(data.email);
                     that.$email.parent().addClass('floating-label-form-group-with-value');

@@ -1,0 +1,3 @@
+
+class InviteCannotBeEditedException(Exception):
+    pass

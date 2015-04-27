@@ -25,7 +25,7 @@ class Event(ndb.Model):
     retries = ndb.IntegerProperty(default=0, indexed=False)
     status = ndb.StringProperty(indexed=False)
     priority = ndb.IntegerProperty(default=0, required=True, indexed=False)
-    group_id = ndb.StringProperty(indexed=False)
+    group_id = ndb.StringProperty()
 
     @classmethod
     def get_by_unique_id(cls, unique_id):

@@ -29,13 +29,13 @@ app = webapp2.WSGIApplication([
     Route('/new/<invite_name>/from/<source_invite_id>', html.IndexHandler, handler_method='new'),
     Route('/search', html.IndexHandler, handler_method='search'),
     Route('/invite', html.IndexHandler, handler_method='view_invite'),
-    Route('/invite/<id>', html.IndexHandler, handler_method='view_invite'),
-    Route('/invite/<id>/edit', html.IndexHandler, handler_method='edit_invite_view', methods=['GET']),
-    Route('/invite/<id>/<contact_id>', html.IndexHandler, handler_method='view_invite'),
+    Route('/invite/<invite_id>', html.IndexHandler, handler_method='view_invite'),
+    Route('/invite/<invite_id>/edit', html.IndexHandler, handler_method='edit_invite_view', methods=['GET']),
+    Route('/invite/<invite_id>/<invite_attendee_id>', html.IndexHandler, handler_method='view_invite'),
     Route('/sent/<id>', html.IndexHandler, handler_method='view_invite'),
 
 
-    #Contacts
+    # Contacts
     Route('/contacts', html.ContactHandler),
     Route('/contacts/new', html.ContactHandler),
     Route('/api/contacts', api.ApiContactHandler, handler_method='get', methods=['GET']),
@@ -44,7 +44,7 @@ app = webapp2.WSGIApplication([
     Route('/api/contacts/<unique_id>/edit', api.ApiContactHandler, handler_method='update_contact', methods=['PUT']),
     Route('/api/contacts/csv', api.ApiContactHandler, handler_method='import_csv', methods=['POST']),
 
-    #User Profile
+    # User Profile
     Route('/register', html.IndexHandler, name='register', handler_method='default_method'),
     Route('/register/email/<email>', api.RegisterHandler, handler_method='register_email'),
     RedirectRoute('/activate/<user_id>/<token>', html.AccountActivationHandler, name='account-activation', strict_slash=True),
@@ -57,22 +57,29 @@ app = webapp2.WSGIApplication([
     RedirectRoute('/social_login/<provider_name>/delete', html.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),
     RedirectRoute('/social_sharing/facebook', html.SocialSharingHandler, name='social-sharing-facebook', handler_method='facebook', strict_slash=True),
 
-    #Invite_Contacts
+    # Invite_Attendees
     Route('/api/invite/<invite_id>/attendees/', api.InviteAttendeeHandler),
-    Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['POST']),
+    Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['DELETE']),
+    Route('/api/invite/attendees/<invite_attendee_id>/response', api.InviteAttendeeResponseHandler, handler_method='acknowledge', methods=['POST']),
+
+
+    # Invite_Comments
+    #Get Invite Comments and if POST will execute Anonymous User Comment (Only for Public invites)
+    Route('/api/invite/<invite_id>/comment', api.InviteCommentHandler),
+    # Invite Attendee Comment Comment
+    Route('/api/invite/<invite_id>/attendees/<invite_attendee_id>/comment', api.InviteCommentHandler),
+
     Route('/api/invite/<invite_id>/group/', api.InviteAttendeeHandler, name='post_group', handler_method='post_group', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify', api.InviteAttendeeHandler, name='notify_some', handler_method='notify_some', methods=['POST']),
     Route('/api/invite/<invite_id>/attendees/notify/all', api.InviteAttendeeHandler, name='notify_all', handler_method='notify_all', methods=['POST']),
-    Route('/api/invite/<invite_id>/attendees/<invite_contact_id>/response', api.InviteAttendeeHandler, name='accept_response', handler_method='accept_response', methods=['POST']),
 
-    #Invite_Comments
-    Route('/api/invite/<invite_id>/comments', api.InviteCommentHandler),
+    #Invite_Acknowledge
+    #Route('/api/invite/<invite_id>/ack', api.InviteCommentHandler, methods=['POST']),
 
     #Invite
     Route('/api/invite/', api.InviteHandler),
     Route('/api/invite/<invite_id>', api.InviteHandler),
     Route('/api/invite/search/<user_id>', api.InviteHandler, name='search', handler_method='search'),
-
 
     #Groups
     Route('/api/group', api.ApiGroupHandler, name='get_groups', handler_method='get', methods=['GET']),
@@ -90,5 +97,7 @@ app = webapp2.WSGIApplication([
     Route('/image/<invite_id>/upload_url', api.ImageUploadUrlHandler),
     Route('/image/<invite_id>/upload', api.ImageUploadHandler),
     Route('/image/<image_id>', api.ImageServeHandler),
+
+     RedirectRoute('/taskqueue-send-email/', html.SendEmailHandler, name='taskqueue-send-email', strict_slash=True),
 
 ], config=config,debug=True)
