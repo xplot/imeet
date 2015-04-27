@@ -12,7 +12,7 @@ InviteAttendeesView = Backbone.View.extend({
 
     events: {
         'click .invite-attendees-acknowledge-yes': 'yesButtonClick',
-        'click .invite-attendees-acknowledge-no': 'noButtonClick',
+        'click .invite-attendees-acknowledge-no': 'noButtonClick'
     },
 
     render: function(data){
