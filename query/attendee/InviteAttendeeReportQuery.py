@@ -59,6 +59,7 @@ class InviteAttendeeReportQuery(object):
             attendee['notifications'].append({
                 'unique_id': x.unique_id,
                 'channel': x.channel,
+                'channel_type': x.channel_type,
                 'notified_on': x.notified_on,
             })
 

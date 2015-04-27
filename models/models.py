@@ -160,6 +160,7 @@ class InviteAttendeeNotification(BaseModel):
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
     channel = ndb.StringProperty(indexed=False)
+    channel_type = ndb.StringProperty()
     notified_on = ndb.DateTimeProperty(indexed=False)
 
     def attendee_id(self):

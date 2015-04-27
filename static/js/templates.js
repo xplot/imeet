@@ -248,9 +248,9 @@ __p += '\n          <div class="panel-heading">\n              ';
  if(attendee.status == 'no_response') {;
 __p += '\n                    Are you coming?\n              ';
 } else if(attendee.status == 'no') { ;
-__p += '\n                    Sad you can\' attend :(\n              ';
+__p += '\n                    Sad you can\'t attend :(\n              ';
 } else if(attendee.status == 'yes') { ;
-__p += '\n                    Glad you coming :)\n              ';
+__p += '\n                    Glad you\'re coming :)\n              ';
 } ;
 __p += '\n          </div>\n\n          <div class="panel-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
 __e( attendee.status ) +
@@ -260,7 +260,7 @@ __e( attendee.status ) +
 } else if(attendee != null && attendee.status == 'deleted') {;
 __p += '\n        <div class="panel-heading"></div>\n          <div class="panel-body">\n            <b>The organizer removed you from this event</b>\n        </div>\n\n      ';
 } else{;
-__p += '\n        \n      ';
+__p += '\n\n      ';
 };
 __p += '\n   </div>\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
  _.each( confirmed, function( item ){ ;
