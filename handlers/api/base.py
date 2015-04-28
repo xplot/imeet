@@ -1,3 +1,4 @@
+import cgi
 import json
 import logging
 from datetime import datetime
@@ -5,6 +6,7 @@ import webapp2
 from google.appengine.api import mail
 from google.appengine.ext import ndb
 from webapp2 import RequestHandler
+
 
 import boilerplate
 from main import JINJA_ENVIRONMENT
@@ -62,7 +64,7 @@ class JsonHandler(RequestHandler):
                 return
 
             if self.request_data is None:
-                data_string = self.request.body
+                data_string = cgi.escape(self.request.body) # sanitize
                 self.request_data = json.loads(data_string)
         except Exception,e:
             raise e
