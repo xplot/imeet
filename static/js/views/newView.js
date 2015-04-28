@@ -97,7 +97,7 @@ NewView = SimpleView.extend({
         });
         this.$el.find('.event-start-time, .event-end-time').datetimepicker({
             pickDate: false,
-            minDate: moment()
+            minDate: moment().add(-10, 'm')
         });
         this.initWhere();
     },

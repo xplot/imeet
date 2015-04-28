@@ -1,5 +1,5 @@
 import datetime
-from managers.utils import copy_over, guid
+from managers.utils import copy_over, guid, convert_to_user_date
 from managers.template import TemplateModel
 from models import Invite
 
@@ -34,6 +34,9 @@ class InviteCommentsQuery(object):
             {
                 'author':   c.author,
                 'comment':  c.comment,
-                'on':       c.commented_on.strftime("%Y-%m-%d %H:%M")
+                'on':       convert_to_user_date(
+                                c.commented_on,
+                                invite.utc_offset
+                            ).strftime("%Y-%m-%d %H:%M")
             } for c in sorted(invite.comments, cmp=date_compare)
         ]

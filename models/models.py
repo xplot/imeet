@@ -83,6 +83,8 @@ class Invite(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     start = ndb.DateTimeProperty(required=True, indexed=False)
     end = ndb.DateTimeProperty(indexed=False)
+    utc_offset = ndb.IntegerProperty(required=True, default=0)
+
     title = ndb.StringProperty(required=True,indexed=False)
     description = ndb.StringProperty(required=False, indexed=False)
     user = ndb.KeyProperty(kind=User)
@@ -95,6 +97,7 @@ class Invite(BaseModel):
     sms_template = ndb.StringProperty(required=False, indexed=False)
     voice_template = ndb.StringProperty(required=False, indexed=False)
     poster_picture = ndb.KeyProperty(required=False, kind=Image, indexed=False)
+
 
     @classmethod
     def get_by_user(cls, user):

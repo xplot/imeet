@@ -1,4 +1,5 @@
 from google.appengine.api import search
+import datetime
 
 
 def index_invite(invite):
