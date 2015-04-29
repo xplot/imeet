@@ -7,12 +7,14 @@ from models import Invite, Image
 from commands.invite.utils import index_invite
 from commands.invite.PostInviteToVoiceflowsCommand import PostInviteToVoiceflowsCommand
 
+
 class CreateInviteCommand(object):
 
     def __init__(self,
                  title=None,
                  start=None,
                  end=None,
+                 utc_offset=0,
                  where=None,
                  description=None,
                  share_on_facebook=None,
@@ -24,6 +26,7 @@ class CreateInviteCommand(object):
         self.title = title
         self.start = start
         self.end = end
+        self.utc_offset = utc_offset
         self.where = where
         self.description = description
         self.share_on_facebook = share_on_facebook
@@ -45,6 +48,7 @@ class CreateInviteCommand(object):
             },
             'start': '2014-10-06 04:01AM',
             'end': '2014-10-06 04:01AM',
+            'utc_offset': 240,
             'where': 'Location',
             'title': 'Candle',
             'sharing_options':{
@@ -56,8 +60,9 @@ class CreateInviteCommand(object):
             title=data_dict.get('title', None),
             description=data_dict.get('description', None),
             where=data_dict.get('where', None),
-            share_on_facebook = data_dict.get('facebook_share', None),
-            start=datetime.datetime.strptime(data_dict['start'], "%m/%d/%Y %H:%M %p")
+            share_on_facebook=data_dict.get('facebook_share', None),
+
+            utc_offset=data_dict.get('utc_offset', 0)
         )
 
         email_template_model = TemplateModel()
@@ -67,12 +72,13 @@ class CreateInviteCommand(object):
         command.email_response_template = email_template_model.get_email_response_url()
 
         #12/09/2014 12:00 AM
+        command.start = datetime.datetime.strptime(data_dict['start'], "%m/%d/%Y %I:%M %p") + datetime.timedelta(minutes=command.utc_offset)
 
         if command.start < datetime.datetime.now():
                 raise Exception("Start date cannot be in the past")
 
         if data_dict.get('end', None):
-            command.end = datetime.datetime.strptime(data_dict['end'], "%m/%d/%Y %H:%M %p")
+            command.end = datetime.datetime.strptime(data_dict['end'], "%m/%d/%Y %I:%M %p")
             if command.end < command.start:
                 raise Exception("End date cannot be lower than Start Date")
 

@@ -3,6 +3,7 @@ import hmac
 import hashlib
 import base64
 import uuid
+import cgi
 from config import config
 
 def guid():
@@ -33,3 +34,27 @@ def get_voiceflows_headers():
         'Date': now,
         'Authorization': authToken
     }
+
+
+def sanitize(input):
+    """
+        Sanitizes input from the client in the form of URL Encode
+        It will recursively loop over the request and sanitize all the objects
+    """
+    if isinstance(input, list):
+        for x in range(0, len(input)):
+            input[x] = sanitize(input[x])
+    elif isinstance(input, basestring):
+        input = cgi.escape(input)
+    elif isinstance(input, dict):
+        for x in input.keys():
+            input[x] = sanitize(input[x])
+
+    return input
+
+
+def convert_to_user_date(date, offset):
+    if not date or not offset:
+        return date
+
+    return date - datetime.timedelta(minutes=offset)
