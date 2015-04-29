@@ -1,5 +1,5 @@
 import datetime
-from managers.utils import copy_over, guid
+from managers.utils import copy_over, guid, convert_to_user_date
 from managers.template import TemplateModel
 from models import Invite
 import query
@@ -44,8 +44,14 @@ class ReducedInviteQuery(object):
         return {
             'unique_id':    invite.unique_id,
             'title':        invite.title,
-            'start':        invite.start.strftime("%Y-%m-%d %H:%M"),
-            'end':          invite.end.strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',
+            'start':        convert_to_user_date(
+                                invite.start,
+                                invite.utc_offset
+                            ).strftime("%Y-%m-%d %H:%M"),
+            'end':          convert_to_user_date(
+                                invite.end,
+                                invite.utc_offset
+                            ).strftime("%Y-%m-%d %H:%M") if invite.end is not None else '',
             'description':  invite.description,
             'where':        invite.where,
             'poster_image_id': invite.poster_picture.urlsafe() if invite.poster_picture else None,

@@ -225,7 +225,8 @@ InviteModel = Backbone.Model.extend({
         'poster_image_id': '',
         'attendees': new ContactList(),
         'all_contacts': new ContactList(),
-        'all_groups': new ContactList()
+        'all_groups': new ContactList(),
+        'utc_offset': 0
     },
 
     initialize: function (options) {
@@ -245,6 +246,8 @@ InviteModel = Backbone.Model.extend({
                 attendees.push(new Contact(item));
             });
         this.set('attendees', attendees);
+
+
     },
 
     format_date: function(property, format){
@@ -301,6 +304,10 @@ InviteModel = Backbone.Model.extend({
 
     submit: function(callback, view, enableNotifications){
         var that = this;
+
+        var d = new Date();
+        this.set('utc_offset', d.getTimezoneOffset());
+
         var invite = this.toJSON();
         if(currentUser != null)
             invite.user_id = currentUser.id;

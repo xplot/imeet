@@ -51,3 +51,10 @@ def sanitize(input):
             input[x] = sanitize(input[x])
 
     return input
+
+
+def convert_to_user_date(date, offset):
+    if not date or not offset:
+        return date
+
+    return date - datetime.timedelta(minutes=offset)
