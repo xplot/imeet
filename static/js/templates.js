@@ -200,7 +200,7 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="container">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6" id="invite-admin-attendees"></div>\n        <div class="col-md-6" id="invite-details"></div>\n    </div>\n</div>\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n    <div class="row">\n        <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-admin-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Description</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n    </div>\n</div>\n\n';
 
 }
 return __p
@@ -343,57 +343,43 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '\n\n<div class="invite-edit-box col-md-6">\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Start Time</h5></div>\n        <div class="col-md-6"><h5>Event End Time</h5></div>\n    </div>\n    <div class="row">\n        <div class="col-md-6">\n            ';
-  if( !edit_view )  { ;
-__p += '\n                    ' +
+__p += '<div class="col-md-2"></div>\n\n<div class=\'col-md-2 col-xs-12 mobile-padding\'>\n    <div class="title">Event Start Time</div>\n    ';
+  if( !is_editing_start_date )  { ;
+__p += '\n        <div class="details invite-date">' +
 __e( start_date ) +
 ' ' +
 __e( start_time ) +
-'\n            ';
+'</div>\n    ';
  } else { ;
-__p += '\n                <div class="date-group" id="start-date-group">\n                    <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
+__p += '\n        <div class="date-group" id="start-date-group">\n            <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
 __e(start_date ) +
-'">\n                    <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
+'">\n            <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
 __e(start_time ) +
-'">\n                </div>\n            ';
+'">\n        </div>\n    ';
  } ;
-__p += '\n\n        </div>\n        <div class="col-md-6">\n            ';
-  if( !edit_view )  { ;
-__p += '\n                    ' +
+__p += '\n</div>\n<div class=\'col-md-2  col-xs-12 mobile-padding\'>\n    <div class="title">Event End Time</div>\n    ';
+  if( !is_editing_end_date )  { ;
+__p += '\n        <div class="details invite-end-date">' +
 __e( end_date ) +
 ' ' +
 __e( end_time ) +
-'\n            ';
+'</div>\n    ';
  } else { ;
-__p += '\n                <div class="date-group" id="end-date-group">\n                    <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="' +
+__p += '\n        <div class="date-group" id="end-date-group">\n            <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="' +
 __e(end_date ) +
-'">\n                    <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="' +
+'">\n            <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="' +
 __e(end_time ) +
-'">\n                </div>\n            ';
+'">\n        </div>\n    ';
  } ;
-__p += '\n        </div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-12"><h5>Location</h5></div>\n    </div>\n    <div class="row">\n        ';
-  if( !edit_view )  { ;
-__p += '\n            <div class="col-md-10">' +
+__p += '\n</div>\n <div class=\'col-md-4 col-xs-12 mobile-padding invite-location-container\'>\n     <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n     ';
+  if( !is_editing_location )  { ;
+__p += '\n        <div class="title location-title">\n            ' +
 __e( where ) +
-'</div>\n        ';
+'\n        </div>\n     ';
  } else { ;
-__p += '\n            <div class="col-md-10">\n                <input type="text" class="form-control event-where-input" placeholder="Location...."  >\n            </div>\n        ';
+__p += '\n        <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\n     ';
  } ;
-__p += '\n        <div class="col-md-2"><i class="fa fa-map-pin-streamline fa-2x"></i></div>\n    </div>\n    <div class="row small-margin-top">\n        <div class="col-md-6"><h5>Event Details</h5></div>\n    </div>\n    <div class="row description">\n        <div class="col-md-12">\n            ';
-  if( !edit_view )  { ;
-__p += '\n                ' +
-__e( description ) +
-'\n            ';
- } else { ;
-__p += '\n                <textarea class="event-description-input"></textarea>\n            ';
- } ;
-__p += '\n        </div>\n    </div>\n\n    <!--<div class="row small-margin-top">-->\n        <!--<div class="facebook_share col-md-6">-->\n            <!--Share on Facebook-->\n        <!--</div>-->\n        <!--<div class="col-md-6">-->\n            <!--<input type="checkbox"-->\n               <!--data-toggle="toggle"-->\n               <!--id="bt_toggle"-->\n               <!--class="share_to_facebook"-->\n               <!--data-style="android"-->\n               <!--data-on=" " data-off=" "-->\n               <!--data-onstyle="info"-->\n               <!--data-onstyle="success" data-offstyle="danger" />-->\n        <!--</div>-->\n    <!--</div>-->\n    <!---->\n    <div class="row medium-margin-top">\n        ';
-  if( !edit_view )  { ;
-__p += '\n            <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success edit-button">Edit</button></div>\n        ';
- } else { ;
-__p += '\n            <div class="col-no-padding col-md-12"><button type="button" class="btn form-control btn-success save-button">Save</button></div>\n        ';
- } ;
-__p += '\n\n    </div>\n</div>';
+__p += '\n </div>';
 
 }
 return __p
@@ -488,7 +474,7 @@ __p += '\n                    <label class="small-text">\n                    No
  } ;
 __p += '\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <input type="text" class="form-control event-name-input valid-before-submit" placeholder="Event" autofocus data-validation="required" value="' +
 __e(title) +
-'" >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <h4>Details</h4>\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <input type="text" class="form-control event-where-input" placeholder="Location...."  >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12  col-md-3 col-md-offset-2">\n                    <div class="date-group" id="start-date-group">\n                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
+'" >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                    <h4>Details</h4>\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12 col-md-8 col-md-offset-2">\n                  <input type="text" class="form-control event-location-input" placeholder="Location...."  >\n                </div>\n            </div>\n\n            <div class="zero-margin">\n                <div class="col-xs-12  col-md-3 col-md-offset-2">\n                    <div class="date-group" id="start-date-group">\n                        <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
 __e(start_date ) +
 '">\n                        <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
 __e(start_time ) +

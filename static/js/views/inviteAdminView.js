@@ -44,6 +44,7 @@ InviteAdminView = SimpleView.extend({
         var invite_admin_attendees = new InviteAdminAttendeesView();
         var invite_header = new InviteHeaderView({is_admin: true});
         var invite_details = new InviteDetailsView();
+        var invite_comments = new InviteCommentsView();
 
         invite_admin_attendees.render({
             invite_id: this.unique_id,
@@ -51,6 +52,11 @@ InviteAdminView = SimpleView.extend({
         });
         invite_header.render(this.model);
         invite_details.render(this.model);
+        invite_comments.render({
+            invite_id: this.unique_id,
+            current_attendee: this.current_attendee,
+            comments: new CommentList(invite.comments)
+        });
 
         this.plugins();
     },

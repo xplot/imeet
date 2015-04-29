@@ -7,12 +7,12 @@ InviteDetailsView = SimpleView.extend({
         '.event-description': 'description',
         '.event-description-input': 'description',
         '.event-where': 'where',
-        '.event-where-input': 'where',
+        '.event-location-input': 'where',
 
         '.event-start-date': 'start_date',
         '.event-start-time': 'start_time',
         '.event-end-date': 'end_date',
-        '.event-end-time': 'end_time',
+        '.event-end-time': 'end_time'
     },
     initialize: function(options){
         this.options = options || {};
@@ -20,17 +20,24 @@ InviteDetailsView = SimpleView.extend({
     },
 
     events: {
-        'click .save-button': 'save',
-        'click .edit-button': 'edit'
+        'click .invite-date': 'edit_start_date',
+        'click .invite-end-date': 'edit_end_date',
+        'click .location-title': 'edit_location',
+        'click .edit-button': 'edit',
+        'blur .event-location-input': 'save'
     },
 
-    render: function(invite_model, edit_view){
+    render: function(invite_model, edit_details){
+        if(edit_details == null)
+            edit_details = {};
         this.model = invite_model;
         var invite_json = this.model.toJSON();
-        invite_json['edit_view'] = edit_view;
+        invite_json['is_editing_start_date'] = edit_details.is_editing_start_date;
+        invite_json['is_editing_end_date'] = edit_details.is_editing_end_date;
+        invite_json['is_editing_location'] = edit_details.is_editing_location;
         this.$el.html(this.template(invite_json));
 
-        if(edit_view){
+        if(edit_details.is_editing_start_date || edit_details.is_editing_end_date){
             this.edit_plugins();
             this.stickit();
         }
@@ -40,8 +47,18 @@ InviteDetailsView = SimpleView.extend({
 
     },
 
-    edit: function(){
-        this.render(this.model, true);
+    edit_start_date: function(){
+        this.render(this.model, {is_editing_start_date: true});
+        this.edit_plugins();
+    },
+
+    edit_end_date: function(){
+        this.render(this.model, {is_editing_end_date: true});
+        this.edit_plugins();
+    },
+
+    edit_location: function(){
+        this.render(this.model, {is_editing_location: true});
         this.edit_plugins();
     },
 
@@ -50,7 +67,9 @@ InviteDetailsView = SimpleView.extend({
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
-        //Finally submitt to server
+
+        //Finally submit to server
+        //todo, we should separate this into different calls based on the field changed. To reflect intention.
         this.model.submit(this.submitSuccess, this);
     },
 
@@ -80,7 +99,7 @@ InviteDetailsView = SimpleView.extend({
 
         if(typeof google === 'undefined')
             return;
-        that.$where = this.$el.find('.event-where-input');
+        that.$where = this.$el.find('.event-location-input');
 
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {HTMLInputElement} */(that.$where[0]),

@@ -1,10 +1,32 @@
-<div class="container">
+<div class="invite-view">
     <div class="row">
         <div id="invite-header"></div>
     </div>
     <div class="row">
-        <div class="col-md-6" id="invite-admin-attendees"></div>
-        <div class="col-md-6" id="invite-details"></div>
+        <div id="invite-details" class="invite-subheader-banner"></div>
+    </div>
+    <div class="row">
+        <div class="row invite-body">
+        <div class="col-md-2"/>
+        <div class="col-md-4 attendees">
+            <div id="invite-admin-attendees">
+                <!--using invite_attendees.html subview-->
+            </div>
+        </div>
+
+        <div class="col-md-4 hangout">
+            <div class="row small-margin-top desktop desktop-description">
+                <div class="col-md-12">
+                    <h4>Description</h4>
+                    <div class="invite-description"/>
+                </div>
+            </div>
+
+            <div id="invite-comments"></div>
+
+        </div>
+        <div class="col-md-2"/>
+    </div>
     </div>
 </div>
 

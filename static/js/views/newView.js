@@ -15,7 +15,7 @@ NewView = SimpleView.extend({
         '.event-description': 'description',
         '.event-description-input': 'description',
         '.event-where': 'where',
-        '.event-where-input': 'where',
+        '.event-location-input': 'where',
 
         '.event-start-date': 'start_date',
         '.event-start-time': 'start_time',
@@ -106,7 +106,7 @@ NewView = SimpleView.extend({
         var that = this;
         if(typeof google === 'undefined')
             return;
-        this.$where = this.$el.find('.event-where-input');
+        this.$where = this.$el.find('.event-location-input');
 
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {HTMLInputElement} */(that.$where[0]),
