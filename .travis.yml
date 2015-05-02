@@ -11,6 +11,4 @@ before_script:
 # command to run tests, e.g. python setup.py test
 script:  
 - python test.py
-
-after_success::
 - python appcfg.py --oauth2_refresh_token=$GAE_OAUTH update .
