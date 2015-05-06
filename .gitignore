@@ -2,3 +2,4 @@
 tools/node_modules
 tools/tmp
 npm-debug.log
+config/settings.py
