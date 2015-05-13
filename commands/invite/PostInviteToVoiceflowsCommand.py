@@ -24,7 +24,7 @@ class PostInviteToVoiceflowsCommand(object):
         EventQueue.push_event(
             endpoint=config.get('api_url'),
             headers=get_voiceflows_headers(),
-            payload=invite_query.query(),
+            payload=invite_query_dict,
             group_id=group_id,
             priority=0
         )
