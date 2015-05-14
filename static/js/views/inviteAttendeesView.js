@@ -49,6 +49,10 @@ InviteAttendeesView = Backbone.View.extend({
             else if(status == 'no'){
                 that.negated.add(item);
             }
+            else if(status == 'organizer'){
+                item.set('organizer', true);
+                that.confirmed.add(item);
+            }
             else{
                 that.no_response.add(item);
             }

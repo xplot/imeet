@@ -190,7 +190,7 @@ this["JST"]["invite.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row invite-subheader-banner">\n        <div class="col-md-2"></div>\n\n        <div class=\'col-md-2 col-xs-12 mobile-padding\'>\n            <div class="title">Event Start Time</div>\n            <div class="details invite-date"></div>\n        </div>\n        <div class=\'col-md-2  col-xs-12 mobile-padding\'>\n            <div class="title">Event End Time</div>\n            <div class="details invite-end-date"></div>\n        </div>\n         <div class=\'col-md-4 col-xs-12 mobile-padding invite-location-container\'>\n             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n             <div class="title location-title">Location</div>\n            <div id="invite-location" class="details"></div>\n         </div>\n    </div>\n\n    <div class="row mobile tablet mobile-description">\n        <div class="col-md-12">\n            <h4>Message from the host</h4>\n            <div class="invite-description"/>\n        </div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row invite-subheader-banner">\n        <div class="col-md-2"></div>\n\n        <div class=\'col-md-2 col-xs-12 mobile-padding\'>\n            <div class="title">Event Start Time</div>\n            <div class="details invite-date"></div>\n        </div>\n        <div class=\'col-md-2  col-xs-12 mobile-padding\'>\n            <div class="title">Event End Time</div>\n            <div class="details invite-end-date"></div>\n        </div>\n         <div class=\'col-md-4 col-xs-12 mobile-padding invite-location-container\'>\n             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="details"></div>\n         </div>\n    </div>\n\n    <div class="row mobile tablet mobile-description">\n        <div class="col-md-12">\n            <h4>Message from the host</h4>\n            <div class="invite-description"/>\n        </div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
 
 }
 return __p
@@ -211,27 +211,41 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="invite-attendees-box">\n<div class="row text-center">\n    <div class="col-md-12 text-left">\n        <button type=\'button\' class=\'notify-all btn btn-success pull-right\'>Notify All</button>\n    </div>\n</div>\n<div class="row text-center">\n    <div class="col-md-12 text-left"><h4>Invite People</h4></div>\n</div>\n<div class="row">\n    <div class="contact-input-container col-md-12">\n        <input type="text" class="contact-input form-control"\n        ';
-  if( features.indexOf('voice') != -1 )  { ;
-__p += '\n        data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n        ';
- } else { ;
-__p += '\n        data-validation=\'required,email\' placeholder=\'Email Address\'\n        ';
+__p += '\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
+ _.each( confirmed, function( item ){ ;
+__p += '\n                <tr>\n                    <td>\n                        <span class="details">\n                            ';
+ if(item.status == 'organizer') {;
+__p += '\n                                <i>Host</i>\n                            ';
  } ;
-__p += '>\n        <button type="button" class="btn new-contact-button form-control">+</button>\n    </div>\n</div>\n<div class="row contact-table-container">\n    <div class="contact-table">\n        ';
- _.each( attendees, function( item ){ ;
-__p += '\n            <div class="col-md-12 contact-item-details" id=\'' +
-__e( item.unique_id ) +
-'\'>\n                <span class="details"><b>' +
+__p += '\n                            <b>' +
 __e(item.name ) +
 '</b> ' +
 __e(item.email ) +
 ' ' +
 __e(item.phone ) +
-'</span>\n                <button type=\'button\' class=\'btn btn-danger remove-contact pull-right\' data-rowid=\'' +
-__e(item.unique_id ) +
-'\'>-</button>\n            </div>\n        ';
+'\n                        </span>\n                    </td>\n                </tr>\n            </tbody>\n        ';
  }); ;
-__p += '\n\n    </div>\n</div>\n</div>';
+__p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no">Who is not coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
+ _.each( negated, function( item ){ ;
+__p += '\n                <tr><td><span class="details"><b>' +
+__e(item.name ) +
+'</b> ' +
+__e(item.email ) +
+' ' +
+__e(item.phone ) +
+'</span></td></tr>\n            </tbody>\n        ';
+ }); ;
+__p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">Who is invited?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
+ _.each( no_response, function( item ){ ;
+__p += '\n                <tr><td><span class="details"><b>' +
+__e(item.name ) +
+'</b> ' +
+__e(item.email ) +
+' ' +
+__e(item.phone ) +
+'</span></td></tr>\n            </tbody>\n        ';
+ }); ;
+__p += '\n        </table>\n      </div>\n   </div>\n\n\n</div>\n\n';
 
 }
 return __p
@@ -243,7 +257,7 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="row rsvp small-margin-top">\n  <div class="panel panel-default">\n      ';
- if(attendee != null && attendee.status != 'deleted') {;
+ if(attendee != null && attendee.status != 'deleted' && attendee.status != 'organizer') {;
 __p += '\n          <div class="panel-heading">\n              ';
  if(attendee.status == 'no_response') {;
 __p += '\n                    Are you coming?\n              ';
@@ -258,19 +272,25 @@ __e( attendee.status ) +
 __e( attendee.status ) +
 '">NO</button>\n            </div>\n          </div>\n      ';
 } else if(attendee != null && attendee.status == 'deleted') {;
-__p += '\n        <div class="panel-heading"></div>\n          <div class="panel-body">\n            <b>The organizer removed you from this event</b>\n        </div>\n\n      ';
+__p += '\n        <div class="panel-heading"></div>\n          <div class="panel-body">\n            <b>The organizer removed you from this event</b>\n        </div>\n      ';
+} else if(attendee != null && attendee.status == 'organizer') {;
+__p += '\n        <!-- Potentially also add people here -->\n      ';
 } else{;
 __p += '\n\n      ';
 };
 __p += '\n   </div>\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
  _.each( confirmed, function( item ){ ;
-__p += '\n                <tr><td><span class="details"><b>' +
+__p += '\n                <tr>\n                    <td>\n                        <span class="details">\n                            ';
+ if(item.status == 'organizer') {;
+__p += '\n                                <i>Host</i>\n                            ';
+ } ;
+__p += '\n                            <b>' +
 __e(item.name ) +
 '</b> ' +
 __e(item.email ) +
 ' ' +
 __e(item.phone ) +
-'</span></td></tr>\n            </tbody>\n        ';
+'\n                        </span>\n                    </td>\n                </tr>\n            </tbody>\n        ';
  }); ;
 __p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no">Who is not coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
  _.each( negated, function( item ){ ;
@@ -343,43 +363,55 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="col-md-2"></div>\n\n<div class=\'col-md-2 col-xs-12 mobile-padding\'>\n    <div class="title">Event Start Time</div>\n    ';
-  if( !is_editing_start_date )  { ;
-__p += '\n        <div class="details invite-date">' +
+__p += '<div id="invite-details-container"\n    ';
+  if( is_edit )  { ;
+__p += '\n        class="edit"\n     ';
+ } else { ;
+__p += '\n        class=""\n     ';
+ } ;
+__p += '\n>\n<div class="row">\n    <div class=\'col-md-12 col-xs-12 edit_button_container\'>\n    ';
+  if( !is_edit )  { ;
+__p += '\n        <button class="btn btn-success edit_invite">Edit iMeet</button>\n     ';
+ } else { ;
+__p += '\n        <button class="btn btn-success save_invite">Save</button>\n     ';
+ } ;
+__p += '\n</div>\n\n</div>\n\n<div class="row">\n    <div class="col-md-2"></div>\n\n    <div class=\'col-md-2 col-xs-12 mobile-padding\'>\n        <div class="title">Event Start Time</div>\n        ';
+  if( !is_edit )  { ;
+__p += '\n            <div class="details invite-date">' +
 __e( start_date ) +
 ' ' +
 __e( start_time ) +
-'</div>\n    ';
+'</div>\n        ';
  } else { ;
-__p += '\n        <div class="date-group" id="start-date-group">\n            <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
+__p += '\n            <div class="date-group" id="start-date-group">\n                <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
 __e(start_date ) +
-'">\n            <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
+'">\n                <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
 __e(start_time ) +
-'">\n        </div>\n    ';
+'">\n            </div>\n        ';
  } ;
-__p += '\n</div>\n<div class=\'col-md-2  col-xs-12 mobile-padding\'>\n    <div class="title">Event End Time</div>\n    ';
-  if( !is_editing_end_date )  { ;
-__p += '\n        <div class="details invite-end-date">' +
+__p += '\n    </div>\n\n    <div class=\'col-md-2  col-xs-12 mobile-padding\'>\n        <div class="title">Event End Time</div>\n        ';
+  if( !is_edit )  { ;
+__p += '\n            <div class="details invite-end-date">' +
 __e( end_date ) +
 ' ' +
 __e( end_time ) +
-'</div>\n    ';
+'</div>\n        ';
  } else { ;
-__p += '\n        <div class="date-group" id="end-date-group">\n            <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="' +
+__p += '\n            <div class="date-group" id="end-date-group">\n                <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="' +
 __e(end_date ) +
-'">\n            <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="' +
+'">\n                <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="' +
 __e(end_time ) +
-'">\n        </div>\n    ';
+'">\n            </div>\n        ';
  } ;
-__p += '\n</div>\n <div class=\'col-md-4 col-xs-12 mobile-padding invite-location-container\'>\n     <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n     ';
-  if( !is_editing_location )  { ;
-__p += '\n        <div class="title location-title">\n            ' +
+__p += '\n    </div>\n\n     <div class=\'col-md-4 col-xs-12 mobile-padding invite-location-container\'>\n         ';
+  if( !is_edit )  { ;
+__p += '\n            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="title">\n                ' +
 __e( where ) +
-'\n        </div>\n     ';
+'\n            </div>\n         ';
  } else { ;
-__p += '\n        <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\n     ';
+__p += '\n            <div class="title">Location</div>\n            <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\n         ';
  } ;
-__p += '\n </div>';
+__p += '\n     </div>\n</div>\n\n</div>\n\n';
 
 }
 return __p

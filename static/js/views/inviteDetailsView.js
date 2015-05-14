@@ -14,6 +14,8 @@ InviteDetailsView = SimpleView.extend({
         '.event-end-date': 'end_date',
         '.event-end-time': 'end_time'
     },
+
+
     initialize: function(options){
         this.options = options || {};
         this.inviteId = this.options.id;
@@ -23,21 +25,20 @@ InviteDetailsView = SimpleView.extend({
         'click .invite-date': 'edit_start_date',
         'click .invite-end-date': 'edit_end_date',
         'click .location-title': 'edit_location',
-        'click .edit-button': 'edit',
-        'blur .event-location-input': 'save'
+
+        'click .edit_invite': 'editInvite',
+        'click .save_invite': 'saveInvite'
     },
 
-    render: function(invite_model, edit_details){
-        if(edit_details == null)
-            edit_details = {};
+    render: function(invite_model, edit_view){
+
         this.model = invite_model;
         var invite_json = this.model.toJSON();
-        invite_json['is_editing_start_date'] = edit_details.is_editing_start_date;
-        invite_json['is_editing_end_date'] = edit_details.is_editing_end_date;
-        invite_json['is_editing_location'] = edit_details.is_editing_location;
+        invite_json['is_edit'] = edit_view;
+
         this.$el.html(this.template(invite_json));
 
-        if(edit_details.is_editing_start_date || edit_details.is_editing_end_date){
+        if(edit_view){
             this.edit_plugins();
             this.stickit();
         }
@@ -47,34 +48,21 @@ InviteDetailsView = SimpleView.extend({
 
     },
 
-    edit_start_date: function(){
-        this.render(this.model, {is_editing_start_date: true});
-        this.edit_plugins();
+    editInvite: function(){
+      this.render(this.model, true);
     },
 
-    edit_end_date: function(){
-        this.render(this.model, {is_editing_end_date: true});
-        this.edit_plugins();
-    },
-
-    edit_location: function(){
-        this.render(this.model, {is_editing_location: true});
-        this.edit_plugins();
-    },
-
-    save: function(){
+    saveInvite: function(){
         if(!validator.validateItems('.valid-before-submit')){
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
 
-        //Finally submit to server
-        //todo, we should separate this into different calls based on the field changed. To reflect intention.
-        this.model.submit(this.submitSuccess, this);
+        this.model.submit($.proxy(this.submitSuccess, this));
     },
 
-    submitSuccess: function(view,  result){
-        view.render(view.model, false);
+    submitSuccess: function(result){
+        this.render(this.model, false);
     },
 
     read_plugins: function(){

@@ -122,10 +122,10 @@ function init_app() {
         },
         view_as_organizer: function (id) {
             var inviteX = (typeof(invite) != "undefined")?invite: null;
-            admin_view.render(id, inviteX);
+            var invite_attendeex = (typeof(invite_attendee) != "undefined")?invite_attendee: null;
+            admin_view.render(id, inviteX, invite_attendeex);
         },
         view_as_attendee: function(id, invite_attendee_id){
-
             var inviteX = (typeof(invite) != "undefined")?invite: null;
             var invite_attendeex = (typeof(invite_attendee) != "undefined")?invite_attendee: null;
             invite_view.render(id, inviteX, invite_attendeex);

@@ -50,6 +50,11 @@ class IndexHandler(BaseHandler):
             invite_attendee = query.InviteAttendeeReportQuery(
                 invite_attendee_id
             ).query()
+        elif self.user:
+            invite_attendee = query.InviteAttendeeReportQuery(
+                invite=Invite.get_by_unique_id(invite_id),
+                invite_attendee_email=self.email
+            ).query()
 
         return self.render_template(
             'invite.html',
@@ -64,13 +69,15 @@ class IndexHandler(BaseHandler):
 
         invite_query = query.CompleteInviteQuery(invite_id)
 
-        # if invite_model.get_user_role_by_id(self.user_id) != InviteUserRole.ORGANIZER:
-        #     return self.redirect('/')
+        organizer_attendee = query.InviteOrganizerQuery(
+            invite_unique_id=invite_id
+        ).query()
 
         return self.render_template(
             'invite.html',
             edit='True',
-            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder)
+            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
+            invite_attendee=json.dumps(organizer_attendee, cls=DateTimeEncoder),
         )
 
     def blank(self):

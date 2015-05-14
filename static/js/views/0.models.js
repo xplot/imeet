@@ -302,7 +302,7 @@ InviteModel = Backbone.Model.extend({
         });
     },
 
-    submit: function(callback, view, enableNotifications){
+    submit: function(callback, enableNotifications){
         var that = this;
 
         var d = new Date();
@@ -327,7 +327,7 @@ InviteModel = Backbone.Model.extend({
                         alertType:'success',
                         message: 'Event saved successfully!'
                     }], 3000);
-                callback(view, data)
+                callback(data)
             },
             error: function(data) {
                 alert_notification([{

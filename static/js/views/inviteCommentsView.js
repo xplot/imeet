@@ -16,7 +16,7 @@ InviteCommentsView = Backbone.View.extend({
     },
 
     render: function(data){
-        console.log(data.invite_id);
+
         this.invite_id = data.invite_id;
         this.current_attendee = data.current_attendee;
         this.model = data.comments;

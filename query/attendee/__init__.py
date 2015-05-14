@@ -1,3 +1,4 @@
 from .InviteAttendeesQuery import InviteAttendeesQuery
 from .InviteAttendeeReportQuery import InviteAttendeeReportQuery
 from .NotifyAttendeeQuery import NotifyAttendeeQuery
+from .InviteOrganizerQuery import InviteOrganizerQuery

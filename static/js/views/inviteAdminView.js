@@ -2,6 +2,7 @@ InviteAdminView = SimpleView.extend({
     template: JST['invite_admin.html'],
     author: "Organizer",
     contacts: null,
+    current_attendee: null,
 
     initialize: function(options){
         this.options = options || {};
@@ -22,7 +23,7 @@ InviteAdminView = SimpleView.extend({
         $('#invite-body').show();
     },
 
-    render: function(unique_id, invite){
+    render: function(unique_id, invite, invite_attendee){
         this.hidePanels();
         this.unique_id = unique_id;
 
@@ -34,6 +35,9 @@ InviteAdminView = SimpleView.extend({
             inviteModel.fetch($.proxy(this.render, this));
             return;
         }
+
+        if(invite_attendee != null)
+            this.current_attendee = new Contact(invite_attendee);
 
         this.validateInviteIsCurrent(invite.start);
 
@@ -64,6 +68,7 @@ InviteAdminView = SimpleView.extend({
     notifyAll: function(){
         this.model.notifyAll($.proxy(this.notifyAllCallback, this));
     },
+
     notifyAllCallback:function(result){
         alert_notification([{
             alertType:'success',
