@@ -3,12 +3,14 @@ import fileinput
 import shutil
 
 
+PREFIX = 'imeet_'
+
 def environment_dict():
     imeet_dict = {}
     for variable in os.environ.keys():
         variablel = variable.lower()
-        if "imeet." in variablel:
-            imeet_dict[variablel.replace("imeet.", "")] = os.environ[variablel]
+        if PREFIX in variablel:
+            imeet_dict[variablel.replace(PREFIX, "")] = os.environ[variablel]
     return imeet_dict
 
 
