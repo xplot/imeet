@@ -3,10 +3,10 @@ from config import config
 from managers.utils import copy_over, guid
 from managers.template import TemplateModel
 from managers.event import EventQueue
-from models import Invite, Image
+from models import Invite, Image, AttendeeStatus
 from commands.invite.utils import index_invite
 from commands.invite.PostInviteToVoiceflowsCommand import PostInviteToVoiceflowsCommand
-
+from commands.attendee.AddInviteAttendeeCommand import AddInviteAttendeeCommand
 
 class CreateInviteCommand(object):
 
@@ -21,7 +21,8 @@ class CreateInviteCommand(object):
                  email_template=None,
                  email_response_template=None,
                  sms_template=None,
-                 user=None
+                 user=None,
+                 user_object=None,
     ):
         self.title = title
         self.start = start
@@ -33,7 +34,8 @@ class CreateInviteCommand(object):
         self.email_template = email_template
         self.email_response_template = email_response_template
         self.sms_template = sms_template
-        self.user = user
+        self.user = user,
+        self.user_object = user_object
 
     @classmethod
     def read_from_dict(cls, data_dict, user=None):
@@ -53,7 +55,7 @@ class CreateInviteCommand(object):
             'title': 'Candle',
             'sharing_options':{
                 'facebook':True,
-            }
+            },
         }
         """
         command = CreateInviteCommand(
@@ -71,7 +73,6 @@ class CreateInviteCommand(object):
         command.email_template = email_template_model.get_email_template_url()
         command.email_response_template = email_template_model.get_email_response_url()
 
-        #12/09/2014 12:00 AM
         command.start = datetime.datetime.strptime(data_dict['start'], "%m/%d/%Y %I:%M %p") + datetime.timedelta(minutes=command.utc_offset)
 
         if command.start < datetime.datetime.now():
@@ -83,19 +84,43 @@ class CreateInviteCommand(object):
                 raise Exception("End date cannot be lower than Start Date")
 
         if user:
+            command.user_object = user
             command.user = user.key
 
         return command
 
     def execute(self):
+        """
+            1 - Will create the invite in database
+            2 - Will insert the sender as attendee1
+            3 - Will post the invite to Voiceflows
+        """
+
         invite = Invite()
         invite.unique_id = guid()
         copy_over(self, invite)
         invite.put()
-
         index_invite(invite)
+
+        organizer_attendee = self._get_organizer_attendee(invite)
+        organizer_attendee.execute()
 
         command = PostInviteToVoiceflowsCommand(invite)
         command.execute()
 
         return invite.unique_id
+
+    def _get_organizer_attendee(self, invite):
+        name = 'Organizer'
+        email = ''
+
+        if self.user_object:
+            name = self.user_object.name
+            email = self.user_object.email
+
+        return AddInviteAttendeeCommand(
+            invite=invite,
+            name=name,
+            email=email,
+            status=AttendeeStatus.ORGANIZER
+        )

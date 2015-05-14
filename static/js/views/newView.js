@@ -67,10 +67,11 @@ NewView = SimpleView.extend({
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
         }
-        this.model.submit(this.inviteSubmitted, this, true);
+
+        this.model.submit($.proxy(this.inviteSubmitted, this), true);
     },
 
-    inviteSubmitted: function(view, result){
+    inviteSubmitted: function(result){
         Backbone.history.navigate('invite/' + result + '/edit', true);
     },
 

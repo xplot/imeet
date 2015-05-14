@@ -1,34 +1,60 @@
-<div class="col-md-2"></div>
-
-<div class='col-md-2 col-xs-12 mobile-padding'>
-    <div class="title">Event Start Time</div>
-    <%  if( !is_editing_start_date )  { %>
-        <div class="details invite-date"><%- start_date %> <%- start_time %></div>
-    <% } else { %>
-        <div class="date-group" id="start-date-group">
-            <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="<%-start_date %>">
-            <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="<%-start_time %>">
-        </div>
-    <% } %>
-</div>
-<div class='col-md-2  col-xs-12 mobile-padding'>
-    <div class="title">Event End Time</div>
-    <%  if( !is_editing_end_date )  { %>
-        <div class="details invite-end-date"><%- end_date %> <%- end_time %></div>
-    <% } else { %>
-        <div class="date-group" id="end-date-group">
-            <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="<%-end_date %>">
-            <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="<%-end_time %>">
-        </div>
-    <% } %>
-</div>
- <div class='col-md-4 col-xs-12 mobile-padding invite-location-container'>
-     <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
-     <%  if( !is_editing_location )  { %>
-        <div class="title location-title">
-            <%- where %>
-        </div>
+<div id="invite-details-container"
+    <%  if( is_edit )  { %>
+        class="edit"
      <% } else { %>
-        <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>
+        class=""
      <% } %>
- </div>
+>
+<div class="row">
+    <div class='col-md-12 col-xs-12 edit_button_container'>
+    <%  if( !is_edit )  { %>
+        <button class="btn btn-success edit_invite">Edit iMeet</button>
+     <% } else { %>
+        <button class="btn btn-success save_invite">Save</button>
+     <% } %>
+</div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+
+    <div class='col-md-2 col-xs-12 mobile-padding'>
+        <div class="title">Event Start Time</div>
+        <%  if( !is_edit )  { %>
+            <div class="details invite-date"><%- start_date %> <%- start_time %></div>
+        <% } else { %>
+            <div class="date-group" id="start-date-group">
+                <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="<%-start_date %>">
+                <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="<%-start_time %>">
+            </div>
+        <% } %>
+    </div>
+
+    <div class='col-md-2  col-xs-12 mobile-padding'>
+        <div class="title">Event End Time</div>
+        <%  if( !is_edit )  { %>
+            <div class="details invite-end-date"><%- end_date %> <%- end_time %></div>
+        <% } else { %>
+            <div class="date-group" id="end-date-group">
+                <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="<%-end_date %>">
+                <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="<%-end_time %>">
+            </div>
+        <% } %>
+    </div>
+
+     <div class='col-md-4 col-xs-12 mobile-padding invite-location-container'>
+         <%  if( !is_edit )  { %>
+            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
+            <div id="invite-location" class="title">
+                <%- where %>
+            </div>
+         <% } else { %>
+            <div class="title">Location</div>
+            <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>
+         <% } %>
+     </div>
+</div>
+
+</div>
+

@@ -1,6 +1,6 @@
 <div class="row rsvp small-margin-top">
   <div class="panel panel-default">
-      <% if(attendee != null && attendee.status != 'deleted') {%>
+      <% if(attendee != null && attendee.status != 'deleted' && attendee.status != 'organizer') {%>
           <div class="panel-heading">
               <% if(attendee.status == 'no_response') {%>
                     Are you coming?
@@ -24,7 +24,8 @@
           <div class="panel-body">
             <b>The organizer removed you from this event</b>
         </div>
-
+      <%} else if(attendee != null && attendee.status == 'organizer') {%>
+        <!-- Potentially also add people here -->
       <%} else{%>
 
       <%}%>
@@ -38,7 +39,16 @@
         <table class="table">
             <tbody>
                 <% _.each( confirmed, function( item ){ %>
-                <tr><td><span class="details"><b><%-item.name %></b> <%-item.email %> <%-item.phone %></span></td></tr>
+                <tr>
+                    <td>
+                        <span class="details">
+                            <% if(item.status == 'organizer') {%>
+                                <i>Host</i>
+                            <% } %>
+                            <b><%-item.name %></b> <%-item.email %> <%-item.phone %>
+                        </span>
+                    </td>
+                </tr>
             </tbody>
         <% }); %>
         </table>

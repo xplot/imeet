@@ -114,19 +114,22 @@ class Invite(BaseModel):
 
 
 class AttendeeStatus(object):
+    ORGANIZER = "organizer"
     YES = "yes"
     NO = "no"
     NO_RESPONSE = "no_response"
     MAYBE = "maybe"
     DELETED = "deleted"
 
+
 class InviteAttendee(BaseModel):
     unique_id = ndb.StringProperty(required=True)
     contact = ndb.KeyProperty(kind=Contact)
     invite = ndb.KeyProperty(kind=Invite)
+    is_organizer = ndb.BooleanProperty(default=False)
     name = ndb.StringProperty(indexed=False)
     phone = ndb.StringProperty(indexed=False)
-    email = ndb.StringProperty(indexed=False)
+    email = ndb.StringProperty(indexed=True)
     attendee_status = ndb.StringProperty(default=AttendeeStatus.NO_RESPONSE)
     last_response_on = ndb.DateTimeProperty(indexed=False, required=False)
 

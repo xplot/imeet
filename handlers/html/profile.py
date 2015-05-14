@@ -200,7 +200,7 @@ class SocialLoginHandler(BaseHandler):
 
         if provider_name == "facebook":
             self.session['linkedin'] = None
-            perms = ['email', 'publish_stream']
+            perms = ['email', 'publish_actions']
             fb_url = facebook.auth_url(self.app.config.get('fb_api_key'), callback_url, perms)
             logging.info(fb_url)
             self.redirect(fb_url)

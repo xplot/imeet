@@ -3,6 +3,9 @@ InviteAdminAttendeesView = Backbone.View.extend({
     el:'#invite-admin-attendees',
     contacts: null,
     last_selected_item: null,
+    confirmed: null,
+    negated: null,
+    no_response: null,
 
     initialize: function(options){
         this.options = options || {};
@@ -21,9 +24,17 @@ InviteAdminAttendeesView = Backbone.View.extend({
     render: function(data){
         this.model = data.attendees;
         this.invite_id = data.invite_id;
+
+        //Separate Attendees in Groups
+        this.separateAttendees();
+
         var json = {
-            attendees: this.model.toJSON()
+            attendees: this.model.toJSON(),
+            no_response: this.no_response.collectionToJSON(),
+            confirmed: this.confirmed.collectionToJSON(),
+            negated: this.negated.collectionToJSON(),
         };
+
         this.$el.html(this.template(json));
 
         this.$table = this.$el.find('.contact-table');
@@ -41,6 +52,30 @@ InviteAdminAttendeesView = Backbone.View.extend({
         });
 
         return this.$el.html();
+    },
+
+    separateAttendees: function(){
+        this.no_response = new ContactList();
+        this.negated = new ContactList();
+        this.confirmed = new ContactList();
+        var that = this;
+
+        this.model.forEach(function(item){
+            var status = item.get('status');
+            if(status == 'yes'){
+                that.confirmed.add(item);
+            }
+            else if(status == 'no'){
+                that.negated.add(item);
+            }
+            else if(status == 'organizer'){
+                item.set('organizer', true);
+                that.confirmed.add(item);
+            }
+            else{
+                that.no_response.add(item);
+            }
+        });
     },
 
     newAttendeeEnter: function(evt) {
