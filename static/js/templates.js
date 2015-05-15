@@ -200,7 +200,7 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n    <div class="row">\n        <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-admin-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Description</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n    </div>\n</div>\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n    <div class="row">\n        <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-new-attendee" class="row">\n            </div>\n            <div id="invite-admin-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Description</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n    </div>\n</div>\n\n';
 
 }
 return __p
@@ -246,6 +246,16 @@ __e(item.phone ) +
 '</span></td></tr>\n            </tbody>\n        ';
  }); ;
 __p += '\n        </table>\n      </div>\n   </div>\n\n\n</div>\n\n';
+
+}
+return __p
+};
+
+this["JST"]["invite_attendee_create.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += 'Hello world';
 
 }
 return __p
