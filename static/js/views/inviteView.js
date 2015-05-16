@@ -36,10 +36,12 @@ InviteView = SimpleView.extend({
         this.$el.html(this.template());
 
         var invite_header = new InviteHeaderView();
+        var invite_details = new InviteDetailsView();
         var invite_attendees = new InviteAttendeesView();
         var invite_comments = new InviteCommentsView();
 
         invite_header.render(inviteModel);
+        invite_details.render(inviteModel);
         invite_attendees.render(
             {
                 invite_id: this.invite_id,
@@ -53,9 +55,6 @@ InviteView = SimpleView.extend({
             comments: new CommentList(invite.comments)
         });
 
-        $('#invite-location').html(invite.where);
-        $('.invite-date').html(invite.start);
-        $('.invite-end-date').html(invite.end);
         $('.invite-description').html(invite.description);
 
         this.plugins();

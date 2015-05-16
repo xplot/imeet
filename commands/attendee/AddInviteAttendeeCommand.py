@@ -10,7 +10,8 @@ class AddInviteAttendeeCommand(object):
          name=None,
          email=None,
          phone=None,
-         status=None
+         status=None,
+         is_organizer=False
     ):
         self.invite = invite
         self.invite_unique_id = invite_unique_id
@@ -19,6 +20,7 @@ class AddInviteAttendeeCommand(object):
         self.email = email
         self.phone = phone
         self.status = status
+        self.is_organizer = is_organizer
 
     @classmethod
     def read_from_dict(cls, invite_unique_id, data_dict):
@@ -36,7 +38,8 @@ class AddInviteAttendeeCommand(object):
             name=self.name,
             email=self.email,
             phone=self.phone,
-            attendee_status=self.status
+            attendee_status=self.status,
+            is_organizer=self.is_organizer
         )
 
         if self.contact_unique_id:

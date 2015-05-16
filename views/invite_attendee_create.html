@@ -1,1 +1,20 @@
-Hello world
+<div class="row rsvp no-padding">
+    <div class="panel panel-default no-border no-margin">
+      <div class="panel-heading no-padding">Invite People</div>
+      <div class="panel-body  micro-margin-top">
+          <div>
+              <div class="col-md-10 col-xs-12 no-padding">
+                  <input type="text" class="contact-input form-control"
+                    <%  if( features.indexOf('voice') != -1 )  { %>
+                    data-validation='required,email|phone' placeholder='Name, Phone Number, Email'
+                    <% } else { %>
+                    data-validation='required,email' placeholder='Email Address'
+                    <% } %>>
+              </div>
+              <div class="col-md-2 col-xs-12 no-padding">
+                  <button type="button" class="btn new-contact-button">+</button>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>

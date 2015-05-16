@@ -10,42 +10,6 @@ __p += '<div class="modal addGroup-modal" tabindex="-1" >\n    <div class="modal
 return __p
 };
 
-this["JST"]["contact-item-invite-create.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<!--<div id=\'' +
-__e( unique_id ) +
-'\'  class=\'contact-row col-md-12\' data-contact=\'' +
-__e( name) +
-';' +
-__e(email) +
-' ' +
-__e(phone ) +
-'\'>-->\n    <!--<div class=\'col-xs-8 col-xs-offset-2 col-md-10 col-md-offset-0\'>-->\n        <!--<b>' +
-__e(name ) +
-'</b> ' +
-__e(email ) +
-' ' +
-__e(phone ) +
-'-->\n    <!--</div>-->\n    <!--<div class=\'col-xs-8 col-xs-offset-2 col-md-2 col-md-offset-0\'>-->\n        <!--<button type=\'button\' class=\'btn btn-danger remove-contact\' data-rowid=\'' +
-__e(unique_id ) +
-'\'>-</button>-->\n    <!--</div>-->\n<!--</div>-->\n\n<div class="col-md-12 contact-item-details" id=\'' +
-__e( unique_id ) +
-'\'>\n    <span class="details"><b>' +
-__e(name ) +
-'</b> ' +
-__e(email ) +
-' ' +
-__e(phone ) +
-'</span>\n    <button type=\'button\' class=\'btn btn-danger remove-contact pull-right\' data-rowid=\'' +
-__e(unique_id ) +
-'\'>-</button>\n</div>\n';
-
-}
-return __p
-};
-
 this["JST"]["contact_item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -190,7 +154,7 @@ this["JST"]["invite.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header">\n            <!--using invite_header.html subview-->\n        </div>\n    </div>\n    <div class="row invite-subheader-banner">\n        <div class="col-md-2"></div>\n\n        <div class=\'col-md-2 col-xs-12 mobile-padding\'>\n            <div class="title">Event Start Time</div>\n            <div class="details invite-date"></div>\n        </div>\n        <div class=\'col-md-2  col-xs-12 mobile-padding\'>\n            <div class="title">Event End Time</div>\n            <div class="details invite-end-date"></div>\n        </div>\n         <div class=\'col-md-4 col-xs-12 mobile-padding invite-location-container\'>\n             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="details"></div>\n         </div>\n    </div>\n\n    <div class="row mobile tablet mobile-description">\n        <div class="col-md-12">\n            <h4>Message from the host</h4>\n            <div class="invite-description"/>\n        </div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n\n    <div class="row invite-body">\n        <div class="small-margin-top"></div>\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n</div>\n\n\n\n';
 
 }
 return __p
@@ -200,52 +164,28 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n    <div class="row">\n        <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-new-attendee" class="row">\n            </div>\n            <div id="invite-admin-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Description</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n    </div>\n</div>\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n    <div class="row">\n        <div class="small-margin-top"></div>\n        <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees no-padding">\n            <div id="invite-new-attendee">\n            </div>\n            <div id="invite-attendees">\n\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n    </div>\n</div>\n\n';
 
 }
 return __p
 };
 
-this["JST"]["invite_admin_attendees.html"] = function(obj) {
+this["JST"]["invite_attendee.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
- _.each( confirmed, function( item ){ ;
-__p += '\n                <tr>\n                    <td>\n                        <span class="details">\n                            ';
- if(item.status == 'organizer') {;
-__p += '\n                                <i>Host</i>\n                            ';
+__p += '<div class="details">\n    ';
+ if(status == 'organizer') {;
+__p += '\n        <b><i>Host</i></b>\n    ';
  } ;
-__p += '\n                            <b>' +
-__e(item.name ) +
+__p += '\n    <b>' +
+__e(name ) +
 '</b> ' +
-__e(item.email ) +
+__e(email ) +
 ' ' +
-__e(item.phone ) +
-'\n                        </span>\n                    </td>\n                </tr>\n            </tbody>\n        ';
- }); ;
-__p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no">Who is not coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
- _.each( negated, function( item ){ ;
-__p += '\n                <tr><td><span class="details"><b>' +
-__e(item.name ) +
-'</b> ' +
-__e(item.email ) +
-' ' +
-__e(item.phone ) +
-'</span></td></tr>\n            </tbody>\n        ';
- }); ;
-__p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">Who is invited?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
- _.each( no_response, function( item ){ ;
-__p += '\n                <tr><td><span class="details"><b>' +
-__e(item.name ) +
-'</b> ' +
-__e(item.email ) +
-' ' +
-__e(item.phone ) +
-'</span></td></tr>\n            </tbody>\n        ';
- }); ;
-__p += '\n        </table>\n      </div>\n   </div>\n\n\n</div>\n\n';
+__e(phone ) +
+'\n</div>';
 
 }
 return __p
@@ -253,9 +193,16 @@ return __p
 
 this["JST"]["invite_attendee_create.html"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += 'Hello world';
+__p += '<div class="row rsvp no-padding">\n    <div class="panel panel-default no-border no-margin">\n      <div class="panel-heading no-padding">Invite People</div>\n      <div class="panel-body  micro-margin-top">\n          <div>\n              <div class="col-md-10 col-xs-12 no-padding">\n                  <input type="text" class="contact-input form-control"\n                    ';
+  if( features.indexOf('voice') != -1 )  { ;
+__p += '\n                    data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n                    ';
+ } else { ;
+__p += '\n                    data-validation=\'required,email\' placeholder=\'Email Address\'\n                    ';
+ } ;
+__p += '>\n              </div>\n              <div class="col-md-2 col-xs-12 no-padding">\n                  <button type="button" class="btn new-contact-button">+</button>\n              </div>\n          </div>\n      </div>\n    </div>\n</div>';
 
 }
 return __p
@@ -266,9 +213,9 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row rsvp small-margin-top">\n  <div class="panel panel-default">\n      ';
+__p += '<div class="row rsvp small-margin-top">\n      ';
  if(attendee != null && attendee.status != 'deleted' && attendee.status != 'organizer') {;
-__p += '\n          <div class="panel-heading">\n              ';
+__p += '\n        <div class="panel panel-default">\n          <div class="panel-heading">\n              ';
  if(attendee.status == 'no_response') {;
 __p += '\n                    Are you coming?\n              ';
 } else if(attendee.status == 'no') { ;
@@ -276,53 +223,41 @@ __p += '\n                    Sad you can\'t attend :(\n              ';
 } else if(attendee.status == 'yes') { ;
 __p += '\n                    Glad you\'re coming :)\n              ';
 } ;
-__p += '\n          </div>\n\n          <div class="panel-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
+__p += '\n          </div>\n\n          <div class="panel-body acknowledge-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
 __e( attendee.status ) +
 '">YES</button>\n            </div>\n            <div class="col-md-6 no-button">\n                <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
 __e( attendee.status ) +
-'">NO</button>\n            </div>\n          </div>\n      ';
+'">NO</button>\n            </div>\n          </div>\n        </div>\n      ';
 } else if(attendee != null && attendee.status == 'deleted') {;
-__p += '\n        <div class="panel-heading"></div>\n          <div class="panel-body">\n            <b>The organizer removed you from this event</b>\n        </div>\n      ';
+__p += '\n        <div class="panel panel-default">\n            <div class="panel-heading"></div>\n              <div class="panel-body">\n                <b>The organizer removed you from this event</b>\n            </div>\n        </div>\n      ';
 } else if(attendee != null && attendee.status == 'organizer') {;
 __p += '\n        <!-- Potentially also add people here -->\n      ';
 } else{;
 __p += '\n\n      ';
 };
-__p += '\n   </div>\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
+__p += '\n\n</div>\n\n<div class="row rsvp">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        ';
  _.each( confirmed, function( item ){ ;
-__p += '\n                <tr>\n                    <td>\n                        <span class="details">\n                            ';
- if(item.status == 'organizer') {;
-__p += '\n                                <i>Host</i>\n                            ';
- } ;
-__p += '\n                            <b>' +
-__e(item.name ) +
-'</b> ' +
-__e(item.email ) +
-' ' +
-__e(item.phone ) +
-'\n                        </span>\n                    </td>\n                </tr>\n            </tbody>\n        ';
+__p += '\n            ' +
+((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
+'\n        ';
  }); ;
-__p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no">Who is not coming?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no">Who is not coming?</div>\n      <div class="panel-body">\n        ';
  _.each( negated, function( item ){ ;
-__p += '\n                <tr><td><span class="details"><b>' +
-__e(item.name ) +
-'</b> ' +
-__e(item.email ) +
-' ' +
-__e(item.phone ) +
-'</span></td></tr>\n            </tbody>\n        ';
+__p += '\n            ' +
+((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
+'\n        ';
  }); ;
-__p += '\n        </table>\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">Who is invited?</div>\n      <div class="panel-body">\n        <table class="table">\n            <tbody>\n                ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">\n          Who is invited?\n\n      </div>\n        ';
+ if(attendee != null && attendee.status == 'organizer') {;
+__p += '\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn pull-right btn btn btn-success\'>Notify All</div>\n            </div>\n\n          ';
+} ;
+__p += '\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;
-__p += '\n                <tr><td><span class="details"><b>' +
-__e(item.name ) +
-'</b> ' +
-__e(item.email ) +
-' ' +
-__e(item.phone ) +
-'</span></td></tr>\n            </tbody>\n        ';
+__p += '\n            ' +
+((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
+'\n        ';
  }); ;
-__p += '\n        </table>\n      </div>\n   </div>\n\n\n</div>\n\n';
+__p += '\n      </div>\n   </div>\n\n\n</div>\n\n';
 
 }
 return __p
@@ -379,13 +314,17 @@ __p += '\n        class="edit"\n     ';
  } else { ;
 __p += '\n        class=""\n     ';
  } ;
-__p += '\n>\n<div class="row">\n    <div class=\'col-md-12 col-xs-12 edit_button_container\'>\n    ';
+__p += '\n>\n';
+  if( is_admin )  { ;
+__p += '\n    <div class="row">\n        <div class=\'col-md-12 col-xs-12 edit_button_container\'>\n        ';
   if( !is_edit )  { ;
-__p += '\n        <button class="btn btn-success edit_invite">Edit iMeet</button>\n     ';
+__p += '\n            <button class="btn btn-success edit_invite">Edit iMeet</button>\n         ';
  } else { ;
-__p += '\n        <button class="btn btn-success save_invite">Save</button>\n     ';
+__p += '\n            <button class="btn btn-success save_invite">Save</button>\n         ';
  } ;
-__p += '\n</div>\n\n</div>\n\n<div class="row">\n    <div class="col-md-2"></div>\n\n    <div class=\'col-md-2 col-xs-12 mobile-padding\'>\n        <div class="title">Event Start Time</div>\n        ';
+__p += '\n    </div>\n';
+ } ;
+__p += '\n\n\n</div>\n\n<div class="row">\n    <div class="col-md-2"></div>\n\n    <div class=\'col-md-2 col-xs-12 mobile-padding\'>\n        <div class="title">Event Start Time</div>\n        ';
   if( !is_edit )  { ;
 __p += '\n            <div class="details invite-date">' +
 __e( start_date ) +

@@ -12,12 +12,15 @@ InviteAttendeesView = Backbone.View.extend({
 
     events: {
         'click .invite-attendees-acknowledge-yes': 'yesButtonClick',
-        'click .invite-attendees-acknowledge-no': 'noButtonClick'
+        'click .invite-attendees-acknowledge-no': 'noButtonClick',
+
+        'click .notify-all-btn': 'notifyAll',
     },
 
     render: function(data){
         this.model = data.attendees;
         this.current_attendee = data.current_attendee;
+        this.invite_id = data.invite_id;
 
         this.separateAttendees();
         var json = {
@@ -31,6 +34,9 @@ InviteAttendeesView = Backbone.View.extend({
 
         this.$table = this.$el.find('.contact-table');
         this.$newContact = $('.contact-input');
+
+        this.listenTo(this.model, 'add', this.attendeeCreated);
+        this.listenTo(this.model, 'remove', this.attendeeRemoved);
 
         return this.$el.html();
     },
@@ -57,6 +63,21 @@ InviteAttendeesView = Backbone.View.extend({
                 that.no_response.add(item);
             }
         });
+    },
+
+    attendeeCreated: function(attendeeModel){
+        this.no_response.add(attendeeModel);
+        $('.no-response-table').prepend(
+            JST['invite_attendee.html'](attendeeModel.toJSON())
+        );
+    },
+
+    attendeeRemoved:function(e){
+        var dataId = $(e.currentTarget).data('rowid');
+        var contactModel = this.model.getById(dataId);
+        contactModel.removeFromInvite(this.invite_id);
+
+        this.model.removeBy(dataId);
     },
 
     yesButtonClick: function(event) {
