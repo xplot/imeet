@@ -45,14 +45,18 @@ InviteAdminView = SimpleView.extend({
         var invite_json = this.model.toJSON();
         this.$el.html(this.template(invite_json));
 
-        var invite_admin_attendees = new InviteAdminAttendeesView();
+        var invite_attendees_view = new InviteAttendeesView();
         var invite_header = new InviteHeaderView({is_admin: true});
-        var invite_details = new InviteDetailsView();
+        var invite_details = new InviteDetailsView({is_admin: true});
         var invite_comments = new InviteCommentsView();
+        var invite_attendee_create = new InviteAttendeeCreateView();
 
-        invite_admin_attendees.render({
-            invite_id: this.unique_id,
-            attendees: this.model.get('attendees')
+        var invite_attendees = this.model.get('attendees');
+
+        invite_attendees_view.render({
+            invite_id: this.invite_id,
+            attendees: invite_attendees,
+            current_attendee: this.current_attendee
         });
         invite_header.render(this.model);
         invite_details.render(this.model);
@@ -61,6 +65,13 @@ InviteAdminView = SimpleView.extend({
             current_attendee: this.current_attendee,
             comments: new CommentList(invite.comments)
         });
+
+        invite_attendee_create.render(
+            this.unique_id,
+            invite_attendees
+        );
+
+        $('.invite-description').html(invite.description);
 
         this.plugins();
     },

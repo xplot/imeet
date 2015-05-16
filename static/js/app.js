@@ -34,7 +34,6 @@ function init_app() {
         el: "#view-container",
     });
 
-
     //Search
     search_view = new SearchView({
         el: "#view-container",

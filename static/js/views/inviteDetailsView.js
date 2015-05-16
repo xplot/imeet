@@ -34,6 +34,7 @@ InviteDetailsView = SimpleView.extend({
 
         this.model = invite_model;
         var invite_json = this.model.toJSON();
+        invite_json['is_admin'] = this.options.is_admin;
         invite_json['is_edit'] = edit_view;
 
         this.$el.html(this.template(invite_json));

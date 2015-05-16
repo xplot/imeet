@@ -1,47 +1,27 @@
-InviteAdminAttendeesView = Backbone.View.extend({
-    template: JST['invite_admin_attendees.html'],
-    el:'#invite-admin-attendees',
-    contacts: null,
-    last_selected_item: null,
-    confirmed: null,
-    negated: null,
-    no_response: null,
+InviteAttendeeCreateView = Backbone.View.extend({
+    template: JST['invite_attendee_create.html'],
+    el:'#invite-new-attendee',
 
     initialize: function(options){
         this.options = options || {};
-        this.invite_id = this.options.id;
     },
 
     events: {
-        'click .new-contact' : 'newAttendee',
-        'click .remove-contact': 'removeAttendee',
+        'click .new-contact-button' : 'createNewAttendee',
         'keyup .contact-input': 'newAttendeeEnter',
-        'click .new-contact-button': 'newAttendeeButtonClick',
-        'click .contact-input-container': 'focusOnClick'
-
     },
 
-    render: function(data){
-        this.model = data.attendees;
-        this.invite_id = data.invite_id;
-
-        //Separate Attendees in Groups
-        this.separateAttendees();
+    render: function(invite_id, inviteAttendees){
+        this.model = inviteAttendees;
+        this.invite_id = invite_id;
 
         var json = {
-            attendees: this.model.toJSON(),
-            no_response: this.no_response.collectionToJSON(),
-            confirmed: this.confirmed.collectionToJSON(),
-            negated: this.negated.collectionToJSON(),
+
         };
 
         this.$el.html(this.template(json));
 
-        this.$table = this.$el.find('.contact-table');
         this.$newContact = $('.contact-input');
-
-        this.listenTo(this.model, 'add', this.newAttendee);
-        this.listenTo(this.model, 'remove', this.removeAttendee_DOM);
 
         var that = this;
         fetchGroupDistributionForCurrentUser(function(contacts_and_groups){
@@ -51,31 +31,6 @@ InviteAdminAttendeesView = Backbone.View.extend({
             that.setupContactsTypeahead();
         });
 
-        return this.$el.html();
-    },
-
-    separateAttendees: function(){
-        this.no_response = new ContactList();
-        this.negated = new ContactList();
-        this.confirmed = new ContactList();
-        var that = this;
-
-        this.model.forEach(function(item){
-            var status = item.get('status');
-            if(status == 'yes'){
-                that.confirmed.add(item);
-            }
-            else if(status == 'no'){
-                that.negated.add(item);
-            }
-            else if(status == 'organizer'){
-                item.set('organizer', true);
-                that.confirmed.add(item);
-            }
-            else{
-                that.no_response.add(item);
-            }
-        });
     },
 
     newAttendeeEnter: function(evt) {
@@ -83,13 +38,13 @@ InviteAdminAttendeesView = Backbone.View.extend({
             return;
         }
 
-        this.$newContact.trigger('blur');
-        this.newAttendeeButtonClick();
+        this.createNewAttendee();
     },
 
-    newAttendeeButtonClick: function() {
+    createNewAttendee: function() {
         var contact = null;
         var group = null;
+
         if(this.last_selected_item != null && this.last_selected_item.is_group)
             group = this.last_selected_item;
         else if(this.last_selected_item != null ){
@@ -129,40 +84,13 @@ InviteAdminAttendeesView = Backbone.View.extend({
         this.$newContact.focus();
     },
 
-    addAttendeesFromGroup: function(contactList){
+    addAttendeesFromGroup: function(attendeeList){
         var that = this;
 
-        contactList.forEach(function(item){
+        attendeeList.forEach(function(item){
             that.model.add(item);
         });
     },
-
-    //start-AddContact
-    newAttendee: function(contactModel){
-        if(this.$table == null)
-            this.$table = this.$el.find('.contact-table');
-        this.$table.prepend(
-            JST['contact-item-invite-create.html'](contactModel.toJSON())
-        );
-
-        return false;
-    },
-    //end-AddContact
-
-    //start-RemoveContact
-    removeAttendee:function(e){
-        var dataId = $(e.currentTarget).data('rowid');
-        var contactModel = this.model.getById(dataId);
-        contactModel.removeFromInvite(this.invite_id);
-
-        this.model.removeBy(dataId);
-    },
-    removeAttendee_DOM: function (contact) {
-        if(this.$table == null)
-            this.$table = this.$el.find('.contact-table');
-        this.$table.find('#' + contact.attributes.unique_id).remove();
-    },
-    //end-RemoveContact
 
     setupContactsTypeahead: function(){
         var that = this;
@@ -258,4 +186,5 @@ InviteAdminAttendeesView = Backbone.View.extend({
                 return {phone: addresses[0], email: addresses[1]};
         }
     },
+
 });
