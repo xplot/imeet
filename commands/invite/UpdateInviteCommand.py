@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from managers.utils import copy_over, guid
 from models import Invite, Image
@@ -8,20 +8,31 @@ from commands.exceptions import InviteCannotBeEditedException
 
 
 class UpdateInviteCommand(CreateInviteCommand):
-    def __init__(self):
+    def __init__(self, invite_unique_id):
         super(UpdateInviteCommand, self).__init__()
-        self.unique_id = None
+        self.unique_id = invite_unique_id
 
     @classmethod
     def read_from_dict(cls, unique_id, data_dict):
         """
-            Will rely on the CreateInvite Read
+            Will almost repeat the CreateInviteCommand Read
         """
-        command_source = CreateInviteCommand.read_from_dict(data_dict)
-        command_destiny = UpdateInviteCommand()
-        command_destiny.unique_id = unique_id
-        copy_over(command_source, command_destiny)
-        return command_destiny
+        command = UpdateInviteCommand(unique_id)
+        command.title = data_dict.get('title', None)
+        command.description = data_dict.get('description', None)
+        command.where = data_dict.get('where', None)
+        command.utc_offset = data_dict.get('utc_offset', 0)
+
+        command.start = datetime.strptime(data_dict['start'], "%m/%d/%Y %I:%M %p") + timedelta(minutes=command.utc_offset)
+        if command.start < datetime.now():
+                raise Exception("Start date cannot be in the past")
+
+        if data_dict.get('end', None):
+            command.end = datetime.strptime(data_dict['end'], "%m/%d/%Y %I:%M %p")
+            if command.end < command.start:
+                raise Exception("End date cannot be lower than Start Date")
+
+        return command
 
     def execute(self):
         invite = Invite.get_by_unique_id(self.unique_id)

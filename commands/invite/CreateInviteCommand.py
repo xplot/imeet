@@ -34,7 +34,7 @@ class CreateInviteCommand(object):
         self.email_template = email_template
         self.email_response_template = email_response_template
         self.sms_template = sms_template
-        self.user = user,
+        self.user = user
         self.user_object = user_object
 
     @classmethod

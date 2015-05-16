@@ -59,6 +59,12 @@ InviteDetailsView = SimpleView.extend({
             return;
         }
 
+        if( ($('.event-end-date').val() != '' || $('.event-end-time').val() != '') &&
+                !validator.validateItems('.event-end-date, .event-end-time')) {
+            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+            return;
+        }
+
         this.model.submit($.proxy(this.submitSuccess, this));
     },
 

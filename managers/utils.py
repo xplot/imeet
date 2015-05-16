@@ -15,7 +15,6 @@ def copy_over(object_source, object_destiny):
         if hasattr(object_destiny, x):
             setattr(object_destiny, x, getattr(object_source, x))
 
-
 def non_empty_properties(object_source):
     for cls_property in object_source.__dict__:
         if getattr(object_source, cls_property):

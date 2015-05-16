@@ -348,7 +348,7 @@ __e( end_time ) +
  } else { ;
 __p += '\n            <div class="date-group" id="end-date-group">\n                <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="' +
 __e(end_date ) +
-'">\n                <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation=""  value="' +
+'">\n                <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation="required"  value="' +
 __e(end_time ) +
 '">\n            </div>\n        ';
  } ;
