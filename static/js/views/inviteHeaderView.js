@@ -103,7 +103,7 @@ InviteTitleView = Backbone.View.extend({
 
             var update = function(value){
                 that.model.set('title', value);
-                that.model.submit($.proxy(that.submitSuccess, that));
+                that.model.updateTitle($.proxy(that.submitSuccess, that));
             };
 
             this.$input.on('blur', function(){

@@ -122,5 +122,6 @@ class CreateInviteCommand(object):
             invite=invite,
             name=name,
             email=email,
-            status=AttendeeStatus.ORGANIZER
+            status=AttendeeStatus.ORGANIZER,
+            is_organizer=True
         )
