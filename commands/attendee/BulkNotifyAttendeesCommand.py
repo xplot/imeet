@@ -2,16 +2,24 @@ import datetime
 from config import config
 from managers.utils import guid, get_voiceflows_headers
 from managers.event import EventQueue
-from models import Invite, InviteAttendee, InviteAttendeeNotification, Contact
+from models import Invite, InviteAttendee, InviteAttendeeNotification, Contact, AttendeeStatus
 from google.appengine.ext import ndb
 from query.attendee.NotifyAttendeeQuery import NotifyAttendeeQuery
 
 
 class BulkNotifyAttendeesCommand(object):
-    def __init__(self, invite_unique_id=None, attendees_unique_ids=[], invite=None):
+    def __init__(self,
+                 invite_unique_id=None,
+                 attendees_unique_ids=[],
+                 invite=None,
+                 notify_confirmed=False,
+                 send_copy_to_organizer=False):
+
         self.invite_unique_id = invite_unique_id
         self.attendees_unique_ids = attendees_unique_ids
         self.invite = invite
+        self.notify_confirmed = notify_confirmed
+        self.send_copy_to_organizer = send_copy_to_organizer
 
     def execute(self):
         if not self.invite:
@@ -30,6 +38,10 @@ class BulkNotifyAttendeesCommand(object):
         bulk_notifications = []
 
         for invite_attendee in invite_attendees:
+
+            if self._check_if_skip_attendee(invite_attendee):
+                continue
+
             bulk_notifications += self.create_notification_records(invite_attendee)
 
             body['attendees'].append(NotifyAttendeeQuery(
@@ -82,3 +94,9 @@ class BulkNotifyAttendeesCommand(object):
             records.append(attendee_email_notification)
 
         return records
+
+    def _check_if_skip_attendee(self, invite_attendee):
+        if invite_attendee.attendee_status == AttendeeStatus.ORGANIZER and not self.send_copy_to_organizer:
+                return True
+        if invite_attendee.attendee_status == AttendeeStatus.YES and not self.notify_confirmed:
+            return True

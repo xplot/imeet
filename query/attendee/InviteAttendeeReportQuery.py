@@ -43,7 +43,6 @@ class InviteAttendeeReportQuery(object):
                 ]
             }
         """
-
         if not self.invite_attendee and self.invite_attendee_id:
             self.invite_attendee = InviteAttendee.get_by_unique_id(self.invite_attendee_id)
         elif not self.invite_attendee and self.invite_attendee_email and self.invite:

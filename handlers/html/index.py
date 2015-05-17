@@ -46,9 +46,11 @@ class IndexHandler(BaseHandler):
         invite_query = query.CompleteInviteQuery(invite_id)
 
         invite_attendee = None
+        import logging
+        logging.info(invite_attendee_id)
         if invite_attendee_id:
             invite_attendee = query.InviteAttendeeReportQuery(
-                invite_attendee_id
+                invite_attendee_id=invite_attendee_id
             ).query()
         elif self.user:
             invite_attendee = query.InviteAttendeeReportQuery(
