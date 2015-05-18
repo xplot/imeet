@@ -59,12 +59,7 @@
           Who is invited?
 
       </div>
-        <% if(attendee != null && attendee.status == 'organizer') {%>
-            <div class="notify-all">
-                Want to let people know? <div class='notify-all-btn pull-right btn btn btn-success'>Notify All</div>
-            </div>
 
-          <%} %>
       <div class="panel-body no-response-table">
         <% _.each( no_response, function( item ){ %>
             <%= partial('invite_attendee.html', item) %>

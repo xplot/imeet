@@ -164,7 +164,7 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n    <div class="row">\n        <div class="small-margin-top"></div>\n        <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees no-padding">\n            <div id="invite-new-attendee">\n            </div>\n            <div id="invite-attendees">\n\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n    </div>\n</div>\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n    <div class="row">\n        <div class="small-margin-top"></div>\n        <div class="row invite-body">\n        <div class="col-md-2"/>\n        <div class="col-md-4 attendees no-padding">\n\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn btn btn btn-success\'>Notify All</div>\n            </div>\n\n            <div id="invite-new-attendee">\n            </div>\n\n\n\n            <div id="invite-attendees">\n\n            </div>\n        </div>\n\n        <div class="col-md-4 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-2"/>\n    </div>\n    </div>\n</div>\n\n';
 
 }
 return __p
@@ -247,11 +247,7 @@ __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
 '\n        ';
  }); ;
-__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">\n          Who is invited?\n\n      </div>\n        ';
- if(attendee != null && attendee.status == 'organizer') {;
-__p += '\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn pull-right btn btn btn-success\'>Notify All</div>\n            </div>\n\n          ';
-} ;
-__p += '\n      <div class="panel-body no-response-table">\n        ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">\n          Who is invited?\n\n      </div>\n\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;
 __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +

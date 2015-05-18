@@ -46,8 +46,7 @@ class IndexHandler(BaseHandler):
         invite_query = query.CompleteInviteQuery(invite_id)
 
         invite_attendee = None
-        import logging
-        logging.info(invite_attendee_id)
+
         if invite_attendee_id:
             invite_attendee = query.InviteAttendeeReportQuery(
                 invite_attendee_id=invite_attendee_id
@@ -66,7 +65,7 @@ class IndexHandler(BaseHandler):
 
     def edit_invite_view(self, invite_id=0):
         """Get the full invite, with contacts and responses"""
-        if not id:
+        if not invite_id:
             return self.redirect_to('home')
 
         invite_query = query.CompleteInviteQuery(invite_id)
