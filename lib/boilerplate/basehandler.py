@@ -305,3 +305,6 @@ class BaseHandler(webapp2.RequestHandler):
 
         template = self.jinja2.get_template(filename)
         self.response.write(template.render(**kwargs))
+
+    def handle_exception(self, exception, debug_mode):
+        self.render_template("error_page.html")

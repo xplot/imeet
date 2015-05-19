@@ -66,6 +66,7 @@ module.exports = function (grunt) {
                     'tmp/css/contacts.css': '../static/less/contacts.less',
                     'tmp/css/invite_edit.css': '../static/less/invite_edit.less',
                     'tmp/css/invite.css': '../static/less/invite.less',
+                    'tmp/css/kaboom.css': '../static/less/error.less',
 				}
 			}
 		},
@@ -75,8 +76,8 @@ module.exports = function (grunt) {
 	//
 		uglify: {
 			options: {
-                compress:false,
-                beautify:true,
+                compress:true,
+                beautify:false,
 		        mangle: true
 			},
             header_js: {
@@ -136,6 +137,9 @@ module.exports = function (grunt) {
                     '../static/css/invite.min.css': [
                         '../static/less/external/*.css',
                         'tmp/css/invite.css'
+                    ],
+                    '../static/css/kaboom.min.css': [
+                        'tmp/css/kaboom.css'
                     ],
 				}
 			}
