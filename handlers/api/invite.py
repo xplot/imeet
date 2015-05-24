@@ -16,7 +16,7 @@ from managers.auth import user_context, request_with_subscription
 from query import CompleteInviteQuery, InviteSearchQuery
 from models import Invite
 from boilerplate.models import User
-from commands import CreateInviteCommand, UpdateInviteCommand, UpdateInviteTitleCommand
+from commands import CreateInviteCommand, UpdateInviteCommand, UpdateInviteTitleCommand, UpdateInviteDescriptionCommand
 
 
 class InviteHandler(JsonHandler):
@@ -46,6 +46,17 @@ class InviteHandler(JsonHandler):
         command = UpdateInviteTitleCommand(
             invite_unique_id=invite_id,
             invite_title=title_dict.get('title')
+        )
+        command.execute()
+
+    @user_context
+    def update_description(self, invite_id=None):
+        """Save the invite"""
+        description_dict = self._data()
+
+        command = UpdateInviteDescriptionCommand(
+            invite_unique_id=invite_id,
+            invite_description=description_dict.get('description')
         )
         command.execute()
 

@@ -46,6 +46,7 @@ InviteAdminView = SimpleView.extend({
         this.$el.html(this.template(invite_json));
 
         var invite_attendees_view = new InviteAttendeesView();
+        var invite_description = new InviteDescriptionView({el: "#invite-description"});
         var invite_header = new InviteHeaderView({is_admin: true});
         var invite_details = new InviteDetailsView({is_admin: true});
         var invite_comments = new InviteCommentsView();
@@ -58,6 +59,7 @@ InviteAdminView = SimpleView.extend({
             attendees: invite_attendees,
             current_attendee: this.current_attendee
         });
+        invite_description.render(this.model);
         invite_header.render(this.model);
         invite_details.render(this.model);
         invite_comments.render({

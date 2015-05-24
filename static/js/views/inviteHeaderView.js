@@ -86,7 +86,7 @@ InviteTitleView = Backbone.View.extend({
         this.model = model;
 
         if(!edit_view){
-            var label = '<h1 class="main-h1">' + that.model.get('title') + '</h1>';
+            var label = '<h1 class="editable main-h1">' + that.model.get('title') + '</h1>';
             this.$el.html(label);
 
             if(this.options.is_editable) {

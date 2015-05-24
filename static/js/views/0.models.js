@@ -332,6 +332,36 @@ InviteModel = Backbone.Model.extend({
         });
     },
 
+    updateDescription: function(callback , enableNotifications){
+        var that = this;
+
+        var url = "/api/invite/" +  this.get('unique_id') + "/description";
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                description: this.get('description')
+            }),
+            cache: false,
+            success: function(data) {
+                if(enableNotifications)
+                    alert_notification([{
+                        alertType:'success',
+                        message: 'Event saved successfully!'
+                    }], 3000);
+                callback(data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
     submit: function(callback, enableNotifications){
         var that = this;
 

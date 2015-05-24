@@ -67,6 +67,7 @@ app = webapp2.WSGIApplication([
     #Get Invite Comments and if POST will execute Anonymous User Comment (Only for Public invites)
     Route('/api/invite/<invite_id>/comment', api.InviteCommentHandler),
     Route('/api/invite/<invite_id>/title', api.InviteHandler, handler_method='update_title'),
+    Route('/api/invite/<invite_id>/description', api.InviteHandler, handler_method='update_description'),
 
     # Invite Attendee Comment Comment
     Route('/api/invite/<invite_id>/attendees/<invite_attendee_id>/comment', api.InviteCommentHandler),
