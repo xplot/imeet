@@ -95,7 +95,6 @@
 .fa-angle-up:before {
   content: "r";
 }
-
 .fa-chevron-up:before{
     content: "r";
 }
@@ -123,4 +122,13 @@
 }
 .fa-map-pin-streamline:before {
   content: "z";
+}
+.fa-man-people-streamline-user:before {
+  content: "A";
+}
+.fa-organization:before {
+  content: "B";
+}
+.fa-person:before {
+  content: "C";
 }

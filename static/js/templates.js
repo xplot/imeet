@@ -52,9 +52,9 @@ this["JST"]["contact_item_typeahead.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="details" data-id="' +
+__p += '<div class="item-container" data-id="' +
 __e( unique_id ) +
-'">\n    <i class="fa fa-happy-face fa-2x"></i>\n    <b>' +
+'">\n    <i class="fa fa-person fa-2x"></i>\n    <b>' +
 __e(name ) +
 '</b> ' +
 __e(email ) +
@@ -140,9 +140,9 @@ this["JST"]["group_item_typeahead.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="details" data-id="' +
+__p += '<div class="item-container" data-id="' +
 __e( unique_id ) +
-'">\n    <i class="fa fa-group fa-2x"></i>\n    <b>' +
+'">\n    <i class="fa fa-organization fa-2x"></i>\n    <b>' +
 __e(name ) +
 '</b>\n</div>';
 
@@ -320,7 +320,7 @@ __p += '\n            <button class="btn btn-success save_invite">Save</button>\
  } ;
 __p += '\n    </div>\n';
  } ;
-__p += '\n\n\n</div>\n\n<div class="row">\n    <div class="col-md-2"></div>\n\n    <div class=\'col-md-2 col-xs-12 mobile-padding\'>\n        <div class="title">Event Start Time</div>\n        ';
+__p += '\n\n\n</div>\n\n<div class="row no-margin">\n    <div class="col-md-2"></div>\n\n    <div class=\'col-md-2 col-xs-12\'>\n        <div class="title">Event Start Time</div>\n        ';
   if( !is_edit )  { ;
 __p += '\n            <div class="details invite-date">' +
 __e( start_date ) +
@@ -334,7 +334,7 @@ __e(start_date ) +
 __e(start_time ) +
 '">\n            </div>\n        ';
  } ;
-__p += '\n    </div>\n\n    <div class=\'col-md-2  col-xs-12 mobile-padding\'>\n        <div class="title">Event End Time</div>\n        ';
+__p += '\n    </div>\n\n    <div class=\'col-md-2  col-xs-12 \'>\n        <div class="title">Event End Time</div>\n        ';
   if( !is_edit )  { ;
 __p += '\n            <div class="details invite-end-date">' +
 __e( end_date ) +
@@ -348,7 +348,7 @@ __e(end_date ) +
 __e(end_time ) +
 '">\n            </div>\n        ';
  } ;
-__p += '\n    </div>\n\n     <div class=\'col-md-4 col-xs-12 mobile-padding invite-location-container\'>\n         ';
+__p += '\n    </div>\n\n     <div class=\'col-md-4 col-xs-12 invite-location-container\'>\n         ';
   if( !is_edit )  { ;
 __p += '\n            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="title">\n                ' +
 __e( where ) +
