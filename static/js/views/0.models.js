@@ -186,7 +186,7 @@ Contact = Backbone.Model.extend({
         });
     },
 
-    delete: function(callback){
+    deleteContact: function(callback){
 
         var unique_id = this.get('unique_id');
 

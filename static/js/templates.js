@@ -51,7 +51,7 @@ __e( name ) +
 __e( email ) +
 '\n        </div>\n        <div class="contact-phone" >\n            ' +
 __e( phone ) +
-'\n        </div>\n    </div>\n\n    <a class="update-contact" href="#"><i class="fa-pen fa-1_2x"></i></a>\n\n    <div class="editable contact-actions update-column" >\n        <a class="delete-contact" href="#"><i data-id="' +
+'\n        </div>\n    </div>\n\n    <a class="update-contact" href="#"><i class="fa-pen fa-1_2x"></i></a>\n\n    <div class="editable contact-actions">\n        <a class="delete-contact" href="#"><i data-id="' +
 __e( unique_id ) +
 '" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n    </div>\n</div>';
 

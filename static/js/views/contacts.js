@@ -183,6 +183,10 @@ ContactDetailsView = Backbone.View.extend({
             this.mainContactList.add(this.model);
 
         this.hide();
+
+
+        //TODO
+        //Raise Event to Parent View here
     }
 
 });
@@ -192,6 +196,7 @@ ContactItemView = SimpleView.extend({
     editTemplate: JST["contact_item_edit.html"],
     model: null,
     editMode: false,
+
 
     events: {
        'dragstart .contact-row': 'enterDragMode',
@@ -213,16 +218,20 @@ ContactItemView = SimpleView.extend({
     },
 
     edit: function(evt){
+        evt.preventDefault();
         this.contactCreateView = contactCreateView();
         this.contactCreateView.render(this.model);
+
     },
 
     deleteContact: function(evt){
         evt.preventDefault();
-        this.model.delete($.proxy(this.contactDeleted, this));
+        evt.stopPropagation();
+        this.model.deleteContact($.proxy(this.contactDeleted, this));
     },
 
     contactDeleted: function(unique_id){
-        this.contactList.removeBy(unique_id);
+        //TODO
+        //Raise Event to Parent View here
     }
 });

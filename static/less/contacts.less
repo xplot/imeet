@@ -2,7 +2,12 @@
 @import "navbar";
 body{
 
-  font-weight: 200;
+  height: 100%;
+  font-weight: 400 !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 15px;
+  overflow-x: hidden;
+  width:100%;
 }
 
 #contact-list {
@@ -66,32 +71,58 @@ body{
         width: 50px;
         text-align: left;
         margin-left: 10px;
+
+        .delete-contact{
+          color:@btn-danger;
+        }
+
+        @media (max-width: 1024px) {
+          display: none;
+        }
     }
 
     .contact-picture {
       float: left;
       width: 50px;
+      @media (max-width: 1024px) {
+        width: 20%;
+        .fa {
+          font-size: 500%;
+        }
+      }
     }
 
     .contact-row-container {
-      width: 80%;
+      width: 75%;
       float: left;
       margin: 2px;
+
+      @media (max-width: 1024px) {
+          width: 50%;
+          margin-left: 40px;
+      }
 
       .contact-name, .contact-email, .contact-phone {
         float: left;
         width: 33%;
         text-align: left;
         padding-left: 15px;
+        @media (max-width: 1024px) {
+          width: 100%;
+          padding: 10px;
+        }
       }
     }
   }
 
-  .contact-row:hover {
-    .update-contact{
-      display: inline-block;
+  @media (min-width: 1024px) {
+    .contact-row:hover {
+      .update-contact{
+        display: inline-block;
+      }
     }
   }
+
 }
 
 #new-contact-container{

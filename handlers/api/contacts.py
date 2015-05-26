@@ -59,10 +59,10 @@ class ApiContactHandler(JsonHandler):
 
         return command.execute()
 
-    @user_context
-    def delete_contact(self, unique_id):
-        command = DeleteContactCommand(self.user, unique_id)
-        return command.execute
+    def delete_contact(self, user_id, unique_id):
+        user = User.get_by_id(long(user_id))
+        command = DeleteContactCommand(user, unique_id)
+        return command.execute()
 
     @user_context
     def import_csv(self):
