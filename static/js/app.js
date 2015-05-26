@@ -60,9 +60,7 @@ function init_app() {
         el: "#contact-list"
     });
 
-    contactsNew_view = new ContactsNewView({
-        el: "#contact-new"
-    });
+
 
     App.Router = Backbone.Router.extend({
         routes: {
@@ -133,7 +131,7 @@ function init_app() {
             contacts_view.render({contactList: contactList, groupList: groupList});
         },
         contacts_new: function(){
-            contactsNew_view.render({contactList:contactList});
+            //contactsNew_view.render({contactList:contactList});
         }
     });
 

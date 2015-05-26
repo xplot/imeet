@@ -67,6 +67,12 @@ class Contact(BaseModel):
     email = ndb.StringProperty()
     user = ndb.KeyProperty(kind=User)
 
+    @classmethod
+    def get_by_user_and_unique_id(cls, user, unique_id):
+        return cls.query(ndb.AND(
+            cls.unique_id == unique_id,
+            cls.user == user.key
+        )).get()
 
 class Comment(BaseModel):
     author = ndb.StringProperty(required=False)

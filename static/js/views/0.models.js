@@ -133,6 +133,81 @@ Contact = Backbone.Model.extend({
         });
     },
 
+    create: function(callback){
+        $.ajax({
+            url: "/api/contacts",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                user_id: currentUser.id,
+                contact: this.toJSON()
+            }),
+            cache: false,
+            success: function(unique_id) {
+                if(callback != null)
+                    callback(unique_id);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
+    update: function(callback){
+        var unique_id = this.get('unique_id');
+        var user_id = currentUser.id;
+
+        $.ajax({
+            url: api.url + "api/contacts/" +  unique_id + "/edit",
+            data:JSON.stringify({
+                user_id: user_id,
+                contact: {
+                    name: this.get('name'),
+                    email: this.get('email'),
+                    phone: this.get('phone')
+                }
+            }),
+            type: "PUT",
+            contentType: "application/json",
+            cache: false,
+            success: function(data) {
+                if(callback != null)
+                    callback(data);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
+    delete: function(callback){
+
+        var unique_id = this.get('unique_id');
+
+        $.ajax({
+            url: api.url + "api/contacts/" + currentUser.id + "/delete/" + unique_id,
+            type: "DELETE",
+            contentType: "application/json",
+            cache: false,
+            success: function(data) {
+                 if(callback != null)
+                    callback(data);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
     someIdentifier: function(){
         var name = this.get('name');
         if(name != null && name !== '')

@@ -10,19 +10,48 @@ __p += '<div class="modal addGroup-modal" tabindex="-1" >\n    <div class="modal
 return __p
 };
 
+this["JST"]["contact_details.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="modal addContact-modal" tabindex="-1" >\n    <div class="modal-dialog">\n        <div class="modal-content">\n            <div class="modal-header">\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>\n            <h4 class="modal-title" id="myModalLabel">\n                ';
+ if(createMode) {;
+__p += '\n                    Add New Contact\n              ';
+} else { ;
+__p += '\n                    Edit\n              ';
+} ;
+__p += '\n\n            </h4>\n            </div>\n            <div class="modal-body">\n                <div class="row">\n                    <div class="col-md-2">Name: </div>\n                    <div class="col-md-10">\n                        <input type="text" value="' +
+__e(contact.name ) +
+'" class="form-control contact_input" id="nameInput" placeholder="Jane Doe" data-validation="required">\n                    </div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2">Phone: </div>\n                    <div class="col-md-10">\n                        <input type="text" value="' +
+__e(contact.phone ) +
+'" class="form-control contact_input" id="phoneInput" placeholder="000 000 0000" data-validation="phone">\n                    </div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2">Email: </div>\n                    <div class="col-md-10">\n                        <input type="text" value="' +
+__e(contact.email ) +
+'" class="form-control contact_input" id="emailInput" placeholder="john.smith@example.com" data-validation="email">\n                    </div>\n                </div>\n\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-default close-dialog" data-dismiss="modal">Close</button>\n                <button type="button" class="btn btn-primary new-contact-btn">\n                    ';
+ if(createMode) {;
+__p += '\n                            Create\n                      ';
+} else { ;
+__p += '\n                            Update\n                      ';
+} ;
+__p += '\n                </button>\n        </div>\n    </div>\n  </div>\n</div>';
+
+}
+return __p
+};
+
 this["JST"]["contact_item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="contact-row col-md-12 col-xs-12 col-sm-12" data-id="' +
+__p += '<div class="contact-row" data-id="' +
 __e( unique_id ) +
-'" draggable="true">\n    <div class="editable col-md-3 col-xs-8 col-sm-4" >\n        ' +
+'" draggable="true">\n    <div class="editable contact-picture" >\n        <i class="fa fa-person fa-2x"></i>\n    </div>\n\n    <div class="contact-row-container">\n        <div class="contact-name" >\n            ' +
 __e( name ) +
-'\n    </div>\n    <div class="editable desktop tablet col-md-3 col-sm-3">' +
+'\n        </div>\n        <div class="contact-email" >\n            ' +
 __e( email ) +
-'</div>\n    <div class="editable desktop tablet col-md-3 col-sm-3">' +
+'\n        </div>\n        <div class="contact-phone" >\n            ' +
 __e( phone ) +
-'</div>\n    <div class="col-md-2 col-xs-4 update-column pull-right col-sm-2">\n        <a class="editable" href="#"><i class="fa-pen fa-1_2x"></i></a>\n        <a class="delete-contact" href="#"><i data-id="' +
+'\n        </div>\n    </div>\n\n    <a class="update-contact" href="#"><i class="fa-pen fa-1_2x"></i></a>\n\n    <div class="editable contact-actions update-column" >\n        <a class="delete-contact" href="#"><i data-id="' +
 __e( unique_id ) +
 '" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n    </div>\n</div>';
 
@@ -34,7 +63,7 @@ this["JST"]["contact_item_edit.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row" data-id="' +
+__p += '<div class="row no-margin" data-id="' +
 __e( unique_id ) +
 '">\n    <div class="editable col-md-3 col-xs-8">\n        <input id="edit-name" value="' +
 __e( name ) +
@@ -71,16 +100,6 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="edit-profile-view medium-margin-top">\n\n   <div class="col-xs-12 text-center">\n       <h4>Edit your profile</h4>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <div id="edit-profile-email"></div>\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-name" type="text" class="form-control valid-before-submit" placeholder="John Smith..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit-profile-username" type="text" class="form-control valid-before-submit" placeholder="username..." data-validation="required">\n   </div>\n\n   <div class="col-xs-12 text-center">\n       <input id="edit_profile_password" name="edit_profile_password" type="password" class="form-control" placeholder="password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <input name="edit_profile_password_confirm" id="edit_profile_password_confirm" type="password" class="form-control" placeholder=" confirm password...">\n   </div>\n\n    <div class="col-xs-12 text-center">\n       <button type=\'button\' class=\'save-profile btn btn-info form-control\'>Save</button>\n    </div>\n\n</div>\n';
-
-}
-return __p
-};
-
-this["JST"]["edit_contact.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<div class="form-horizontal contacts-form">\n  <div class="form-group">\n    <label for="nameInput">Name</label>\n    <input type="text" class="form-control contact_input" id="nameInput" placeholder="Jane Doe" data-validation="required">\n  </div>\n\n  <div class="form-group">\n    <label for="emailInput">Email contact</label>\n    <input type="email" class="form-control contact_input" id="emailInput" placeholder="jane.doe@example.com" data-validation="email">\n  </div>\n  <div class="form-group">\n    <label for="phoneInput">Phone number</label>\n    <input type="text" class="form-control contact_input" id="phoneInput" placeholder="123-456-7890" data-validation="phone">\n  </div>\n\n  <div class="form-group">\n    <a class="add-contact btn" id="save-contact">Add contact</a>\n  </div>\n</div>';
 
 }
 return __p

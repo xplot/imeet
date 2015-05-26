@@ -12,7 +12,7 @@ from managers.contact_model import ContactModel
 from models import Contact
 from boilerplate.models import User
 from managers.group import GroupManager
-from commands import UpdateOrCreateContactCommand
+from commands import UpdateOrCreateContactCommand, DeleteContactCommand
 
 class ApiContactHandler(JsonHandler):
 
@@ -46,6 +46,7 @@ class ApiContactHandler(JsonHandler):
 
         return command.execute()
 
+    @user_context
     def update_contact(self, unique_id):
         contact_data = self._data().get('contact')
         command = UpdateOrCreateContactCommand(
@@ -58,11 +59,10 @@ class ApiContactHandler(JsonHandler):
 
         return command.execute()
 
-    def delete_contact(self, user_id, unique_id):
-        user_key = User.get_by_id(long(user_id)).key
-        contact_mgr = ContactManager(user_key)
-        contact_mgr.delete_contact(unique_id)
-        return True
+    @user_context
+    def delete_contact(self, unique_id):
+        command = DeleteContactCommand(self.user, unique_id)
+        return command.execute
 
     @user_context
     def import_csv(self):

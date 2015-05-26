@@ -2,44 +2,30 @@
 {% block css %}contacts{% endblock %}
 {% block title %}Contacts{% endblock %}
 {% block content %}
-
+<div id="new-contact-container"></div>
 <div id="contact-list">
-    <div class="row medium-margin-top">
+    <div class="row no-margin medium-margin-top">
         <div class="col-md-4">
 
         </div>
     </div>
 
-    <div class="row">
-        <div class="">
-            <div class="col-md-2 col-sm-6 col-xs-6">
-                <a class="btn btn-success add-contact" href="contacts/new">New Contact</a>
-            </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
-                <a class="btn add-group" href="#">New Group</a>
-            </div>
-            <div class="col-md-2 import-csv-container">
-                <a href="#">
-                    <div class="btn btn-file"> CSV import<input id="import-csv" type="file"></div>
-               </a>
-            </div>
-        </div>
+    <div class="row no-margin contacts-header">
+        <h3>Contacts</h3>
+        <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>
+        <!--<a class="btn add-group pull-right" href="#">New Group</a>-->
     </div>
 
-    <div class="row small-margin-top">
-        <div class="col-xs-12 col-md-8 container ">
-            <h4>Contacts</h4>
-            <div id="contacts_table" class="small-margin-top"></div>
-        </div>
-        <div class="col-md-4 desktop groups-container">
-            <h4>Groups</h4>
-            <div id="groups_accordion" class="panel-group groups_table" role="tablist" aria-multiselectable="true"></div>
-        </div>
+    <div class="row small-margin-top no-margin contacts-table-container">
+        <div id="contacts_table" class="small-margin-top"></div>
     </div>
 
+    <div class="row small-margin-top no-margin">
+
+    </div>
 </div>
 
-<div id="contact-new"></div>
+
 
 {% endblock %}
 
