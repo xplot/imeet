@@ -87,6 +87,7 @@ body{
       @media (max-width: 1024px) {
         width: 20%;
         .fa {
+          color: @nav-bg-color;
           font-size: 500%;
         }
       }
@@ -107,9 +108,17 @@ body{
         width: 33%;
         text-align: left;
         padding-left: 15px;
+
         @media (max-width: 1024px) {
           width: 100%;
-          padding: 10px;
+        }
+      }
+
+      .contact-name{
+        @media (max-width: 1024px) {
+          font-weight: bold;
+          width: 100%;
+          margin-bottom: 20px;
         }
       }
     }

@@ -30,6 +30,7 @@ ContactsView = SimpleView.extend({
 
         this.listenTo(this.contactList, 'add', this.addContactHook);
         this.listenTo(this.contactList, 'remove', this.removeContactHook);
+        this.listenTo(this.contactList, 'change', this.changeContactHook);
 
         var groupsTable =$('.groups_table');
         var contactTable =$('#contacts_table');
@@ -58,10 +59,19 @@ ContactsView = SimpleView.extend({
         $contact_row.remove();
     },
 
+    changeContactHook: function(contact){
+        var $contact_row = $('div[data-id="'+ contact.get('unique_id') + '"');
+        $contact_row.html($(JST['contact_item.html'](contact.toJSON())).html());
+    },
+
     addContact: function(evt){
         evt.preventDefault();
         this.contactCreateView = contactCreateView();
         this.contactCreateView.render(null, this.contactList);
+    },
+
+    addGroup: function(){
+        this.groupListView.showDialog();
     },
 
     importFromCsv: function(evt){
@@ -100,10 +110,6 @@ ContactsView = SimpleView.extend({
 
         // Read in the image file as a data URL.
         reader.readAsDataURL(evt.target.files[0]);
-    },
-
-    addGroup: function(){
-        this.groupListView.showDialog();
     },
 
 });
@@ -150,7 +156,7 @@ ContactDetailsView = Backbone.View.extend({
     },
 
     hide: function () {
-        this.$el.find('.addContact-modal').hide();
+        this.$el.find('.addContact-modal').modal('hide');
     },
 
     newContact: function(){
@@ -175,7 +181,7 @@ ContactDetailsView = Backbone.View.extend({
         alert_notification([{
             alertType:'success',
             message: message
-        }]);
+        }], 5);
 
         this.model.set("unique_id", data);
 
@@ -184,9 +190,6 @@ ContactDetailsView = Backbone.View.extend({
 
         this.hide();
 
-
-        //TODO
-        //Raise Event to Parent View here
     }
 
 });

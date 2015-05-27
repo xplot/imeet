@@ -60,7 +60,7 @@ class GroupManager(object):
         ]
 
     def get_contacts_sorted_by_group(self):
-        contacts = Contact.query(Contact.user == self.user_key).fetch()
+        contacts = Contact.query(Contact.user == self.user_key).order(Contact.name).fetch()
         groupged_contacts = GroupedContact.query(GroupedContact.user == self.user_key).fetch()
         groups = self.get_groups_for_user()
 

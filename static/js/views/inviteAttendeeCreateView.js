@@ -133,15 +133,6 @@ InviteAttendeeCreateView = Backbone.View.extend({
             },
             {
                 autoselect: true,
-                name: 'contacts',
-                displayKey: 'name',
-                source: substringMatcher(contacts),
-                templates: {
-                    suggestion: JST['contact_item_typeahead.html']
-                }
-            },
-            {
-                autoselect: true,
                 name: 'groups',
                 displayKey: 'name',
                 source: substringGroupMatcher(groups),
@@ -149,6 +140,15 @@ InviteAttendeeCreateView = Backbone.View.extend({
                     suggestion: JST['group_item_typeahead.html']
                 }
 
+            },
+            {
+                autoselect: true,
+                name: 'contacts',
+                displayKey: 'name',
+                source: substringMatcher(contacts),
+                templates: {
+                    suggestion: JST['contact_item_typeahead.html']
+                }
             }
             ).on('typeahead:selected', function (obj, data) {
                 that.last_selected_item = data;

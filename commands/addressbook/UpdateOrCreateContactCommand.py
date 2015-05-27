@@ -22,9 +22,13 @@ class UpdateOrCreateContactCommand(object):
             contact = Contact.get_by_unique_id(self.unique_id)
         else:
             contact = Contact(
-                unique_id=guid(),
+                unique_id=guid()
             )
 
-        copy_over(self, contact)
+        contact.user = self.user
+        contact.name = self.name
+        contact.phone = self.phone
+        contact.email = self.email
+
         contact.put()
         return contact.unique_id
