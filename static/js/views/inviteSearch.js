@@ -106,10 +106,10 @@ SearchView = SimpleView.extend({
 
     plugins: function(){
         var that = this;
-        that.block('.invite-background', 'quarter');
+        that.block('.invite-background', 'half');
 
         $(window).resize(function() {
-            that.block('.invite-background', 'quarter');
+            that.block('.invite-background', 'half');
 
         });
     }
