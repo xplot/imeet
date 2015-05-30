@@ -10,7 +10,7 @@ SearchView = SimpleView.extend({
         'click .btn-duplicate' : 'duplicate',
         'click .btn-edit' : 'edit',
         'click .btn-cancel' : 'cancel',
-        'click .invite-link': 'navigate'
+        'click .invite-background': 'navigate'
     },
 
     render: function(invites, search) {
@@ -34,6 +34,8 @@ SearchView = SimpleView.extend({
             $searchBox.val(search);
             $searchBox.focus();
         }
+
+        this.plugins();
     },
 
     type_key: function(e){
@@ -74,18 +76,25 @@ SearchView = SimpleView.extend({
     },
 
     duplicate: function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+
         var $btn = $(evt.target);
         var invite_id = $btn.data('id');
         Backbone.history.navigate('new/from/' + invite_id, true);
     },
 
     edit: function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+
         var $btn = $(evt.target);
         var invite_id = $btn.data('id');
         Backbone.history.navigate('invite/' + invite_id + "/edit", true);
     },
 
     navigate: function(evt){
+        console.log(evt);
         var $btn = $(evt.target);
         var invite_id = $btn.data('id');
         Backbone.history.navigate('invite/' + invite_id, true);
@@ -93,5 +102,15 @@ SearchView = SimpleView.extend({
 
     cancel: function(evt){
         alert("not ready yet");
+    },
+
+    plugins: function(){
+        var that = this;
+        that.block('.invite-background', 'quarter');
+
+        $(window).resize(function() {
+            that.block('.invite-background', 'quarter');
+
+        });
     }
 });

@@ -1,31 +1,47 @@
 
-<div class="search-view">
-    <div class="controls zero-margin">
-        <div class="col-sm-10">
+<div id="search-view">
+
+    <div class="row no-margin desktop">
+        <div class="col-sm-10 no-padding">
             <input id="searchBox" type="text" class="form-control event-name" placeholder="Invite Title" data-validation="required">
         </div>
-        <div class="col-sm-2">
+
+        <div class="col-sm-2 no-padding">
             <button type="button" class="btn btn-success form-control search">Search</button>
         </div>
     </div>
-    <div class="" style="height: 50px"></div>
-    <div class="controls" id="search-result">
 
+    <div class="controls" id="search-result">
         <% if (invites.length == 0) { %>
             Your search didn't resolved any iMeets. <a href="/new" type="button" class="btn btn-success">Start sending!</a>
         <% } %>
 
         <% _.each( invites, function( item ){ %>
-                <div class="col-md-3 invite-card">
-                    <div class="row title"><a href="#" class="invite-link" data-id='<%-item.unique_id %>'><%- item.title %></a> </div>
-                    <div class="row date"><%- item.start %> </div>
-                    <div class="row description"><%- item.description %> </div>
-                    <div class="row actions">
-                        <button type='button' class='btn btn-success btn-duplicate' data-id='<%-item.unique_id %>'>DUPLICATE</button>
-                        <button type='button' class='btn btn-warning btn-edit' data-id='<%-item.unique_id %>'>EDIT</button>
-                        <button type='button' class='btn btn-danger btn-cancel' data-id='<%-item.unique_id %>'>CANCEL</button>
+
+            <div class="block block1 invite-background" data-id="<%- item.unique_id %>"
+                    <% if (item.poster_image_id != null) {
+                        print("style='background-image: url(/image/" + item.poster_image_id + ")'")
+                    }
+                    else {
+                        print("style='background-image: url(/img/default_image.jpg)'")
+                    } %>
+                >
+                <div class="center-block" data-id="<%- item.unique_id %>">
+                    <h1 class="main-h1" data-id="<%- item.unique_id %>"><%- item.title %></h1>
+                    <div class="actions">
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 no-padding">
+                                <button type='button' class='btn btn-info form-control btn-duplicate' data-id="<%- item.unique_id %>">Duplicate</button>
+                            </div>
+
+                            <div class="col-xs-6 col-md-6 no-padding edit-btn">
+                                <button type='button' class='btn btn-info form-control btn-edit' data-id="<%- item.unique_id %>">Edit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+            </div>
         <% }); %>
     </div>
 </div>

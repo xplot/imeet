@@ -421,27 +421,32 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '\n<div class="search-view">\n    <div class="controls zero-margin">\n        <div class="col-sm-10">\n            <input id="searchBox" type="text" class="form-control event-name" placeholder="Invite Title" data-validation="required">\n        </div>\n        <div class="col-sm-2">\n            <button type="button" class="btn btn-success form-control search">Search</button>\n        </div>\n    </div>\n    <div class="" style="height: 50px"></div>\n    <div class="controls" id="search-result">\n\n        ';
+__p += '\n<div id="search-view">\n\n    <div class="row no-margin desktop">\n        <div class="col-sm-10 no-padding">\n            <input id="searchBox" type="text" class="form-control event-name" placeholder="Invite Title" data-validation="required">\n        </div>\n\n        <div class="col-sm-2 no-padding">\n            <button type="button" class="btn btn-success form-control search">Search</button>\n        </div>\n    </div>\n\n    <div class="controls" id="search-result">\n        ';
  if (invites.length == 0) { ;
 __p += '\n            Your search didn\'t resolved any iMeets. <a href="/new" type="button" class="btn btn-success">Start sending!</a>\n        ';
  } ;
 __p += '\n\n        ';
  _.each( invites, function( item ){ ;
-__p += '\n                <div class="col-md-3 invite-card">\n                    <div class="row title"><a href="#" class="invite-link" data-id=\'' +
-__e(item.unique_id ) +
-'\'>' +
+__p += '\n\n            <div class="block block1 invite-background" data-id="' +
+__e( item.unique_id ) +
+'"\n                    ';
+ if (item.poster_image_id != null) {
+                        print("style='background-image: url(/image/" + item.poster_image_id + ")'")
+                    }
+                    else {
+                        print("style='background-image: url(/img/default_image.jpg)'")
+                    } ;
+__p += '\n                >\n                <div class="center-block" data-id="' +
+__e( item.unique_id ) +
+'">\n                    <h1 class="main-h1" data-id="' +
+__e( item.unique_id ) +
+'">' +
 __e( item.title ) +
-'</a> </div>\n                    <div class="row date">' +
-__e( item.start ) +
-' </div>\n                    <div class="row description">' +
-__e( item.description ) +
-' </div>\n                    <div class="row actions">\n                        <button type=\'button\' class=\'btn btn-success btn-duplicate\' data-id=\'' +
-__e(item.unique_id ) +
-'\'>DUPLICATE</button>\n                        <button type=\'button\' class=\'btn btn-warning btn-edit\' data-id=\'' +
-__e(item.unique_id ) +
-'\'>EDIT</button>\n                        <button type=\'button\' class=\'btn btn-danger btn-cancel\' data-id=\'' +
-__e(item.unique_id ) +
-'\'>CANCEL</button>\n                    </div>\n                </div>\n        ';
+'</h1>\n                    <div class="actions">\n                        <div class="row">\n                            <div class="col-xs-6 col-md-6 no-padding">\n                                <button type=\'button\' class=\'btn btn-info form-control btn-duplicate\' data-id="' +
+__e( item.unique_id ) +
+'">Duplicate</button>\n                            </div>\n\n                            <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                                <button type=\'button\' class=\'btn btn-info form-control btn-edit\' data-id="' +
+__e( item.unique_id ) +
+'">Edit</button>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n        ';
  }); ;
 __p += '\n    </div>\n</div>\n\n';
 
