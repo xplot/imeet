@@ -1,4 +1,4 @@
-NewView = SimpleView.extend({
+InviteCreateView = SimpleView.extend({
     el: '#view-container',
 
     initialize: function(options){
@@ -22,7 +22,7 @@ NewView = SimpleView.extend({
         '.event-end-date': 'end_date',
         '.event-end-time': 'end_time'
     },
-    template: JST['new.html'],
+    template: JST['invite_create.html'],
     contacts: null,
 
     render: function(options) {

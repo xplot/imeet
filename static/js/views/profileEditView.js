@@ -1,5 +1,5 @@
-UserProfileView = SimpleView.extend({
-    template: JST['editProfile.html'],
+ProfileEditView = SimpleView.extend({
+    template: JST['profile_edit.html'],
     initialize: function(options){
         this.options = options || {};
     },

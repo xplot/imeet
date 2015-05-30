@@ -30,7 +30,7 @@ function init_app() {
     });
 
     //Edit Profile
-    user_profile_view = new UserProfileView({
+    user_profile_view = new ProfileEditView({
         el: "#view-container",
     });
 
@@ -102,7 +102,7 @@ function init_app() {
         //Invite
         new: function (title,id) {
             //Create Invite
-            var newView = new NewView({
+            var newView = new InviteCreateView({
                 el: "#view-container",
             });
             newView.render({'title':title,'id':id});

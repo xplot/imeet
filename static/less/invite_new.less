@@ -1,246 +1,168 @@
-#body-container,
-#view-container {
-  width: 100%;
-  overflow-x: hidden;
+#invite-create {
 
-  .snap-panel {
-    top: 60px;
-    position: absolute;
-    width: 100%;
-    bottom: 0px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    padding-right: 0px;
-    padding-left: 0px;
+  padding-top: 30px;
+
+  input{
+    border: 1px solid @input-border;
   }
 
-
-
-  .invite {
-    position: absolute;
+  .row{
+    @media (max-width: 767px) {
+      padding: 0px 10px;
+    }
+    @media (max-width: 1024px) {
+      padding: 0px 15px;
+    }
   }
 
-  .invite-create {
-    .first {
-      top: 0%;
-      background-color: @panel1;
+  h1{
+    font-size: 110%;
+    margin: 0px;
+  }
+
+  /*Rows*/
+  .event-title-row{
+    h1{
+      font-size: 130% !important;
+    }
+    margin-bottom: 10px;
+    @media (max-width: 767px) {
+      margin-bottom: 5px;
+    }
+    @media (max-width: 1024px) {
+      margin-bottom: 10px;
+    }
+  }
+
+  .location-input-row{
+    margin-top: 10px;
+    @media (max-width: 767px) {
+      margin-top: 5px;
+    }
+    @media (max-width: 1024px) {
+      margin-top: 10px;
+    }
+  }
+
+  .from-event-date-row{
+    @media (max-width: 767px) {
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    @media (max-width: 1024px) {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .event-date-row{
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+    @media (max-width: 1024px) {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+  }
+
+  .to-event-date-row{
+    h1{
+      @media (min-width: 1024px) {
+        margin-top: 15px;
+      }
+    }
+    @media (max-width: 767px) {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    @media (max-width: 1024px) {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .end-event-date-input-row{
+    @media (max-width: 767px) {
+      margin-top: 0px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 1024px) {
+      margin-top: 0px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .description-row{
+    margin-top: 20px;
+  }
+
+  .button-row{
+    margin-top: 20px;
+
+    @media (max-width: 767px) {
+      margin-top: 5px;
+    }
+  }
+
+  /*end-Rows*/
+
+  .timepicker {
+    .btn {
+      background-color: transparent !important;
+      color: @nav-bg-color;
+      border: none;
+    }
+  }
+
+  .date-group {
+
+    position: relative;
+    height: 43px;
+    font-size: 15px;
+    line-height: 1.42857143;
+    color: #2c3e50;
+    background-color: #fff;
+    border: 1px solid @input-border;
+    border-radius: 4px;
+    float: left;
+
+    .date {
       padding-left: 15px;
-      padding-right: 15px;
       height: 100%;
-      width: 100%;
+      width: 55%;
+      border: none;
+      margin-top: 0px;
+      margin-bottom: 0px;
     }
-    .second {
-      top: 100%;
-      background-color: @panel2;
-    }
-    .third {
-      background-color: @panel3;
-    }
-    .fourth {
-      background-color: @panel4;
-    }
-
-    .timepicker {
-      .btn {
-        background-color: transparent !important;
-        color: @nav-bg-color;
-        border: none;
-      }
+    .time {
+      height: 100%;
+      width: 43%;
+      border: none;
+      margin-top: 0px;
+      margin-bottom: 0px;
     }
 
-    .invite {
-      /*From here below these are generalizations for the invite screen with media queries*/
-      h1, h2, h3, h4, h5, h6 {
-        text-transform: uppercase;
-        @media (max-width: 768px) {
-          font-size: 80% !important;
-        }
-      }
-      @media (max-width: 768px) {
-        .row {
-          height: 40px;
-        }
-
-        .zero-margin {
-          height: 40px;
-        }
-      }
-
-      input[type='text'],
-      input[type='password'],
-      input[type='int'],
-      textarea {
-        @media (max-width: 768px) {
-          height: 30px !important;
-        }
-      }
-
-      .btn {
-        @media (max-width: 768px) {
-          height: 30px;
-          padding: 5px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .invite {
-          font-size: 80%;
-        }
-      }
-      .panel {
-        box-shadow: none;
-        position: absolute;
-        height: 90%;
-
-        .panel-heading {
-          border-bottom: 1px solid @off-white !important;
-          @media (max-width: 768px) {
-            padding: 1px 2px;
-
-          }
-        }
-        .panel-body {
-          padding: 0px;
-          height: 100%;
-
-        }
-      }
-
-      .send-container {
-        position: absolute;
-        bottom: 80px;
-        @media (max-width: 768px) {
-          bottom: 60px;
-
-        }
-        .facebook_share {
-          display: inline-block;
-          padding-bottom: 10px;
-
-          .toggle-on {
-            background-color: green;
-          }
-          .btn {
-
-          }
-          .toggle {
-            height: 25px !important;
-            font-size: 70% !important;
-          }
-
-          div {
-            display: table-cell;
-            float: none;
-            vertical-align: middle;
-          }
-        }
-
-        .send {
-          margin-top: 0px;
-          margin-bottom: 0px;
-        }
-      }
-
-      .invite-content {
-
-        .row {
-
-        }
-        .profile-contacts {
-          padding: 20px;
-        }
-
-        .contact-input-container {
-
-          .contact-input {
-
-          }
-
-
-        }
-
-        .label-text {
-          padding-top: 10px;
-        }
-
-        input, textarea, select, button {
-          margin-top: 10px;
-          margin-bottom: 10px;
-          outline: none;
-
-        }
-
-        .date-group {
-          width: 100%;
-          height: 100%;
-          position: relative;
-          height: 43px;
-          font-size: 15px;
-          line-height: 1.42857143;
-          color: #2c3e50;
-          background-color: #fff;
-          background-image: none;
-          border: 2px solid #dce4ec;
-          border-radius: 4px;
-          float: left;
-
-          .date {
-            padding-left: 15px;
-            height: 100%;
-            width: 55%;
-            border: none;
-            margin-top: 0px;
-            margin-bottom: 0px;
-          }
-          .time {
-            height: 100%;
-            width: 43%;
-            border: none;
-            margin-top: 0px;
-            margin-bottom: 0px;
-          }
-
-          .date, .time:focus {
-            outline: none;
-          }
-        }
-        .event-start-date-formatted,
-        .event-end-date-formatted,
-        .event-where {
-          @media (max-width: 768px) {
-            font-size: 80%;
-          }
-        }
-
-        .contact-table-container {
-          height: 60%;
-          width: 100%;
-          overflow-y: auto;
-          @media (max-width: 768px) {
-            height: 40%;
-          }
-
-          .contact-table {
-            height: 100%;
-            width: 100%;
-            padding: 0px;
-
-          }
-
-          .contact-row {
-            padding-left: 0px;
-            padding-right: 0px;
-            height: 30px;
-            font-size: 90%;
-            margin-top: 10px;
-            .btn {
-              padding: 4px 20px;
-              margin-top: 0px;
-            }
-          }
-        }
-      }
+    .date, .time:focus {
+      outline: none;
     }
-
   }
+
+  .event-start-date-formatted,
+  .event-end-date-formatted,
+  .event-where {
+    @media (max-width: 768px) {
+      font-size: 80%;
+    }
+  }
+
+  .event-description-input{
+    padding: 10px;
+    width: 100%;
+    min-height: 100px;
+    height: auto;
+    resize: none;
+    border: 1px solid black;
+  }
+
 }

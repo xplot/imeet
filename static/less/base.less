@@ -7,8 +7,25 @@ body {
     font-weight: 400 !important;
     font-family: 'Roboto', sans-serif !important;
     font-size: 15px;
+    overflow-y: hidden;
     overflow-x: hidden;
     width:100%;
+}
+
+#view-container, #invite-body{
+  padding-top: 60px;
+  position: absolute;
+  top:0px;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+ @media (max-width: 767px){
+    .navbar-collapse{
+      background-color: @nav-bg-color !important;
+    }
 }
 
 ul{
