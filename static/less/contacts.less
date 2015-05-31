@@ -1,5 +1,6 @@
 @import "base";
 @import "navbar";
+
 body{
 
   height: 100%;
@@ -7,10 +8,21 @@ body{
   font-family: 'Roboto', sans-serif !important;
   font-size: 15px;
   overflow-x: hidden;
+  overflow-y: auto;
   width:100%;
+
+  //Do not remove, this makes IOS to scroll smoothly
+  -webkit-overflow-scrolling: touch;
 }
 
 #contact-list {
+
+  padding-top: 90px;
+
+  @media (max-width: 767px) {
+    padding-top: 65px;
+  }
+
 
   .contacts-header {
 
