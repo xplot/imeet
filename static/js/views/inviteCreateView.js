@@ -97,7 +97,7 @@ InviteCreateView = SimpleView.extend({
             minDate: moment()
         });
         this.$el.find('.event-start-time, .event-end-time').datetimepicker({
-            pickDate: false, 
+            pickDate: false,
         });
         this.initWhere();
     },
