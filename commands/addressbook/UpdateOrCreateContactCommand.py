@@ -18,6 +18,7 @@ class UpdateOrCreateContactCommand(object):
 
     def execute(self):
         contact = None
+
         if self.unique_id:
             contact = Contact.get_by_unique_id(self.unique_id)
         else:

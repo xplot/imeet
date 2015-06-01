@@ -1,2 +1,3 @@
 from .UpdateOrCreateContactCommand import UpdateOrCreateContactCommand
 from .DeleteContactCommand import DeleteContactCommand
+from .UpdateAttendeeAttachToContactCommand import UpdateAttendeeAttachToContactCommand

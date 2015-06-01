@@ -49,6 +49,7 @@ class ApiContactHandler(JsonHandler):
     @user_context
     def update_contact(self, unique_id):
         contact_data = self._data().get('contact')
+
         command = UpdateOrCreateContactCommand(
             self.user,
             unique_id=unique_id,

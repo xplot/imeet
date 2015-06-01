@@ -191,7 +191,6 @@ ContactDetailsView = Backbone.View.extend({
         this.hide();
 
     }
-
 });
 
 ContactItemView = SimpleView.extend({
@@ -236,5 +235,78 @@ ContactItemView = SimpleView.extend({
     contactDeleted: function(unique_id){
         //TODO
         //Raise Event to Parent View here
+    }
+});
+
+AttendeeDetailsView = Backbone.View.extend({
+    template: JST['contact_details.html'],
+    el: "#new-contact-container",
+    invite_id: null,
+
+    events: {
+       'click .new-contact-btn' : 'updateAttendee',
+    },
+
+    render: function(invite_id, attendeeModel) {
+        this.invite_id = invite_id;
+        this.model = attendeeModel ;
+
+        this.$el.html(this.template({
+            createMode: false,
+            contact: this.model.toJSON()
+        }));
+
+        this.$el.find('.addContact-modal').modal({
+            show: true,
+            backdrop: true,
+            keyboard: true
+        });
+
+        return this.$el;
+    },
+
+    show: function () {
+        this.$el.find('.addContact-modal').modal({
+            show: true,
+            backdrop: true,
+            keyboard: true
+        });
+    },
+
+    hide: function () {
+        this.$el.find('.addContact-modal').modal('hide');
+    },
+
+    updateAttendee: function(){
+        if(!validator.validateItems('.contact_input')){
+            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+            return;
+        }
+
+        this.model.set('name', $("#nameInput").val());
+        this.model.set('email', $("#emailInput").val());
+        this.model.set('phone', $("#phoneInput").val());
+
+        console.log(this.model.get('unique_id'));
+
+        if(this.model.get('unique_id') != '') //Contact Exists
+            this.model.updateAttendee(this.invite_id, $.proxy(this.attendeeUpdated, this));
+        else{
+            this.model.create($.proxy(this.updateAttendee, this));
+        }
+    },
+
+    attendeeUpdated: function(data){
+        var message ="Attendee updated!";
+
+        alert_notification([{
+            alertType:'success',
+            message: message
+        }], 5);
+
+        this.model.set("unique_id", data);
+
+        this.hide();
+
     }
 });

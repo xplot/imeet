@@ -1,3 +1,7 @@
+<% if(attendee != null && attendee.status == 'organizer') {%>
+    <div id="new-contact-container" ></div>
+<%}%>
+
 <div class="row rsvp small-margin-top">
       <% if(attendee != null && attendee.status != 'deleted' && attendee.status != 'organizer') {%>
         <div class="panel panel-default">
@@ -62,7 +66,11 @@
 
       <div class="panel-body no-response-table">
         <% _.each( no_response, function( item ){ %>
+          <% if(attendee != null && attendee.status == 'organizer') {%>
+                <%= partial('invite_attendee_admin.html', item) %>
+          <%} else {%>
             <%= partial('invite_attendee.html', item) %>
+          <%} %>
         <% }); %>
       </div>
    </div>

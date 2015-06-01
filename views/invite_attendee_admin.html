@@ -1,0 +1,8 @@
+<a href="#" class="edit-attendee" data-rowid="<%- invite_attendee_id %>" >
+    <div class="details">
+        <% if(status == 'organizer') {%>
+            <b><i>Host</i></b>
+        <% } %>
+        <b><%-name %></b> <%-email %> <%-phone %>
+    </div>
+</a>

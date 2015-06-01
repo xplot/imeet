@@ -59,7 +59,6 @@ InviteAttendeeCreateView = Backbone.View.extend({
 
             var emailAndPhone = this.parsePhoneAndEmail(this.$newContact.val());
             contact = {
-                unique_id:  guid(),
                 name:       '',
                 email:      emailAndPhone.email,
                 phone:      emailAndPhone.phone
@@ -74,8 +73,8 @@ InviteAttendeeCreateView = Backbone.View.extend({
 
         if(group != null){
             var group = new Group({unique_id: group.unique_id});
-            group.fetchContacts($.proxy(this.addAttendeesFromGroup, this));
-            group.includeInInvite(this.invite_id)
+            group.fetchContacts();
+            group.includeInInvite(this.invite_id, $.proxy(this.addAttendeesFromGroup, this));
         }
 
         this.last_selected_item = null;

@@ -13,6 +13,7 @@ InviteAttendeesView = Backbone.View.extend({
     events: {
         'click .invite-attendees-acknowledge-yes': 'yesButtonClick',
         'click .invite-attendees-acknowledge-no': 'noButtonClick',
+        'click .edit-attendee': 'editAttendeeClick',
 
     },
 
@@ -67,7 +68,7 @@ InviteAttendeesView = Backbone.View.extend({
     attendeeCreated: function(attendeeModel){
         this.no_response.add(attendeeModel);
         $('.no-response-table').prepend(
-            JST['invite_attendee.html'](attendeeModel.toJSON())
+            JST['invite_attendee_admin.html'](attendeeModel.toJSON())
         );
     },
 
@@ -109,5 +110,12 @@ InviteAttendeesView = Backbone.View.extend({
             attendees: this.model,
             current_attendee: this.current_attendee
         });
+    },
+
+    editAttendeeClick: function(e){
+        var dataId = $(e.currentTarget).data('rowid');
+        var contactModel = this.model.getByAttendeeId(dataId);
+        var attendeeEditView = new AttendeeDetailsView();
+        attendeeEditView.render(this.invite_id, contactModel);
     }
 });

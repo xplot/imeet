@@ -18,7 +18,8 @@ class InviteAttendeeReportQuery(object):
         Returns a dictionary for the Invite Attendee Notification
         This is a valid data-format:
             {
-                'unique_id':  '',
+                'unique_id': '',
+                'invite_attendee_id':  '',
                 'name': u'',
                 'phone':
                 'email': '',
@@ -60,7 +61,8 @@ class InviteAttendeeReportQuery(object):
         acknowledges = self.invite_attendee.get_acknowledges()
 
         attendee = {
-            'unique_id':  self.invite_attendee.unique_id,
+            'unique_id': self.invite_attendee.contact.get().unique_id if self.invite_attendee.contact else '',
+            'invite_attendee_id':  self.invite_attendee.unique_id,
             'name': self.invite_attendee.name,
             'phone': self.invite_attendee.phone,
             'email': self.invite_attendee.email,

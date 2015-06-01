@@ -33,22 +33,9 @@ class BulkAddInviteAttendeeCommand(object):
                 "This invite is in the past it cannot be edited anymore"
             )
 
-        bulk_add = []
-        for command in self.commands:
-            invite_attendee = InviteAttendee(
-                unique_id=guid(),
-                name=command.name,
-                email=command.email,
-                phone=command.phone
-            )
-            if command.contact_unique_id:
-                contact = Contact.get_by_unique_id(
-                    command.contact_unique_id
-                )
-                if contact:
-                    invite_attendee.contact = contact.key
+        bulk_ids = []
+        if self.commands:
+            for command in self.commands:
+                bulk_ids.append(command.execute())
 
-            invite_attendee.invite = invite.key
-            bulk_add.append(invite_attendee)
-
-        ndb.put_multi(bulk_add)
+        return bulk_ids

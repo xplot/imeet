@@ -55,7 +55,7 @@ InviteAdminView = SimpleView.extend({
         var invite_attendees = this.model.get('attendees');
 
         invite_attendees_view.render({
-            invite_id: this.invite_id,
+            invite_id: this.unique_id,
             attendees: invite_attendees,
             current_attendee: this.current_attendee
         });

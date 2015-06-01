@@ -1,7 +1,9 @@
 from managers.utils import guid
 from models import InviteAttendee, InviteAttendeeNotification, Contact, Invite, GroupedContact
-from .BulkAddInviteAttendeeCommand import BulkAddInviteAttendeeCommand, AddInviteAttendeeCommand
+from .BulkAddInviteAttendeeCommand import BulkAddInviteAttendeeCommand
+from .AddInviteAttendeeCommand import AddInviteAttendeeCommand
 from google.appengine.ext import ndb
+
 
 class AddGroupAttendeesCommand(object):
     def __init__(self,
@@ -20,11 +22,14 @@ class AddGroupAttendeesCommand(object):
         """
 
         commands = []
-        for x in GroupedContact.query(
+
+        contacts_in_group = GroupedContact.query(
             ndb.AND(
                 GroupedContact.user == self.user.key,
                 GroupedContact.group_unique_id == self.group_unique_id
-        )).fetch():
+        )).fetch()
+
+        for x in contacts_in_group:
             contact = Contact.get_by_unique_id(x.contact_unique_id)
 
             commands.append(
@@ -37,8 +42,10 @@ class AddGroupAttendeesCommand(object):
                 )
             )
 
-        BulkAddInviteAttendeeCommand(
+        return BulkAddInviteAttendeeCommand(
             self.invite_unique_id,
             commands
         ).execute()
+
+
 

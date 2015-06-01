@@ -15,7 +15,7 @@ class InviteAttendeesQuery(object):
         This is a valid data-format:
         [
             {
-                'unique_id':  '',
+                'invite_attendee_id':  '',
                 'name': u'',
                 'phone':
                 'email': '',
@@ -32,7 +32,8 @@ class InviteAttendeesQuery(object):
 
         return [
             {
-                'unique_id':    x.unique_id,
+                'unique_id': x.contact.get().unique_id if x.contact else '',
+                'invite_attendee_id':    x.unique_id,
                 'name':         x.name,
                 'phone':        x.phone,
                 'email':        x.email,

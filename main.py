@@ -59,6 +59,8 @@ app = webapp2.WSGIApplication([
 
     # Invite_Attendees
     Route('/api/invite/<invite_id>/attendees/', api.InviteAttendeeHandler),
+    Route('/api/invite/<invite_id>/attendee/', api.InviteAttendeeHandler, handler_method='update_attendee', methods=['PUT']),
+    Route('/api/invite/<invite_id>/attendee/contact', api.InviteAttendeeHandler, handler_method='create_update_contact_from_attendee', methods=['PUT']),
     Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['DELETE']),
     Route('/api/invite/attendees/<invite_attendee_id>/response', api.InviteAttendeeResponseHandler, handler_method='acknowledge', methods=['POST']),
 

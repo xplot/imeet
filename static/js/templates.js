@@ -200,6 +200,29 @@ __e(phone ) +
 return __p
 };
 
+this["JST"]["invite_attendee_admin.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<a href="#" class="edit-attendee" data-rowid="' +
+__e( invite_attendee_id ) +
+'" >\n    <div class="details">\n        ';
+ if(status == 'organizer') {;
+__p += '\n            <b><i>Host</i></b>\n        ';
+ } ;
+__p += '\n        <b>' +
+__e(name ) +
+'</b> ' +
+__e(email ) +
+' ' +
+__e(phone ) +
+'\n    </div>\n</a>';
+
+}
+return __p
+};
+
 this["JST"]["invite_attendee_create.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -222,7 +245,11 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row rsvp small-margin-top">\n      ';
+
+ if(attendee != null && attendee.status == 'organizer') {;
+__p += '\n    <div id="new-contact-container" ></div>\n';
+};
+__p += '\n\n<div class="row rsvp small-margin-top">\n      ';
  if(attendee != null && attendee.status != 'deleted' && attendee.status != 'organizer') {;
 __p += '\n        <div class="panel panel-default">\n          <div class="panel-heading">\n              ';
  if(attendee.status == 'no_response') {;
@@ -258,9 +285,17 @@ __p += '\n            ' +
  }); ;
 __p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">\n          Who is invited?\n\n      </div>\n\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;
+__p += '\n          ';
+ if(attendee != null && attendee.status == 'organizer') {;
+__p += '\n                ' +
+((__t = ( partial('invite_attendee_admin.html', item) )) == null ? '' : __t) +
+'\n          ';
+} else {;
 __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
-'\n        ';
+'\n          ';
+} ;
+__p += '\n        ';
  }); ;
 __p += '\n      </div>\n   </div>\n\n\n</div>\n\n';
 

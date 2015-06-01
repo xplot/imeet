@@ -33,8 +33,7 @@ class InviteAttendeeHandler(JsonHandler):
             invite_id,
             self._data().get('attendees')
         )
-        command.execute()
-        return invite_id
+        return command.execute()
 
     def delete(self, invite_id, unique_id):
         """Includes an Attendee in the Invite"""
@@ -75,6 +74,24 @@ class InviteAttendeeHandler(JsonHandler):
         )
         invite_some.execute()
         return invite_id
+
+    #@request_with_subscription
+    @user_context
+    def update_attendee(self, invite_id):
+        """Update Attendee Details"""
+        invite_attendee_id = self._data().get('invite_attendee_id')
+        contact_data = self._data().get('contact')
+
+        return commands.UpdateAttendeeAttachToContactCommand(
+            user=self.user,
+            invite_id=invite_id,
+            invite_attendee_id=invite_attendee_id,
+            unique_id=contact_data['unique_id'],
+            name=contact_data['name'],
+            email=contact_data['email'],
+            phone=contact_data['phone'],
+       ).execute()
+
 
     @classmethod
     def get_list_from_dict(cls, attendees):

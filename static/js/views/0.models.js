@@ -49,12 +49,14 @@ IMeetCollection = Backbone.Collection.extend({
 Contact = Backbone.Model.extend({
     defaults: {
         unique_id: '',
+        invite_attendee_id: '',
         name: '',
         email: '',
         phone: ''
     },
 
-    includeInInvite: function(invite_id, view, callback){
+    includeInInvite: function(invite_id, callback){
+        var that = this;
         var url = "/api/invite/" + invite_id + "/attendees/";
         //this.set('contact_unique_id', this.get('unique_id'));
         var attendees = [this.toJSON()];
@@ -74,8 +76,10 @@ Contact = Backbone.Model.extend({
             data: JSON.stringify(post),
             cache: false,
             success: function(data) {
+                that.set('invite_attendee_id', data[0]);
+
                 if(callback)
-                    callback(view, data)
+                    callback(data)
             },
             error: function(data) {
                 alert_notification([{
@@ -134,6 +138,7 @@ Contact = Backbone.Model.extend({
     },
 
     create: function(callback){
+        var that = this;
         $.ajax({
             url: "/api/contacts",
             type: "POST",
@@ -144,6 +149,7 @@ Contact = Backbone.Model.extend({
             }),
             cache: false,
             success: function(unique_id) {
+                that.set('unique_id', unique_id);
                 if(callback != null)
                     callback(unique_id);
             },
@@ -158,10 +164,13 @@ Contact = Backbone.Model.extend({
 
     update: function(callback){
         var unique_id = this.get('unique_id');
+        if(unique_id == null || unique_id == '')
+            return this.create(callback);
+
         var user_id = currentUser.id;
 
         $.ajax({
-            url: api.url + "api/contacts/" +  unique_id + "/edit",
+            url: "/api/contacts/" +  unique_id + "/edit",
             data:JSON.stringify({
                 user_id: user_id,
                 contact: {
@@ -186,12 +195,51 @@ Contact = Backbone.Model.extend({
         });
     },
 
+    updateAttendee: function(invite_id, callback){
+        var url = "/api/invite/" + invite_id + "/attendee/";
+        var user_id = currentUser.id;
+
+        var post = {
+            user_id: user_id,
+            invite_attendee_id: this.get('invite_attendee_id'),
+
+            contact: {
+                unique_id: this.get('unique_id'),
+                name: this.get('name'),
+                email: this.get('email'),
+                phone: this.get('phone')
+            }
+        };
+
+        if(currentUser!=null){
+            post.user_id = currentUser.id;
+        }
+
+        $.ajax({
+            url: url,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function(data) {
+                if(callback)
+                    callback(data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
     deleteContact: function(callback){
 
         var unique_id = this.get('unique_id');
 
         $.ajax({
-            url: api.url + "api/contacts/" + currentUser.id + "/delete/" + unique_id,
+            url: "/api/contacts/" + currentUser.id + "/delete/" + unique_id,
             type: "DELETE",
             contentType: "application/json",
             cache: false,
@@ -221,7 +269,17 @@ Contact = Backbone.Model.extend({
 });
 
 ContactList = IMeetCollection.extend({
-    model: Contact
+    model: Contact,
+
+    getByAttendeeId: function(unique_id){
+        var result = this.filter(function(val) {
+            return val.get("invite_attendee_id") === unique_id;
+        });
+
+        if(result.length > 0)
+            return result[0];
+        return null;
+    }
  });
 
 
@@ -242,7 +300,10 @@ Group = Backbone.Model.extend({
                     contactList.add(new Contact(item));
                 });
 
-                callback(contactList)
+                this.set('contacts', contactList);
+
+                if(callback != null)
+                    callback(contactList)
             },
             error: function(data) {
                 alert_notification([{
@@ -254,6 +315,7 @@ Group = Backbone.Model.extend({
     },
 
     includeInInvite: function(invite_id, callback){
+        var that = this;
         var url = "/api/invite/" + invite_id + "/group/";
 
         var post = {
@@ -268,8 +330,13 @@ Group = Backbone.Model.extend({
             data: JSON.stringify(post),
             cache: false,
             success: function(data) {
-                if(callback)
-                    callback(view, data)
+                var index = 0;
+                data.forEach(function(item){
+                    that.contacts[index].set('invite_attendee_id', item);
+                });
+
+                if(callback != null)
+                    callback(that.contacts)
             },
             error: function(data) {
                 alert_notification([{

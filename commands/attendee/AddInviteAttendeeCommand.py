@@ -1,17 +1,19 @@
 from managers.utils import guid
+from commands.addressbook.UpdateOrCreateContactCommand import UpdateOrCreateContactCommand
 from models import InviteAttendee, InviteAttendeeNotification, Contact, Invite
 
 
 class AddInviteAttendeeCommand(object):
-    def __init__(self,
-         invite_unique_id=None,
-         contact_unique_id=None,
-         invite=None,
-         name=None,
-         email=None,
-         phone=None,
-         status=None,
-         is_organizer=False
+    def __init__(
+        self,
+        invite_unique_id=None,
+        contact_unique_id=None,
+        invite=None,
+        name=None,
+        email=None,
+        phone=None,
+        status=None,
+        is_organizer=False
     ):
         self.invite = invite
         self.invite_unique_id = invite_unique_id
@@ -33,22 +35,27 @@ class AddInviteAttendeeCommand(object):
         )
 
     def execute(self):
+        invite_attendee = None
         invite_attendee = InviteAttendee(
-            unique_id=guid(),
-            name=self.name,
-            email=self.email,
-            phone=self.phone,
-            attendee_status=self.status,
-            is_organizer=self.is_organizer
+            unique_id=guid()
         )
 
+        invite_attendee.name = self.name
+        invite_attendee.email = self.email
+        if self.status:
+            invite_attendee.attendee_status = self.status
+        invite_attendee.phone = self.phone
+
         if self.contact_unique_id:
-            invite_attendee.contact = Contact.get_by_unique_id(contact_unique_id).key
+            contact = Contact.get_by_unique_id(
+                self.contact_unique_id
+            )
+            if contact:
+                invite_attendee.contact = contact.key
 
         if not self.invite:
             self.invite = Invite.get_by_unique_id(self.invite_unique_id)
         invite_attendee.invite = self.invite.key
 
-        #if invite.user is not None:
-
         invite_attendee.put()
+        return invite_attendee.unique_id
