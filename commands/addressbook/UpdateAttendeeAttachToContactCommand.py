@@ -5,9 +5,6 @@ from models import Contact, InviteAttendee, Invite
 class UpdateAttendeeAttachToContactCommand(object):
 
     def __init__(self, user, invite_id, invite_attendee_id, unique_id=None, name=None, email=None, phone=None):
-        if not user:
-            raise NoUserException()
-
         if user:
             self.user = user.key
         else:

@@ -79,7 +79,7 @@ Contact = Backbone.Model.extend({
                 that.set('invite_attendee_id', data[0]);
 
                 if(callback)
-                    callback(data)
+                    callback(that)
             },
             error: function(data) {
                 alert_notification([{
@@ -99,8 +99,8 @@ Contact = Backbone.Model.extend({
             contentType: "application/json",
             cache: false,
             success: function(data) {
-                if(callback)
-                    callback(view, data)
+                if(callback != null)
+                    callback(data)
             },
             error: function(data) {
                 alert_notification([{

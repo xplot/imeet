@@ -211,7 +211,7 @@ __e( invite_attendee_id ) +
  if(status == 'organizer') {;
 __p += '\n            <b><i>Host</i></b>\n        ';
  } ;
-__p += '\n        <b>' +
+__p += '\n        <i class="fa-pen fa-1x"></i>&nbsp;<b>' +
 __e(name ) +
 '</b> ' +
 __e(email ) +

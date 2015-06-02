@@ -287,9 +287,7 @@ AttendeeDetailsView = Backbone.View.extend({
         this.model.set('email', $("#emailInput").val());
         this.model.set('phone', $("#phoneInput").val());
 
-        console.log(this.model.get('unique_id'));
-
-        if(this.model.get('unique_id') != '') //Contact Exists
+        if(currentUser == null || this.model.get('unique_id') != '') //Contact Exists
             this.model.updateAttendee(this.invite_id, $.proxy(this.attendeeUpdated, this));
         else{
             this.model.create($.proxy(this.updateAttendee, this));
@@ -308,5 +306,5 @@ AttendeeDetailsView = Backbone.View.extend({
 
         this.hide();
 
-    }
+    },
 });

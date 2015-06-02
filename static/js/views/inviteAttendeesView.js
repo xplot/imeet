@@ -37,6 +37,7 @@ InviteAttendeesView = Backbone.View.extend({
 
         this.listenTo(this.model, 'add', this.attendeeCreated);
         this.listenTo(this.model, 'remove', this.attendeeRemoved);
+        this.listenTo(this.model, 'change', this.attendeeUpdated);
 
         return this.$el.html();
     },
@@ -72,12 +73,17 @@ InviteAttendeesView = Backbone.View.extend({
         );
     },
 
-    attendeeRemoved:function(e){
+    attendeeRemoved: function(e){
         var dataId = $(e.currentTarget).data('rowid');
         var contactModel = this.model.getById(dataId);
         contactModel.removeFromInvite(this.invite_id);
 
         this.model.removeBy(dataId);
+    },
+
+    attendeeUpdated: function(attendee){
+        var $attendee_row = $('a[data-rowid="'+ attendee.get('invite_attendee_id') + '"');
+        $attendee_row.html($(JST['invite_attendee_admin.html'](attendee.toJSON())).html());
     },
 
     yesButtonClick: function(event) {
@@ -112,10 +118,17 @@ InviteAttendeesView = Backbone.View.extend({
         });
     },
 
+    attendeeDetailsView: function(){
+        if(this._attendeeDetailsView == null)
+          this._attendeeDetailsView = new AttendeeDetailsView();
+        return this._attendeeDetailsView;
+    },
+
     editAttendeeClick: function(e){
         var dataId = $(e.currentTarget).data('rowid');
         var contactModel = this.model.getByAttendeeId(dataId);
-        var attendeeEditView = new AttendeeDetailsView();
+
+        var attendeeEditView = this.attendeeDetailsView();
         attendeeEditView.render(this.invite_id, contactModel);
     }
 });

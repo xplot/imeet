@@ -67,8 +67,7 @@ InviteAttendeeCreateView = Backbone.View.extend({
 
         if(contact != null){
             var contactModel = new Contact(contact);
-            this.model.add(contactModel);
-            contactModel.includeInInvite(this.invite_id);
+            contactModel.includeInInvite(this.invite_id, $.proxy(this.addAttendee, this));
         }
 
         if(group != null){
@@ -81,6 +80,10 @@ InviteAttendeeCreateView = Backbone.View.extend({
         this.$newContact.val('');
         this.$newContact.typeahead('val', '');
         this.$newContact.focus();
+    },
+
+    addAttendee: function(attendee){
+        this.model.add(attendee);
     },
 
     addAttendeesFromGroup: function(attendeeList){
