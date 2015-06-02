@@ -1,4 +1,5 @@
 import webapp2
+import logging
 from google.appengine.api import mail
 from google.appengine.ext import ndb
 from webapp2 import RequestHandler
