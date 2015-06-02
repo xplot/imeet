@@ -57,5 +57,7 @@ class AddInviteAttendeeCommand(object):
             self.invite = Invite.get_by_unique_id(self.invite_unique_id)
         invite_attendee.invite = self.invite.key
 
+        invite_attendee.is_organizer = self.is_organizer
+
         invite_attendee.put()
         return invite_attendee.unique_id

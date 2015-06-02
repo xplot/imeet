@@ -139,14 +139,19 @@ Contact = Backbone.Model.extend({
 
     create: function(callback){
         var that = this;
+        var post = {
+            contact: this.toJSON()
+        };
+
+        if(currentUser!=null) {
+            post.user_id = currentUser.id;
+        }
+
         $.ajax({
             url: "/api/contacts",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({
-                user_id: currentUser.id,
-                contact: this.toJSON()
-            }),
+            data: JSON.stringify(post),
             cache: false,
             success: function(unique_id) {
                 that.set('unique_id', unique_id);
@@ -167,18 +172,21 @@ Contact = Backbone.Model.extend({
         if(unique_id == null || unique_id == '')
             return this.create(callback);
 
-        var user_id = currentUser.id;
+        var post = {
+            contact: {
+                name: this.get('name'),
+                email: this.get('email'),
+                phone: this.get('phone')
+            }
+        };
+
+        if(currentUser!=null) {
+            post.user_id = currentUser.id;
+        }
 
         $.ajax({
             url: "/api/contacts/" +  unique_id + "/edit",
-            data:JSON.stringify({
-                user_id: user_id,
-                contact: {
-                    name: this.get('name'),
-                    email: this.get('email'),
-                    phone: this.get('phone')
-                }
-            }),
+            data:JSON.stringify(post),
             type: "PUT",
             contentType: "application/json",
             cache: false,
@@ -197,10 +205,8 @@ Contact = Backbone.Model.extend({
 
     updateAttendee: function(invite_id, callback){
         var url = "/api/invite/" + invite_id + "/attendee/";
-        var user_id = currentUser.id;
 
         var post = {
-            user_id: user_id,
             invite_attendee_id: this.get('invite_attendee_id'),
 
             contact: {
@@ -319,9 +325,12 @@ Group = Backbone.Model.extend({
         var url = "/api/invite/" + invite_id + "/group/";
 
         var post = {
-            user_id: currentUser.id,
             unique_id: this.get('unique_id')
         };
+
+        if(currentUser!=null) {
+            post.user_id = currentUser.id;
+        }
 
         $.ajax({
             url: url,

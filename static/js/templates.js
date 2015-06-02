@@ -249,29 +249,33 @@ with (obj) {
  if(attendee != null && attendee.status == 'organizer') {;
 __p += '\n    <div id="new-contact-container" ></div>\n';
 };
-__p += '\n\n<div class="row rsvp small-margin-top">\n      ';
- if(attendee != null && attendee.status != 'deleted' && attendee.status != 'organizer') {;
-__p += '\n        <div class="panel panel-default">\n          <div class="panel-heading">\n              ';
+__p += '\n\n';
+ if(attendee != null && attendee.status != 'organizer') {;
+__p += '\n    <div class="row rsvp small-margin-top">\n          ';
+ if(attendee.status != 'deleted') {;
+__p += '\n            <div class="panel panel-default">\n              <div class="panel-heading">\n                  ';
  if(attendee.status == 'no_response') {;
-__p += '\n                    Are you coming?\n              ';
+__p += '\n                        Are you coming?\n                  ';
 } else if(attendee.status == 'no') { ;
-__p += '\n                    Sad you can\'t attend :(\n              ';
+__p += '\n                        Sad you can\'t attend :(\n                  ';
 } else if(attendee.status == 'yes') { ;
-__p += '\n                    Glad you\'re coming :)\n              ';
+__p += '\n                        Glad you\'re coming :)\n                  ';
 } ;
-__p += '\n          </div>\n\n          <div class="panel-body acknowledge-body">\n            <div class="col-md-6 yes-button">\n                <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
+__p += '\n              </div>\n\n              <div class="panel-body acknowledge-body">\n                <div class="col-md-6 yes-button">\n                    <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
 __e( attendee.status ) +
-'">YES</button>\n            </div>\n            <div class="col-md-6 no-button">\n                <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
+'">YES</button>\n                </div>\n                <div class="col-md-6 no-button">\n                    <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
 __e( attendee.status ) +
-'">NO</button>\n            </div>\n          </div>\n        </div>\n      ';
+'">NO</button>\n                </div>\n              </div>\n            </div>\n          ';
 } else if(attendee != null && attendee.status == 'deleted') {;
-__p += '\n        <div class="panel panel-default">\n            <div class="panel-heading"></div>\n              <div class="panel-body">\n                <b>The organizer removed you from this event</b>\n            </div>\n        </div>\n      ';
+__p += '\n            <div class="panel panel-default">\n                <div class="panel-heading"></div>\n                  <div class="panel-body">\n                    <b>The organizer removed you from this event</b>\n                </div>\n            </div>\n          ';
 } else if(attendee != null && attendee.status == 'organizer') {;
-__p += '\n        <!-- Potentially also add people here -->\n      ';
+__p += '\n            <!-- Potentially also add people here -->\n          ';
 } else{;
-__p += '\n\n      ';
+__p += '\n\n          ';
 };
-__p += '\n\n</div>\n\n<div class="row rsvp no-margin">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        ';
+__p += '\n    </div>\n';
+} ;
+__p += '\n\n<div class="row rsvp no-margin">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        ';
  _.each( confirmed, function( item ){ ;
 __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +

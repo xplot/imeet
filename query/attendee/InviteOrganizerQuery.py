@@ -32,13 +32,8 @@ class InviteOrganizerQuery(object):
             )
         ).get()
 
-        #The following if have to stay for a few weeks, backwards compatibility
         if not invite_attendee:
-            return {
-                'unique_id':  'xxx1',
-                'name': "Organizer",
-                'email': ''
-            }
+            return None
 
         attendee = {
             'unique_id':  invite_attendee.unique_id,
