@@ -53,7 +53,7 @@ InviteAttendeeCreateView = Backbone.View.extend({
 
         if(this.last_selected_item == null && this.$newContact.val() != ''){
             if(!validator.validateItem(this.$newContact)){
-                alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+                alert_notification([{alertType: 'warning', message: 'Please ensure this is a correct address, or a contact selected from your contact book'}]);
                 return;
             }
 
