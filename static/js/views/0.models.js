@@ -91,7 +91,7 @@ Contact = Backbone.Model.extend({
     },
 
     removeFromInvite: function(invite_id, callback){
-        var url = "/api/invite/" + invite_id + "/attendees/" + this.get('unique_id');
+        var url = "/api/invite/" + invite_id + "/attendees/" + this.get('invite_attendee_id');
 
         $.ajax({
             url: url,
@@ -112,7 +112,7 @@ Contact = Backbone.Model.extend({
     },
 
     acknowledgeInvite: function(response, callback){
-        var url = "/api/invite/attendees/" + this.get('unique_id') + '/response';
+        var url = "/api/invite/attendees/" + this.get('invite_attendee_id') + '/response';
         var post = {
             response: response,
             channel: 'web'
