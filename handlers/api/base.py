@@ -50,7 +50,9 @@ class JsonHandler(RequestHandler):
         self.__render_json__(data)
 
     def set_location_header(self, model):
-        self.response.headers["Location"] = "{0}/{1}".format(self.request.path, model.key().id())
+        self.response.headers["Location"] = "{0}/{1}".format(
+            self.request.path, model.key().id()
+        )
 
     def json_handle_exception(self, exception, debug):
         logging.exception(exception)
