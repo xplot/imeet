@@ -24,7 +24,7 @@ body{
   }
 
 
-  .contacts-header {
+  .contacts-header, .groups-header {
 
     @media (max-width: 1024px) {
       text-align: center;
@@ -51,14 +51,14 @@ body{
     background-color: @invite-light-gray;
   }
 
-  .contacts-table-container{
+  .contacts-table-container, .groups-table-container{
     display: table;
     text-align: center;
     width: 100%;
     position: relative;
     max-height: 70%;
 
-    #contacts_table{
+    #contacts_table, #groups_table{
       vertical-align: middle;
       display: table-cell;
       width: 80%;
@@ -67,18 +67,18 @@ body{
     }
   }
 
-.contact-row {
+.contact-row, .group-row {
     width: 100%;
     border-bottom: 1px solid @invite-light-gray;
     float: left;
     margin: 5px 0px;
     cursor: pointer;
 
-    .update-contact{
+    .update-group,.update-contact{
       display: none;
     }
 
-    .contact-actions {
+    .contact-actions, .group-actions {
         float: right;
         width: 50px;
         text-align: left;
@@ -93,7 +93,7 @@ body{
         }
     }
 
-    .contact-picture {
+    .contact-picture, .group-picture {
       float: left;
       width: 50px;
       @media (max-width: 1024px) {
@@ -105,7 +105,7 @@ body{
       }
     }
 
-    .contact-row-container {
+    .contact-row-container, .group-row-container {
       width: 75%;
       float: left;
       margin: 2px;
@@ -115,7 +115,7 @@ body{
           margin-left: 40px;
       }
 
-      .contact-name, .contact-email, .contact-phone {
+     .group-name, .contact-name, .contact-email, .contact-phone {
         float: left;
         width: 33%;
         text-align: left;
@@ -126,7 +126,7 @@ body{
         }
       }
 
-      .contact-name{
+      .group-name, .contact-name{
         @media (max-width: 1024px) {
           font-weight: bold;
           width: 100%;
@@ -137,8 +137,8 @@ body{
   }
 
   @media (min-width: 1024px) {
-    .contact-row:hover {
-      .update-contact{
+    .group-rpw:hover, .contact-row:hover {
+      .update-group, .update-contact{
         display: inline-block;
       }
     }

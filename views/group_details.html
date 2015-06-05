@@ -1,0 +1,35 @@
+<div class="modal addGroup-modal" tabindex="-1" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
+            <h4 class="modal-title" id="myModalLabel">
+                <% if(createMode) {%>
+                    Add New Group
+              <%} else { %>
+                    Edit
+              <%} %>
+
+            </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-2">Name: </div>
+                    <div class="col-md-10">
+                        <input type="text" value="<%-group.name %>" class="form-control group_input" id="nameInput" placeholder="My Group" data-validation="required">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default close-dialog" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary new-group-btn">
+                    <% if(createMode) {%>
+                            Create
+                      <%} else { %>
+                            Update
+                      <%} %>
+                </button>
+        </div>
+    </div>
+  </div>
+</div>

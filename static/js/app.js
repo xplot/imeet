@@ -60,7 +60,9 @@ function init_app() {
         el: "#contact-list"
     });
 
-
+    groups_view = new GroupsView({
+        el: "#contact-list"
+    });
 
     App.Router = Backbone.Router.extend({
         routes: {
@@ -83,6 +85,7 @@ function init_app() {
             'invite/:id/:invite_attendee_id': 'view_as_attendee',
 
             'contacts' : 'contacts',
+            'groups' : 'groups',
             'contacts/new' : 'contacts_new'
         },
         index: function () {
@@ -132,7 +135,10 @@ function init_app() {
         },
         contacts_new: function(){
             //contactsNew_view.render({contactList:contactList});
-        }
+        },
+        groups: function(){
+            groups_view.render({contactList: contactList, groupList: groupList});
+        },
     });
 
     //Stupid Facebook Login Bug

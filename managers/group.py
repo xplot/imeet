@@ -108,6 +108,13 @@ class GroupManager(object):
         group.put()
         return group
 
+    def update(self, group_id, group_name):
+        existing_group = Group.get_by_unique_id(group_id)
+        if existing_group is None:
+            raise Error("Group not found with id " + group_id)
+        existing_group.name = group_name
+        existing_group.put()
+
     def remove(self, group_id):
         group = self._get_group(group_id=group_id)
         if group is not None:

@@ -30,6 +30,17 @@ class ApiGroupHandler(JsonHandler):
         }
 
     @user_context
+    def update_group(self, group_id):
+        group_data = self._data().get('group')
+
+        group_manager = GroupManager(self.user.key)
+        group_manager.update(group_id, group_data['name'])
+        return {
+            'unique_id': group_id,
+            'name': group_data['name']
+        }
+
+    @user_context
     def remove(self, group_id):
         group_manager = GroupManager(self.user.key)
         group_manager.remove(group_id)

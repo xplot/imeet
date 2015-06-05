@@ -95,6 +95,16 @@ __e(phone ) +
 return __p
 };
 
+this["JST"]["contacts.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div id="new-contact-container"></div>\n\n<div class="row no-margin contacts-header">\n    <h3>Contacts</h3>\n    <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>\n    <!--<a class="btn add-group pull-right" href="#">New Group</a>-->\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="contacts_table" class="small-margin-top"></div>\n</div>';
+
+}
+return __p
+};
+
 this["JST"]["group-item.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -145,6 +155,61 @@ __p += '\n        </div>\n    </div>\n</div>\n\n';
 return __p
 };
 
+this["JST"]["group_details.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="modal addGroup-modal" tabindex="-1" >\n    <div class="modal-dialog">\n        <div class="modal-content">\n            <div class="modal-header">\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>\n            <h4 class="modal-title" id="myModalLabel">\n                ';
+ if(createMode) {;
+__p += '\n                    Add New Group\n              ';
+} else { ;
+__p += '\n                    Edit\n              ';
+} ;
+__p += '\n\n            </h4>\n            </div>\n            <div class="modal-body">\n                <div class="row">\n                    <div class="col-md-2">Name: </div>\n                    <div class="col-md-10">\n                        <input type="text" value="' +
+__e(group.name ) +
+'" class="form-control group_input" id="nameInput" placeholder="My Group" data-validation="required">\n                    </div>\n                </div>\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-default close-dialog" data-dismiss="modal">Close</button>\n                <button type="button" class="btn btn-primary new-group-btn">\n                    ';
+ if(createMode) {;
+__p += '\n                            Create\n                      ';
+} else { ;
+__p += '\n                            Update\n                      ';
+} ;
+__p += '\n                </button>\n        </div>\n    </div>\n  </div>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["group_item.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="group-row" data-id="' +
+__e( unique_id ) +
+'" draggable="true">\n    <div class="editable group-picture" >\n        <i class="fa fa-group fa-2x"></i>\n    </div>\n\n    <div class="group-row-container">\n        <div class="group-name" >\n            ' +
+__e( name ) +
+'\n        </div>\n    </div>\n\n    <a class="update-group" href="#"><i class="fa-pen fa-1_2x"></i></a>\n\n    <div class="editable group-actions">\n        <a class="delete-group" href="#"><i data-id="' +
+__e( unique_id ) +
+'" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n    </div>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["group_item_edit.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="row no-margin" data-id="' +
+__e( unique_id ) +
+'">\n    <div class="editable col-md-3 col-xs-8">\n        <input id="edit-name" value="' +
+__e( name ) +
+'" placeholder="Name...">\n    </div>\n    <div class="col-md-3 update-column">\n        <a href="#" class="finish-edit">OK</a>\n    </div>\n</div>';
+
+}
+return __p
+};
+
 this["JST"]["group_item_typeahead.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -154,6 +219,16 @@ __e( unique_id ) +
 '">\n    <i class="fa fa-organization fa-2x"></i>\n    <b>' +
 __e(name ) +
 '</b>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["groups.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div id="new-group-container"></div>\n\n<div class="row no-margin groups-header">\n    <h3>Groups</h3>\n    <a class="btn btn-success add-group pull-right" href="#">New Group</a>\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="groups_table" class="small-margin-top"></div>\n</div>';
 
 }
 return __p

@@ -7,6 +7,8 @@ function contactCreateView(){
 
 ContactsView = SimpleView.extend({
     first_time: true,
+    el: "#contact-list",
+    template: JST['contacts.html'],
 
     initialize: function (options) {
         this.options = options || {};
@@ -14,14 +16,11 @@ ContactsView = SimpleView.extend({
     events: {
        'click .add-contact' : 'addContact',
        'change #import-csv' : 'importFromCsv',
-       'click .add-group' : 'addGroup',
+
         'mouseup div': 'mouseUp',
     },
 
     render: function(options) {
-        $('#contact-list').show();
-        $('#contact-new').hide();
-
         if(!this.first_time){
             return;
         }
@@ -32,18 +31,12 @@ ContactsView = SimpleView.extend({
         this.listenTo(this.contactList, 'remove', this.removeContactHook);
         this.listenTo(this.contactList, 'change', this.changeContactHook);
 
-        var groupsTable =$('.groups_table');
-        var contactTable =$('#contacts_table');
+        this.$el.html(this.template());
+
+        var contactTable = this.$el.find('#contacts_table');
+
         contactList.each(function(contact){
             contactTable.append(new ContactItemView({model: contact}).render().el);
-        });
-
-        this.groupListView = new GroupListView({
-            el: '.groups_table'
-        });
-        this.groupListView.render({
-            groupList: this.groupList,
-            contactList: this.contactList
         });
 
         this.first_time = false;
@@ -68,10 +61,6 @@ ContactsView = SimpleView.extend({
         evt.preventDefault();
         this.contactCreateView = contactCreateView();
         this.contactCreateView.render(null, this.contactList);
-    },
-
-    addGroup: function(){
-        this.groupListView.showDialog();
     },
 
     importFromCsv: function(evt){
@@ -127,10 +116,8 @@ ContactDetailsView = Backbone.View.extend({
     render: function(contactModel, mainContactList) {
         this.mainContactList = mainContactList;
 
-        if(contactModel != null)
-            this.createMode = false;
-        else
-            this.createMode = true;
+        this.createMode = contactModel == null;
+
         this.model = contactModel || new Contact();
 
         this.$el.html(this.template({
@@ -172,11 +159,11 @@ ContactDetailsView = Backbone.View.extend({
         if(this.createMode)
             this.model.create($.proxy(this.contactCreated, this));
         else
-            this.model.update($.proxy(this.contactCreated, this));
+            this.model.update($.proxy(this.contactUpdated, this));
     },
 
     contactCreated: function(data){
-        var message = (this.createMode)?"Contact created!": "Contact updated!";
+        var message = "Contact created!";
 
         alert_notification([{
             alertType:'success',
@@ -189,7 +176,17 @@ ContactDetailsView = Backbone.View.extend({
             this.mainContactList.add(this.model);
 
         this.hide();
+    },
 
+    contactUpdated: function(data){
+        var message = "Contact updated!";
+
+        alert_notification([{
+            alertType:'success',
+            message: message
+        }], 5);
+
+        this.hide();
     }
 });
 

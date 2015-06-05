@@ -296,6 +296,72 @@ Group = Backbone.Model.extend({
         contacts: new ContactList()
     },
 
+    create: function(callback) {
+        var that = this;
+        var post = {
+            contact: this.toJSON()
+        };
+
+        if (currentUser != null) {
+            post.user_id = currentUser.id;
+        }
+
+        $.ajax({
+            url: "/api/group/" + this.get('name'),
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function (unique_id) {
+                that.set('unique_id', unique_id);
+                if (callback != null)
+                    callback(unique_id);
+            },
+            error: function (data) {
+                alert_notification([
+                    {
+                        alertType: 'danger',
+                        message: data.responseText
+                    }
+                ]);
+            }
+        });
+    },
+
+    update: function(callback){
+        var unique_id = this.get('unique_id');
+        if(unique_id == null || unique_id == '')
+            return this.create(callback);
+
+        var post = {
+            group: {
+                name: this.get('name'),
+            }
+        };
+
+        if(currentUser!=null) {
+            post.user_id = currentUser.id;
+        }
+
+        $.ajax({
+            url: "/api/group/" +  unique_id + "/edit",
+            data:JSON.stringify(post),
+            type: "PUT",
+            contentType: "application/json",
+            cache: false,
+            success: function(data) {
+                if(callback != null)
+                    callback(data);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
     fetchContacts: function(callback){
         $.ajax({
             url: "/api/group/" + this.get('unique_id') + "?user_id="+currentUser.id,
