@@ -27,7 +27,13 @@ __e(contact.name ) +
 __e(contact.phone ) +
 '" class="form-control contact_input" id="phoneInput" placeholder="000 000 0000" data-validation="phone">\n                    </div>\n                </div>\n                <div class="row">\n                    <div class="col-md-2">Email: </div>\n                    <div class="col-md-10">\n                        <input type="text" value="' +
 __e(contact.email ) +
-'" class="form-control contact_input" id="emailInput" placeholder="john.smith@example.com" data-validation="email">\n                    </div>\n                </div>\n\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-default close-dialog" data-dismiss="modal">Close</button>\n                <button type="button" class="btn btn-primary new-contact-btn">\n                    ';
+'" class="form-control contact_input" id="emailInput" placeholder="john.smith@example.com" data-validation="email">\n                    </div>\n                </div>\n\n                <div class="small-margin-top"></div>\n\n                <div class="row">\n                    <div class="col-md-2">Groups: </div>\n                    <div class="col-md-10">\n                ';
+ if(!createMode) {;
+__p += '\n                        <div class="contact-groups"></div>\n                ';
+} else { ;
+__p += '\n                        <i>Create the contact first, then you can add it to groups</i>\n                ';
+} ;
+__p += '\n                    </div>\n                </div>\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-default close-dialog" data-dismiss="modal">Close</button>\n                <button type="button" class="btn btn-primary new-contact-btn">\n                    ';
  if(createMode) {;
 __p += '\n                            Create\n                      ';
 } else { ;
@@ -59,24 +65,6 @@ __e( unique_id ) +
 return __p
 };
 
-this["JST"]["contact_item_edit.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<div class="row no-margin" data-id="' +
-__e( unique_id ) +
-'">\n    <div class="editable col-md-3 col-xs-8">\n        <input id="edit-name" value="' +
-__e( name ) +
-'" placeholder="Name...">\n    </div>\n    <div class="desktop tablet col-md-3">\n        <input id="edit-email" value="' +
-__e( email ) +
-'" placeholder="Email...">\n    </div>\n    <div class="desktop tablet col-md-3">\n        <input id="edit-phone" value="' +
-__e( phone ) +
-'" placeholder="Phone...">\n    </div>\n    <div class="col-md-3 update-column">\n        <a href="#" class="finish-edit">OK</a>\n    </div>\n</div>';
-
-}
-return __p
-};
-
 this["JST"]["contact_item_typeahead.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
@@ -99,57 +87,7 @@ this["JST"]["contacts.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div id="new-contact-container"></div>\n\n<div class="row no-margin contacts-header">\n    <h3>Contacts</h3>\n    <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>\n    <!--<a class="btn add-group pull-right" href="#">New Group</a>-->\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="contacts_table" class="small-margin-top"></div>\n</div>';
-
-}
-return __p
-};
-
-this["JST"]["group-item.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
-function print() { __p += __j.call(arguments, '') }
-with (obj) {
-
-
-    var color = randomColor();
-    var inverse = colorInverter(color);
-;
-__p += '\n<div class="panel panel-default ' +
-__e( panel_class ) +
-'" data-id="' +
-__e( unique_id ) +
-'" id="panel_' +
-__e( unique_id ) +
-'">\n    <div class="panel-heading group-drop-area" role="tab" id="heading_' +
-__e( unique_id ) +
-'" data-id="' +
-__e( unique_id ) +
-'">\n        <div class="panel-title group-drop-area" data-id="' +
-__e( unique_id ) +
-'">\n            <a class="collapsed group-drop-area" data-toggle="collapse" data-parent="#groups_accordion" href="#collapse_' +
-__e( unique_id ) +
-'"\n               aria-expanded="false" aria-controls="collapse_' +
-__e( unique_id ) +
-'" data-id="' +
-__e( unique_id ) +
-'">\n                <div data-id="' +
-__e( unique_id ) +
-'" class="group-drop-area">\n                    ' +
-__e( cut(name)) +
-'<i style="float: right" class="fa fa-angle-down fa-1_5x"></i>\n                </div>\n            </a>\n      </div>\n    </div>\n    <div id="collapse_' +
-__e( unique_id ) +
-'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" >\n        <div class="panel-body group-box group-drop-area" data-id="' +
-__e( unique_id ) +
-'" id="groupbox_' +
-__e( unique_id ) +
-'">\n            Drop Here!!! <br/>\n            ';
-_.each(contacts, function(contact) { ;
-__p += '\n\n                <div class="col-md-5 group-contact">\n                    ' +
-__e( cut(contact.name,8) ) +
-'\n                </div>\n            ';
- }) ;
-__p += '\n        </div>\n    </div>\n</div>\n\n';
+__p += '<div id="new-contact-container"></div>\n\n<div class="row no-margin contacts-header">\n\n    <h3 class="current-page">Contacts</h3>\n    <h3 ><a href="#" class="navigate-to-groups inactive-page">Groups</a></h3>\n\n    <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>\n    <!--<a class="btn add-group pull-right" href="#">New Group</a>-->\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="contacts_table" class="small-margin-top"></div>\n</div>';
 
 }
 return __p
@@ -186,25 +124,11 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="group-row" data-id="' +
 __e( unique_id ) +
-'" draggable="true">\n    <div class="editable group-picture" >\n        <i class="fa fa-group fa-2x"></i>\n    </div>\n\n    <div class="group-row-container">\n        <div class="group-name" >\n            ' +
+'" draggable="true">\n    <div class="editable group-picture" >\n        <i class="fa fa-organization fa-2x"></i>\n    </div>\n\n    <div class="group-row-container">\n        <div class="group-name" >\n            ' +
 __e( name ) +
 '\n        </div>\n    </div>\n\n    <a class="update-group" href="#"><i class="fa-pen fa-1_2x"></i></a>\n\n    <div class="editable group-actions">\n        <a class="delete-group" href="#"><i data-id="' +
 __e( unique_id ) +
 '" class="fa-delete-garbage-streamline fa-1_2x"></i></a>\n    </div>\n</div>';
-
-}
-return __p
-};
-
-this["JST"]["group_item_edit.html"] = function(obj) {
-obj || (obj = {});
-var __t, __p = '', __e = _.escape;
-with (obj) {
-__p += '<div class="row no-margin" data-id="' +
-__e( unique_id ) +
-'">\n    <div class="editable col-md-3 col-xs-8">\n        <input id="edit-name" value="' +
-__e( name ) +
-'" placeholder="Name...">\n    </div>\n    <div class="col-md-3 update-column">\n        <a href="#" class="finish-edit">OK</a>\n    </div>\n</div>';
 
 }
 return __p
@@ -224,11 +148,34 @@ __e(name ) +
 return __p
 };
 
+this["JST"]["group_search.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '\n<div class="contact-group-list col-md-12 no-padding">\n    ';
+ _.each( contact.groups, function( group){ ;
+__p += '\n        ' +
+((__t = ( partial('group_item.html', group) )) == null ? '' : __t) +
+'\n    ';
+ }); ;
+__p += '\n</div>\n\n';
+ if(!searchMode) {;
+__p += '\n    <a href=\'#\' class=\'add-to-group\'>+Add to Group</a>\n';
+} else { ;
+__p += '\n    <input type="text" class="group-input" />\n';
+} ;
+
+
+}
+return __p
+};
+
 this["JST"]["groups.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div id="new-group-container"></div>\n\n<div class="row no-margin groups-header">\n    <h3>Groups</h3>\n    <a class="btn btn-success add-group pull-right" href="#">New Group</a>\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="groups_table" class="small-margin-top"></div>\n</div>';
+__p += '<div id="new-group-container"></div>\n\n<div class="row no-margin groups-header">\n    <h3><a href="#" class="navigate-to-contacts inactive-page">Contacts</a></h3>\n    <h3 class="current-page">Groups</h3>\n\n    <a class="btn btn-success add-group pull-right" href="#">New Group</a>\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="groups_table" class="small-margin-top"></div>\n</div>';
 
 }
 return __p

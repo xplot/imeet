@@ -61,7 +61,7 @@ class GroupManager(object):
 
     def get_contacts_sorted_by_group(self):
         contacts = Contact.query(Contact.user == self.user_key).order(Contact.name).fetch()
-        groupged_contacts = GroupedContact.query(GroupedContact.user == self.user_key).fetch()
+        grouped_contacts = GroupedContact.query(GroupedContact.user == self.user_key).fetch()
         groups = self.get_groups_for_user()
 
         result = {
@@ -74,9 +74,9 @@ class GroupManager(object):
 
         for contact in contacts:
             contact_groups = []
-            for groupged_contact in groupged_contacts:
-                if groupged_contact.contact_unique_id == contact.unique_id:
-                    contact_groups.append(groupged_contact.group_unique_id)
+            for grouped_contact in grouped_contacts:
+                if grouped_contact.contact_unique_id == contact.unique_id:
+                    contact_groups.append(grouped_contact.group_unique_id)
 
             result['contacts'].append({
                 'unique_id': contact.unique_id,

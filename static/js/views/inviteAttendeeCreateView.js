@@ -37,7 +37,6 @@ InviteAttendeeCreateView = Backbone.View.extend({
         if (evt.keyCode != 13) {
             return;
         }
-
         this.createNewAttendee();
     },
 

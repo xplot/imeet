@@ -24,10 +24,7 @@ class ApiGroupHandler(JsonHandler):
     def add(self, group_name):
         group_manager = GroupManager(self.user.key)
         group = group_manager.insert(group_name)
-        return {
-            'unique_id': group.unique_id,
-            'name': group.name
-        }
+        return group.unique_id
 
     @user_context
     def update_group(self, group_id):

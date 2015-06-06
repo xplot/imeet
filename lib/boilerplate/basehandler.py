@@ -289,7 +289,8 @@ class BaseHandler(webapp2.RequestHandler):
             'email': self.email,
             'url': self.request.url,
             'is_mobile': self.is_mobile,
-            'subscription_features': subscription_manager.get_features_for_user()
+            'subscription_features': subscription_manager.get_features_for_user(),
+            'mobile': True if self.request.domain.contains('mobile.') else False
         })
         #kwargs.update(self.auth_config)
         if hasattr(self, 'form'):

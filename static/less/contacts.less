@@ -40,6 +40,15 @@ body{
         float: none;
       }
     }
+
+    .current-page{
+      color: @nav-bg-color;
+    }
+
+    .inactive-page{
+      color: @off-black
+    }
+
     .btn {
       margin: 5px;
 
@@ -152,10 +161,13 @@ body{
   }
 
 
-  input{
+  .group-input, input{
+    padding: 10px 15px;
+    width: 100%;
     border: 1px solid;
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
     border-radius: 0 !important;
   }
+
 }

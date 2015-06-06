@@ -271,7 +271,25 @@ Contact = Backbone.Model.extend({
             return name;
         name = this.get('phone');
         return name;
-    }
+    },
+
+    addToGroup: function(group_unique_id, callback){
+        $.ajax({
+            url: "/api/group/" + group_unique_id+ "/"+ this.get('unique_id') + "?user_id=" + currentUser.id,
+            type: "POST",
+            contentType: "application/json",
+            success: function(data) {
+                if(callback != null)
+                    callback(data);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
 });
 
 ContactList = IMeetCollection.extend({
@@ -420,7 +438,36 @@ Group = Backbone.Model.extend({
                 }]);
             }
         });
-    }
+    },
+
+    fetchAllGroups: function(callback){
+        var that = this;
+        var post = {
+
+        };
+
+        if(currentUser == null) {
+            return;
+        }
+
+        $.ajax({
+            url: "/api/group?user_id=" + currentUser.id,
+            type: "GET",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function(groups) {
+                if(callback != null)
+                    callback(groups);
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
 
 });
 

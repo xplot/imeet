@@ -12,6 +12,7 @@ GroupsView = Backbone.View.extend({
 
     events: {
         'click .add-group' : 'addGroup',
+        'click .navigate-to-contacts' : 'navigateToContacts',
 //       'dragover .group-drop-area': 'contactDragOver',
 //       'dragenter .group-drop-area': 'contactDragEnter',
 //       'dragleave .group-drop-area': 'contactDragLeave',
@@ -21,9 +22,7 @@ GroupsView = Backbone.View.extend({
     newGroupView: null,
 
     render: function(options) {
-        if(!this.first_time){
-            return;
-        }
+
         this.groupList = options.groupList;
 
         this.listenTo(this.groupList, 'add', this.addGroupHook);
@@ -47,29 +46,22 @@ GroupsView = Backbone.View.extend({
         this.groupCreateView.render(null, this.groupList);
     },
 
-     changeGroupHook: function(group){
+    addGroupHook: function(group){
+        var groupTable =$('#groups_table');
+        groupTable.append(new GroupItemView({model: group}).render().el);
+    },
+
+    changeGroupHook: function(group){
         var $group_row = $('div[data-id="'+ group.get('unique_id') + '"');
         $group_row.html($(JST['group_item.html'](group.toJSON())).html());
     },
 
+    navigateToContacts: function(){
+        Backbone.history.navigate('contacts', true);
+    },
 
 //    addContactToGroup: function(contact, group){
-//        $.ajax({
-//            url: "/api/group/" + group.attributes.unique_id+ "/"+ contact.attributes.unique_id + "?user_id=" + currentUser.id,
-//            type: "POST",
-//            contentType: "application/json",
-//            success: function(data) {
-//                $('#groupbox_'+ group.get('unique_id')).append('<div class="col-md-5 group-contact">' + cut(contact.get('name'),8) + '</div>')
-//            },
-//            error: function(data) {
-//                console.log(data);
-//                alert_notification([{
-//                    alertType:'danger',
-//                    message: data.responseText
-//                }]);
-//            }
-//        });
-//    },
+
 });
 
 GroupDetailsView = Backbone.View.extend({

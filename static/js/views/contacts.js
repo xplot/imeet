@@ -16,14 +16,14 @@ ContactsView = SimpleView.extend({
     events: {
        'click .add-contact' : 'addContact',
        'change #import-csv' : 'importFromCsv',
+       'click .navigate-to-groups' : 'navigateToGroups',
+        'click .add-to-group' : 'addToGroup',
 
         'mouseup div': 'mouseUp',
     },
 
     render: function(options) {
-        if(!this.first_time){
-            return;
-        }
+
         this.contactList = options.contactList;
         this.groupList = options.groupList;
 
@@ -101,6 +101,10 @@ ContactsView = SimpleView.extend({
         reader.readAsDataURL(evt.target.files[0]);
     },
 
+     navigateToGroups: function(){
+        Backbone.history.navigate('groups', true);
+    },
+
 });
 
 ContactDetailsView = Backbone.View.extend({
@@ -111,6 +115,7 @@ ContactDetailsView = Backbone.View.extend({
 
     events: {
        'click .new-contact-btn' : 'newContact',
+
     },
 
     render: function(contactModel, mainContactList) {
@@ -124,6 +129,14 @@ ContactDetailsView = Backbone.View.extend({
             createMode: this.createMode,
             contact: this.model.toJSON()
         }));
+
+        if(!this.createMode){ //Group management only on Update
+            var groupSearchView = new GroupSearchView({
+                el: ".contact-groups"
+            });
+            groupSearchView.render(contactModel, false);
+        }
+
 
         this.$el.find('.addContact-modal').modal({
             show: true,
@@ -187,7 +200,9 @@ ContactDetailsView = Backbone.View.extend({
         }], 5);
 
         this.hide();
-    }
+    },
+
+
 });
 
 ContactItemView = SimpleView.extend({
@@ -220,7 +235,6 @@ ContactItemView = SimpleView.extend({
         evt.preventDefault();
         this.contactCreateView = contactCreateView();
         this.contactCreateView.render(this.model);
-
     },
 
     deleteContact: function(evt){
@@ -304,4 +318,105 @@ AttendeeDetailsView = Backbone.View.extend({
         this.hide();
 
     },
+});
+
+GroupSearchView = Backbone.View.extend({
+    template: JST["group_search.html"],
+    model: null,
+    searchMode: false,
+
+    events: {
+        'click .add-to-group' : "addToGroup",
+        'keyup .group-input': 'groupInputEnter'
+    },
+
+    render: function(contact, searchMode){
+        this.model = contact;
+
+        var json = {
+            searchMode: searchMode,
+            contact: this.model.toJSON()
+        };
+
+        this.$el.html(this.template(json));
+
+        this.$newGroup = $('.group-input');
+
+        var that = this;
+        var groupModel = new Group();
+        groupModel.fetchAllGroups(function(groups){
+            that.all_groups = new GroupList(groups);
+            that.setupGroupsTypeahead();
+        });
+
+        return this;
+    },
+
+    groupInputEnter: function(evt) {
+        if (evt.keyCode != 13) {
+            return;
+        }
+        this.groupSelected();
+    },
+
+    groupSelected: function() {
+        var group = this.selectedGroup;
+
+        if(group != null){
+            this.model.addToGroup(group.unique_id, $.proxy(this.contactIncludedInGroup, this));
+        }
+    },
+
+    addToGroup: function(evt){
+        this.render(this.model, true);
+    },
+
+    setupGroupsTypeahead: function(){
+        var that = this;
+
+        var substringGroupMatcher = function(groups) {
+            return function findMatches(q, cb) {
+                var matches, substrRegex;
+                matches = [];
+                substrRegex = new RegExp(q, 'i');
+
+                groups.each(function(group) {
+                    if (substrRegex.test(group.get('name'))){
+                        group.set('is_group', true);
+                        matches.push(group.toJSON());
+                    }
+                });
+            cb(matches);
+            };
+        };
+
+        var setupTypeAhead = function(groups){
+            that.$newGroup.typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1,
+            },
+            {
+                autoselect: true,
+                name: 'groups',
+                displayKey: 'name',
+                source: substringGroupMatcher(groups),
+                templates: {
+                    suggestion: JST['group_item_typeahead.html']
+                }
+
+            }
+            ).on('typeahead:selected', function (obj, group) {
+                that.selectedGroup = group;
+
+            })
+            .on('keypress keydown input', function($e) {
+                $e.stopPropagation();
+
+            });
+        };
+
+        setupTypeAhead(that.all_groups);
+    },
+
 });

@@ -1,0 +1,12 @@
+
+<div class="contact-group-list col-md-12 no-padding">
+    <% _.each( contact.groups, function( group){ %>
+        <%= partial('group_item.html', group) %>
+    <% }); %>
+</div>
+
+<% if(!searchMode) {%>
+    <a href='#' class='add-to-group'>+Add to Group</a>
+<%} else { %>
+    <input type="text" class="group-input" />
+<%} %>

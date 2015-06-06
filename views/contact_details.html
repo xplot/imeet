@@ -32,6 +32,18 @@
                     </div>
                 </div>
 
+                <div class="small-margin-top"></div>
+
+                <div class="row">
+                    <div class="col-md-2">Groups: </div>
+                    <div class="col-md-10">
+                <% if(!createMode) {%>
+                        <div class="contact-groups"></div>
+                <%} else { %>
+                        <i>Create the contact first, then you can add it to groups</i>
+                <%} %>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default close-dialog" data-dismiss="modal">Close</button>
