@@ -248,9 +248,8 @@ class BaseHandler(webapp2.RequestHandler):
             return self.user_model.get_by_id(user['user_id'])
         return None
 
-    @webapp2.cached_property
     def is_mobile(self):
-        return utils.set_device_cookie_and_return_bool(self)
+        return 'mobile.imeet' in self.request.url
 
     @webapp2.cached_property
     def jinja2(self):
@@ -288,8 +287,9 @@ class BaseHandler(webapp2.RequestHandler):
             'username': self.username,
             'email': self.email,
             'url': self.request.url,
-            'is_mobile': self.is_mobile,
-            'subscription_features': subscription_manager.get_features_for_user()
+            'is_mobile': self.is_mobile(),
+            'subscription_features': subscription_manager.get_features_for_user(),
+
         })
         #kwargs.update(self.auth_config)
         if hasattr(self, 'form'):
