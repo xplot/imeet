@@ -64,19 +64,23 @@ class GroupManager(object):
         grouped_contacts = GroupedContact.query(GroupedContact.user == self.user_key).fetch()
         groups = self.get_groups_for_user()
 
+        group_dict = {}
+
+        for group in groups:
+            group_dict[group.unique_id] = {
+                'unique_id': group.unique_id,
+                'name': group.name
+            }
+
         result = {
-            'groups': [{
-                'unique_id': x.unique_id,
-                'name': x.name
-            } for x in groups],
+            'groups': group_dict.values(),
             'contacts': []
         }
-
         for contact in contacts:
             contact_groups = []
             for grouped_contact in grouped_contacts:
                 if grouped_contact.contact_unique_id == contact.unique_id:
-                    contact_groups.append(grouped_contact.group_unique_id)
+                    contact_groups.append(group_dict[grouped_contact.group_unique_id])
 
             result['contacts'].append({
                 'unique_id': contact.unique_id,

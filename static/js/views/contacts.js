@@ -345,8 +345,10 @@ GroupSearchView = Backbone.View.extend({
         var that = this;
         var groupModel = new Group();
         groupModel.fetchAllGroups(function(groups){
+
             that.all_groups = new GroupList(groups);
             that.setupGroupsTypeahead();
+            that.$newGroup.focus();
         });
 
         return this;
@@ -363,8 +365,14 @@ GroupSearchView = Backbone.View.extend({
         var group = this.selectedGroup;
 
         if(group != null){
+            this.model.get('groups').push(group);
             this.model.addToGroup(group.unique_id, $.proxy(this.contactIncludedInGroup, this));
+
         }
+    },
+
+    contactIncludedInGroup: function(){
+        this.render(this.model, false);
     },
 
     addToGroup: function(evt){
@@ -408,11 +416,10 @@ GroupSearchView = Backbone.View.extend({
             }
             ).on('typeahead:selected', function (obj, group) {
                 that.selectedGroup = group;
-
+                that.groupSelected();
             })
             .on('keypress keydown input', function($e) {
                 $e.stopPropagation();
-
             });
         };
 

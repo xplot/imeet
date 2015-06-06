@@ -279,6 +279,7 @@ Contact = Backbone.Model.extend({
             type: "POST",
             contentType: "application/json",
             success: function(data) {
+
                 if(callback != null)
                     callback(data);
             },
@@ -381,16 +382,19 @@ Group = Backbone.Model.extend({
     },
 
     fetchContacts: function(callback){
+        var that = this;
+
         $.ajax({
             url: "/api/group/" + this.get('unique_id') + "?user_id="+currentUser.id,
             type: "GET",
             success: function(data) {
                 var contactList = new ContactList();
-                data.forEach(function(item){
-                    contactList.add(new Contact(item));
-                });
+                if(data != null)
+                    data.forEach(function(item){
+                        contactList.add(new Contact(item));
+                    });
 
-                this.set('contacts', contactList);
+                that.set('contacts', contactList);
 
                 if(callback != null)
                     callback(contactList)
@@ -424,12 +428,14 @@ Group = Backbone.Model.extend({
             cache: false,
             success: function(data) {
                 var index = 0;
+                var contactsInGroup = that.get('contacts');
+
                 data.forEach(function(item){
-                    that.contacts[index].set('invite_attendee_id', item);
+                    contactsInGroup.models[index].set('invite_attendee_id', item);
                 });
 
                 if(callback != null)
-                    callback(that.contacts)
+                    callback(that.get('contacts'))
             },
             error: function(data) {
                 alert_notification([{

@@ -29,8 +29,11 @@
             email:"{{contact.email}}",
             phone:"{{contact.phone}}",
             groups: [
-                {% for groupId in contact['groups']%}
-                    '{{groupId}}',
+                {% for xgroup in contact['groups'] %}
+                    {
+                        unique_id:  '{{xgroup["unique_id"]}}',
+                        name:  '{{xgroup["name"]}}'
+                    },
                 {% endfor%}
             ]
         });

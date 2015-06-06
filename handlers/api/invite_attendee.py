@@ -52,8 +52,7 @@ class InviteAttendeeHandler(JsonHandler):
             group_unique_id=group_id,
             user=self.user
         )
-        command.execute()
-        return invite_id
+        return command.execute()
 
     @user_context
     #@request_with_subscription
