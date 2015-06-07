@@ -3,7 +3,7 @@ function init_app() {
     window.App = {
         Models: {},
         Collections: {},
-        Views: {},
+        Views: {}, 
         Router: {}
     };
 
