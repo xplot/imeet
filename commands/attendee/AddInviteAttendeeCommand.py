@@ -1,6 +1,6 @@
 from managers.utils import guid
 from commands.addressbook.UpdateOrCreateContactCommand import UpdateOrCreateContactCommand
-from models import InviteAttendee, InviteAttendeeNotification, Contact, Invite
+from models import InviteAttendee, InviteAttendeeNotification, Contact, Invite, User
 
 
 class AddInviteAttendeeCommand(object):
@@ -59,5 +59,14 @@ class AddInviteAttendeeCommand(object):
 
         invite_attendee.is_organizer = self.is_organizer
 
+        #We can only correlate by email now
+        if invite_attendee.email:
+            user = self.user_from_email(invite_attendee.email)
+            if user:
+                invite_attendee.user = user.key
+
         invite_attendee.put()
         return invite_attendee.unique_id
+
+    def user_from_email(self, email):
+        return User.get_by_email(email)

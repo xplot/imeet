@@ -29,7 +29,7 @@ app = webapp2.WSGIApplication([
     Route('/new/<invite_name>/from/<source_invite_id>', html.IndexHandler, handler_method='new'),
     Route('/search', html.IndexHandler, handler_method='search'),
     Route('/invite', html.IndexHandler, handler_method='view_invite'),
-    Route('/invite/<invite_id>', html.IndexHandler, handler_method='view_invite'),
+    Route('/invite/<invite_id>', html.IndexHandler, handler_method='view_invite', name='view_invite'),
     Route('/invite/<invite_id>/edit', html.IndexHandler, handler_method='edit_invite_view', methods=['GET']),
     Route('/invite/<invite_id>/<invite_attendee_id>', html.IndexHandler, handler_method='view_invite'),
     Route('/sent/<id>', html.IndexHandler, handler_method='view_invite'),
@@ -64,6 +64,7 @@ app = webapp2.WSGIApplication([
     # Invite_Attendees
     Route('/api/invite/<invite_id>/attendees/', api.InviteAttendeeHandler),
     Route('/api/invite/<invite_id>/attendee/', api.InviteAttendeeHandler, handler_method='update_attendee', methods=['PUT']),
+    Route('/api/invite/<invite_id>/attendee/from/', api.InviteAttendeeHandler, handler_method='get_attendee_from_user_id', methods=['GET']),
     Route('/api/invite/<invite_id>/attendee/contact', api.InviteAttendeeHandler, handler_method='create_update_contact_from_attendee', methods=['PUT']),
     Route('/api/invite/<invite_id>/attendees/<unique_id>', api.InviteAttendeeHandler, name='delete', handler_method='delete', methods=['DELETE']),
     Route('/api/invite/attendees/<invite_attendee_id>/response', api.InviteAttendeeResponseHandler, handler_method='acknowledge', methods=['POST']),

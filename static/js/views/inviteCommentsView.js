@@ -22,8 +22,14 @@ InviteCommentsView = Backbone.View.extend({
         this.model = data.comments;
 
         var json = {
+          current_attendee: this.current_attendee,
           comments: this.model.collectionToJSON()
         };
+
+        if(this.current_attendee == null && currentUser != null){
+            var inviteModel = new InviteModel({unique_id: this.invite_id});
+            inviteModel.tryToObtainAttendeeFromLoggedUser($.proxy(this.attendeeFromUser, this));
+        }
 
         this.$el.html(this.template(json));
 
@@ -32,6 +38,18 @@ InviteCommentsView = Backbone.View.extend({
         this.listenTo(this.model, 'add', this.newCommentModel);
     },
 
+    attendeeFromUser: function(attendee){
+
+        if (typeof(attendee) == "undefined")
+            return;
+
+        this.current_attendee = new Contact(attendee);
+
+        if(this.current_attendee != null){
+            $('.invite-comment-input').prop( "disabled", false );
+            $('.add-comment').prop( "disabled", false );
+        }
+    },
 
     addCommentEnter: function(evt){
         if (evt.keyCode != 13) {
@@ -45,11 +63,12 @@ InviteCommentsView = Backbone.View.extend({
 
         var comment = new CommentModel({
             comment: this.$comment_input.val(),
-            author: (this.current_attendee!=null)?this.current_attendee.someIdentifier():null
+            author: this.current_attendee.someIdentifier()
         });
+
         comment.submit(
             this.invite_id,
-            (this.current_attendee!=null)?this.current_attendee.get('unique_id'):null
+            this.current_attendee.get('invite_attendee_id')
         );
 
         this.model.add(comment);

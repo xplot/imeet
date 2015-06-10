@@ -286,6 +286,7 @@ class BaseHandler(webapp2.RequestHandler):
             #'theme': self.get_theme,
             'user_id': self.user_id,
             'username': self.username,
+
             'email': self.email,
             'url': self.request.url,
             'is_mobile': self.is_mobile,

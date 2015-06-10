@@ -1,6 +1,7 @@
 from models import InviteAttendee, Invite, InviteAttendeeNotification
 from query.invite import InviteNotFoundException
 from query.attendee.InviteAttendeeReportQuery import InviteAttendeeReportQuery
+from query.attendee.InviteAttendeeQuery import InviteAttendeeQuery
 
 
 class InviteAttendeesQuery(object):
@@ -31,14 +32,6 @@ class InviteAttendeesQuery(object):
             raise InviteNotFoundException()
 
         return [
-            {
-                'unique_id': x.contact.get().unique_id if x.contact else '',
-                'invite_attendee_id':    x.unique_id,
-                'name':         x.name,
-                'phone':        x.phone,
-                'email':        x.email,
-                'status':       x.attendee_status,
-                'response_on':  x.last_response_on
-            } for x in self.invite.get_attendees()
+            InviteAttendeeQuery(x).query() for x in self.invite.get_attendees()
         ]
 

@@ -357,7 +357,15 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row small-margin-top">\n    <div class="col-md-12 no-margin">\n        <h4>Comments</h4>\n    </div>\n</div>\n\n<div class="row ">\n    <div class="col-md-12 no-margin">\n        <textarea class="invite-comment-input" placeholder="Add comment"></textarea>\n    </div>\n</div>\n\n<div class="row">\n    <div class="col-md-6 no-margin">\n        <button type="button" class="btn form-control btn-success add-comment">Add Comment</button>\n    </div>\n</div>\n\n<div class="row invite-comments">\n    <div class="col-md-12 invite-comments-container">\n        ';
+__p += '<div class="row small-margin-top">\n    <div class="col-md-12 no-margin">\n        <h4>Comments</h4>\n    </div>\n</div>\n\n<div class="row ">\n    <div class="col-md-12 no-margin">\n        <textarea class="invite-comment-input" ';
+if(current_attendee == null){ ;
+__p += ' disabled ';
+ } ;
+__p += ' placeholder="Add comment"></textarea>\n    </div>\n</div>\n\n<div class="row">\n    <div class="col-md-6 no-margin">\n        <button type="button" ';
+if(current_attendee == null){ ;
+__p += ' disabled ';
+ } ;
+__p += ' class="btn form-control btn-success add-comment">Add Comment</button>\n    </div>\n</div>\n\n<div class="row invite-comments">\n    <div class="col-md-12 invite-comments-container">\n        ';
  _.each( comments, function( comment ){ ;
 __p += '\n            ' +
 ((__t = ( partial('invite_comment.html', comment) )) == null ? '' : __t) +

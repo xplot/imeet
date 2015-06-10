@@ -43,6 +43,8 @@ class IndexHandler(BaseHandler):
         if not id:
             return self.redirect_to('home')
 
+        import logging
+
         invite_query = query.CompleteInviteQuery(invite_id)
 
         invite_attendee = None
@@ -52,9 +54,9 @@ class IndexHandler(BaseHandler):
                 invite_attendee_id=invite_attendee_id
             ).query()
         elif self.user:
-            invite_attendee = query.InviteAttendeeReportQuery(
-                invite=Invite.get_by_unique_id(invite_id),
-                invite_attendee_email=self.email
+            invite_attendee = query.InviteAttendeeByUserQuery(
+                invite_id=invite_id,
+                user=self.current_user
             ).query()
 
         return self.render_template(
@@ -73,6 +75,9 @@ class IndexHandler(BaseHandler):
         organizer_attendee = query.InviteOrganizerQuery(
             invite_unique_id=invite_id
         ).query()
+
+        if organizer_attendee.user and organizer_attendee.user != self.user_key:
+            return self.redirect_to('view_invite')
 
         return self.render_template(
             'invite.html',

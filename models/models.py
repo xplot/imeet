@@ -138,6 +138,7 @@ class InviteAttendee(BaseModel):
     email = ndb.StringProperty(indexed=True)
     attendee_status = ndb.StringProperty(default=AttendeeStatus.NO_RESPONSE)
     last_response_on = ndb.DateTimeProperty(indexed=False, required=False)
+    user = ndb.KeyProperty(kind=User ,required=False)
 
     def get_notifications(self):
         return InviteAttendeeNotification.query(

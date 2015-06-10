@@ -21,8 +21,12 @@ from commands import CreateInviteCommand, UpdateInviteCommand, UpdateInviteTitle
 
 class InviteHandler(JsonHandler):
 
-    def get(self, invite_id):
+    def get(self, invite_id=None):
         """Get the full invite, with contacts and responses"""
+
+        if not invite_id:
+            raise Exception("Please supply a valid invite_id")
+
         query = CompleteInviteQuery(invite_id)
         return query.query()
 

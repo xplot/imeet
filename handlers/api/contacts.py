@@ -14,6 +14,7 @@ from boilerplate.models import User
 from managers.group import GroupManager
 from commands import UpdateOrCreateContactCommand, DeleteContactCommand
 
+
 class ApiContactHandler(JsonHandler):
 
     @user_context

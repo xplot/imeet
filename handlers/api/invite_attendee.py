@@ -25,6 +25,16 @@ class InviteAttendeeHandler(JsonHandler):
         """Will get the invite attendees"""
         return query.InviteAttendeesQuery(invite_unique_id=invite_id).query()
 
+    @user_context
+    def get_attendee_from_user_id(self, invite_id):
+        if not self.user:
+            return None
+
+        return query.InviteAttendeeByUserQuery(
+            invite_id=invite_id,
+            user=self.user
+        ).query()
+
     #@request_with_subscription
     @user_context
     def post(self, invite_id):

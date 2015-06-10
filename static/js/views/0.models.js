@@ -475,6 +475,8 @@ Group = Backbone.Model.extend({
         });
     },
 
+
+
 });
 
 GroupList = IMeetCollection.extend({
@@ -679,6 +681,37 @@ InviteModel = Backbone.Model.extend({
             cache: false,
             success: function(data) {
                 callback(data)
+            },
+            error: function(data) {
+                alert_notification([{
+                    alertType:'danger',
+                    message: data.responseText
+                }]);
+            }
+        });
+    },
+
+    tryToObtainAttendeeFromLoggedUser: function(callback){
+        var that = this;
+        var post = {
+
+        };
+
+        if(currentUser == null) {
+            return;
+        }
+
+        $.ajax({
+            url: "/api/invite/" + this.get('unique_id') + "/attendee/from/?user_id=" + currentUser.id,
+            type: "GET",
+            contentType: "application/json",
+            data: JSON.stringify(post),
+            cache: false,
+            success: function(attendee) {
+                console.log(attendee);
+
+                if(callback != null)
+                    callback(attendee);
             },
             error: function(data) {
                 alert_notification([{
