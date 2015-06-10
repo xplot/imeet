@@ -46,8 +46,10 @@ InviteCommentsView = Backbone.View.extend({
         this.current_attendee = new Contact(attendee);
 
         if(this.current_attendee != null){
-            $('.invite-comment-input').prop( "disabled", false );
-            $('.add-comment').prop( "disabled", false );
+
+            $('.comment-box').html(JST['invite_comment_box.html']());
+            this.$comment_container = this.$el.find('.invite-comments-container');
+            this.$comment_input = this.$el.find('.invite-comment-input');
         }
     },
 

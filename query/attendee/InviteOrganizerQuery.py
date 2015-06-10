@@ -40,6 +40,7 @@ class InviteOrganizerQuery(object):
             'name': invite_attendee.name,
             'phone': invite_attendee.phone,
             'email': invite_attendee.email,
+            'user': invite_attendee.user.urlsafe() if invite_attendee.user else None,
             'status': AttendeeStatus.ORGANIZER,
             'notifications': [],
             'acknowledges': []

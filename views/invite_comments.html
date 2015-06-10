@@ -4,16 +4,10 @@
     </div>
 </div>
 
-<div class="row ">
-    <div class="col-md-12 no-margin">
-        <textarea class="invite-comment-input" <%if(current_attendee == null){ %> disabled <% } %> placeholder="Add comment"></textarea>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6 no-margin">
-        <button type="button" <%if(current_attendee == null){ %> disabled <% } %> class="btn form-control btn-success add-comment">Add Comment</button>
-    </div>
+<div class="row no-margin comment-box">
+    <%if(current_attendee != null){ %>
+        <%= partial('invite_comment_box.html', null) %>
+    <%} %>
 </div>
 
 <div class="row invite-comments">

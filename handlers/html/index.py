@@ -76,8 +76,9 @@ class IndexHandler(BaseHandler):
             invite_unique_id=invite_id
         ).query()
 
-        if organizer_attendee.user and organizer_attendee.user != self.user_key:
-            return self.redirect_to('view_invite')
+        #Here is where the Public/Private Invite also has to go
+        if organizer_attendee['user'] and organizer_attendee['user'] != self.user_key:
+            return self.redirect_to('view_invite', invite_id=invite_id)
 
         return self.render_template(
             'invite.html',
