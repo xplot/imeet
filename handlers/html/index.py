@@ -87,6 +87,21 @@ class IndexHandler(BaseHandler):
             invite_attendee=json.dumps(organizer_attendee, cls=DateTimeEncoder),
         )
 
+    def view_invite_template(self, invite_id, invite_attendee_id=None):
+        invite_query = query.CompleteInviteQuery(invite_id)
+
+        # invite_attendee = query.InviteAttendeeReportQuery(
+        #         invite_attendee_id=invite_attendee_id
+        #     ).query()
+
+        invite_attendee = None
+
+        return self.render_template(
+            'invite_email.html',
+            invite=invite_query.query(),
+            invite_attendee=invite_attendee,
+        )
+
     def blank(self):
         return self.render_template('blank.html')
 

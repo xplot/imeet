@@ -1,6 +1,8 @@
 import jinja2
 import os,sys
 import webapp2
+import urllib
+import datetime
 
 from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
@@ -11,6 +13,12 @@ JINJA_ENVIRONMENT = jinja2.Environment(
         os.path.join(os.path.dirname(__file__), "emails")
     ]),
 )
+
+JINJA_ENVIRONMENT.filters.update({
+    'urlencode': lambda x: urllib.quote_plus(x),
+    'prettydate': lambda x: datetime.datetime.strptime(x, "%Y-%m-%d %H:%M").strftime('%a %b %d %-I:%M %p '),
+})
+
 
 from handlers import api
 from handlers import html
@@ -33,6 +41,8 @@ app = webapp2.WSGIApplication([
     Route('/invite/<invite_id>/edit', html.IndexHandler, handler_method='edit_invite_view', methods=['GET']),
     Route('/invite/<invite_id>/<invite_attendee_id>', html.IndexHandler, handler_method='view_invite'),
     Route('/sent/<id>', html.IndexHandler, handler_method='view_invite'),
+
+    Route('/email/<invite_id>', html.IndexHandler, handler_method='view_invite_template'),
 
 
     # Contacts

@@ -309,4 +309,4 @@ class BaseHandler(webapp2.RequestHandler):
 
     def handle_exception(self, exception, debug_mode):
         logging.exception(exception)
-        #self.render_template("error_page.html")
+        self.render_template("error_page.html")
