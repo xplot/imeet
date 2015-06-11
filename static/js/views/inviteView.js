@@ -57,7 +57,7 @@ InviteView = SimpleView.extend({
 
         $('.invite-description').html(invite.description);
 
-        var style = this.model.get('style');
+        var style = inviteModel.get('style');
 
         if(style != null)
         {
