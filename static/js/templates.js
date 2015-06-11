@@ -317,9 +317,7 @@ __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
 '\n        ';
  }); ;
-__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited? (' +
-__e( confirmed.length + negated.length + no_response.length ) +
-')\n\n      </div>\n\n      <div class="panel-body no-response-table">\n        ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited?\n\n      </div>\n\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;
 __p += '\n          ';
  if(attendee != null && attendee.status == 'organizer') {;
@@ -573,10 +571,8 @@ __p += '<div class="palette-modal">\n    <div class="row no-margin palette">\n  
  _.each( palette, function( item ){ ;
 __p += '\n          <div class="palette-item" style="background-color: ' +
 __e( item.background_color ) +
-'" data-color="' +
-__e( item.background_color ) +
-'" data-text="' +
-__e( item.color ) +
+'" data-id="' +
+__e( item.id ) +
 '"></div>\n        ';
  }); ;
 __p += '\n    </div>\n</div>';

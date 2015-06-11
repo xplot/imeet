@@ -498,7 +498,9 @@ InviteModel = Backbone.Model.extend({
         'attendees': new ContactList(),
         'all_contacts': new ContactList(),
         'all_groups': new ContactList(),
-        'utc_offset': 0
+        'utc_offset': 0,
+
+        'style': null,
     },
 
     initialize: function (options) {

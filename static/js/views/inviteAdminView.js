@@ -76,6 +76,14 @@ InviteAdminView = SimpleView.extend({
 
         $('.invite-description').html(invite.description);
 
+        var style = this.model.get('style');
+
+        if(style != null)
+        {
+            var palette = new PaletteView();
+            palette.renderPalette(style);
+        }
+
         this.plugins();
     },
 

@@ -74,6 +74,7 @@ class Contact(BaseModel):
             cls.user == user.key
         )).get()
 
+
 class Comment(BaseModel):
     author = ndb.StringProperty(required=False)
     comment = ndb.StringProperty(required=True, indexed=False)
@@ -103,7 +104,7 @@ class Invite(BaseModel):
     sms_template = ndb.StringProperty(required=False, indexed=False)
     voice_template = ndb.StringProperty(required=False, indexed=False)
     poster_picture = ndb.KeyProperty(required=False, kind=Image, indexed=False)
-
+    style = ndb.StringProperty(required=False, indexed=False)
 
     @classmethod
     def get_by_user(cls, user):

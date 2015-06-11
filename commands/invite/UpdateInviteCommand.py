@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 from managers.utils import copy_over, guid
@@ -22,6 +23,10 @@ class UpdateInviteCommand(CreateInviteCommand):
         command.description = data_dict.get('description', None)
         command.where = data_dict.get('where', None)
         command.utc_offset = data_dict.get('utc_offset', 0)
+
+        style = data_dict.get('style', None)
+        if style:
+            command.style = json.dumps(style)
 
         command.start = datetime.strptime(data_dict['start'], "%m/%d/%Y %I:%M %p") + timedelta(minutes=command.utc_offset)
         if command.start < datetime.now():

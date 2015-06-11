@@ -146,6 +146,6 @@ InviteDetailsView = SimpleView.extend({
         if(!this.edit_view)
             return;
         var palette = new PaletteView();
-        palette.render();
+        palette.render(this.model);
     },
 });

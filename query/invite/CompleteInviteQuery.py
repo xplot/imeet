@@ -1,4 +1,5 @@
 import datetime
+import json
 from managers.utils import copy_over, guid, convert_to_user_date
 from managers.template import TemplateModel
 from models import Invite
@@ -40,6 +41,10 @@ class CompleteInviteQuery(object):
             'title': 'Candle',
             'sharing_options':{
                 'facebook':True,
+            },
+            style: {
+                color: #FFF,
+                background_color: #000
             }
             'user_id': u'5302669702856704' #Not mandatory, could be anonymous
         }
@@ -65,6 +70,7 @@ class CompleteInviteQuery(object):
             'description':  invite.description,
             'where':        invite.where,
             'poster_image_id': invite.poster_picture.urlsafe() if invite.poster_picture else None,
+            'style': json.loads(invite.style) if invite.style else None
             #'user_id':      None if not invite.user else invite.user.get().id()
         }
 
