@@ -36,8 +36,6 @@ InviteAdminView = SimpleView.extend({
             return;
         }
 
-        console.log(invite_attendee);
-
         if(invite_attendee != null)
             this.current_attendee = new Contact(invite_attendee);
 
@@ -53,6 +51,7 @@ InviteAdminView = SimpleView.extend({
         var invite_details = new InviteDetailsView({is_admin: true});
         var invite_comments = new InviteCommentsView();
         var invite_attendee_create = new InviteAttendeeCreateView();
+
 
         var invite_attendees = this.model.get('attendees');
 

@@ -86,7 +86,7 @@ InviteTitleView = Backbone.View.extend({
         this.model = model;
 
         if(!edit_view){
-            var label = '<h1 class="main-h1">' + that.model.get('title') + '</h1>';
+            var label = '<h1 class="main-h1 palette-editable" data-opacity="0.7">' + that.model.get('title') + '</h1>';
             this.$el.html(label);
 
             if(this.options.is_editable) {
@@ -99,7 +99,7 @@ InviteTitleView = Backbone.View.extend({
             }
         }
         else{
-            var input = '<input type="text" class="edit-title-input" value="' + that.model.get('title') +  '">';
+            var input = '<input type="text" class="edit-title-input palette-editable" data-opacity="0.7" value="' + that.model.get('title') +  '">';
             this.$el.html(input);
             this.$input = this.$el.find('.edit-title-input');
 

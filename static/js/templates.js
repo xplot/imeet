@@ -185,7 +185,7 @@ this["JST"]["invite.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner palette-editable"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div class="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n';
 
 }
 return __p
@@ -195,7 +195,7 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn btn btn btn-success\'>Notify All</div>\n            </div>\n\n            <div id="invite-new-attendee"></div>\n\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner palette-editable"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn btn btn btn-success\'>Notify All</div>\n            </div>\n\n            <div id="invite-new-attendee"></div>\n\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n\n';
 
 }
 return __p
@@ -250,7 +250,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row rsvp no-margin">\n    <div class="panel panel-default no-border no-margin">\n      <div class="panel-heading no-padding">Invite People</div>\n      <div class="panel-body  micro-margin-top">\n          <div>\n              <div class="col-md-10 col-xs-12 no-padding">\n                  <input type="text" class="contact-input form-control"\n                    ';
+__p += '<div class="row rsvp no-margin">\n    <div class="panel panel-default no-border no-margin">\n      <div class="panel-heading no-padding palette-editable">Invite People</div>\n      <div class="panel-body  micro-margin-top">\n          <div>\n              <div class="col-md-10 col-xs-12 no-padding">\n                  <input type="text" class="contact-input form-control"\n                    ';
   if( features.indexOf('voice') != -1 )  { ;
 __p += '\n                    data-validation=\'required,email|phone\' placeholder=\'Name, Phone Number, Email\'\n                    ';
  } else { ;
@@ -275,7 +275,7 @@ __p += '\n\n';
  if(attendee != null && attendee.status != 'organizer') {;
 __p += '\n    <div class="row rsvp small-margin-top">\n          ';
  if(attendee.status != 'deleted') {;
-__p += '\n            <div class="panel panel-default">\n              <div class="panel-heading">\n                  ';
+__p += '\n            <div class="panel panel-default">\n              <div class="panel-heading palette-editable">\n                  ';
  if(attendee.status == 'no_response') {;
 __p += '\n                        Are you coming?\n                  ';
 } else if(attendee.status == 'no') { ;
@@ -297,19 +297,29 @@ __p += '\n\n          ';
 };
 __p += '\n    </div>\n';
 } ;
-__p += '\n\n<div class="row rsvp no-margin">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes">Who is coming?</div>\n      <div class="panel-body">\n        ';
+__p += '\n\n<div class="row rsvp no-margin">\n    <div class="panel panel-default no-border">\n      <div class="panel-heading yes palette-editable"> Who is coming? (' +
+__e(confirmed.length) +
+')</div>\n      <div class="panel-body">\n        ';
  _.each( confirmed, function( item ){ ;
 __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
 '\n        ';
  }); ;
-__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no">Who is not coming?</div>\n      <div class="panel-body">\n        ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no palette-editable">Who is not coming? ';
+ if(negated.length>0){;
+__p += '(' +
+__e(negated.length) +
+')';
+};
+__p += '</div>\n      <div class="panel-body">\n        ';
  _.each( negated, function( item ){ ;
 __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
 '\n        ';
  }); ;
-__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading">\n          Who is invited?\n\n      </div>\n\n      <div class="panel-body no-response-table">\n        ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited? (' +
+__e( confirmed.length + negated.length + no_response.length ) +
+')\n\n      </div>\n\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;
 __p += '\n          ';
  if(attendee != null && attendee.status == 'organizer') {;
@@ -415,13 +425,11 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div id="invite-details-container"\n    ';
-  if( is_edit )  { ;
-__p += '\n        class="edit"\n     ';
- } else { ;
-__p += '\n        class=""\n     ';
+__p += '\n\n<div id="invite-details-container" class="details-row ';
+  if( is_edit ) { ;
+__p += ' clickable edit';
  } ;
-__p += '\n>\n';
+__p += '">\n';
   if( is_admin )  { ;
 __p += '\n    <div class="row">\n        <div class=\'col-md-12 col-xs-12 edit_button_container\'>\n        ';
   if( !is_edit )  { ;
@@ -467,7 +475,7 @@ __e( where ) +
  } else { ;
 __p += '\n            <div class="title">Location</div>\n            <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\n         ';
  } ;
-__p += '\n     </div>\n</div>\n\n</div>\n\n';
+__p += '\n     </div>\n</div>\n\n<div id="palette-container" class="row no-margin small-margin-top"></div>\n\n</div>\n\n';
 
 }
 return __p
@@ -551,6 +559,27 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div id="login-page">\n<form id="loginForm" action="/login" method="post">\n\n<div class="login-box">\n    <div class="row no-margin text-center">\n        <div class="no-padding col-md-6 col-xs-6">\n             <a href="/social_login/facebook" class="btn btn-facebook ">Login with Facebook<i class="fa fa-facebook fa-2x"></i></a>\n        </div>\n        <div class="no-padding col-md-6 col-xs-6">\n            <a href="/social_login/google"  class="btn btn-google">Login with Google<i class="fa fa-google fa-2x"></i></a>\n        </div>\n    </div>\n\n\n    <div class="row no-margin">\n        <div class="no-padding col-md-12 section-item contact-table equidistant">\n          <h4>Have an account with us?</h4>\n        </div>\n    </div>\n\n    <div class="row no-margin">\n        <div class="no-padding col-md-12">\n            <input id="username" name="username" required type="text" class="form-control " placeholder="Username">\n        </div>\n    </div>\n\n    <div class="row no-margin">\n        <div class="no-padding col-md-12">\n            <input id="password" name="password" required type="password" class="form-control " placeholder="Password">\n        </div>\n    </div>\n\n    <div class="row no-margin">\n        <div class="no-padding col-md-12">\n            <label class="remember pull-right" style="padding: 10px">\n                Remember me?\n                <input type="checkbox" name="remember_me" id="remember_me" value="on">\n              </label>\n        </div>\n    </div>\n\n     <div class="row no-margin">\n          <div class="col-sm-12 no-padding">\n              <button type="submit" class="btn btn-success form-control pull-right">Login</button>\n          </div>\n      </div>\n\n    <div class="row no-margin">\n        <div class="no-padding col-md-12">\n            <label class="remember pull-right">\n              Don\'t have an account?\n              <a href="/register" class="btn">Sign Up - It\'s Free.</a>\n            </label>\n        </div>\n    </div>\n</div>\n</form>\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["palette.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="palette-modal">\n    <div class="row no-margin palette">\n        ';
+ _.each( palette, function( item ){ ;
+__p += '\n          <div class="palette-item" style="background-color: ' +
+__e( item.background_color ) +
+'" data-color="' +
+__e( item.background_color ) +
+'" data-text="' +
+__e( item.color ) +
+'"></div>\n        ';
+ }); ;
+__p += '\n    </div>\n</div>';
 
 }
 return __p

@@ -1,10 +1,6 @@
-<div id="invite-details-container"
-    <%  if( is_edit )  { %>
-        class="edit"
-     <% } else { %>
-        class=""
-     <% } %>
->
+
+
+<div id="invite-details-container" class="details-row <%  if( is_edit ) { %> clickable edit<% } %>">
 <%  if( is_admin )  { %>
     <div class="row">
         <div class='col-md-12 col-xs-12 edit_button_container'>
@@ -58,6 +54,8 @@
          <% } %>
      </div>
 </div>
+
+<div id="palette-container" class="row no-margin small-margin-top"></div>
 
 </div>
 

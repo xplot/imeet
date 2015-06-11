@@ -6,7 +6,7 @@
     <div class="row rsvp small-margin-top">
           <% if(attendee.status != 'deleted') {%>
             <div class="panel panel-default">
-              <div class="panel-heading">
+              <div class="panel-heading palette-editable">
                   <% if(attendee.status == 'no_response') {%>
                         Are you coming?
                   <%} else if(attendee.status == 'no') { %>
@@ -42,7 +42,7 @@
 
 <div class="row rsvp no-margin">
     <div class="panel panel-default no-border">
-      <div class="panel-heading yes">Who is coming?</div>
+      <div class="panel-heading yes palette-editable"> Who is coming? (<%-confirmed.length%>)</div>
       <div class="panel-body">
         <% _.each( confirmed, function( item ){ %>
             <%= partial('invite_attendee.html', item) %>
@@ -51,7 +51,7 @@
    </div>
 
     <div class="panel panel-default no-border">
-      <div class="panel-heading no">Who is not coming?</div>
+      <div class="panel-heading no palette-editable">Who is not coming? <% if(negated.length>0){%>(<%-negated.length%>)<%}%></div>
       <div class="panel-body">
         <% _.each( negated, function( item ){ %>
             <%= partial('invite_attendee.html', item) %>
@@ -60,8 +60,8 @@
    </div>
 
     <div class="panel panel-default no-border">
-      <div class="panel-heading">
-          Who is invited?
+      <div class="panel-heading palette-editable">
+          Who is invited? (<%- confirmed.length + negated.length + no_response.length %>)
 
       </div>
 

@@ -25,12 +25,14 @@ InviteDetailsView = SimpleView.extend({
         'click .invite-date': 'edit_start_date',
         'click .invite-end-date': 'edit_end_date',
         'click .location-title': 'edit_location',
+        'click .details-row': 'showPalette',
 
         'click .edit_invite': 'editInvite',
         'click .save_invite': 'saveInvite'
     },
 
     render: function(invite_model, edit_view){
+        this.edit_view = edit_view;
 
         this.model = invite_model;
         var invite_json = this.model.toJSON();
@@ -138,5 +140,12 @@ InviteDetailsView = SimpleView.extend({
             "_blank",
             "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500"
         );
-    }
+    },
+
+    showPalette: function(){
+        if(!this.edit_view)
+            return;
+        var palette = new PaletteView();
+        palette.render();
+    },
 });

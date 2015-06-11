@@ -1,0 +1,7 @@
+<div class="palette-modal">
+    <div class="row no-margin palette">
+        <% _.each( palette, function( item ){ %>
+          <div class="palette-item" style="background-color: <%- item.background_color %>" data-color="<%- item.background_color %>" data-text="<%- item.color %>"></div>
+        <% }); %>
+    </div>
+</div>
