@@ -153,6 +153,8 @@ PaletteView = SimpleView.extend({
     },
 
     renderPalette: function(palette){
+        console.log($('.palette-editable'));
+
         $('.palette-editable').css('background-color', palette.background_color);
         $('.palette-editable').css('color', palette.color);
 
