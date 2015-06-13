@@ -55,6 +55,10 @@ class ReducedInviteQuery(object):
             'description':  invite.description,
             'where':        invite.where,
             'poster_image_id': invite.poster_picture.urlsafe() if invite.poster_picture else None,
+
+            'maxparticipants': 0,
+            'confirmed': 0,
+            
             'email_template': {
                 'subject': 'You have been invited to {{title}}',
                 'url': email_template_model.get_email_template_url(),
