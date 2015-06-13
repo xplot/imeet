@@ -9,7 +9,7 @@ class TemplateModel(object):
         pass
 
     def get_email_template_url(self):
-        return "http://localhost:8003/email/{{invite_unique_id}}/{{invite_attendee_id}}"
+        return "http://imeet.io/email/{{invite_unique_id}}/{{invite_attendee_id}}"
 
     def get_email_response_url(self):
         return "http://imeet.io/template/default_invite_response.html"
