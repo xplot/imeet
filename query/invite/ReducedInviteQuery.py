@@ -39,7 +39,7 @@ class ReducedInviteQuery(object):
             self.invite = Invite.get_by_unique_id(self.invite_unique_id)
         invite = self.invite
 
-        email_template_model = TemplateModel(invite.unique_id)
+        email_template_model = TemplateModel()
 
         return {
             'unique_id':    invite.unique_id,

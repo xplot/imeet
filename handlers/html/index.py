@@ -90,11 +90,9 @@ class IndexHandler(BaseHandler):
     def view_invite_template(self, invite_id, invite_attendee_id=None):
         invite_query = query.CompleteInviteQuery(invite_id)
 
-        # invite_attendee = query.InviteAttendeeReportQuery(
-        #         invite_attendee_id=invite_attendee_id
-        #     ).query()
-
-        invite_attendee = None
+        invite_attendee = query.InviteAttendeeReportQuery(
+            invite_attendee_id=invite_attendee_id
+        ).query()
 
         return self.render_template(
             'invite_email.html',

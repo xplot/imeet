@@ -68,8 +68,6 @@ class CreateInviteCommand(object):
         )
 
         email_template_model = TemplateModel()
-        if data_dict.get('email_template', None):
-            email_template_model = TemplateModel(data_dict.get('email_template')['id'])
         command.email_template = email_template_model.get_email_template_url()
         command.email_response_template = email_template_model.get_email_response_url()
 

@@ -42,7 +42,7 @@ app = webapp2.WSGIApplication([
     Route('/invite/<invite_id>/<invite_attendee_id>', html.IndexHandler, handler_method='view_invite'),
     Route('/sent/<id>', html.IndexHandler, handler_method='view_invite'),
 
-    Route('/email/<invite_id>', html.IndexHandler, handler_method='view_invite_template'),
+    Route('/email/<invite_id>/<invite_attendee_id>', html.IndexHandler, handler_method='view_invite_template'),
 
 
     # Contacts
