@@ -5,11 +5,21 @@
             <table border="0" cellspacing="0" cellpadding="0" align="center" width="100%" style="width:100%;margin:0 auto;max-width:600px">
                 <tbody>
                 <tr style="height:40px;{% if invite.style %} background-color: {{invite.style['background_color']}}; color:{{invite.style['color']}}  {%else %} background-color: #01579B; color:#FFF {%endif %}">
-                    <td width="20%" style="text-align: right">
-                        <h1 style="margin:40px 10px;float:left;font-size:22px;line-height:24px;padding-left:3%">
-                            {{invite['title']}}
-                        </h1>
-                        <img src="http://imeet.io/img/imeet-medium-icon.png" width="auto" height="40px" border="0" alt="imeet.io" style="float:right;display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; height: auto;" class="img-max">
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                            <tbody>
+                                <tr>
+                                    <td width="80%" style="">
+                                         <h1 style="margin:40px 10px;float:left;font-size:22px;line-height:24px;padding-left:3%">
+                                            {{invite['title']}}
+                                        </h1>
+                                    </td>
+                                    <td width="20%" style="">
+                                        <img src="http://imeet.io/img/imeet-medium-icon.png" width="auto" height="40px" border="0" alt="imeet.io" style="float:right;display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; height: auto;" class="img-max">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
 
@@ -30,7 +40,7 @@
                                 {% if invite['where'] %}
                                 <tr>
                                     <td style="padding-top:20px">
-                                        <a href="https://www.google.com/maps/place/{{invite['where'] | urlencode}}" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{invite.where}}&zoom=16&size=400x200&maptype=roadmap" width="200" height="100" border="0" alt="Directions" style="display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 100%; height: auto;" class="img-max"></a>
+                                        <a href="https://www.google.com/maps/place/{{invite['where'] | urlencode}}" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{invite.where | urlencode}}&zoom=16&size=400x200&maptype=roadmap" width="200" height="100" border="0" alt="Directions" style="display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 100%; height: auto;" class="img-max"></a>
                                     </td>
                                 </tr>
                                 {% endif %}
@@ -77,8 +87,9 @@
                     <td border="0" cellspacing="0" cellpadding="0" width="100%" style="padding:20px 0">
                         <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center" style="color:#808080;font-size:14px;line-height:18px;border-collapse:collapse">
                             <tbody><tr>
+
                                 <td dir="ltr" width="50%" style="padding-bottom:5px;padding-left:5px">
-                                    <table border="0" cellspacing="0" cellpadding="0" align="left" style="line-height:22px;height:24px;margin:0 auto 10px 0; float:right">
+                                    <table border="0" cellspacing="0" cellpadding="0" align="right" style="line-height:22px;height:24px;margin:0 auto 10px 0; float:right">
                                         <tbody><tr>
                                             <td style="border: solid 1px lightgray;padding: 5px 15px;">
                                                 <a style="color:#bbbbbb;font-weight:700;text-decoration:none;padding:0;font-size:10px" href="https://www.twitter.com/imeetio" target="_blank">
