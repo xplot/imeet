@@ -15,7 +15,7 @@
                                         </h1>
                                     </td>
                                     <td width="20%" style="">
-                                        <img src="http://imeet.io/img/imeet-medium-icon.png" width="auto" height="40px" border="0" alt="imeet.io" style="float:right;display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; height: auto;" class="img-max">
+                                        <img src="http://imeet.io/img/imeet-medium-icon.png" width="100px" height="100px" border="0" alt="imeet.io" style="float:right;display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; height: auto;" class="img-max">
                                     </td>
                                 </tr>
                             </tbody>
@@ -67,7 +67,7 @@
                                                 <tbody><tr>
                                                     <td>
                                                         <p style="margin:0">
-                                                            <a href="http://imeet.io/invite/{{invite['unique_id']}}" style="text-decoration: none;width: 100px;height: 50px;padding: 10px 30px;{% if invite.style %} background-color: {{invite.style['background_color']}}; color:{{invite.style['color']}}  {%else %} background-color: #01579B; color:#FFF {%endif %}"  target="_blank">
+                                                            <a href="http://imeet.io/invite/{{invite['unique_id']}}/{{invite_attendee['invite_attendee_id']}}" style="text-decoration: none;width: 100px;height: 50px;padding: 10px 30px;{% if invite.style %} background-color: {{invite.style['background_color']}}; color:{{invite.style['color']}}  {%else %} background-color: #01579B; color:#FFF {%endif %}"  target="_blank">
                                                                 Click to RSVP
                                                             </a>
                                                         </p>
@@ -91,10 +91,20 @@
                                 <td dir="ltr" width="50%" style="padding-bottom:5px;padding-left:5px">
                                     <table border="0" cellspacing="0" cellpadding="0" align="right" style="line-height:22px;height:24px;margin:0 auto 10px 0; float:right">
                                         <tbody><tr>
-                                            <td style="border: solid 1px lightgray;padding: 5px 15px;">
+                                            <td style="border: solid 1px lightgray;padding: 5px 15px;height: 40px">
                                                 <a style="color:#bbbbbb;font-weight:700;text-decoration:none;padding:0;font-size:10px" href="https://www.twitter.com/imeetio" target="_blank">
-                                                    <img alt="Follow us on Twitter" src="http://imeet.io/img/twitter-follow.png" style="margin-top: 5px;float:left;width:14px;min-height:13px;display:block;border:0" class="CToWUd">
-                                                    <span style="padding-left: 5px">Follow us</span>
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <img alt="Follow us on Twitter" src="http://imeet.io/img/twitter-follow.png" style="margin-top: 5px;float:left;width:14px;min-height:13px;display:block;border:0" class="CToWUd">
+                                                                </td>
+                                                                <td>
+                                                                    <span style="padding-left: 5px;color:#bbbbbb;font-weight:700;text-decoration:none;font-size:10px">Follow us</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </a>
                                             </td>
                                         </tr>
@@ -103,10 +113,16 @@
                                 <td dir="ltr" width="50%" style="padding-bottom:5px;padding-left:5px">
                                     <table border="0" cellspacing="0" cellpadding="0" align="left" style="line-height:22px;height:24px;margin:0 auto 10px 0">
                                         <tbody><tr>
-                                            <td style="border: solid 1px lightgray;padding: 5px 15px;">
+                                            <td style="border: solid 1px lightgray;padding: 5px 15px;height: 40px">
                                                 <a style="color:#bbbbbb;font-weight:700;text-decoration:none;padding:0;font-size:10px" href="https://www.facebook.com/pages/Imeetio/1504198159831838" target="_blank">
-                                                    <img alt="Like us on Facebook" src="http://imeet.io/img/facebook-like.png" style="float:left;width:11px;min-height:14px;display:block;border:0" class="CToWUd">
-                                                    <span style="padding-left: 5px">Like us</span>
+                                                   <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><img alt="Like us on Facebook" src="http://imeet.io/img/facebook-like.png" style="float:left;width:11px;min-height:14px;display:block;border:0" class="CToWUd"></td>
+                                                                <td><span style="padding-left: 5px;color:#bbbbbb;font-weight:700;text-decoration:none;font-size:10px">Like us</span></td>
+                                                            </tr>
+                                                        </tbody>
+                                                   </table>
                                                 </a>
                                             </td>
                                         </tr>
