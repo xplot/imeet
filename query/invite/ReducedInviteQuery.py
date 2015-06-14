@@ -58,7 +58,7 @@ class ReducedInviteQuery(object):
 
             'maxparticipants': 0,
             'confirmed': 0,
-            
+
             'email_template': {
                 'subject': 'You have been invited to {{title}}',
                 'url': email_template_model.get_email_template_url(),
