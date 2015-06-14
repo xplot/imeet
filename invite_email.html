@@ -40,7 +40,7 @@
                                 {% if invite['where'] %}
                                 <tr>
                                     <td style="padding-top:20px">
-                                        <a href="https://www.google.com/maps/place/{{invite['where'] | urlencode}}" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{invite.where | urlencode}}&zoom=16&size=400x200&maptype=roadmap" width="200" height="100" border="0" alt="Directions" style="display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 100%; height: auto;" class="img-max"></a>
+                                        <a href="https://www.google.com/maps/place/{{invite['where'] | urlencode}}" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?center={{invite.where | urlencode}}&zoom=16&size=400x200&maptype=roadmap" border="0" alt="Directions" style="display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 100%;height: auto;" class="img-max"></a>
                                     </td>
                                 </tr>
                                 {% endif %}
