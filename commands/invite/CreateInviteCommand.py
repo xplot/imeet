@@ -95,7 +95,6 @@ class CreateInviteCommand(object):
         """
 
         invite = Invite()
-        invite.unique_id = guid()
         copy_over(self, invite)
         invite.put()
         index_invite(invite)

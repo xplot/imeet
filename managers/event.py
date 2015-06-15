@@ -49,7 +49,6 @@ class EventQueue(object):
             group_id = guid()
 
         event = Event()
-        event.unique_id = guid()
         event.created = datetime.datetime.now()
         event.headers = json.dumps(headers) or ''
         event.method = method
@@ -116,6 +115,9 @@ class EventDispatcher(object):
 
         for event_task in event_tasks:
             event_id = event_task.payload
+
+            logging.info("Processing EventId: %s" % event_id)
+
             event = Event.get_by_unique_id(event_id)
 
             if event is None or event.skip_event():
@@ -130,6 +132,9 @@ class EventDispatcher(object):
             event.retries += 1
 
             if event.hold_event():
+                logging.info(
+                    "Event will be hold, because higher priority event, has to be processed"
+                )
                 event.status = EventStatus.FAILED
             else:
                 try:

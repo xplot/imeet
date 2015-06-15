@@ -22,8 +22,8 @@ class ContactModel:
         self.contact.put()
 
     def put(self):
-        if not self.unique_id:
-            self.contact.unique_id = guid()
+        # if not self.unique_id:
+        #     self.contact.unique_id = guid()
 
         if self.user:
             self.contact.user = self.user.key

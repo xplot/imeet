@@ -106,7 +106,6 @@ class GroupManager(object):
             return existing_group
 
         group = Group()
-        group.unique_id = str(uuid.uuid4()).replace('-', '')
         group.user = self.user_key
         group.name = group_name
         group.put()

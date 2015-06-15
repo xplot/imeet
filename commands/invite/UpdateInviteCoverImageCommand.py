@@ -9,7 +9,6 @@ class UpdateInviteCoverImageCommand(object):
 
     def execute(self):
         image = Image()
-        image.unique_id = guid()
         image.image_key = self.image_key
         image.put()
 

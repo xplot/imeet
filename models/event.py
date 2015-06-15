@@ -1,5 +1,5 @@
 from google.appengine.ext import ndb
-
+from .models import UniqueIDModel
 MAX_RETRIES = 6
 
 
@@ -10,13 +10,11 @@ class EventStatus(object):
     FAILED = 'failure'
 
 
-class EventGroup(ndb.Model):
-    unique_id = ndb.StringProperty(required=True)
+class EventGroup(UniqueIDModel):
     grouper_unique_id = ndb.StringProperty(required=True)
 
 
-class Event(ndb.Model):
-    unique_id = ndb.StringProperty()
+class Event(UniqueIDModel):
     endpoint = ndb.StringProperty()
     headers = ndb.TextProperty(indexed=False)
     method = ndb.StringProperty(indexed=False)
@@ -26,11 +24,6 @@ class Event(ndb.Model):
     status = ndb.StringProperty(indexed=False)
     priority = ndb.IntegerProperty(default=0, required=True, indexed=False)
     group_id = ndb.StringProperty()
-
-    @classmethod
-    def get_by_unique_id(cls, unique_id):
-        """Gets an Event by its unique_id"""
-        return cls.query(cls.unique_id == unique_id).get()
 
     @classmethod
     def get_all_events_by_group(cls, group_id):

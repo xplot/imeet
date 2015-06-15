@@ -15,7 +15,6 @@ class AcknowledgeInviteCommand:
         attendee = InviteAttendee.get_by_unique_id(self.invite_attendee_id)
 
         ack = InviteAttendeeAcknowledge()
-        ack.unique_id = guid()
         ack.response = self.attending
         ack.responded_on = datetime.datetime.now()
         ack.channel = self.channel

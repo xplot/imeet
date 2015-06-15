@@ -30,9 +30,29 @@ def data_type_handler(obj):
         return None
 
 
-class BaseModel(ndb.Model):
-    created_at = ndb.DateTimeProperty(auto_now_add=True)
-    last_modified = ndb.DateTimeProperty(auto_now=True)
+class UniqueIDModel(ndb.Model):
+
+    def __init__(self, *args, **kwargs):
+        unique_id = None
+
+        if 'unique_id' in kwargs:
+            unique_id = kwargs.pop('unique_id')
+        if 'id' in kwargs:
+            unique_id = kwargs.pop('id')
+
+        if not unique_id:
+            unique_id = guid()
+
+        kwargs['id'] = unique_id
+
+        super(UniqueIDModel, self).__init__(*args, **kwargs)
+
+    unique_id = ndb.ComputedProperty(lambda self: str(self.key.id()))
+
+    @classmethod
+    def get_by_unique_id(cls, unique_id):
+        """Gets a Model by it' unique_id """
+        return cls.get_by_id(unique_id)
 
     @property
     def get_id(self):
@@ -60,8 +80,7 @@ class BaseModel(ndb.Model):
         return cls(unique_id=guid())
 
 
-class Contact(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
+class Contact(UniqueIDModel):
     name = ndb.StringProperty()
     phone = ndb.StringProperty()
     email = ndb.StringProperty()
@@ -75,19 +94,15 @@ class Contact(BaseModel):
         )).get()
 
 
-class Comment(BaseModel):
+class Comment(UniqueIDModel):
     author = ndb.StringProperty(required=False)
     comment = ndb.StringProperty(required=True, indexed=False)
     commented_on = ndb.DateTimeProperty(required=True, indexed=False)
 
-
-class Image(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
+class Image(UniqueIDModel):
     image_key = ndb.BlobKeyProperty(required=True, indexed=False)
 
-
-class Invite(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
+class Invite(UniqueIDModel):
     start = ndb.DateTimeProperty(required=True, indexed=False)
     end = ndb.DateTimeProperty(indexed=False)
     utc_offset = ndb.IntegerProperty(required=True, default=0)
@@ -129,8 +144,7 @@ class AttendeeStatus(object):
     DELETED = "deleted"
 
 
-class InviteAttendee(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
+class InviteAttendee(UniqueIDModel):
     contact = ndb.KeyProperty(kind=Contact)
     invite = ndb.KeyProperty(kind=Invite)
     is_organizer = ndb.BooleanProperty(default=False)
@@ -152,12 +166,11 @@ class InviteAttendee(BaseModel):
         ).fetch()
 
 
-class InviteAttendeeAcknowledge(BaseModel):
+class InviteAttendeeAcknowledge(UniqueIDModel):
     """
         This is meant to be a historic table
         Each record being a response from the attendee
     """
-    unique_id = ndb.StringProperty(required=True)
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
     channel = ndb.StringProperty(indexed=False)
@@ -165,12 +178,11 @@ class InviteAttendeeAcknowledge(BaseModel):
     responded_on = ndb.DateTimeProperty(indexed=False)
 
 
-class InviteAttendeeNotification(BaseModel):
+class InviteAttendeeNotification(UniqueIDModel):
     """
         This is meant to be a historic table
         Each record being a 'ping' to a given contact in any of the channels
     """
-    unique_id = ndb.StringProperty(required=True)
     attendee = ndb.KeyProperty(kind=InviteAttendee, required=True)
     invite = ndb.KeyProperty(kind=Invite, required=True)
     channel = ndb.StringProperty(indexed=False)
@@ -195,31 +207,27 @@ class InviteIndex(ndb.Model):
     when = ndb.DateTimeProperty()
     language = ndb.StringProperty()
 
-class Subscription(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
+class Subscription(UniqueIDModel):
     name = ndb.StringProperty(required=True)
     price = ndb.FloatProperty(required=True, indexed=False)
 
 
-class UserSubscription(BaseModel):
+class UserSubscription(UniqueIDModel):
     user = ndb.KeyProperty(kind=User, required=True)
     subscription = ndb.StringProperty(required=True, indexed=False)
     started_on = ndb.DateTimeProperty(required=True, indexed=False)
     is_trial = ndb.BooleanProperty(required=True, indexed=False)
 
 
-class Feature(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
+class Feature(UniqueIDModel):
     name = ndb.StringProperty(required=True)
     Subscription = ndb.KeyProperty(kind=Subscription,required=True)
 
-
-class Group(BaseModel):
-    unique_id = ndb.StringProperty(required=True)
+class Group(UniqueIDModel):
     name = ndb.StringProperty(required=True)
     user = ndb.KeyProperty(kind=User)
 
-class GroupedContact(BaseModel):
+class GroupedContact(UniqueIDModel):
     user = ndb.KeyProperty(kind=User)
     group_unique_id = ndb.StringProperty(required=True)
     contact_unique_id = ndb.StringProperty(required=True)
