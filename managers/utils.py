@@ -12,6 +12,8 @@ def guid():
 
 def copy_over(object_source, object_destiny):
     for x in non_empty_properties(object_source):
+        if x == 'unique_id':
+            continue
         if hasattr(object_destiny, x):
             setattr(object_destiny, x, getattr(object_source, x))
 
