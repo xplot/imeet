@@ -61,7 +61,6 @@ InviteView = SimpleView.extend({
 
         if(invite_palette != null)
         {
-
             var palette = new PaletteView();
             palette.renderPalette(new PaletteModel(invite_palette));
         }
