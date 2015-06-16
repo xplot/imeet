@@ -500,7 +500,7 @@ InviteModel = Backbone.Model.extend({
         'all_groups': new ContactList(),
         'utc_offset': 0,
 
-        'style': null,
+        'palette': null,
     },
 
     initialize: function (options) {
@@ -520,8 +520,6 @@ InviteModel = Backbone.Model.extend({
                 attendees.push(new Contact(item));
             });
         this.set('attendees', attendees);
-
-
     },
 
     format_date: function(property, format){
@@ -789,6 +787,43 @@ CommentList = IMeetCollection.extend({
                     comments.add(new CommentModel(comment));
                 });
                 return comments;
+            },
+            error: function(data) {
+
+            }
+        });
+    }
+});
+
+PaletteModel = Backbone.Model.extend({
+    defaults: {
+        unique_id: null,
+        name: null,
+        main_color: '',
+        main_bg_color: ''
+    },
+
+    initialize: function (options) {
+
+    }
+});
+
+PaletteList = IMeetCollection.extend({
+    model: PaletteModel,
+
+    fetchAll: function(callback){
+        $.ajax({
+            url: "/api/palette/",
+            type: "GET",
+            contentType: "application/json",
+            cache: false,
+            success: function(data) {
+                var paletteCollection = new PaletteList();
+                data.forEach(function(palette){
+                    paletteCollection.add(new PaletteModel(palette));
+                });
+                if(callback != null)
+                    callback(paletteCollection);
             },
             error: function(data) {
 

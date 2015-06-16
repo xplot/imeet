@@ -42,9 +42,10 @@ class CompleteInviteQuery(object):
             'sharing_options':{
                 'facebook':True,
             },
-            style: {
-                color: #FFF,
-                background_color: #000
+            palette: {
+                name: '',
+                main_color: #FFF,
+                main_bg_color: #000
             }
             'user_id': u'5302669702856704' #Not mandatory, could be anonymous
         }
@@ -70,7 +71,7 @@ class CompleteInviteQuery(object):
             'description':  invite.description,
             'where':        invite.where,
             'poster_image_id': invite.poster_picture.urlsafe() if invite.poster_picture else None,
-            'style': json.loads(invite.style) if invite.style else None
+            'palette': query.PaletteQuery(palette=invite.palette.get()).query() if invite.palette else None
             #'user_id':      None if not invite.user else invite.user.get().id()
         }
 

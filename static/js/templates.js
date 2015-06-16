@@ -568,11 +568,11 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div class="palette-modal">\n    <div class="row no-margin palette">\n        ';
- _.each( palette, function( item ){ ;
+ _.each( palettes, function( item ){ ;
 __p += '\n          <div class="palette-item" style="background-color: ' +
-__e( item.background_color ) +
+__e( item.main_bg_color ) +
 '" data-id="' +
-__e( item.id ) +
+__e( item.unique_id ) +
 '"></div>\n        ';
  }); ;
 __p += '\n    </div>\n</div>';

@@ -76,12 +76,11 @@ InviteAdminView = SimpleView.extend({
 
         $('.invite-description').html(invite.description);
 
-        var style = this.model.get('style');
-
-        if(style != null)
+        var invite_palette = this.model.get('palette');
+        if(invite_palette != null)
         {
             var palette = new PaletteView();
-            palette.renderPalette(style);
+            palette.renderPalette(new PaletteModel(invite_palette));
         }
 
         this.plugins();

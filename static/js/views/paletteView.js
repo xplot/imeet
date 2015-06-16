@@ -1,7 +1,7 @@
 PaletteView = SimpleView.extend({
     template: JST['palette.html'],
     el: '#palette-container',
-
+    /*
     palette:
     [
         {
@@ -125,6 +125,8 @@ PaletteView = SimpleView.extend({
 
         }
     ],
+    */
+    palettes: null,
 
     initialize: function(options){
         this.options = options || {};
@@ -134,12 +136,23 @@ PaletteView = SimpleView.extend({
         "click .palette-item": "paletteColorSelected",
     },
 
-    render: function(inviteModel){
+    render: function(inviteModel, palettes){
+
         this.model = inviteModel;
 
+        if(palettes == null){
+            this.palettes = new PaletteList();
+            this.palettes.fetchAll($.proxy(this.palettesLoaded, this));
+            return;
+        }
 
-        this.$el.html(this.template({palette: this.palette}));
+        this.palettes = palettes;
+        this.$el.html(this.template({palettes: this.palettes.collectionToJSON()}));
         this.$el.fadeIn();
+    },
+
+    palettesLoaded: function(palettes){
+        this.render(this.model, palettes);
     },
 
     paletteColorSelected: function(evt){
@@ -148,20 +161,26 @@ PaletteView = SimpleView.extend({
         var $item = $(evt.target);
         var palette = this.getById($item.data('id'));
 
-        this.model.set('style', palette);
+        var currentPalette = this.model.get('palette');
+        if(currentPalette != null){
+            $('body').removeClass(currentPalette.name);
+        }
+
+        this.model.set('palette', palette.toJSON());
         this.renderPalette(palette)
     },
 
     renderPalette: function(palette){
-        console.log($('.palette-editable'));
 
-        $('.palette-editable').css('background-color', palette.background_color);
-        $('.palette-editable').css('color', palette.color);
+//        $('.palette-editable').css('background-color', palette.background_color);
+//        $('.palette-editable').css('color', palette.color);
+//
+//        $('.btn').css('background-color', palette.background_color);
+//        $('.btn').css('color', palette.color);
+//
+//        $('.palette-editable[data-opacity="0.7"]').css('background-color', this.opacityColor(palette.background_color.replace('#', '')));
 
-        $('.btn').css('background-color', palette.background_color);
-        $('.btn').css('color', palette.color);
-
-        $('.palette-editable[data-opacity="0.7"]').css('background-color', this.opacityColor(palette.background_color.replace('#', '')));
+        $('body').addClass(palette.get('name'));
     },
 
     opacityColor: function(color){
@@ -172,10 +191,6 @@ PaletteView = SimpleView.extend({
     },
 
     getById: function(id){
-        for(var i=0;i<this.palette.length;i++){
-            if(this.palette[i].id == id)
-                return this.palette[i];
-        }
-        return null;
+        return this.palettes.getById(id);
     }
 });

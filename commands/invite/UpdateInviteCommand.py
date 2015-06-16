@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timedelta
 
 from managers.utils import copy_over, guid
-from models import Invite, Image
+from models import Invite, Image, Palette
 from commands.invite.utils import index_invite
 from commands.invite import CreateInviteCommand
 from commands.exceptions import InviteCannotBeEditedException
@@ -24,9 +24,9 @@ class UpdateInviteCommand(CreateInviteCommand):
         command.where = data_dict.get('where', None)
         command.utc_offset = data_dict.get('utc_offset', 0)
 
-        style = data_dict.get('style', None)
-        if style:
-            command.style = json.dumps(style)
+        palette = data_dict.get('palette', None)
+        if palette:
+            command.palette = Palette.get_by_unique_id(palette['unique_id']).key
 
         command.start = datetime.strptime(data_dict['start'], "%m/%d/%Y %I:%M %p") + timedelta(minutes=command.utc_offset)
         if command.start < datetime.now():

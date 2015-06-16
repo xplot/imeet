@@ -67,6 +67,7 @@ module.exports = function (grunt) {
                     'tmp/css/invite_edit.css': '../static/less/invite_edit.less',
                     'tmp/css/invite.css': '../static/less/invite.less',
                     'tmp/css/kaboom.css': '../static/less/error.less',
+                    'tmp/css/palette.css': '../static/less/palette/*.less',
 				}
 			}
 		},
@@ -132,10 +133,12 @@ module.exports = function (grunt) {
                     ],
                     '../static/css/invite_edit.min.css': [
                         '../static/less/external/*.css',
+                        'tmp/css/palette.css',
                         'tmp/css/invite_edit.css'
                     ],
                     '../static/css/invite.min.css': [
                         '../static/less/external/*.css',
+                        'tmp/css/palette.css',
                         'tmp/css/invite.css'
                     ],
                     '../static/css/kaboom.min.css': [
@@ -166,7 +169,7 @@ module.exports = function (grunt) {
 		//
 		watch: {
 			less: {
-				files: ['../static/less/*.less'],
+				files: ['../static/less/*.less', '../static/less/palette/*.less'],
 				tasks: [
                     'less',
                     'cssmin'

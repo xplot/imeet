@@ -12,3 +12,6 @@ from group import ApiGroupHandler
 from event import EventCronHandler
 from profile import RegisterHandler, UserProfileHandler
 from image import ImageUploadHandler, ImageServeHandler, ImageUploadUrlHandler
+
+#Palette
+from palette import PaletteHandler

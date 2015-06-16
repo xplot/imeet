@@ -99,8 +99,15 @@ class Comment(UniqueIDModel):
     comment = ndb.StringProperty(required=True, indexed=False)
     commented_on = ndb.DateTimeProperty(required=True, indexed=False)
 
+
 class Image(UniqueIDModel):
     image_key = ndb.BlobKeyProperty(required=True, indexed=False)
+
+class Palette(UniqueIDModel):
+    name = ndb.StringProperty(required=True)
+    main_color = ndb.StringProperty(required=True)
+    main_bg_color = ndb.StringProperty(required=True)
+
 
 class Invite(UniqueIDModel):
     start = ndb.DateTimeProperty(required=True, indexed=False)
@@ -119,7 +126,7 @@ class Invite(UniqueIDModel):
     sms_template = ndb.StringProperty(required=False, indexed=False)
     voice_template = ndb.StringProperty(required=False, indexed=False)
     poster_picture = ndb.KeyProperty(required=False, kind=Image, indexed=False)
-    style = ndb.StringProperty(required=False, indexed=False)
+    palette = ndb.KeyProperty(kind=Palette,required=False, indexed=False)
 
     @classmethod
     def get_by_user(cls, user):
@@ -231,3 +238,4 @@ class GroupedContact(UniqueIDModel):
     user = ndb.KeyProperty(kind=User)
     group_unique_id = ndb.StringProperty(required=True)
     contact_unique_id = ndb.StringProperty(required=True)
+

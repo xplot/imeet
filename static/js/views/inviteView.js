@@ -57,12 +57,11 @@ InviteView = SimpleView.extend({
 
         $('.invite-description').html(invite.description);
 
-        var style = inviteModel.get('style');
-
-        if(style != null)
+        var invite_palette = inviteModel.get('palette');
+        if(invite_palette != null)
         {
             var palette = new PaletteView();
-            palette.renderPalette(style);
+            palette.renderPalette(new PaletteModel(invite_palette));
         }
 
 

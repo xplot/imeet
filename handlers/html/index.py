@@ -43,8 +43,6 @@ class IndexHandler(BaseHandler):
         if not id:
             return self.redirect_to('home')
 
-        import logging
-
         invite_query = query.CompleteInviteQuery(invite_id)
 
         invite_attendee = None
