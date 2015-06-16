@@ -121,14 +121,17 @@ module.exports = function (grunt) {
 				files: {
 					'../static/css/imeet.min.css': [
                         '../static/less/external/*.css',
+                        'tmp/css/palette.css',
                         'tmp/css/imeet.css'
                     ],
                     '../static/css/index.min.css': [
                         '../static/less/external/*.css',
+                        //No Palette here
                         'tmp/css/index.css'
                     ],
                     '../static/css/contacts.min.css': [
                         '../static/less/external/*.css',
+                        //No Palette here
                         'tmp/css/contacts.css'
                     ],
                     '../static/css/invite_edit.min.css': [

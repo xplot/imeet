@@ -14,6 +14,11 @@ SearchView = SimpleView.extend({
     },
 
     render: function(invites, search) {
+
+        var paletteView = new PaletteView();
+        paletteView.clearPalette();
+
+
         this.hidePanels();
         this.model = invites;
 
