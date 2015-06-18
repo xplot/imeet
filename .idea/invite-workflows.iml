@@ -20,5 +20,6 @@
     <orderEntry type="module" module-name="tests" />
     <orderEntry type="module" module-name="kapx_site" />
     <orderEntry type="library" name="Google App Engine SDK" level="project" />
+    <orderEntry type="module" module-name="src" />
   </component>
 </module>

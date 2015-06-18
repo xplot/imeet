@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/invite-workflows.iml" filepath="$PROJECT_DIR$/.idea/invite-workflows.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../scalebridge/src/.idea/src.iml" filepath="$PROJECT_DIR$/../scalebridge/src/.idea/src.iml" />
     </modules>
   </component>
 </project>
-
