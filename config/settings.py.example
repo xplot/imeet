@@ -41,4 +41,5 @@ config = {
 
 
     'api_url': "http://www.voiceflows.com/api/invite"
+    'api_session_token': "secret"
 }

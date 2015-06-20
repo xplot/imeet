@@ -24,16 +24,11 @@ def non_empty_properties(object_source):
 
 
 def get_voiceflows_headers():
-    now = datetime.datetime.utcnow().strftime("%a, %d %b %Y %H:%M:00 GMT")
-    secret = '8\x0c7_\x01\t/{C)6V`\x1c!'
-    dig = hmac.new(secret, msg=now, digestmod=hashlib.sha256).digest()
-    authToken = "Voiceflows " + base64.b64encode(dig).decode()
-
+    
     return {
         'Content-type': 'application/json',
         'Accept': 'text/plain',
-        'Date': now,
-        'Authorization': authToken
+        'session_token': config.get('api_session_token')
     }
 
 
