@@ -10,7 +10,7 @@
                             <tbody>
                                 <tr>
                                     <td width="80%" style="">
-                                         <h1 style="margin:40px 10px;float:left;font-size:22px;line-height:24px;padding-left:3%">
+                                         <h1 style="margin:40px 10px;float:left;font-size:30px;line-height:24px;padding-left:5%;{% if invite['palette'] %} color:{{invite['palette']['main_color']}}  {%else %} color:#FFF {%endif %}">
                                             {{invite['title']}}
                                         </h1>
                                     </td>
@@ -31,7 +31,7 @@
                                     <td width="100%" style="">
                                         <p style="color:#888;font-size:15px;font-weight:normal;line-height:24px;margin:0">
                                             Hi <strong>{{invite_attendee["name"]}}</strong>!,<br/>
-                                            You have been invited to <a href="http://imeet.io" style="text-decoration:none;color:#000;font-size:17px;font-weight:normal;line-height:24px;margin:0">{{invite["title"]}}</a>
+                                            You have been invited to <a href="http://imeet.io/invite/{{invite['unique_id']}}/{{invite_attendee['invite_attendee_id']}}" style="text-decoration:none;color:#000;font-size:17px;font-weight:normal;line-height:24px;margin:0">{{invite["title"]}}</a>
                                             on <span style="text-decoration:none;color:#888;font-size:17px;font-weight:normal;line-height:24px;margin:0">{{invite['start']|prettydate}}</span>
                                         </p>
                                     </td>
