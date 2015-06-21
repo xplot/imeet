@@ -52,6 +52,8 @@ class UniqueIDModel(ndb.Model):
     @classmethod
     def get_by_unique_id(cls, unique_id):
         """Gets a Model by it' unique_id """
+        if not unique_id:
+            return None
         return cls.get_by_id(unique_id)
 
     @property
@@ -68,12 +70,6 @@ class UniqueIDModel(ndb.Model):
         # dumps json for our dict object
         result = json.dumps(model_dict, default=data_type_handler, indent = 4)
         return result
-
-    @classmethod
-    def get_by_unique_id(cls, unique_id):
-        if not unique_id:
-            return None
-        return cls.query(cls.unique_id == unique_id).get()
 
     @classmethod
     def create_new_with_id(cls):
@@ -172,6 +168,25 @@ class InviteAttendee(UniqueIDModel):
             InviteAttendeeAcknowledge.attendee == self.key
         ).fetch()
 
+    @classmethod
+    def get_by_invite_and_user_id(cls, invite=None, invite_id=None, user=None, invite_attendee_id=None):
+        if not invite:
+            invite = Invite.get_by_unique_id(invite_id)
+        if user:
+            return InviteAttendee.query(
+                ndb.AND(
+                    InviteAttendee.user == user.key,
+                    InviteAttendee.invite == invite.key
+                )
+            ).get()
+        if invite_attendee_id:
+            return InviteAttendee.query(
+                ndb.AND(
+                    InviteAttendee.unique_id == invite_attendee_id,
+                    InviteAttendee.invite == invite.key
+                )
+            ).get()
+
 
 class InviteAttendeeAcknowledge(UniqueIDModel):
     """
@@ -238,4 +253,36 @@ class GroupedContact(UniqueIDModel):
     user = ndb.KeyProperty(kind=User)
     group_unique_id = ndb.StringProperty(required=True)
     contact_unique_id = ndb.StringProperty(required=True)
+
+
+class SessionStatus:
+    ACTIVE = 'active'
+    EXPIRED = 'expired'
+
+class InvitePermission:
+    Organizer= "organizer"
+    Attendee = "attendee"
+    User = "user"
+    Anonymous = "anonymous"
+
+class SessionToken(UniqueIDModel):
+    user = ndb.KeyProperty(required=True, kind=User)
+    expires_on = ndb.DateTimeProperty(required=True)
+    status = ndb.StringProperty(required=True)
+
+    @classmethod
+    def all_user_tokens(cls,user, status=None):
+        if not status:
+            return cls.query(cls.user == user.key).fetch()
+        return cls.query(ndb.AND(
+            cls.user == user.key,
+            cls.status == status
+        ))
+
+    @classmethod
+    def get_user_from_session_token(cls, session_token=None, session_token_id=None):
+        if not session_token:
+            session_token = cls.get_by_unique_id(session_token_id)
+
+        return session_token.user.get()
 
