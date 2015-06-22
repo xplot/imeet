@@ -24,3 +24,9 @@ indexes:
   properties:
   - name: type
   - name: date
+
+- kind: SessionToken
+  properties:
+  - name: status
+  - name: user
+  - name: expires_on

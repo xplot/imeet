@@ -6,6 +6,7 @@ import webapp2
 from google.appengine.api import mail
 from google.appengine.ext import ndb
 from webapp2 import RequestHandler
+from webob.exc import HTTPError
 
 
 import boilerplate
@@ -35,9 +36,12 @@ class JsonHandler(RequestHandler):
             self.response.content_type = 'application/json'
             result = super(JsonHandler, self).dispatch()
             self.api_success(result)
+        except HTTPError, he:
+            self.error(he.code)
+            self.json_handle_exception(he, self.app.debug)
         except Exception, e:
             self.error(500)
-            self.json_handle_exception(e, False)
+            self.json_handle_exception(e, self.app.debug)
 
     def __render_json__(self, data):
         if data is not None:
@@ -56,8 +60,23 @@ class JsonHandler(RequestHandler):
 
     def json_handle_exception(self, exception, debug):
         logging.exception(exception)
-        if exception is not None and exception.message is not None:
-            self.__render_json__(exception.message)
+        message = None
+        if exception:
+            message = exception.message \
+                    or getattr(exception, 'detail', None) \
+                    or getattr(exception, 'explanation', None)
+
+        if message is None:
+            if debug:
+                message = type(exception).__name__
+            else:
+                message = "Unknown Error"
+
+        if exception is not None and message is not None:
+            output = {
+                'error': message
+            }
+            self.__render_json__(output)
 
     def _data(self):
         try:

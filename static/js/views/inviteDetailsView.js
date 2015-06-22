@@ -67,7 +67,7 @@ InviteDetailsView = SimpleView.extend({
             return;
         }
 
-        this.model.submit($.proxy(this.submitSuccess, this));
+        this.model.update($.proxy(this.submitSuccess, this));
     },
 
     submitSuccess: function(result){

@@ -33,6 +33,12 @@ class User(User):
     activated = ndb.BooleanProperty(default=False)
 
     @classmethod
+    def get_by_unique_id(cls, unique_id):
+        """ Gets a Model by it' unique_id """
+        return cls.get_by_id(long(unique_id))
+
+
+    @classmethod
     def get_by_email(cls, email):
         """Returns a user object based on an email.
 

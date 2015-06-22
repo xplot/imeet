@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from google.appengine.ext import ndb
 
-from entities import SessionToken, UserAccount, SessionStatus
-from lib.utils import guid
+from models import SessionToken, User, SessionStatus
+from managers.utils import guid
 
 
 class ValidateSessionTokenCommand(object):

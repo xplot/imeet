@@ -564,7 +564,13 @@ InviteModel = Backbone.Model.extend({
 
     fetch: function(callback){
         var that = this;
+
+        var headers = {};
+        if(currentUser != null){
+            headers['session_token'] = currentUser.session_token;
+        }
         $.ajax({
+            headers: headers,
             url: "/api/invite/" + this.get('unique_id'),
             type: "GET",
             cache: false,
@@ -634,20 +640,29 @@ InviteModel = Backbone.Model.extend({
         });
     },
 
-    submit: function(callback, enableNotifications){
-        var that = this;
+    createNew: function(callback, enableNotifications){
+        var url = "/api/invite/";
+        this.x_submit(url, callback, enableNotifications);
+    },
 
+    update: function(callback, enableNotifications){
+        var url = "/api/invite/" + this.get('unique_id');
+        this.x_submit(url, callback, enableNotifications);
+    },
+
+    x_submit: function(url, callback, enableNotifications){
+        var that = this;
         var d = new Date();
         this.set('utc_offset', d.getTimezoneOffset());
 
         var invite = this.toJSON();
-        if(currentUser != null)
-            invite.user_id = currentUser.id;
-        var url = "/api/invite/";
-        if(this.get('unique_id')!==null)
-            url += this.get('unique_id');
+        var headers = {};
+        if(currentUser != null){
+            headers['session_token'] = currentUser.session_token;
+        }
 
         $.ajax({
+            headers: headers,
             url: url,
             type: "POST",
             contentType: "application/json",

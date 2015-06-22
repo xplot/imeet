@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from google.appengine.ext import ndb
 
-from models.models import SessionToken, Invite, InviteAttendee, InvitePermission
+from models.models import SessionToken, Invite, InviteAttendee, InvitePermission, AttendeeStatus
 from managers.utils import guid
 
 
@@ -12,7 +12,6 @@ class ValidateInvitePermissionsCommand(object):
         self.current_user = current_user
         self.invite_attendee_id = invite_attendee_id
         self.permissions = permissions
-
 
     def execute(self):
         """
@@ -46,14 +45,14 @@ class ValidateInvitePermissionsCommand(object):
             # the provided invite_attendee_id
             if self.invite_attendee_id:
                 invite_attendee = InviteAttendee.get_by_invite_and_user_id(
-                    invite=invite,
+                    invite=self.invite,
                     invite_attendee_id=self.invite_attendee_id
                 )
                 if invite_attendee:
                     return True
             if self.current_user:
                 invite_attendee = InviteAttendee.get_by_invite_and_user_id(
-                    invite=invite,
+                    invite=self.invite,
                     user=self.current_user
                 )
                 if invite_attendee:
@@ -61,7 +60,19 @@ class ValidateInvitePermissionsCommand(object):
             return False
 
         if InvitePermission.Organizer in self.permissions:
+            if self.invite_attendee_id:
+                invite_attendee = InviteAttendee.get_by_invite_and_user_id(
+                    invite=self.invite,
+                    invite_attendee_id=self.invite_attendee_id
+                )
+                if invite_attendee and invite_attendee.attendee_status == AttendeeStatus.ORGANIZER:
+                    return True
             if self.current_user:
-                return self.invite.user == current_user.key
+                invite_attendee = InviteAttendee.get_by_invite_and_user_id(
+                    invite=self.invite,
+                    user=self.current_user
+                )
+                if invite_attendee:
+                    return True
 
         return False

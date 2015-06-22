@@ -68,7 +68,7 @@ InviteCreateView = SimpleView.extend({
             return;
         }
 
-        this.model.submit($.proxy(this.inviteSubmitted, this), true);
+        this.model.createNew($.proxy(this.inviteSubmitted, this), true);
     },
 
     inviteSubmitted: function(result){

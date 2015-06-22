@@ -97,9 +97,14 @@ app = webapp2.WSGIApplication([
     #Route('/api/invite/<invite_id>/ack', api.InviteCommentHandler, methods=['POST']),
 
     #Invite
-    Route('/api/invite/', api.InviteHandler),
-    Route('/api/invite/<invite_id>', api.InviteHandler),
-    Route('/api/invite/search/<user_id>', api.InviteHandler, name='search', handler_method='search'),
+
+    Route('/api/invite/', api.InviteHandler, name='all_user_invite', handler_method='get_all_from_user', methods=['GET']),
+    Route('/api/invite/<invite_id>', api.InviteHandler, name='get_invite', handler_method='get', methods=['GET']),
+    Route('/api/invite/<invite_id>/<invite_attendee_id>', api.InviteHandler, name='get_invite_as_attendee', handler_method='get', methods=['GET']),
+
+    Route('/api/invite/', api.InviteHandler, name='create_invite', handler_method='create_invite', methods=['POST']),
+    Route('/api/invite/<invite_id>', api.InviteHandler, name='save_invite', handler_method='save_invite', methods=['POST', 'PUT']),
+    Route('/api/invite/<invite_id>/<invite_attendee_id>', api.InviteHandler, name='save_invite_as_attendee', handler_method='save_invite', methods=['POST', 'PUT']),
 
     #Groups
     Route('/api/group', api.ApiGroupHandler, name='get_groups', handler_method='get', methods=['GET']),

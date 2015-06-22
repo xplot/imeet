@@ -58,14 +58,22 @@ SearchView = SimpleView.extend({
     },
 
     search: function(value){
+
+        if(currentUser == null)
+            console.error("Current User cannot be null on this view!");
+
         var that = this;
-        var url = "/api/invite/search/"+ currentUser.id + "?term=";
+        var url = "/api/invite/?term=";
         if(value != null)
             url += value;
 
         $.ajax({
             url: url,
             type: "GET",
+            headers:{
+                session_token: currentUser.session_token
+            },
+
             cache: false,
             success: function(data) {
                 var invite_list = new InviteList();

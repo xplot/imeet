@@ -14,33 +14,37 @@ from google.appengine.ext import ndb
 from managers.template import TemplateModel
 from managers.auth import user_context, request_with_subscription
 from query import CompleteInviteQuery, InviteSearchQuery
-from models import Invite
+from models import Invite, InvitePermission
 from boilerplate.models import User
 from commands import CreateInviteCommand, UpdateInviteCommand, UpdateInviteTitleCommand, UpdateInviteDescriptionCommand
+from handlers.security import authentication_required, invite_permission_required
 
 
 class InviteHandler(JsonHandler):
 
-    def get(self, invite_id=None):
+    @authentication_required
+    def get_all_from_user(self):
+        """Get all invites where user is organizer/host"""
+        term = self.request.get('term', None)
+        user = self.user
+        return InviteSearchQuery(user, term).query()
+
+    @invite_permission_required(InvitePermission.Attendee)
+    def get(self, invite_id, invite_attendee_id=None):
         """Get the full invite, with contacts and responses"""
-
-        if not invite_id:
-            raise Exception("Please supply a valid invite_id")
-
         query = CompleteInviteQuery(invite_id)
         return query.query()
 
-    @user_context
-    def post(self, invite_id=None):
+    def create_invite(self):
+        """Create a new Invite"""
+        invite_dict = self._data()
+        return CreateInviteCommand.read_from_dict(invite_dict, self.user).execute()
+
+    @invite_permission_required(InvitePermission.Organizer)
+    def save_invite(self, invite_id):
         """Save the invite"""
         invite_dict = self._data()
-
-        command = None
-        if not invite_id:
-            command = CreateInviteCommand.read_from_dict(invite_dict, self.user)
-        else:
-            command = UpdateInviteCommand.read_from_dict(invite_id, invite_dict)
-        return command.execute()
+        return UpdateInviteCommand.read_from_dict(invite_id, invite_dict).execute()
 
     @user_context
     def update_title(self, invite_id=None):

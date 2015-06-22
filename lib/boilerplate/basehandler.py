@@ -17,6 +17,7 @@ from boilerplate import utils, i18n, jinja_bootstrap
 from babel import Locale
 from main import JINJA_ENVIRONMENT
 from managers.subscriptions import SubscriptionManager
+from commands import CreateSessionTokenCommand
 class ViewClass:
     """
         ViewClass to insert variables into the template.
@@ -301,6 +302,10 @@ class BaseHandler(webapp2.RequestHandler):
         if self.user:
             kwargs.update(self.user_social_sharing)
             kwargs['user_fullname'] = self.current_user.fullname()
+
+            logging.info(self.user_id)
+
+            kwargs['session_token'] = CreateSessionTokenCommand(user_unique_id=self.user_id).execute()
 
         self.response.headers.add_header('X-UA-Compatible', 'IE=Edge,chrome=1')
 

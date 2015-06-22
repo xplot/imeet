@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from google.appengine.ext import ndb
 
-from entities import SessionToken, User, SessionStatus
+from models import SessionToken, User, SessionStatus
 from managers.utils import guid
 
 DEFAULT_EXPIRATION_TIME = timedelta(minutes=180)
@@ -27,7 +27,7 @@ class CreateSessionTokenCommand(object):
 
         # Perhaps Refresh Token here too....
 
-        return token
+        return token.unique_id
 
     def get_alive_token(self):
         return SessionToken.query(ndb.AND(

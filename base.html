@@ -86,12 +86,13 @@
         var currentUser =
         {% if username %}
         {
-          id: '{{user_id}}',
-          email: '{{email}}',
-          fullname: {{"'" + user_fullname + "'" if user_fullname else 'null'}},
-          social_sharing:{
+            session_token: '{{session_token}}',
+            id: '{{user_id}}',
+            email: '{{email}}',
+            fullname: {{"'" + user_fullname + "'" if user_fullname else 'null'}},
+            social_sharing:{
                 facebook: {{'true' if facebook_sharing_enabled else 'false'}}
-           }
+            }
         };
         {%else %}
             null;
