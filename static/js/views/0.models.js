@@ -1,11 +1,13 @@
 
 var httpRequest = function(ajax_request){
     //Organize here generic request stuff like Auth
+
+    ajax_request.headers = ajax_request.headers || {};
+
     if(currentUser != null)
-        if(ajax_request.headers != null)
-            ajax_request.headers['session_token'] = currentUser.session_token;
-        else
-            ajax_request.headers = { session_token: currentUser.session_token};
+        ajax_request.headers['session_token'] = currentUser.session_token;
+    if(typeof(invite_attendee) != "undefined" && invite_attendee != null)
+        ajax_request.headers['invite_attendee_id'] = invite_attendee.invite_attendee_id;
 
     if(ajax_request.type != 'GET')
         ajax_request.contentType = 'application/json';

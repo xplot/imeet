@@ -55,6 +55,9 @@ def read_parameter_from_request(parameter_name, handler, kwargs=None, safe=True)
     if not parameter_value and kwargs:
         parameter_value = kwargs.get(parameter_name)
 
+    if not parameter_value:
+        parameter_value = handler.request.headers.get(parameter_name, None)
+
     if not parameter_value and not safe:
         raise InvalidRequestException("Parameter %s not found in request" % parameter_name)
     return parameter_value

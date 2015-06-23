@@ -141,6 +141,7 @@ function init_app() {
 
             if(inviteX == null || invite_attendeex == null){
                 loadInviteAndAttendeeFromLoggedUser(id, function(inviteModel, invite_attendee){
+                    //document.invite_attendee = invite_attendee.toJSON();
                     invite_view.render(id, inviteModel, invite_attendee);
                 });
             }

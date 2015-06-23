@@ -301,9 +301,17 @@ __p += '\n\n<div class="row rsvp no-margin">\n    <div class="panel panel-defaul
 __e(confirmed.length) +
 ')</div>\n      <div class="panel-body">\n        ';
  _.each( confirmed, function( item ){ ;
+__p += '\n            ';
+ if(item.status != 'organizer' && edit_view && attendee != null && attendee.status == 'organizer') {;
+__p += '\n                ' +
+((__t = ( partial('invite_attendee_admin.html', item) )) == null ? '' : __t) +
+'\n          ';
+} else {;
 __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
-'\n        ';
+'\n          ';
+} ;
+__p += '\n        ';
  }); ;
 __p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading no palette-editable">Who is not coming? ';
  if(negated.length>0){;
@@ -313,9 +321,17 @@ __e(negated.length) +
 };
 __p += '</div>\n      <div class="panel-body">\n        ';
  _.each( negated, function( item ){ ;
+__p += '\n            ';
+ if(edit_view && attendee != null && attendee.status == 'organizer') {;
+__p += '\n                ' +
+((__t = ( partial('invite_attendee_admin.html', item) )) == null ? '' : __t) +
+'\n          ';
+} else {;
 __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
-'\n        ';
+'\n          ';
+} ;
+__p += '\n        ';
  }); ;
 __p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited?\n\n      </div>\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;

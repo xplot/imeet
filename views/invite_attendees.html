@@ -45,7 +45,11 @@
       <div class="panel-heading yes palette-editable"> Who is coming? (<%-confirmed.length%>)</div>
       <div class="panel-body">
         <% _.each( confirmed, function( item ){ %>
+            <% if(item.status != 'organizer' && edit_view && attendee != null && attendee.status == 'organizer') {%>
+                <%= partial('invite_attendee_admin.html', item) %>
+          <%} else {%>
             <%= partial('invite_attendee.html', item) %>
+          <%} %>
         <% }); %>
       </div>
    </div>
@@ -54,7 +58,11 @@
       <div class="panel-heading no palette-editable">Who is not coming? <% if(negated.length>0){%>(<%-negated.length%>)<%}%></div>
       <div class="panel-body">
         <% _.each( negated, function( item ){ %>
+            <% if(edit_view && attendee != null && attendee.status == 'organizer') {%>
+                <%= partial('invite_attendee_admin.html', item) %>
+          <%} else {%>
             <%= partial('invite_attendee.html', item) %>
+          <%} %>
         <% }); %>
       </div>
    </div>
