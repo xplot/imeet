@@ -26,31 +26,11 @@ InviteCommentsView = Backbone.View.extend({
           comments: this.model.collectionToJSON()
         };
 
-        if(this.current_attendee == null && currentUser != null){
-            var inviteModel = new InviteModel({unique_id: this.invite_id});
-            inviteModel.tryToObtainAttendeeFromLoggedUser($.proxy(this.attendeeFromUser, this));
-        }
-
         this.$el.html(this.template(json));
 
         this.$comment_container = this.$el.find('.invite-comments-container');
         this.$comment_input = this.$el.find('.invite-comment-input');
         this.listenTo(this.model, 'add', this.newCommentModel);
-    },
-
-    attendeeFromUser: function(attendee){
-
-        if (typeof(attendee) == "undefined")
-            return;
-
-        this.current_attendee = new Contact(attendee);
-
-        if(this.current_attendee != null){
-
-            $('.comment-box').html(JST['invite_comment_box.html']());
-            this.$comment_container = this.$el.find('.invite-comments-container');
-            this.$comment_input = this.$el.find('.invite-comment-input');
-        }
     },
 
     addCommentEnter: function(evt){

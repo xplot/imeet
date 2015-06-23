@@ -17,12 +17,12 @@ class InviteAttendeeQuery(object):
             self.invite_attendee = InviteAttendee.get_by_unique_id(self.invite_attendee_id)
 
         return {
-                'unique_id': self.invite_attendee.contact.get().unique_id if self.invite_attendee.contact else '',
-                'invite_attendee_id':    self.invite_attendee.unique_id,
-                'user': self.invite_attendee.user.urlsafe() if self.invite_attendee.user else None,
-                'name':         self.invite_attendee.name,
-                'phone':        self.invite_attendee.phone,
-                'email':        self.invite_attendee.email,
-                'status':       self.invite_attendee.attendee_status,
-                'response_on':  self.invite_attendee.last_response_on
-            }
+            'unique_id': self.invite_attendee.contact.get().unique_id if self.invite_attendee.contact else '',
+            'invite_attendee_id':    self.invite_attendee.unique_id,
+            'user': self.invite_attendee.user.urlsafe() if self.invite_attendee.user else None,
+            'name':         self.invite_attendee.name,
+            'phone':        self.invite_attendee.phone,
+            'email':        self.invite_attendee.email,
+            'status':       self.invite_attendee.attendee_status,
+            'response_on':  self.invite_attendee.last_response_on
+        }

@@ -27,7 +27,8 @@ InviteAttendeesView = Backbone.View.extend({
             no_response: this.no_response.collectionToJSON(),
             confirmed: this.confirmed.collectionToJSON(),
             negated: this.negated.collectionToJSON(),
-            attendee: (this.current_attendee != null)? this.current_attendee.toJSON():null
+            attendee: (this.current_attendee != null)? this.current_attendee.toJSON():null,
+            edit_view: data.edit_view
         };
 
         this.$el.html(this.template(json));

@@ -317,10 +317,10 @@ __p += '\n            ' +
 ((__t = ( partial('invite_attendee.html', item) )) == null ? '' : __t) +
 '\n        ';
  }); ;
-__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited?\n\n      </div>\n\n      <div class="panel-body no-response-table">\n        ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited?\n\n      </div>\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;
 __p += '\n          ';
- if(attendee != null && attendee.status == 'organizer') {;
+ if(edit_view && attendee != null && attendee.status == 'organizer') {;
 __p += '\n                ' +
 ((__t = ( partial('invite_attendee_admin.html', item) )) == null ? '' : __t) +
 '\n          ';

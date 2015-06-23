@@ -30,21 +30,11 @@ InviteAdminView = SimpleView.extend({
         if(this.unique_id== null)
             console.error('Invite Id is null, check routing');
 
-        if(invite == null){
-            var inviteModel = new InviteModel({unique_id: this.unique_id});
-            inviteModel.fetch($.proxy(this.render, this));
-            return;
-        }
-
-        if(invite_attendee != null)
-            this.current_attendee = new Contact(invite_attendee);
-        else{
-            //Load invite_attendee from "somewhere"....
-        }
-
         this.validateInviteIsCurrent(invite.start);
 
-        this.model = new InviteModel(invite);
+        this.model = invite;
+        this.current_attendee = invite_attendee;
+
         var invite_json = this.model.toJSON();
         this.$el.html(this.template(invite_json));
 
@@ -60,7 +50,8 @@ InviteAdminView = SimpleView.extend({
         invite_attendees_view.render({
             invite_id: this.unique_id,
             attendees: invite_attendees,
-            current_attendee: this.current_attendee
+            current_attendee: this.current_attendee,
+            edit_view: true
         });
         invite_description.render(this.model);
         invite_header.render(this.model);

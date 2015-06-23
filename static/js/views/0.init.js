@@ -248,3 +248,22 @@ var colorInverter = function invertHex(hexnum){
 window.partial = function(which, data) {
     return JST[which](data);
 };
+
+
+var loadAttendeeFromLoggedUser = function(inviteModel, callback){
+    inviteModel.tryToObtainAttendeeFromLoggedUser(callback);
+};
+
+var loadInviteAndAttendeeFromLoggedUser = function(invite_unique_id, callback){
+    var inviteModel = new InviteModel({unique_id: invite_unique_id});
+    inviteModel.fetch(function(unique_id, data){
+        inviteModel = new InviteModel(data);
+
+        loadAttendeeFromLoggedUser(inviteModel, function(data){
+            var invite_attendee = null;
+            if(data != null)
+                invite_attendee = new Contact(data);
+            callback(inviteModel, invite_attendee)
+        });
+    });
+};

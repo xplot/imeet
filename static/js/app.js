@@ -1,3 +1,4 @@
+
 function init_app() {
     //Space
     window.App = {
@@ -83,7 +84,7 @@ function init_app() {
             'invite/:id/edit': 'edit_as_attendee',
             'invite/:id/:attendee_id/edit': 'edit_as_attendee',
             'invite/:id': 'view_as_attendee',
-            'invite/:id/:invite_attendee_id': 'view_as_attendee',
+            'invite/:id/:attendee_id': 'view_as_attendee',
 
             'contacts' : 'contacts',
             'groups' : 'groups',
@@ -121,15 +122,30 @@ function init_app() {
         search: function () {
             search_view.render();
         },
-        edit_as_attendee: function (id) {
+        edit_as_attendee: function (id, attendee_id) {
             var inviteX = (typeof(invite) != "undefined")?invite: null;
             var invite_attendeex = (typeof(invite_attendee) != "undefined")?invite_attendee: null;
-            admin_view.render(id, inviteX, invite_attendeex);
+
+            if(inviteX == null || invite_attendeex == null){
+                loadInviteAndAttendeeFromLoggedUser(id, function(inviteModel, invite_attendee){
+                    admin_view.render(id, inviteModel, invite_attendee);
+                });
+            }
+            else
+                admin_view.render(id, new InviteModel(inviteX), new Contact(invite_attendeex));
+
         },
-        view_as_attendee: function(id, invite_attendee_id){
+        view_as_attendee: function(id, attendee_id){
             var inviteX = (typeof(invite) != "undefined")?invite: null;
             var invite_attendeex = (typeof(invite_attendee) != "undefined")?invite_attendee: null;
-            invite_view.render(id, inviteX, invite_attendeex);
+
+            if(inviteX == null || invite_attendeex == null){
+                loadInviteAndAttendeeFromLoggedUser(id, function(inviteModel, invite_attendee){
+                    invite_view.render(id, inviteModel, invite_attendee);
+                });
+            }
+            else
+                invite_view.render(id, new InviteModel(inviteX), new Contact(invite_attendeex));
         },
         contacts: function(){
             contacts_view.render({contactList: contactList, groupList: groupList});
