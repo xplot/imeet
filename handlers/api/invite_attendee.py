@@ -13,20 +13,22 @@ from google.appengine.api import search
 from google.appengine.ext import ndb
 from managers.template import TemplateModel
 from managers.auth import user_context, request_with_subscription
-from models import Invite
+from models import Invite, InvitePermission
 from boilerplate.models import User
+from handlers.security import authentication_required, invite_permission_required
 import query
 import commands
 
 
 class InviteAttendeeHandler(JsonHandler):
 
+    @invite_permission_required(InvitePermission.Attendee)
     def get(self, invite_id):
         """Will get the invite attendees"""
         return query.InviteAttendeesQuery(invite_unique_id=invite_id).query()
 
-    @user_context
-    def get_attendee_from_user_id(self, invite_id):
+    @invite_permission_required(InvitePermission.Attendee)
+    def get_attendee_from_user(self, invite_id):
         if not self.user:
             return None
 
@@ -36,7 +38,8 @@ class InviteAttendeeHandler(JsonHandler):
         ).query()
 
     #@request_with_subscription
-    @user_context
+
+    @invite_permission_required(InvitePermission.Organizer)
     def post(self, invite_id):
         """Includes an Attendee in the Invite"""
         command = commands.BulkAddInviteAttendeeCommand.read_from_dict(
@@ -45,14 +48,15 @@ class InviteAttendeeHandler(JsonHandler):
         )
         return command.execute()
 
+    @invite_permission_required(InvitePermission.Organizer)
     def delete(self, invite_id, unique_id):
-        """Includes an Attendee in the Invite"""
+        """Deletes an Attendee from the Invite"""
         command = commands.RemoveAttendeeCommand(unique_id)
         command.execute()
         return unique_id
 
     #@request_with_subscription
-    @user_context
+    @invite_permission_required(InvitePermission.Organizer)
     def post_group(self, invite_id):
         """Includes all contacts in the group as attendees"""
         group_id = self._data().get('unique_id')
@@ -64,16 +68,15 @@ class InviteAttendeeHandler(JsonHandler):
         )
         return command.execute()
 
-    @user_context
-    #@request_with_subscription
+    @invite_permission_required(InvitePermission.Organizer)
     def notify_all(self, invite_id):
         """Send the invite out to all the contacts"""
         invite_all = commands.NotifyAllAttendeesCommand(invite_unique_id=invite_id)
         invite_all.execute()
         return invite_id
 
-    @user_context
-    @request_with_subscription
+    #@request_with_subscription
+    @invite_permission_required(InvitePermission.Organizer)
     def notify_some(self, invite_id):
         """Send the invite out to some of the contacts"""
         attendees = self._data()
@@ -85,7 +88,7 @@ class InviteAttendeeHandler(JsonHandler):
         return invite_id
 
     #@request_with_subscription
-    @user_context
+    @invite_permission_required(InvitePermission.Organizer)
     def update_attendee(self, invite_id):
         """Update Attendee Details"""
         invite_attendee_id = self._data().get('invite_attendee_id')
@@ -100,7 +103,6 @@ class InviteAttendeeHandler(JsonHandler):
             email=contact_data['email'],
             phone=contact_data['phone'],
        ).execute()
-
 
     @classmethod
     def get_list_from_dict(cls, attendees):

@@ -9,8 +9,9 @@ from webapp2 import RequestHandler
 import boilerplate
 from main import JINJA_ENVIRONMENT
 from boilerplate.basehandler import BaseHandler
+from handlers.security import authentication_required, invite_permission_required, authentication_if_possible
 import query
-from models import Invite
+from models import Invite, InvitePermission
 from handlers.api import ImageUploadHandler
 from datetime import datetime
 
@@ -39,14 +40,50 @@ class IndexHandler(BaseHandler):
     def search(self):
         return self.render_template('index.html')
 
-    def view_invite(self, invite_id, invite_attendee_id=0):
-        if not id:
+    @invite_permission_required(InvitePermission.Attendee)
+    def view_invite(self, invite_id, invite_attendee_id=None):
+        if not invite_id:
             return self.redirect_to('home')
 
         invite_query = query.CompleteInviteQuery(invite_id)
+        invite_attendee = self._try_to_get_attendee(invite_attendee_id)
+
+        return self.render_template(
+            'invite.html',
+            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
+            invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder),
+        )
+
+    @invite_permission_required(InvitePermission.Organizer)
+    def edit_invite(self, invite_id):
+        return self._edit_invite(invite_id=invite_id)
+
+    @invite_permission_required(InvitePermission.Organizer)
+    def edit_invite_as_attendee(self, invite_id, invite_attendee_id):
+        return self._edit_invite(invite_id, invite_attendee_id)
+
+    def _edit_invite(self, invite_id=None, invite_attendee_id=None):
+        """Get the full invite, with contacts and responses"""
+        if not invite_id:
+            return self.redirect_to('home')
+
+        invite_query = query.CompleteInviteQuery(invite_id)
+        invite_attendee = self._try_to_get_attendee(invite_attendee_id)
+
+        return self.render_template(
+            'invite.html',
+            edit='True',
+            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
+            invite_attendee=json.dumps(organizer_attendee, cls=DateTimeEncoder) if invite_attendee else None,
+        )
+
+    def _try_to_get_attendee(self, invite_attendee_id):
+        if not invite_attendee_id:
+            return None
+
+        logging.info(invite_attendee_id)
 
         invite_attendee = None
-
         if invite_attendee_id:
             invite_attendee = query.InviteAttendeeReportQuery(
                 invite_attendee_id=invite_attendee_id
@@ -56,34 +93,7 @@ class IndexHandler(BaseHandler):
                 invite_id=invite_id,
                 user=self.current_user
             ).query()
-
-        return self.render_template(
-            'invite.html',
-            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
-            invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder),
-        )
-
-    def edit_invite_view(self, invite_id=0):
-        """Get the full invite, with contacts and responses"""
-        if not invite_id:
-            return self.redirect_to('home')
-
-        invite_query = query.CompleteInviteQuery(invite_id)
-
-        organizer_attendee = query.InviteOrganizerQuery(
-            invite_unique_id=invite_id
-        ).query()
-
-        #Here is where the Public/Private Invite also has to go
-        if organizer_attendee['user_id'] and organizer_attendee['user_id'] != self.user_key.id():
-            return self.redirect_to('view_invite', invite_id=invite_id)
-
-        return self.render_template(
-            'invite.html',
-            edit='True',
-            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
-            invite_attendee=json.dumps(organizer_attendee, cls=DateTimeEncoder),
-        )
+        return invite_attendee
 
     def view_invite_template(self, invite_id, invite_attendee_id=None):
         invite_query = query.CompleteInviteQuery(invite_id)

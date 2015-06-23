@@ -1,9 +1,11 @@
+
 var httpRequest = function(ajax_request){
     //Organize here generic request stuff like Auth
-    if(ajax_request.headers != null)
-        ajax_request.headers['session_token'] = currentUser.session_token;
-    else
-        ajax_request.headers = { session_token: currentUser.session_token};
+    if(currentUser != null)
+        if(ajax_request.headers != null)
+            ajax_request.headers['session_token'] = currentUser.session_token;
+        else
+            ajax_request.headers = { session_token: currentUser.session_token};
 
     if(ajax_request.type != 'GET')
         ajax_request.contentType = 'application/json';

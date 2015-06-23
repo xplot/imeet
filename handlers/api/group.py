@@ -8,11 +8,12 @@ from boilerplate.basehandler import BaseHandler
 from base import JsonHandler
 from google.appengine.ext import ndb
 from models import Contact
+from handlers.security import authentication_required
 
 
 class ApiGroupHandler(JsonHandler):
 
-    @user_context
+    @authentication_required
     def get(self):
         group_manager = GroupManager(self.user.key)
         return [{
@@ -20,13 +21,13 @@ class ApiGroupHandler(JsonHandler):
             'name': x.name
         } for x in group_manager.get_groups_for_user()]
 
-    @user_context
+    @authentication_required
     def add(self, group_name):
         group_manager = GroupManager(self.user.key)
         group = group_manager.insert(group_name)
         return group.unique_id
 
-    @user_context
+    @authentication_required
     def update_group(self, group_id):
         group_data = self._data().get('group')
 
@@ -37,7 +38,7 @@ class ApiGroupHandler(JsonHandler):
             'name': group_data['name']
         }
 
-    @user_context
+    @authentication_required
     def remove(self, group_id):
         group_manager = GroupManager(self.user.key)
         group_manager.remove(group_id)
@@ -46,7 +47,7 @@ class ApiGroupHandler(JsonHandler):
             'unique_id': group.unique_id
         }
 
-    @user_context
+    @authentication_required
     def add_contact_to_group(self, group_id, contact_id):
         contact = Contact.query(Contact.unique_id == contact_id).get()
 
@@ -61,12 +62,12 @@ class ApiGroupHandler(JsonHandler):
             'contact_id': contact_id
         }
 
-    @user_context
+    @authentication_required
     def get_contacts_in_group(self, group_id):
         group_manager = GroupManager(self.user.key)
         return group_manager.get_contacts_in_group(group_id)
 
-    @user_context
+    @authentication_required
     def get_all_groups_and_contacts(self):
         group_manager = GroupManager(self.user.key)
         return group_manager.get_contacts_sorted_by_group()

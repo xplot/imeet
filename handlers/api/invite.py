@@ -17,7 +17,7 @@ from query import CompleteInviteQuery, InviteSearchQuery
 from models import Invite, InvitePermission
 from boilerplate.models import User
 from commands import CreateInviteCommand, UpdateInviteCommand, UpdateInviteTitleCommand, UpdateInviteDescriptionCommand
-from handlers.security import authentication_required, invite_permission_required
+from handlers.security import authentication_required, invite_permission_required, authentication_if_possible
 
 
 class InviteHandler(JsonHandler):
@@ -35,6 +35,7 @@ class InviteHandler(JsonHandler):
         query = CompleteInviteQuery(invite_id)
         return query.query()
 
+    @authentication_if_possible
     def create_invite(self):
         """Create a new Invite"""
         invite_dict = self._data()

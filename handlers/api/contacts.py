@@ -15,6 +15,7 @@ from managers.group import GroupManager
 from commands import UpdateOrCreateContactCommand, DeleteContactCommand
 from handlers.security import authentication_required, invite_permission_required
 
+
 class ApiContactHandler(JsonHandler):
 
     @authentication_required

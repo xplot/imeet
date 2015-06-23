@@ -1,7 +1,7 @@
 import json
 from functools import wraps
 from models import Invite, InviteAttendee, InvitePermission, SessionToken
-from commands import ValidateInvitePermissionsCommand, ValidateSessionTokenCommand
+from commands import ValidateInvitePermissionsCommand, ValidateSessionTokenCommand, CreateSessionTokenCommand
 
 class AuthenticationException(Exception):
     pass
@@ -9,6 +9,15 @@ class AuthenticationException(Exception):
 
 class InvalidRequestException(Exception):
     pass
+
+
+def read_token(handler):
+    """Will try to obtain a token from either request or session"""
+    session_token = read_token_from_request(handler.request)
+
+    if not session_token and handler.user:
+        session_token = read_token_from_session(handler)
+    return session_token
 
 
 def read_token_from_request(request):
@@ -32,6 +41,12 @@ def read_token_from_request(request):
     return None
 
 
+def read_token_from_session(handler):
+    if not handler.user:
+        return None
+    return CreateSessionTokenCommand(user_unique_id=handler.user_id).execute()
+
+
 def read_parameter_from_request(parameter_name, handler, kwargs=None, safe=True):
 
     parameter_value = handler.request.get(parameter_name, None)
@@ -51,7 +66,7 @@ def authentication_required(handler):
     @wraps(handler)
     def check_authentication(self, *args, **kwargs):
         try:
-            session_token = read_token_from_request(self.request)
+            session_token = read_token(self)
 
             if not ValidateSessionTokenCommand(session_token=session_token).execute():
                 raise AuthenticationException("Invalid Session Token provided")
@@ -60,6 +75,36 @@ def authentication_required(handler):
             self.user = SessionToken.get_user_from_session_token(
                 session_token_id=session_token
             )
+
+        except AuthenticationException, e:
+            self.abort(401)
+        except AuthorizationException, e:
+            self.abort(403)
+
+        return handler(self, *args, **kwargs)
+
+    return check_authentication
+
+def authentication_if_possible(handler):
+    """
+        Decorator will try to authenticate a user if a session_token is provided
+        1 - If session_token provided and NOT VALID will *FAIL*
+        2 - If no session_token provided it will encounter the user as None
+    """
+    @wraps(handler)
+    def check_authentication(self, *args, **kwargs):
+        try:
+            session_token = read_token(self)
+
+            if session_token:
+                if not ValidateSessionTokenCommand(session_token=session_token).execute():
+                    raise AuthenticationException("Invalid Session Token provided")
+                else:
+                    self.user = SessionToken.get_user_from_session_token(
+                    session_token_id=session_token
+                )
+            else:
+                self.user = None
 
         except AuthenticationException, e:
             self.abort(401)
@@ -90,8 +135,6 @@ def invite_permission_required(permissions=None):
         @wraps(handler)
         def check_permissions(self, *args, **kwargs):
             # If Anonymous is allowed no further check is done
-            if not permissions or InvitePermission.Anonymous in permissions:
-                return handler(self, *args, **kwargs)
 
             try:
                 invite_id = read_parameter_from_request('invite_id', self, kwargs=kwargs,safe=False)
@@ -104,7 +147,9 @@ def invite_permission_required(permissions=None):
                     invite_attendee_id = read_parameter_from_request('invite_attendee_id', self, kwargs)
 
                 current_user = None
-                session_token = read_token_from_request(self.request)
+
+                session_token = read_token(self)
+
                 if session_token and ValidateSessionTokenCommand(session_token=session_token).execute():
                     current_user = SessionToken.get_user_from_session_token(session_token_id=session_token)
 
@@ -119,8 +164,10 @@ def invite_permission_required(permissions=None):
                 self.user = current_user
             except AuthenticationException, e:
                 self.abort(401)
+                raise e
             except InvalidRequestException, e:
                 self.abort(400)
+                raise e
 
             return handler(self, *args, **kwargs)
         return check_permissions

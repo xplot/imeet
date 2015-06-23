@@ -18,6 +18,8 @@ from babel import Locale
 from main import JINJA_ENVIRONMENT
 from managers.subscriptions import SubscriptionManager
 from commands import CreateSessionTokenCommand
+from webob.exc import HTTPError, HTTPUnauthorized
+
 class ViewClass:
     """
         ViewClass to insert variables into the template.
@@ -314,4 +316,7 @@ class BaseHandler(webapp2.RequestHandler):
 
     def handle_exception(self, exception, debug_mode):
         logging.exception(exception)
-        self.render_template("error_page.html")
+        if isinstance(exception, HTTPUnauthorized):
+            self.render_template("error_401_page.html")
+        else:
+            self.render_template("error_page.html")
