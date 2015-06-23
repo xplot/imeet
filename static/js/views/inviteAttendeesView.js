@@ -42,6 +42,10 @@ InviteAttendeesView = Backbone.View.extend({
         return this.$el.html();
     },
 
+    setCurrentAttendee: function(invite_attendee){
+        this.current_attendee = invite_attendee;
+    },
+
     separateAttendees: function(){
         this.no_response = new ContactList();
         this.negated = new ContactList();

@@ -80,7 +80,8 @@ function init_app() {
             'profile/edit': 'edit_profile',
             'register': 'register',
 
-            'invite/:id/edit': 'view_as_organizer',
+            'invite/:id/edit': 'edit_as_attendee',
+            'invite/:id/:attendee_id/edit': 'edit_as_attendee',
             'invite/:id': 'view_as_attendee',
             'invite/:id/:invite_attendee_id': 'view_as_attendee',
 
@@ -120,7 +121,7 @@ function init_app() {
         search: function () {
             search_view.render();
         },
-        view_as_organizer: function (id) {
+        edit_as_attendee: function (id) {
             var inviteX = (typeof(invite) != "undefined")?invite: null;
             var invite_attendeex = (typeof(invite_attendee) != "undefined")?invite_attendee: null;
             admin_view.render(id, inviteX, invite_attendeex);

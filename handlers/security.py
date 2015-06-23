@@ -1,5 +1,6 @@
 import json
 from functools import wraps
+from boilerplate.basehandler import BaseHandler
 from models import Invite, InviteAttendee, InvitePermission, SessionToken
 from commands import ValidateInvitePermissionsCommand, ValidateSessionTokenCommand, CreateSessionTokenCommand
 
@@ -15,7 +16,7 @@ def read_token(handler):
     """Will try to obtain a token from either request or session"""
     session_token = read_token_from_request(handler.request)
 
-    if not session_token and handler.user:
+    if not session_token and isinstance(handler, BaseHandler) and handler.user:
         session_token = read_token_from_session(handler)
     return session_token
 
@@ -78,12 +79,11 @@ def authentication_required(handler):
 
         except AuthenticationException, e:
             self.abort(401)
-        except AuthorizationException, e:
-            self.abort(403)
 
         return handler(self, *args, **kwargs)
 
     return check_authentication
+
 
 def authentication_if_possible(handler):
     """
@@ -101,15 +101,13 @@ def authentication_if_possible(handler):
                     raise AuthenticationException("Invalid Session Token provided")
                 else:
                     self.user = SessionToken.get_user_from_session_token(
-                    session_token_id=session_token
-                )
+                        session_token_id=session_token
+                    )
             else:
                 self.user = None
 
         except AuthenticationException, e:
             self.abort(401)
-        except AuthorizationException, e:
-            self.abort(403)
 
         return handler(self, *args, **kwargs)
 

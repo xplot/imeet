@@ -11,13 +11,13 @@ from google.appengine.ext import ndb
 from models import Contact
 from boilerplate.models import User
 from managers.group import GroupManager
+from handlers.security import authentication_required
 
 
 class ContactHandler(BaseHandler):
-    def get(self):
-        if self.user is None:
-            return self.redirect_to('home')
 
+    @authentication_required
+    def get(self):
         group_manager = GroupManager(self.user_key)
 
         return self.render_template(

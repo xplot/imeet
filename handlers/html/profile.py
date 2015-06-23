@@ -554,8 +554,6 @@ class LogoutHandler(BaseHandler):
             return self.redirect_to('home')
 
 
-
-
 class AccountActivationHandler(BaseHandler):
     """
     Handler for account activation

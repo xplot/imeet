@@ -36,7 +36,8 @@ class InviteOrganizerQuery(object):
             return None
 
         attendee = {
-            'unique_id':  invite_attendee.unique_id,
+            'unique_id': invite_attendee.unique_id,
+            'invite_attendee_id': invite_attendee.unique_id,
             'name': invite_attendee.name,
             'phone': invite_attendee.phone,
             'email': invite_attendee.email,

@@ -45,8 +45,9 @@ class IndexHandler(BaseHandler):
         if not invite_id:
             return self.redirect_to('home')
 
-        invite_query = query.CompleteInviteQuery(invite_id)
-        invite_attendee = self._try_to_get_attendee(invite_attendee_id)
+        invite = Invite.get_by_unique_id(invite_id)
+        invite_query = query.CompleteInviteQuery(invite=invite)
+        invite_attendee = self._try_to_get_attendee(invite, invite_attendee_id)
 
         return self.render_template(
             'invite.html',
@@ -67,21 +68,18 @@ class IndexHandler(BaseHandler):
         if not invite_id:
             return self.redirect_to('home')
 
-        invite_query = query.CompleteInviteQuery(invite_id)
-        invite_attendee = self._try_to_get_attendee(invite_attendee_id)
+        invite = Invite.get_by_unique_id(invite_id)
+        invite_query = query.CompleteInviteQuery(invite=invite)
+        invite_attendee = self._try_to_get_attendee(invite, invite_attendee_id)
 
         return self.render_template(
             'invite.html',
             edit='True',
             invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
-            invite_attendee=json.dumps(organizer_attendee, cls=DateTimeEncoder) if invite_attendee else None,
+            invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder) if invite_attendee else None,
         )
 
-    def _try_to_get_attendee(self, invite_attendee_id):
-        if not invite_attendee_id:
-            return None
-
-        logging.info(invite_attendee_id)
+    def _try_to_get_attendee(self, invite, invite_attendee_id):
 
         invite_attendee = None
         if invite_attendee_id:
@@ -90,9 +88,19 @@ class IndexHandler(BaseHandler):
             ).query()
         elif self.user:
             invite_attendee = query.InviteAttendeeByUserQuery(
-                invite_id=invite_id,
+                invite=invite,
                 user=self.current_user
             ).query()
+
+        logging.info(invite_attendee)
+
+        # Anonymous invite
+        # We serve the organizer if None attendee is provided
+        if not invite_attendee and not invite.user:
+            invite_attendee = query.InviteOrganizerQuery(
+                invite=invite
+            ).query()
+
         return invite_attendee
 
     def view_invite_template(self, invite_id, invite_attendee_id=None):
