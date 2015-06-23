@@ -1,25 +1,44 @@
+var httpRequest = function(ajax_request){
+    //Organize here generic request stuff like Auth
+    if(ajax_request.headers != null)
+        ajax_request.headers['session_token'] = currentUser.session_token;
+    else
+        ajax_request.headers = { session_token: currentUser.session_token};
+
+    if(ajax_request.type != 'GET')
+        ajax_request.contentType = 'application/json';
+
+    ajax_request.cache = false;
+
+    if(ajax_request.error == null){
+        ajax_request.error = function(data) {
+            alert_notification([{
+                alertType: 'danger',
+                message: data.responseText
+            }]);
+        }
+    }
+
+    $.ajax(ajax_request);
+};
+
 
 //Didnt find where to put this
 var fetchGroupDistributionForCurrentUser = function(callback){
-    if(currentUser == null){
+    if(currentUser == null)
         callback({
             contacts: [],
             groups: []
         });
-    }
-    else{
-        $.ajax({
-            url: "/api/contacts/groups?user_id="+currentUser.id,
+    else
+        httpRequest({
+            url: "/api/contacts/groups",
             type: "GET",
             success: function(data) {
-                    if(callback != null)
-                        callback(data);
-            },
-            error: function(data) {
-
+                if(callback != null)
+                    callback(data);
             }
-    });
-    }
+        });
 
 };
 
@@ -57,112 +76,58 @@ Contact = Backbone.Model.extend({
 
     includeInInvite: function(invite_id, callback){
         var that = this;
-        var url = "/api/invite/" + invite_id + "/attendees/";
-        //this.set('contact_unique_id', this.get('unique_id'));
-        var attendees = [this.toJSON()];
-
-        var post = {
-            attendees: attendees
-        };
-
-        if(currentUser!=null){
-            post.user_id = currentUser.id; 
-        }
-
-        $.ajax({
-            url: url,
+        httpRequest({
+            url: "/api/invite/" + invite_id + "/attendees/",
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(post),
-            cache: false,
+            data: JSON.stringify({
+                attendees: [this.toJSON()]
+            }),
             success: function(data) {
                 that.set('invite_attendee_id', data[0]);
-
                 if(callback)
                     callback(that)
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     removeFromInvite: function(invite_id, callback){
-        var url = "/api/invite/" + invite_id + "/attendees/" + this.get('invite_attendee_id');
-
-        $.ajax({
-            url: url,
+        httpRequest({
+            url: "/api/invite/" + invite_id + "/attendees/" + this.get('invite_attendee_id'),
             type: "DELETE",
-            contentType: "application/json",
-            cache: false,
             success: function(data) {
                 if(callback != null)
                     callback(data)
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     acknowledgeInvite: function(response, callback){
-        var url = "/api/invite/attendees/" + this.get('invite_attendee_id') + '/response';
-        var post = {
-            response: response,
-            channel: 'web'
-        };
-
-        $.ajax({
-            url: url,
+        httpRequest({
+            url: "/api/invite/attendees/" + this.get('invite_attendee_id') + '/response',
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(post),
-            cache: false,
+            data: JSON.stringify({
+                response: response,
+                channel: 'web'
+            }),
             success: function(data) {
                 if(callback != null)
                     callback(data);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     create: function(callback){
         var that = this;
-        var post = {
-            contact: this.toJSON()
-        };
-
-        if(currentUser!=null) {
-            post.user_id = currentUser.id;
-        }
-
-        $.ajax({
+        httpRequest({
             url: "/api/contacts",
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(post),
-            cache: false,
+            data: JSON.stringify({
+                contact: this.toJSON()
+            }),
             success: function(unique_id) {
                 that.set('unique_id', unique_id);
                 if(callback != null)
                     callback(unique_id);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
@@ -172,92 +137,51 @@ Contact = Backbone.Model.extend({
         if(unique_id == null || unique_id == '')
             return this.create(callback);
 
-        var post = {
-            contact: {
-                name: this.get('name'),
-                email: this.get('email'),
-                phone: this.get('phone')
-            }
-        };
-
-        if(currentUser!=null) {
-            post.user_id = currentUser.id;
-        }
-
-        $.ajax({
+        httpRequest({
             url: "/api/contacts/" +  unique_id + "/edit",
-            data:JSON.stringify(post),
+            data:JSON.stringify({
+                contact: {
+                    name: this.get('name'),
+                    email: this.get('email'),
+                    phone: this.get('phone')
+                }
+            }),
             type: "PUT",
-            contentType: "application/json",
-            cache: false,
             success: function(data) {
                 if(callback != null)
                     callback(data);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     updateAttendee: function(invite_id, callback){
-        var url = "/api/invite/" + invite_id + "/attendee/";
-
-        var post = {
-            invite_attendee_id: this.get('invite_attendee_id'),
-
-            contact: {
-                unique_id: this.get('unique_id'),
-                name: this.get('name'),
-                email: this.get('email'),
-                phone: this.get('phone')
-            }
-        };
-
-        if(currentUser!=null){
-            post.user_id = currentUser.id;
-        }
-
-        $.ajax({
-            url: url,
+        httpRequest({
+            url: "/api/invite/" + invite_id + "/attendee/",
             type: "PUT",
-            contentType: "application/json",
-            data: JSON.stringify(post),
-            cache: false,
+            data: JSON.stringify({
+                invite_attendee_id: this.get('invite_attendee_id'),
+
+                contact: {
+                    unique_id: this.get('unique_id'),
+                    name: this.get('name'),
+                    email: this.get('email'),
+                    phone: this.get('phone')
+                }
+            }),
             success: function(data) {
                 if(callback)
                     callback(data)
             },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
-            }
         });
     },
 
     deleteContact: function(callback){
-
-        var unique_id = this.get('unique_id');
-
-        $.ajax({
-            url: "/api/contacts/" + currentUser.id + "/delete/" + unique_id,
+        httpRequest({
+            url: "/api/contacts/delete/" + this.get('unique_id'),
             type: "DELETE",
-            contentType: "application/json",
-            cache: false,
             success: function(data) {
-                 if(callback != null)
-                    callback(data);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
+            if(callback != null)
+                callback(data);
             }
         });
     },
@@ -274,20 +198,12 @@ Contact = Backbone.Model.extend({
     },
 
     addToGroup: function(group_unique_id, callback){
-        $.ajax({
-            url: "/api/group/" + group_unique_id+ "/"+ this.get('unique_id') + "?user_id=" + currentUser.id,
+        httpRequest({
+            url: "/api/group/" + group_unique_id+ "/"+ this.get('unique_id') ,
             type: "POST",
-            contentType: "application/json",
             success: function(data) {
-
                 if(callback != null)
                     callback(data);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
@@ -317,32 +233,16 @@ Group = Backbone.Model.extend({
 
     create: function(callback) {
         var that = this;
-        var post = {
-            contact: this.toJSON()
-        };
-
-        if (currentUser != null) {
-            post.user_id = currentUser.id;
-        }
-
-        $.ajax({
+        httpRequest({
             url: "/api/group/" + this.get('name'),
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(post),
-            cache: false,
+            data: JSON.stringify({
+                contact: this.toJSON()
+            }),
             success: function (unique_id) {
                 that.set('unique_id', unique_id);
                 if (callback != null)
                     callback(unique_id);
-            },
-            error: function (data) {
-                alert_notification([
-                    {
-                        alertType: 'danger',
-                        message: data.responseText
-                    }
-                ]);
             }
         });
     },
@@ -352,31 +252,17 @@ Group = Backbone.Model.extend({
         if(unique_id == null || unique_id == '')
             return this.create(callback);
 
-        var post = {
-            group: {
-                name: this.get('name'),
-            }
-        };
-
-        if(currentUser!=null) {
-            post.user_id = currentUser.id;
-        }
-
-        $.ajax({
+        httpRequest({
             url: "/api/group/" +  unique_id + "/edit",
-            data:JSON.stringify(post),
+            data:JSON.stringify({
+                group: {
+                    name: this.get('name'),
+                }
+            }),
             type: "PUT",
-            contentType: "application/json",
-            cache: false,
             success: function(data) {
                 if(callback != null)
                     callback(data);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
@@ -384,8 +270,8 @@ Group = Backbone.Model.extend({
     fetchContacts: function(callback){
         var that = this;
 
-        $.ajax({
-            url: "/api/group/" + this.get('unique_id') + "?user_id="+currentUser.id,
+        httpRequest({
+            url: "/api/group/" + this.get('unique_id'),
             type: "GET",
             success: function(data) {
                 var contactList = new ContactList();
@@ -398,34 +284,18 @@ Group = Backbone.Model.extend({
 
                 if(callback != null)
                     callback(contactList)
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: "There was an error getting the contacts for the group"
-                }]);
             }
         });
     },
 
     includeInInvite: function(invite_id, callback){
         var that = this;
-        var url = "/api/invite/" + invite_id + "/group/";
-
-        var post = {
-            unique_id: this.get('unique_id')
-        };
-
-        if(currentUser!=null) {
-            post.user_id = currentUser.id;
-        }
-
-        $.ajax({
-            url: url,
+        httpRequest({
+            url: "/api/invite/" + invite_id + "/group/",
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(post),
-            cache: false,
+            data: JSON.stringify({
+                unique_id: this.get('unique_id')
+            }),
             success: function(data) {
                 var index = 0;
                 var contactsInGroup = that.get('contacts');
@@ -436,46 +306,21 @@ Group = Backbone.Model.extend({
 
                 if(callback != null)
                     callback(that.get('contacts'))
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     fetchAllGroups: function(callback){
-        var that = this;
-        var post = {
-
-        };
-
-        if(currentUser == null) {
-            return;
-        }
-
-        $.ajax({
-            url: "/api/group?user_id=" + currentUser.id,
+        httpRequest({
+            url: "/api/group",
             type: "GET",
-            contentType: "application/json",
             data: JSON.stringify(post),
-            cache: false,
             success: function(groups) {
                 if(callback != null)
                     callback(groups);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
-    },
-
-
+    }
 
 });
 
@@ -565,15 +410,9 @@ InviteModel = Backbone.Model.extend({
     fetch: function(callback){
         var that = this;
 
-        var headers = {};
-        if(currentUser != null){
-            headers['session_token'] = currentUser.session_token;
-        }
-        $.ajax({
-            headers: headers,
+        httpRequest({
             url: "/api/invite/" + this.get('unique_id'),
             type: "GET",
-            cache: false,
             success: function(data) {
                 callback(that.get('unique_id'), data);
             }
@@ -582,17 +421,12 @@ InviteModel = Backbone.Model.extend({
 
     updateTitle: function(callback , enableNotifications){
         var that = this;
-
-        var url = "/api/invite/" +  this.get('unique_id') + "/title";
-
-        $.ajax({
-            url: url,
+        httpRequest({
+            url: "/api/invite/" +  this.get('unique_id') + "/title",
             type: "POST",
-            contentType: "application/json",
             data: JSON.stringify({
                 title: this.get('title')
             }),
-            cache: false,
             success: function(data) {
                 if(enableNotifications)
                     alert_notification([{
@@ -600,29 +434,18 @@ InviteModel = Backbone.Model.extend({
                         message: 'Event saved successfully!'
                     }], 3000);
                 callback(data)
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     updateDescription: function(callback , enableNotifications){
         var that = this;
-
-        var url = "/api/invite/" +  this.get('unique_id') + "/description";
-
-        $.ajax({
-            url: url,
+        httpRequest({
+            url: "/api/invite/" +  this.get('unique_id') + "/description",
             type: "POST",
-            contentType: "application/json",
             data: JSON.stringify({
                 description: this.get('description')
             }),
-            cache: false,
             success: function(data) {
                 if(enableNotifications)
                     alert_notification([{
@@ -630,44 +453,29 @@ InviteModel = Backbone.Model.extend({
                         message: 'Event saved successfully!'
                     }], 3000);
                 callback(data)
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     createNew: function(callback, enableNotifications){
         var url = "/api/invite/";
-        this.x_submit(url, callback, enableNotifications);
+        this._submit(url, callback, enableNotifications);
     },
 
     update: function(callback, enableNotifications){
         var url = "/api/invite/" + this.get('unique_id');
-        this.x_submit(url, callback, enableNotifications);
+        this._submit(url, callback, enableNotifications);
     },
 
-    x_submit: function(url, callback, enableNotifications){
+    _submit: function(url, callback, enableNotifications){
         var that = this;
         var d = new Date();
         this.set('utc_offset', d.getTimezoneOffset());
 
-        var invite = this.toJSON();
-        var headers = {};
-        if(currentUser != null){
-            headers['session_token'] = currentUser.session_token;
-        }
-
-        $.ajax({
-            headers: headers,
+        httpRequest({
             url: url,
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(invite),
-            cache: false,
+            data: JSON.stringify(this.toJSON()),
             success: function(data) {
                 if(enableNotifications)
                     alert_notification([{
@@ -675,64 +483,34 @@ InviteModel = Backbone.Model.extend({
                         message: 'Event saved successfully!'
                     }], 3000);
                 callback(data)
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     notifyAll: function(callback){
-        var invite = this.toJSON();
-
-        $.ajax({
+        httpRequest({
             url: "/api/invite/" + this.get('unique_id') + "/attendees/notify/all",
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(invite),
-            cache: false,
+            data: JSON.stringify(this.toJSON()),
             success: function(data) {
                 callback(data)
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
 
     tryToObtainAttendeeFromLoggedUser: function(callback){
         var that = this;
-        var post = {
-
-        };
 
         if(currentUser == null) {
             return;
         }
 
-        $.ajax({
-            url: "/api/invite/" + this.get('unique_id') + "/attendee/from/?user_id=" + currentUser.id,
+        httpRequest({
+            url: "/api/invite/" + this.get('unique_id') + "/attendee/from/",
             type: "GET",
-            contentType: "application/json",
-            data: JSON.stringify(post),
-            cache: false,
             success: function(attendee) {
-                console.log(attendee);
-
                 if(callback != null)
                     callback(attendee);
-            },
-            error: function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
             }
         });
     },
@@ -757,7 +535,6 @@ CommentModel = Backbone.Model.extend({
     },
 
     submit: function(invite_id, invite_attendee_id){
-
         var url = "/api/invite/{0}/comment".format(invite_id);
         if(invite_attendee_id != null)
             url = "/api/invite/{0}/attendees/{1}/comment".format(
@@ -765,23 +542,14 @@ CommentModel = Backbone.Model.extend({
                 invite_attendee_id
             );
 
-        $.ajax({
+        httpRequest({
             url: url,
             type: "POST",
-            contentType: "application/json",
             data: JSON.stringify({
                 comment: this.get('comment')
             }),
-            cache: false,
             success: function(data){
 
-            },
-            error: function(data) {
-                if(data.status != 200)
-                    alert_notification([{
-                        alertType:'danger',
-                        message: data.responseText
-                    }]);
             }
         });
     }
@@ -791,20 +559,15 @@ CommentList = IMeetCollection.extend({
     model: CommentModel,
 
     fetchFromInvite: function(invite_unique_id){
-        $.ajax({
+        httpRequest({
             url: "/api/invite/{0}/comment".format(invite_unique_id),
             type: "GET",
-            contentType: "application/json",
-            cache: false,
             success: function(data) {
                 var comments = new CommentList();
                 data.forEach(function(comment){
                     comments.add(new CommentModel(comment));
                 });
                 return comments;
-            },
-            error: function(data) {
-
             }
         });
     }
@@ -827,11 +590,9 @@ PaletteList = IMeetCollection.extend({
     model: PaletteModel,
 
     fetchAll: function(callback){
-        $.ajax({
+        httpRequest({
             url: "/api/palette/",
             type: "GET",
-            contentType: "application/json",
-            cache: false,
             success: function(data) {
                 var paletteCollection = new PaletteList();
                 data.forEach(function(palette){

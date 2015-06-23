@@ -46,7 +46,7 @@ class InviteHandler(JsonHandler):
         invite_dict = self._data()
         return UpdateInviteCommand.read_from_dict(invite_id, invite_dict).execute()
 
-    @user_context
+    @invite_permission_required(InvitePermission.Organizer)
     def update_title(self, invite_id=None):
         """Save the invite"""
         title_dict = self._data()
@@ -57,7 +57,7 @@ class InviteHandler(JsonHandler):
         )
         command.execute()
 
-    @user_context
+    @invite_permission_required(InvitePermission.Organizer)
     def update_description(self, invite_id=None):
         """Save the invite"""
         description_dict = self._data()
@@ -67,9 +67,3 @@ class InviteHandler(JsonHandler):
             invite_description=description_dict.get('description')
         )
         command.execute()
-
-    def search(self, user_id):
-        """Search all the invites with the given term in the title"""
-        term = self.request.get('term', None)
-        user = User.get_by_id(long(user_id))
-        return InviteSearchQuery(user, term).query()

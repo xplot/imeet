@@ -52,7 +52,7 @@ app = webapp2.WSGIApplication([
     Route('/contacts/new', html.ContactHandler),
     Route('/api/contacts', api.ApiContactHandler, handler_method='get', methods=['GET']),
     Route('/api/contacts', api.ApiContactHandler, handler_method='add_contact', methods=['POST']),
-    Route('/api/contacts/<user_id>/delete/<unique_id>', api.ApiContactHandler, handler_method='delete_contact', methods=['DELETE']),
+    Route('/api/contacts/delete/<unique_id>', api.ApiContactHandler, handler_method='delete_contact', methods=['DELETE']),
     Route('/api/contacts/<unique_id>/edit', api.ApiContactHandler, handler_method='update_contact', methods=['PUT']),
     Route('/api/contacts/csv', api.ApiContactHandler, handler_method='import_csv', methods=['POST']),
 

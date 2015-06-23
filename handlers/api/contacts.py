@@ -13,15 +13,12 @@ from models import Contact
 from boilerplate.models import User
 from managers.group import GroupManager
 from commands import UpdateOrCreateContactCommand, DeleteContactCommand
-
+from handlers.security import authentication_required, invite_permission_required
 
 class ApiContactHandler(JsonHandler):
 
-    @user_context
+    @authentication_required
     def get(self):
-        if self.user is None:
-            return []
-
         return [
             {
                 'unique_id': x.unique_id,
@@ -34,20 +31,18 @@ class ApiContactHandler(JsonHandler):
             ).order(Contact.name).fetch()
         ]
 
-    @user_context
+    @authentication_required
     def add_contact(self):
         contact_data = self._data().get('contact')
-        logging.info(contact_data)
         command = UpdateOrCreateContactCommand(
             self.user,
             name=contact_data['name'],
             email=contact_data['email'],
             phone=contact_data['phone']
         )
-
         return command.execute()
 
-    @user_context
+    @authentication_required
     def update_contact(self, unique_id):
         contact_data = self._data().get('contact')
 
@@ -58,15 +53,15 @@ class ApiContactHandler(JsonHandler):
             email=contact_data['email'],
             phone=contact_data['phone']
         )
-
         return command.execute()
 
-    def delete_contact(self, user_id, unique_id):
+    @authentication_required
+    def delete_contact(self, unique_id):
         user = User.get_by_id(long(user_id))
         command = DeleteContactCommand(user, unique_id)
         return command.execute()
 
-    @user_context
+    @authentication_required
     def import_csv(self):
         data = self._data()
         contact_mgr = ContactManager(self.user.key)
