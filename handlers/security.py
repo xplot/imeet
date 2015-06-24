@@ -141,7 +141,10 @@ def invite_permission_required(permissions=None):
                 invite_id = read_parameter_from_request('invite_id', self, kwargs=kwargs,safe=False)
                 invite = Invite.get_by_unique_id(invite_id)
                 if not invite:
-                    raise InvalidRequestException("Invalid Invite Id provided")
+                    raise Exception(
+                        "This is not a valid Event. "
+                        "Please check the url you're trying to access"
+                    )
 
                 invite_attendee_id = None
                 if InvitePermission.Attendee in permissions or InvitePermission.Organizer in permissions:
@@ -160,7 +163,7 @@ def invite_permission_required(permissions=None):
                     invite_attendee_id=invite_attendee_id,
                     permissions=permissions
                 ).execute():
-                    raise AuthenticationException("You dont have the permissions to modify the current Invite")
+                    raise AuthenticationException("You dont have the permissions to modify the current Event")
 
                 self.user = current_user
             except AuthenticationException, e:
