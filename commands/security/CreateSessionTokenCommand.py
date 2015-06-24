@@ -18,13 +18,25 @@ class CreateSessionTokenCommand(object):
         if not self.user:
             self.user = User.get_by_unique_id(self.user_unique_id)
 
-        # Make sure we only have one token active at a time
-        self.expire_all_user_tokens()
-        token = self.create_alive_token()
+        token = self.get_alive_token()
+
+        if not token:
+            # Make sure we only have one token active at a time
+            self.expire_all_user_tokens()
+            token = self.create_alive_token()
+
+        # Perhaps Refresh Token here too....
 
         return token.unique_id
 
-
+    def get_alive_token(self):
+        token = SessionToken.query(ndb.AND(
+            SessionToken.user == self.user.key,
+            SessionToken.status == SessionStatus.ACTIVE
+        )).get()
+        if token.expires_on < datetime.now():
+            return None
+        return token
 
     def create_alive_token(self):
         session_token = SessionToken(
