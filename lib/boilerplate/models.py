@@ -2,6 +2,7 @@ from webapp2_extras.appengine.auth.models import User
 from google.appengine.ext import ndb
 from datetime import datetime
 
+
 class User(User):
     """
     Universal user model. Can be used with App Engine's default users API,

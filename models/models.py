@@ -259,16 +259,21 @@ class SessionStatus:
     ACTIVE = 'active'
     EXPIRED = 'expired'
 
+
 class InvitePermission:
     Organizer= "organizer"
     Attendee = "attendee"
     User = "user"
     Anonymous = "anonymous"
 
+
 class SessionToken(UniqueIDModel):
     user = ndb.KeyProperty(required=True, kind=User)
     expires_on = ndb.DateTimeProperty(required=True)
     status = ndb.StringProperty(required=True)
+
+    def get_session_token_from_user(self):
+        return SessionToken.query(SessionToken.user == self.user.key).get()
 
     @classmethod
     def all_user_tokens(cls,user, status=None):

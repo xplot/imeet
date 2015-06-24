@@ -97,6 +97,8 @@ def authentication_if_possible(handler):
     @wraps(handler)
     def check_authentication(self, *args, **kwargs):
         try:
+            import logging
+
             session_token = read_token(self)
 
             if session_token:
@@ -155,6 +157,7 @@ def invite_permission_required(permissions=None):
                 session_token = read_token(self)
 
                 if session_token and ValidateSessionTokenCommand(session_token=session_token).execute():
+
                     current_user = SessionToken.get_user_from_session_token(session_token_id=session_token)
 
                 if not ValidateInvitePermissionsCommand(

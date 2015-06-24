@@ -86,39 +86,32 @@ class LoginHandler(BaseHandler):
 
             remember_me = True if str(self.request.POST.get('remember_me')) == 'on' else False
 
-
             # Try to login user with password
             # Raises InvalidAuthIdError if user is not found
             # Raises InvalidPasswordError if provided password
             # doesn't match with specified user
             self.auth.get_user_by_password(
-                auth_id, password, remember=remember_me)
+                auth_id,
+                password,
+                remember=remember_me
+            )
 
             # if user account is not activated, logout and redirect to home
-            if (user.activated == False):
+            if not user.activated:
                 # logout
                 self.auth.unset_session()
 
                 # redirect to home with error message
-                resend_email_uri = self.uri_for('resend-account-activation', user_id=user.get_id(),
-                                                token=self.user_model.create_resend_token(user.get_id()))
-                message = _('Your account has not yet been activated. Please check your email to activate it or') + \
-                          ' <a href="' + resend_email_uri + '">' + _('click here') + '</a> ' + _('to resend the email.')
+                resend_email_uri = self.uri_for(
+                    'resend-account-activation',
+                    user_id=user.get_id(),
+                    token=self.user_model.create_resend_token(user.get_id())
+                )
+                message = _(
+                    'Your account has not yet been activated. Please check your email to activate it or') + \
+                    ' <a href="' + resend_email_uri + '">' + _('click here') + '</a> ' + _('to resend the email.')
                 self.add_message(message, 'danger')
                 return self.redirect_to('home')
-
-            # check twitter association in session
-            twitter_helper = twitter.TwitterAuth(self)
-            twitter_association_data = twitter_helper.get_association_data()
-            if twitter_association_data is not None:
-                if models.SocialUser.check_unique(user.key, 'twitter', str(twitter_association_data['id'])):
-                    social_user = models.SocialUser(
-                        user=user.key,
-                        provider='twitter',
-                        uid=str(twitter_association_data['id']),
-                        extra_data=twitter_association_data
-                    )
-                    social_user.put()
 
             # check facebook association
             fb_data = None
@@ -137,36 +130,6 @@ class LoginHandler(BaseHandler):
                     )
                     social_user.put()
 
-            # check linkedin association
-            li_data = None
-            try:
-                li_data = json.loads(self.session['linkedin'])
-            except:
-                pass
-
-            if li_data is not None:
-                if models.SocialUser.check_unique(user.key, 'linkedin', str(li_data['id'])):
-                    social_user = models.SocialUser(
-                        user=user.key,
-                        provider='linkedin',
-                        uid=str(li_data['id']),
-                        extra_data=li_data
-                    )
-                    social_user.put()
-
-            # end linkedin
-
-            if self.app.config['log_visit']:
-                try:
-                    logVisit = models.LogVisit(
-                        user=user.key,
-                        uastring=self.request.user_agent,
-                        ip=self.request.remote_addr,
-                        timestamp=utils.get_date_time()
-                    )
-                    logVisit.put()
-                except (apiproxy_errors.OverQuotaError, BadValueError):
-                    logging.error("Error saving Visit Log in datastore")
             if continue_url:
                 self.redirect(continue_url)
             else:
@@ -178,10 +141,6 @@ class LoginHandler(BaseHandler):
                         "Please try again (make sure your caps lock is off)")
             self.add_message(message, 'danger')
             self.redirect_to('login', continue_url=continue_url) if continue_url else self.redirect_to('login')
-
-    # @webapp2.cached_property
-    # def form(self):
-    #     return forms.LoginForm(self)
 
 
 class SocialLoginHandler(BaseHandler):
@@ -224,9 +183,7 @@ class SocialLoginHandler(BaseHandler):
 
 
 class CallbackSocialLoginHandler(BaseHandler):
-    """
-    Callback (Save Information) for Social Authentication
-    """
+    """ Callback (Save Information) for Social Authentication"""
 
     def get(self, provider_name):
 
@@ -480,9 +437,7 @@ class CallbackSocialLoginHandler(BaseHandler):
 
 
 class SocialSharingHandler(BaseHandler):
-    """
-    Handler for Social authentication
-    """
+    """Handler for Social authentication"""
 
     def _get_memcached_key(self):
         import uuid
@@ -508,9 +463,7 @@ class SocialSharingHandler(BaseHandler):
 
 
 class DeleteSocialProviderHandler(BaseHandler):
-    """
-    Delete Social association with an account
-    """
+    """Delete Social association with an account"""
 
     @user_required
     def post(self, provider_name):
@@ -533,9 +486,7 @@ class DeleteSocialProviderHandler(BaseHandler):
 
 
 class LogoutHandler(BaseHandler):
-    """
-    Destroy user session and redirect to login
-    """
+    """Destroy user session and redirect to login"""
 
     def get(self):
         if self.user:
@@ -555,9 +506,7 @@ class LogoutHandler(BaseHandler):
 
 
 class AccountActivationHandler(BaseHandler):
-    """
-    Handler for account activation
-    """
+    """Handler for account activation"""
 
     def get(self, user_id, token):
         try:
@@ -590,9 +539,7 @@ class AccountActivationHandler(BaseHandler):
 
 
 class ResendActivationEmailHandler(BaseHandler):
-    """
-    Handler to resend activation email
-    """
+    """Handler to resend activation email"""
 
     def get(self, user_id, token):
         try:
@@ -648,9 +595,7 @@ class ResendActivationEmailHandler(BaseHandler):
 
 
 class EditPasswordHandler(BaseHandler):
-    """
-    Handler for Edit User Password
-    """
+    """Handler for Edit User Password"""
 
     @user_required
     def get(self):
@@ -722,9 +667,7 @@ class EditPasswordHandler(BaseHandler):
 
 
 class EditEmailHandler(BaseHandler):
-    """
-    Handler for Edit User's Email
-    """
+    """Handler for Edit User's Email"""
 
     @user_required
     def get(self):
@@ -831,9 +774,7 @@ class EditEmailHandler(BaseHandler):
 
 
 class PasswordResetHandler(BaseHandler):
-    """
-    Password Reset Handler with Captcha
-    """
+    """Password Reset Handler with Captcha"""
 
     def get(self):
         chtml = captcha.displayhtml(

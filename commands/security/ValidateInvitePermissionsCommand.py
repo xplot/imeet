@@ -4,7 +4,7 @@ from google.appengine.ext import ndb
 from models.models import SessionToken, Invite, InviteAttendee, InvitePermission, AttendeeStatus
 from managers.utils import guid
 
-
+import logging
 class ValidateInvitePermissionsCommand(object):
 
     def __init__(self, invite, current_user=None, invite_attendee_id=None, permissions=[]):
@@ -41,6 +41,7 @@ class ValidateInvitePermissionsCommand(object):
             return self.current_user is not None
 
         if InvitePermission.Attendee in self.permissions:
+
             # First we try and load the InviteAttendee using
             # the provided invite_attendee_id
             if self.invite_attendee_id:
@@ -60,6 +61,7 @@ class ValidateInvitePermissionsCommand(object):
             return False
 
         if InvitePermission.Organizer in self.permissions:
+
             if self.invite_attendee_id:
                 invite_attendee = InviteAttendee.get_by_invite_and_user_id(
                     invite=self.invite,

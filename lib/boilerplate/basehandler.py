@@ -20,6 +20,7 @@ from managers.subscriptions import SubscriptionManager
 from commands import CreateSessionTokenCommand
 from webob.exc import HTTPError, HTTPUnauthorized
 
+
 class ViewClass:
     """
         ViewClass to insert variables into the template.
@@ -273,6 +274,12 @@ class BaseHandler(webapp2.RequestHandler):
         """
         self.base_layout = layout
 
+
+    def get_api_token(self):
+        if not self.user:
+            return None
+        return CreateSessionTokenCommand(user=self.current_user).execute()
+
     def render_template(self, filename, **kwargs):
         locales = self.app.config.get('locales') or []
 
@@ -304,10 +311,7 @@ class BaseHandler(webapp2.RequestHandler):
         if self.user:
             kwargs.update(self.user_social_sharing)
             kwargs['user_fullname'] = self.current_user.fullname()
-
-            logging.info(self.user_id)
-
-            kwargs['session_token'] = CreateSessionTokenCommand(user_unique_id=self.user_id).execute()
+            kwargs['session_token'] = self.get_api_token()
 
         self.response.headers.add_header('X-UA-Compatible', 'IE=Edge,chrome=1')
 
