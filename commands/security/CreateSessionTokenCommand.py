@@ -4,7 +4,7 @@ from google.appengine.ext import ndb
 from models import SessionToken, User, SessionStatus
 from managers.utils import guid
 
-DEFAULT_EXPIRATION_TIME = timedelta(minutes=180)
+DEFAULT_EXPIRATION_TIME = timedelta(minutes=2)
 
 
 class CreateSessionTokenCommand(object):
@@ -32,7 +32,7 @@ class CreateSessionTokenCommand(object):
             SessionToken.user == self.user.key,
             SessionToken.status == SessionStatus.ACTIVE
         )).get()
-        if token.expires_on < datetime.now():
+        if not token or token.expires_on < datetime.now():
             return None
         return token
 
