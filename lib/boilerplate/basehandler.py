@@ -275,11 +275,8 @@ class BaseHandler(webapp2.RequestHandler):
         self.base_layout = layout
 
     def get_api_token(self):
-        logging.info("Trying to determine when to generate a token")
         if not self.user:
-            logging.info("WE will NOT geenerate a token")
             return None
-        logging.info("WE will INDEED geenerate a token")
 
         return CreateSessionTokenCommand(user=self.current_user).execute()
 
