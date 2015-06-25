@@ -274,7 +274,6 @@ class BaseHandler(webapp2.RequestHandler):
         """
         self.base_layout = layout
 
-
     def get_api_token(self):
         if not self.user:
             return None

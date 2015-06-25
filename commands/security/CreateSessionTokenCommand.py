@@ -25,8 +25,6 @@ class CreateSessionTokenCommand(object):
             self.expire_all_user_tokens()
             token = self.create_alive_token()
 
-        # Perhaps Refresh Token here too....
-
         return token.unique_id
 
     def get_alive_token(self):
