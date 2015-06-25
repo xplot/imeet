@@ -5,7 +5,7 @@ from models import SessionToken, User, SessionStatus
 from managers.utils import guid
 
 DEFAULT_EXPIRATION_TIME = timedelta(minutes=2)
-
+import logging
 
 class CreateSessionTokenCommand(object):
 
@@ -21,6 +21,7 @@ class CreateSessionTokenCommand(object):
         token = self.get_alive_token()
 
         if not token:
+            logging.info("Trying to generatee a new token")
             # Make sure we only have one token active at a time
             self.expire_all_user_tokens()
             token = self.create_alive_token()
@@ -32,7 +33,13 @@ class CreateSessionTokenCommand(object):
             SessionToken.user == self.user.key,
             SessionToken.status == SessionStatus.ACTIVE
         )).get()
+
+
+        logging.info("Trying to estimate the token")
+        logging.info(token)
+
         if not token or token.expires_on < datetime.now():
+            logging.info("The token is expired")
             return None
         return token
 
@@ -42,6 +49,8 @@ class CreateSessionTokenCommand(object):
             expires_on=self.expires_on,
             status=SessionStatus.ACTIVE
         )
+        logging.info("This is the token that will be created!")
+        logging.info("session_token")
         session_token.put()
         return session_token
 
