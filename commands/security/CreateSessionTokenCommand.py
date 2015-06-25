@@ -50,7 +50,8 @@ class CreateSessionTokenCommand(object):
             status=SessionStatus.ACTIVE
         )
         logging.info("This is the token that will be created!")
-        logging.info("session_token")
+        logging.info(self.expires_on)
+        logging.info(session_token)
         session_token.put()
         return session_token
 
