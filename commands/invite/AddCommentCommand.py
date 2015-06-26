@@ -3,7 +3,7 @@ from models import Invite, InviteAttendee, Comment
 from query.invite import InviteNotFoundException
 
 
-class AddCommentCommand:
+class AddCommentCommand(object):
 
     def __init__(self, invite_unique_id, invite_attendee_id, comment):
         self.invite_unique_id = invite_unique_id
@@ -45,3 +45,5 @@ class AddCommentCommand:
         comment.commented_on = datetime.datetime.now()
         invite.comments.append(comment)
         invite.put()
+
+        return comment

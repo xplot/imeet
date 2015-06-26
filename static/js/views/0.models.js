@@ -529,6 +529,7 @@ InviteList = IMeetCollection.extend({
 
 CommentModel = Backbone.Model.extend({
     defaults: {
+        unique_id: '',
         on: null,
         comment: '',
         author: ''
@@ -536,10 +537,11 @@ CommentModel = Backbone.Model.extend({
 
     initialize: function (options) {
         if(typeof options == 'string')
-            this.set('comment', options)
+            this.set('comment', options);
+        this.set('unique_id', guid());
     },
 
-    submit: function(invite_id, invite_attendee_id){
+    submit: function(invite_id, invite_attendee_id, callback){
         var url = "/api/invite/{0}/comment".format(invite_id);
         if(invite_attendee_id != null)
             url = "/api/invite/{0}/attendees/{1}/comment".format(
@@ -547,6 +549,7 @@ CommentModel = Backbone.Model.extend({
                 invite_attendee_id
             );
 
+        var that = this;
         httpRequest({
             url: url,
             type: "POST",
@@ -554,7 +557,9 @@ CommentModel = Backbone.Model.extend({
                 comment: this.get('comment')
             }),
             success: function(data){
-
+                that.set('unique_id', data);
+                if(callback != null)
+                    callback(that);
             }
         });
     }

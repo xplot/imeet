@@ -32,6 +32,7 @@ class InviteCommentsQuery(object):
 
         return [
             {
+                'unique_id': c.unique_id,
                 'author':   c.author,
                 'comment':  c.comment,
                 'on':       convert_to_user_date(

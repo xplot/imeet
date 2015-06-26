@@ -16,7 +16,6 @@ InviteCommentsView = Backbone.View.extend({
     },
 
     render: function(data){
-
         this.invite_id = data.invite_id;
         this.current_attendee = data.current_attendee;
         this.model = data.comments;
@@ -30,7 +29,7 @@ InviteCommentsView = Backbone.View.extend({
 
         this.$comment_container = this.$el.find('.invite-comments-container');
         this.$comment_input = this.$el.find('.invite-comment-input');
-        this.listenTo(this.model, 'add', this.newCommentModel);
+        //this.listenTo(this.model, 'add', this.newCommentModel);
     },
 
     addCommentEnter: function(evt){
@@ -50,7 +49,8 @@ InviteCommentsView = Backbone.View.extend({
 
         comment.submit(
             this.invite_id,
-            this.current_attendee.get('invite_attendee_id')
+            this.current_attendee.get('invite_attendee_id'),
+            $.proxy(this.newCommentModel, this)
         );
 
         this.model.add(comment);
@@ -59,6 +59,8 @@ InviteCommentsView = Backbone.View.extend({
     },
 
     newCommentModel: function(commentModel){
-        this.$comment_container.prepend(JST['invite_comment.html'](commentModel.toJSON()))
+        console.log(commentModel);
+        this.$comment_container.prepend(JST['invite_comment.html'](commentModel.toJSON()));
+        flashElement("[data-rowid='" + commentModel.get('unique_id') + "']");
     }
 });

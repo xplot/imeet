@@ -33,26 +33,39 @@ function guid(){
     });
 }
 
-function alert_notification(alerts, timeout){
-    $('.alert').remove();
-    var alert_string = '' +
-        '<div class="alert alert-{0} alert-dismissible flyover flyover-in" role="alert">'+
-            '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
-            '{1}' +
-        '</div>';
+function alert_notification(alerts, timeout, delay){
 
-    var $alertDiv = $('body');
-    alerts.forEach(function(alert){
-        $alertDiv.prepend(alert_string.format(alert.alertType, alert.message));
-    });
+    var doit = function(){
+        $('.alert').remove();
+        var alert_string = '' +
+            '<div class="alert alert-{0} alert-dismissible flyover flyover-in" role="alert">'+
+                '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
+                '{1}' +
+            '</div>';
 
-    if(timeout!= null){
-        setTimeout(function(){
-            $('.alert').fadeOut(2000, function(){
-                $('.alert').remove();
-            });
-        }, timeout);
-    }
+        var $alertDiv = $('body');
+        alerts.forEach(function(alert){
+            $alertDiv.prepend(alert_string.format(alert.alertType, alert.message));
+        });
+
+        if(timeout!= null){
+            setTimeout(function(){
+                $('.alert').fadeOut(2000, function(){
+                    $('.alert').remove();
+                });
+            }, timeout);
+        }
+    };
+
+    if(delay != null)
+        setTimeout(doit, delay);
+    else
+        doit();
+}
+
+function flashElement(selector){
+    $(selector).addClass("flash");
+    $(selector).fadeTo(500, 0.5, function() { $(selector).fadeTo(500, 1, function(){ $(selector).removeClass("flash");}); });
 }
 
 var validator = {

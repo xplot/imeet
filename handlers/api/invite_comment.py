@@ -11,12 +11,8 @@ class InviteCommentHandler(JsonHandler):
         return q.query()
 
     def post(self, invite_id, invite_attendee_id=None):
-
-        data = self._data()
-
-        add_comment_cmd = commands.AddCommentCommand.read_from_dict(
+        return commands.AddCommentCommand.read_from_dict(
             invite_id,
             invite_attendee_id,
-            data
-        )
-        add_comment_cmd.execute()
+            self._data()
+        ).execute().unique_id

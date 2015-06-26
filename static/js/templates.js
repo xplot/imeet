@@ -358,9 +358,11 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div class="row ">\n    <span class="comment-date pull-right">' +
+__p += '<div class="row">\n    <span class="comment-date pull-right">' +
 __e(on) +
-'</span>\n    <div class="col-md-12 invite-comment-row">\n        <span class="comment-author">\n            ';
+'</span>\n    <div class="col-md-12 invite-comment-row" data-rowid="' +
+__e( unique_id ) +
+'">\n        <span class="comment-author">\n            ';
  if(author == null) {;
 __p += '\n                Anonymous\n            ';
 } else { ;

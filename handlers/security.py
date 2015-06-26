@@ -4,6 +4,7 @@ from boilerplate.basehandler import BaseHandler
 from models import Invite, InviteAttendee, InvitePermission, SessionToken
 from commands import ValidateInvitePermissionsCommand, ValidateSessionTokenCommand, CreateSessionTokenCommand
 
+
 class AuthenticationException(Exception):
     pass
 

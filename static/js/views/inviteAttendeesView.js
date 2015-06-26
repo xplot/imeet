@@ -76,6 +76,8 @@ InviteAttendeesView = Backbone.View.extend({
         $('.no-response-table').prepend(
             JST['invite_attendee_admin.html'](attendeeModel.toJSON())
         );
+
+        flashElement("[data-rowid='" + attendeeModel.get('invite_attendee_id') + "'] .details");
     },
 
     attendeeRemoved: function(e){

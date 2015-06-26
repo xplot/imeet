@@ -59,7 +59,7 @@ InviteAdminView = SimpleView.extend({
         invite_comments.render({
             invite_id: this.unique_id,
             current_attendee: this.current_attendee,
-            comments: new CommentList(invite.comments)
+            comments: new CommentList(invite.get('comments'))
         });
 
         invite_attendee_create.render(
@@ -112,6 +112,8 @@ InviteAdminView = SimpleView.extend({
                 message: "This invite is in the Past you cannot edit it anymore"
             }], 5000);
         }
-    }
+    },
+
+
 
 });

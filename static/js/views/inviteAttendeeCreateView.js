@@ -81,6 +81,10 @@ InviteAttendeeCreateView = Backbone.View.extend({
         this.$newContact.focus();
     },
 
+    notifyPeopleSuggestion: function(){
+        //iterate over the attendees and Suggest there are people to be notified
+    },
+
     addAttendee: function(attendee){
         this.model.add(attendee);
     },

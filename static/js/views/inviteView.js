@@ -43,7 +43,7 @@ InviteView = SimpleView.extend({
         invite_comments.render({
             invite_id: this.invite_id,
             current_attendee: this.current_attendee,
-            comments: new CommentList(invite.comments)
+            comments: new CommentList(invite.get('comments'))
         });
 
         $('.invite-description').html(invite.description);
