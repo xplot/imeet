@@ -77,7 +77,7 @@ class CreateInviteCommand(object):
                 raise Exception("Start date cannot be in the past")
 
         if data_dict.get('end', None):
-            command.end = datetime.datetime.strptime(data_dict['end'], "%m/%d/%Y %I:%M %p")
+            command.end = datetime.datetime.strptime(data_dict['end'], "%m/%d/%Y %I:%M %p") + datetime.timedelta(minutes=command.utc_offset)
             if command.end < command.start:
                 raise Exception("End date cannot be lower than Start Date")
 

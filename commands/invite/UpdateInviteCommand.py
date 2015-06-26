@@ -24,6 +24,10 @@ class UpdateInviteCommand(CreateInviteCommand):
         command.where = data_dict.get('where', None)
         command.utc_offset = data_dict.get('utc_offset', 0)
 
+        import logging
+        logging.info(command.utc_offset)
+        logging.info(data_dict['start'])
+
         palette = data_dict.get('palette', None)
         if palette:
             command.palette = Palette.get_by_unique_id(palette['unique_id']).key
@@ -33,7 +37,7 @@ class UpdateInviteCommand(CreateInviteCommand):
                 raise Exception("Start date cannot be in the past")
 
         if data_dict.get('end', None):
-            command.end = datetime.strptime(data_dict['end'], "%m/%d/%Y %I:%M %p")
+            command.end = datetime.strptime(data_dict['end'], "%m/%d/%Y %I:%M %p") + timedelta(minutes=command.utc_offset)
             if command.end < command.start:
                 raise Exception("End date cannot be lower than Start Date")
 
