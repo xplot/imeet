@@ -613,7 +613,7 @@ this["JST"]["register.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div id="register">\n    <div class="block block1 register-background">\n        <div class="center-block">\n          <h1 class="main-h1">Make the jump! Join the Fun</h1>\n        </div>\n    </div>\n\n\n\n    <div class="row no-margin register-box-parent">\n        <div class="register-box">\n            <div class="input-div"><input required type="email" class="form-control register-email" placeholder="Enter email..." data-validation="required, email"></div>\n            <div class="button-div"><button type="button" class="btn btn-success form-control submit-register">Register</button></div>\n        </div>\n    </div>\n</div>';
+__p += '<div id="register">\n    <div class="block block1 register-background">\n        <div class="center-block">\n          <h1 class="main-h1">Make the jump! Join the Fun</h1>\n        </div>\n    </div>\n\n\n\n    <div class="row no-margin register-box-parent">\n        <div class="register-box">\n            <div class="input-div"><input required type="email" class="form-control register-email" placeholder="Enter email..." data-validation="required,email"></div>\n            <div class="button-div"><button type="button" class="btn btn-success form-control submit-register">Register</button></div>\n        </div>\n    </div>\n</div>';
 
 }
 return __p
