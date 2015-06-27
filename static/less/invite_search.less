@@ -80,8 +80,18 @@
           padding: 0px;
           height: 50px;
 
-          .no-padding{
-            height: 100%;
+          .yes-button{
+            background-color: @btn-green-success;
+            color: @off-white;
+          }
+
+          .no-button{
+            background-color: @btn-danger;
+            color: @off-white;
+          }
+
+          .confirmed-negative{
+            opacity: 0.5;
           }
 
           .btn{
@@ -98,6 +108,12 @@
           .edit-btn{
             border-left: solid 1px white;
           }
+
+          .no-padding{
+            height: 100%;
+          }
+
+
 
           @media(max-width:768px) {
             height: 40px;

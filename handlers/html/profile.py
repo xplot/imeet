@@ -36,6 +36,8 @@ from boilerplate import facebook
 from boilerplate import models
 from datetime import datetime, timedelta
 
+from commands import UpdateUserOnAttendeesCommand
+
 class LoginRequiredHandler(BaseHandler):
     def get(self):
         continue_url, = self.request.get('continue', allow_multiple=True)
@@ -519,6 +521,10 @@ class AccountActivationHandler(BaseHandler):
             # activate the user's account
             user.activated = True
             user.put()
+
+            # Update all invites that this user's email have been invited to
+            UpdateUserOnAttendeesCommand(user).execute()
+
 
             # Login User
             self.auth.get_user_by_token(int(user_id), token)

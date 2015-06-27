@@ -24,7 +24,6 @@ ProfileEditView = SimpleView.extend({
             type: "GET",
             cache: false,
             success: function(data) {
-                console.log(data);
                 if(data.email != null){
                     that.$email.html(data.email);
                     that.$email.parent().addClass('floating-label-form-group-with-value');
@@ -36,7 +35,10 @@ ProfileEditView = SimpleView.extend({
                 }
 
                 if(data.name != null){
-                    that.$name.val(data.name + " " + data.last_name);
+                    var name = data.name || "";
+                    var lastName = data.last_name || "";
+
+                    that.$name.val(name + " " + lastName);
                     that.$name.parent().addClass('floating-label-form-group-with-value');
                 }
             }

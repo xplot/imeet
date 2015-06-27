@@ -13,7 +13,7 @@ from google.appengine.api import search
 from google.appengine.ext import ndb
 from managers.template import TemplateModel
 from managers.auth import user_context, request_with_subscription
-from query import CompleteInviteQuery, InviteSearchQuery
+from query import CompleteInviteQuery, UserInvitesQuery
 from models import Invite, InvitePermission
 from boilerplate.models import User
 from commands import CreateInviteCommand, UpdateInviteCommand, UpdateInviteTitleCommand, UpdateInviteDescriptionCommand
@@ -27,7 +27,7 @@ class InviteHandler(JsonHandler):
         """Get all invites where user is organizer/host"""
         term = self.request.get('term', None)
         user = self.user
-        return InviteSearchQuery(user, term).query()
+        return UserInvitesQuery(user, search_term=term).query()
 
     @invite_permission_required(InvitePermission.Attendee)
     def get(self, invite_id, invite_attendee_id=None):

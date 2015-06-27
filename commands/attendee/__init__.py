@@ -6,3 +6,4 @@ from AddGroupAttendeesCommand import AddGroupAttendeesCommand
 from BulkNotifyAttendeesCommand import BulkNotifyAttendeesCommand
 from NotifyAllAttendeesCommand import NotifyAllAttendeesCommand
 from AcknowledgeInviteCommand import AcknowledgeInviteCommand
+from UpdateUserOnAttendeesCommand import UpdateUserOnAttendeesCommand

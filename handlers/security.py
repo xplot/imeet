@@ -3,7 +3,7 @@ from functools import wraps
 from boilerplate.basehandler import BaseHandler
 from models import Invite, InviteAttendee, InvitePermission, SessionToken
 from commands import ValidateInvitePermissionsCommand, ValidateSessionTokenCommand, CreateSessionTokenCommand
-
+import logging
 
 class AuthenticationException(Exception):
     pass
@@ -98,7 +98,7 @@ def authentication_if_possible(handler):
     @wraps(handler)
     def check_authentication(self, *args, **kwargs):
         try:
-            import logging
+
 
             session_token = read_token(self)
 

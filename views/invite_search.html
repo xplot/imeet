@@ -28,15 +28,28 @@
                 >
                 <div class="center-block" data-id="<%- item.unique_id %>">
                     <h1 class="main-h1" data-id="<%- item.unique_id %>"><%- item.title %></h1>
+
                     <div class="actions">
                         <div class="row">
-                            <div class="col-xs-6 col-md-6 no-padding">
-                                <button type='button' class='btn btn-info form-control btn-duplicate' data-id="<%- item.unique_id %>">Duplicate</button>
-                            </div>
+                            <% if (item.invite_attendee_role == 'organizer') { %>
+                                <div class="col-xs-6 col-md-6 no-padding">
+                                    <button type='button' class='btn btn-info form-control btn-duplicate' data-id="<%- item.unique_id %>">Duplicate</button>
+                                </div>
 
-                            <div class="col-xs-6 col-md-6 no-padding edit-btn">
-                                <button type='button' class='btn btn-info form-control btn-edit' data-id="<%- item.unique_id %>">Edit</button>
-                            </div>
+                                <div class="col-xs-6 col-md-6 no-padding edit-btn">
+                                    <button type='button' class='btn btn-info form-control btn-edit' data-id="<%- item.unique_id %>">Edit</button>
+                                </div>
+                            <%
+                            }
+                            else { %>
+                                <div class="col-xs-6 col-md-6 no-padding">
+                                    <button type='button' class='btn form-control yes-button <% if ( item.current_role_status == "no") {%>confirmed-negative <%}%>' data-id="<%- item.unique_id %>">Going</button>
+                                </div>
+
+                                <div class="col-xs-6 col-md-6 no-padding edit-btn">
+                                    <button type='button' class='btn form-control no-button <% if ( item.current_role_status == "yes") {%>confirmed-negative <%}%>' data-id="<%- item.unique_id %>">Not</button>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>

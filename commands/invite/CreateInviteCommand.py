@@ -119,6 +119,7 @@ class CreateInviteCommand(object):
             invite=invite,
             name=name,
             email=email,
+            user=self.user_object,
             status=AttendeeStatus.ORGANIZER,
             is_organizer=True
         )

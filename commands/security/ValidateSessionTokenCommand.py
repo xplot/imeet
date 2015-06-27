@@ -21,12 +21,10 @@ class ValidateSessionTokenCommand(object):
             return False
 
         session_token_entity = SessionToken.get_by_unique_id(self.session_token)
-
         if not session_token_entity:
             return False
         if session_token_entity.expires_on <= datetime.now():
             return False
         if session_token_entity.status != SessionStatus.ACTIVE:
-            logging.info(session_token_entity.status)
             return False
         return True

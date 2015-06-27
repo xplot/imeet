@@ -543,11 +543,31 @@ __e( item.unique_id ) +
 __e( item.unique_id ) +
 '">' +
 __e( item.title ) +
-'</h1>\n                    <div class="actions">\n                        <div class="row">\n                            <div class="col-xs-6 col-md-6 no-padding">\n                                <button type=\'button\' class=\'btn btn-info form-control btn-duplicate\' data-id="' +
+'</h1>\n\n                    <div class="actions">\n                        <div class="row">\n                            ';
+ if (item.invite_attendee_role == 'organizer') { ;
+__p += '\n                                <div class="col-xs-6 col-md-6 no-padding">\n                                    <button type=\'button\' class=\'btn btn-info form-control btn-duplicate\' data-id="' +
 __e( item.unique_id ) +
-'">Duplicate</button>\n                            </div>\n\n                            <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                                <button type=\'button\' class=\'btn btn-info form-control btn-edit\' data-id="' +
+'">Duplicate</button>\n                                </div>\n\n                                <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                                    <button type=\'button\' class=\'btn btn-info form-control btn-edit\' data-id="' +
 __e( item.unique_id ) +
-'">Edit</button>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n        ';
+'">Edit</button>\n                                </div>\n                            ';
+
+                            }
+                            else { ;
+__p += '\n                                <div class="col-xs-6 col-md-6 no-padding">\n                                    <button type=\'button\' class=\'btn form-control yes-button ';
+ if ( item.current_role_status == "no") {;
+__p += 'confirmed-negative ';
+};
+__p += '\' data-id="' +
+__e( item.unique_id ) +
+'">Going</button>\n                                </div>\n\n                                <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                                    <button type=\'button\' class=\'btn form-control no-button ';
+ if ( item.current_role_status == "yes") {;
+__p += 'confirmed-negative ';
+};
+__p += '\' data-id="' +
+__e( item.unique_id ) +
+'">Not</button>\n                                </div>\n                            ';
+ } ;
+__p += '\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n        ';
  }); ;
 __p += '\n    </div>\n</div>\n\n';
 

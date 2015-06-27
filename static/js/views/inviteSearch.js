@@ -18,7 +18,6 @@ SearchView = SimpleView.extend({
         var paletteView = new PaletteView();
         paletteView.clearPalette();
 
-
         this.hidePanels();
         this.model = invites;
 
@@ -67,21 +66,16 @@ SearchView = SimpleView.extend({
         if(value != null)
             url += value;
 
-        $.ajax({
+        httpRequest({
             url: url,
             type: "GET",
-            headers:{
-                session_token: currentUser.session_token
-            },
 
-            cache: false,
             success: function(data) {
                 var invite_list = new InviteList();
                 if(data!=null){
                     data.forEach(function(invite){
                         invite_list.add(new InviteModel(invite));
                     });
-
                 }
                 that.render(invite_list, value);
             }

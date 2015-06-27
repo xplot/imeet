@@ -1,6 +1,7 @@
 from managers.utils import guid
 from commands.addressbook.UpdateOrCreateContactCommand import UpdateOrCreateContactCommand
 from models import InviteAttendee, InviteAttendeeNotification, Contact, Invite, User
+from .UpdateUserOnAttendeesCommand import UpdateUserOnAttendeesCommand
 
 
 class AddInviteAttendeeCommand(object):
@@ -12,6 +13,7 @@ class AddInviteAttendeeCommand(object):
         name=None,
         email=None,
         phone=None,
+        user=None,
         status=None,
         is_organizer=False
     ):
@@ -21,6 +23,7 @@ class AddInviteAttendeeCommand(object):
         self.name = name
         self.email = email
         self.phone = phone
+        self.user = user
         self.status = status
         self.is_organizer = is_organizer
 
@@ -59,11 +62,12 @@ class AddInviteAttendeeCommand(object):
 
         invite_attendee.is_organizer = self.is_organizer
 
-        #We can only correlate by email now
-        if invite_attendee.email:
+        if self.user:
+            UpdateUserOnAttendeesCommand.update_user_on_attendee(self.user, invite_attendee)
+        elif invite_attendee.email: # We can only correlate by email now
             user = self.user_from_email(invite_attendee.email)
             if user:
-                invite_attendee.user = user.key
+                UpdateUserOnAttendeesCommand.update_user_on_attendee(user, invite_attendee)
 
         invite_attendee.put()
         return invite_attendee.unique_id
