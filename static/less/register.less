@@ -1,0 +1,70 @@
+#register{
+
+  .register-background{
+      position: absolute;
+      width: 100%;
+      background: url(/img/jump.jpg) left center;
+      background-size: cover;
+      background-attachment: fixed;
+  }
+
+  .block{
+    display: table;
+    text-align: center;
+    width: 100%;
+
+    .center-block{
+      vertical-align: middle;
+      display: table-cell;
+    }
+  }
+
+
+  .register-box-parent{
+    position: absolute;
+    top: 70%;
+    width: 100%;
+    text-align: center;
+    height: 50px;
+
+    .register-box{
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+
+      @media (max-width: 1024px) {
+        padding: 15px;
+        max-width: 100%;
+      }
+      @media (max-width: 768px) {
+        padding: 15px;
+        max-width: 100%;
+      }
+
+      .button-div{
+        display: inline-block;
+        width: 22%;
+      }
+      .input-div{
+        display: inline-block;
+        width: 75%;
+
+        input{
+          border-radius: 0px;
+          padding: 1px 5px;
+          width: 100%;
+          border: 1px solid @input-border;
+        }
+      }
+
+//      input{
+//        width: 100%;
+//      }
+
+      .btn{
+
+      }
+    }
+  }
+
+}

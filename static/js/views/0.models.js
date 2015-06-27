@@ -16,9 +16,11 @@ var httpRequest = function(ajax_request){
 
     if(ajax_request.error == null){
         ajax_request.error = function(data) {
+            var response = $.parseJSON(data.responseText);
+
             alert_notification([{
                 alertType: 'danger',
-                message: data.responseText
+                message: response.error
             }]);
         }
     }

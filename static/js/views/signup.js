@@ -4,13 +4,25 @@ UserRegisterView = SimpleView.extend({
         this.options = options || {};
     },
     events: {
-       'click .submit-register' : 'registerEmail'
+       'click .submit-register' : 'registerEmail',
+        'keyup .register-email': 'registerEnter'
     },
 
     render: function() {
         this.hidePanels();
+
         this.$el.html(this.template());
         this.$email = this.$el.find('.register-email');
+        this.plugins();
+
+        this.$email.focus();
+    },
+
+    registerEnter: function(evt) {
+        if (evt.keyCode != 13) {
+            return;
+        }
+        this.registerEmail();
     },
 
     registerEmail: function(){
@@ -20,7 +32,7 @@ UserRegisterView = SimpleView.extend({
         }
 
         var that = this;
-        $.ajax({
+        httpRequest({
             url: "/register/email/"+ this.$email.val(),
             type: "POST",
             cache: false,
@@ -29,15 +41,20 @@ UserRegisterView = SimpleView.extend({
                     alertType:'success',
                     message: "Account Created Successfully, please check your email"
                 }]);
-                window.location.href = '/';
-            },
-            error:function(data) {
-                alert_notification([{
-                    alertType:'danger',
-                    message: data.responseText
-                }]);
+
+                that.$email.val('');
             }
         });
 
+    },
+
+    plugins: function(){
+        var that = this;
+        that.block('.register-background', 'half');
+
+        $(window).resize(function() {
+            that.block('.register-background', 'half');
+
+        });
     }
 });

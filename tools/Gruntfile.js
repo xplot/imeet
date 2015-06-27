@@ -121,31 +121,29 @@ module.exports = function (grunt) {
 				files: {
 					'../static/css/imeet.min.css': [
                         '../static/less/external/*.css',
-                        'tmp/css/palette.css',
                         'tmp/css/imeet.css'
                     ],
                     '../static/css/index.min.css': [
                         '../static/less/external/*.css',
-                        //No Palette here
                         'tmp/css/index.css'
                     ],
                     '../static/css/contacts.min.css': [
                         '../static/less/external/*.css',
-                        //No Palette here
                         'tmp/css/contacts.css'
                     ],
                     '../static/css/invite_edit.min.css': [
                         '../static/less/external/*.css',
-                        'tmp/css/palette.css',
                         'tmp/css/invite_edit.css'
                     ],
                     '../static/css/invite.min.css': [
                         '../static/less/external/*.css',
-                        'tmp/css/palette.css',
                         'tmp/css/invite.css'
                     ],
                     '../static/css/kaboom.min.css': [
                         'tmp/css/kaboom.css'
+                    ],
+                    '../static/css/palette.min.css': [
+                        'tmp/css/palette.css'
                     ],
 				}
 			}
