@@ -23,7 +23,9 @@ InviteView = SimpleView.extend({
 
         this.current_attendee = invite_attendee;
         var inviteModel = invite;
-        this.$el.html(this.template());
+        this.$el.html(this.template({
+            description: inviteModel.get('description')
+        }));
 
         var invite_header = new InviteHeaderView();
         var invite_details = new InviteDetailsView();
@@ -45,8 +47,6 @@ InviteView = SimpleView.extend({
             current_attendee: this.current_attendee,
             comments: new CommentList(invite.get('comments'))
         });
-
-        $('.invite-description').html(invite.description);
 
         var invite_palette = inviteModel.get('palette');
 
