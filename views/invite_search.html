@@ -42,12 +42,13 @@
                             <%
                             }
                             else { %>
-                                <div class="col-xs-6 col-md-6 no-padding">
-                                    <button type='button' class='btn form-control yes-button <% if ( item.current_role_status == "no") {%>confirmed-negative <%}%>' data-id="<%- item.unique_id %>">Going</button>
+                                <div class="col-xs-6 col-md-6 no-padding btn-yes <% if ( item.invite_attendee_role == 'no') {%>confirmed-negative <%}%> <% if ( item.invite_attendee_role == 'yes') {%>confirmed-positive <%}%>" data-attendee_id="<%- item.invite_attendee_id %>">
+
+                                    <button type='button' class='btn form-control' data-attendee_id="<%- item.invite_attendee_id %>">Going <i class="fa fa-check-mark"></i> </button>
                                 </div>
 
-                                <div class="col-xs-6 col-md-6 no-padding edit-btn">
-                                    <button type='button' class='btn form-control no-button <% if ( item.current_role_status == "yes") {%>confirmed-negative <%}%>' data-id="<%- item.unique_id %>">Not</button>
+                                <div class="btn-group col-xs-6 col-md-6 no-padding btn-no <% if ( item.invite_attendee_role == 'yes') {%>confirmed-negative <%}%> <% if ( item.invite_attendee_role == 'no') {%>confirmed-positive <%}%>" data-attendee_id="<%- item.invite_attendee_id %>">
+                                    <button type='button' class='btn form-control' data-attendee_id="<%- item.invite_attendee_id %>">Not <i class="fa fa-check-mark"></i></button>
                                 </div>
                             <% } %>
                         </div>

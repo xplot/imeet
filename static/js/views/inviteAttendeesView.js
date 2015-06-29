@@ -111,7 +111,6 @@ InviteAttendeesView = Backbone.View.extend({
             return;
         }
         this.current_attendee.set('status', response);
-
         this.current_attendee.acknowledgeInvite(response, $.proxy(this.attendeeRSVPCallback, this));
     },
 

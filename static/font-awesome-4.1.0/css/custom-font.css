@@ -103,7 +103,11 @@
   content: "a";
 }
 .fa-check-mark:before {
-  content: "t";
+  content: "D";
+  font-size: 50px;
+    position: absolute;
+    margin: -30px 5px;
+
 }
 .fa-like:before {
   content: "u";
@@ -131,4 +135,8 @@
 }
 .fa-person:before {
   content: "C";
+}
+
+.fa-check-mark-4:before {
+  content: "t";
 }

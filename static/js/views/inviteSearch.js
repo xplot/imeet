@@ -8,6 +8,10 @@ SearchView = SimpleView.extend({
         'click .search' : 'search_value',
         'keypress #searchBox' : 'type_key',
         'click .btn-duplicate' : 'duplicate',
+
+        'click .btn-yes' : 'rsvpYes',
+        'click .btn-no' : 'rsvpNo',
+
         'click .btn-edit' : 'edit',
         'click .btn-cancel' : 'cancel',
         'click .invite-background': 'navigate'
@@ -34,7 +38,7 @@ SearchView = SimpleView.extend({
         }
 
         if(search != null){
-            var $searchBox = this.$el.find('#searchBox')
+            var $searchBox = this.$el.find('#searchBox');
             $searchBox.val(search);
             $searchBox.focus();
         }
@@ -119,5 +123,34 @@ SearchView = SimpleView.extend({
             that.block('.invite-background', 'half');
 
         });
+    },
+
+    rsvpYes: function(evt){
+        this.rsvp(evt, 'yes');
+    },
+    rsvpNo: function(evt){
+        this.rsvp(evt, 'no');
+    },
+
+    rsvp: function(evt, response){
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        var $btn = $(evt.target);
+        var invite_attendee_id = $btn.data('attendee_id');
+
+        var attendee_model = new Contact({invite_attendee_id: invite_attendee_id});
+        attendee_model.acknowledgeInvite(response, $.proxy(this.attendeeRSVPCallback, this));
+        var response_negative = (response == 'yes')? 'no': 'yes';
+
+        var parent = $btn.parent();
+        parent.removeClass('confirmed-negative');
+        parent.addClass('confirmed-positive');
+        parent.parent().find('.btn-' + response_negative).addClass('confirmed-negative');
+        parent.parent().find('.btn-' + response_negative).removeClass('confirmed-positive');
+    },
+
+    attendeeRSVPCallback: function(data){
+
     }
 });

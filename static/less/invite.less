@@ -220,10 +220,30 @@ h1, h2, h3, h4, h5, h6 {
       }
 
       .yes-button{
+        .response-yes {
+          .fa{
+            display: inline-block;
+          }
+        }
+      }
+
+      .no-button{
+        .response-no {
+          .fa{
+            display: inline-block;
+          }
+        }
+      }
+
+      .yes-button{
         .response-no{
           background-color: @invite-light-gray;
           border-color: @invite-light-gray !important;
           color:@off-black;
+          .fa{
+            font-size: 10px;
+            display: none;
+          }
         }
       }
 
@@ -232,6 +252,9 @@ h1, h2, h3, h4, h5, h6 {
           background-color: @invite-light-gray;
           border-color: @invite-light-gray !important;
           color:@off-black;
+          .fa{
+            display: none;
+          }
         }
       }
 

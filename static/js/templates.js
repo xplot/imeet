@@ -285,9 +285,9 @@ __p += '\n                        Glad you\'re coming :)\n                  ';
 } ;
 __p += '\n              </div>\n\n              <div class="panel-body acknowledge-body">\n                <div class="col-md-6 yes-button">\n                    <button type="button" class="btn form-control btn-success invite-attendees-acknowledge-yes response-' +
 __e( attendee.status ) +
-'">YES</button>\n                </div>\n                <div class="col-md-6 no-button">\n                    <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
+'">YES<i class="fa fa-check-mark"></i></button>\n                </div>\n                <div class="col-md-6 no-button">\n                    <button type="button" class="btn form-control btn-danger invite-attendees-acknowledge-no response-' +
 __e( attendee.status ) +
-'">NO</button>\n                </div>\n              </div>\n            </div>\n          ';
+'">NO<i class="fa fa-check-mark"></i></button>\n                </div>\n              </div>\n            </div>\n          ';
 } else if(attendee != null && attendee.status == 'deleted') {;
 __p += '\n            <div class="panel panel-default">\n                <div class="panel-heading"></div>\n                  <div class="panel-body">\n                    <b>The organizer removed you from this event</b>\n                </div>\n            </div>\n          ';
 } else if(attendee != null && attendee.status == 'organizer') {;
@@ -553,19 +553,31 @@ __e( item.unique_id ) +
 
                             }
                             else { ;
-__p += '\n                                <div class="col-xs-6 col-md-6 no-padding">\n                                    <button type=\'button\' class=\'btn form-control yes-button ';
- if ( item.current_role_status == "no") {;
+__p += '\n                                <div class="col-xs-6 col-md-6 no-padding btn-yes ';
+ if ( item.invite_attendee_role == 'no') {;
 __p += 'confirmed-negative ';
 };
-__p += '\' data-id="' +
-__e( item.unique_id ) +
-'">Going</button>\n                                </div>\n\n                                <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                                    <button type=\'button\' class=\'btn form-control no-button ';
- if ( item.current_role_status == "yes") {;
+__p += ' ';
+ if ( item.invite_attendee_role == 'yes') {;
+__p += 'confirmed-positive ';
+};
+__p += '" data-attendee_id="' +
+__e( item.invite_attendee_id ) +
+'">\n\n                                    <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
+__e( item.invite_attendee_id ) +
+'">Going <i class="fa fa-check-mark"></i> </button>\n                                </div>\n\n                                <div class="btn-group col-xs-6 col-md-6 no-padding btn-no ';
+ if ( item.invite_attendee_role == 'yes') {;
 __p += 'confirmed-negative ';
 };
-__p += '\' data-id="' +
-__e( item.unique_id ) +
-'">Not</button>\n                                </div>\n                            ';
+__p += ' ';
+ if ( item.invite_attendee_role == 'no') {;
+__p += 'confirmed-positive ';
+};
+__p += '" data-attendee_id="' +
+__e( item.invite_attendee_id ) +
+'">\n                                    <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
+__e( item.invite_attendee_id ) +
+'">Not <i class="fa fa-check-mark"></i></button>\n                                </div>\n                            ';
  } ;
 __p += '\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n        ';
  }); ;

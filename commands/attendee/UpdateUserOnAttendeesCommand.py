@@ -8,14 +8,13 @@ class UpdateUserOnAttendeesCommand(object):
     def __init__(self, user):
         self.user = user
         self.email = None
-        self.phone = phone
 
     def execute(self):
 
         query = None
-        if user.email:
+        if self.user.email:
             query = InviteAttendee.query(
-                InviteAttendee.email == email
+                InviteAttendee.email == self.user.email
             )
 
         attendees = query.fetch()

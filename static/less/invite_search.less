@@ -80,18 +80,41 @@
           padding: 0px;
           height: 50px;
 
-          .yes-button{
-            background-color: @btn-green-success;
+          .btn-yes{
+            background-color: fade(@btn-green-success, 60%);
             color: @off-white;
+            .fa{
+              display: none;
+            }
+          }
+          .btn-yes:hover{
+            background-color: fade(@off-white, 60%);
+            color: @btn-green-success !important;
           }
 
-          .no-button{
-            background-color: @btn-danger;
+          .btn-no{
+            background-color: fade(@btn-danger, 60%);
             color: @off-white;
+            .fa{
+              display: none;
+            }
+          }
+          .btn-no:hover{
+            background-color: fade(@off-white, 60%);
+            color: @btn-danger !important;
+          }
+
+          .confirmed-positive{
+            .fa{
+              display: inline-block;
+            }
+            .fa:before{
+
+            }
           }
 
           .confirmed-negative{
-            opacity: 0.5;
+            background-color: fade(@btn-gray, 30%);
           }
 
           .btn{
@@ -101,9 +124,6 @@
             background-color: transparent;
             height: 100%;
           }
-          .btn:hover {
-            background-color: rgba(255,255,255,0.7);
-          }
 
           .edit-btn{
             border-left: solid 1px white;
@@ -112,8 +132,6 @@
           .no-padding{
             height: 100%;
           }
-
-
 
           @media(max-width:768px) {
             height: 40px;

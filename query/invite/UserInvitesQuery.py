@@ -21,6 +21,8 @@ class UserInvitesQuery(object):
         result = []
 
         invite_attendees_group = self.get_invites_grouped_by_attendee()
+        if not invite_attendees_group:
+            return []
 
         all_invites = Invite.query(
             Invite.key.IN(invite_attendees_group.keys())
@@ -28,7 +30,7 @@ class UserInvitesQuery(object):
 
         result = []
         for invite in all_invites:
-            if self.search_term and self.search_term not in invite.title:
+            if self.search_term and self.search_term.lower() not in invite.title.lower():
                 continue
 
             invite_attendee = invite_attendees_group[invite.key]
@@ -48,6 +50,7 @@ class UserInvitesQuery(object):
                 'confirmed': 0,
                 'organizer': invite.user.id() if invite.user else None,
 
+                'invite_attendee_id': invite_attendee.unique_id,
                 'invite_attendee_role': invite_attendee.attendee_status,
                 'response_on':  invite_attendee.last_response_on
             })
