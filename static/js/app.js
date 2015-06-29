@@ -77,6 +77,8 @@ function init_app() {
             'sent/:id': 'sent',
 
             'search': 'search',
+            'search/:id': 'searchWithFilter',
+
             'login': 'login',
             'profile/edit': 'edit_profile',
             'register': 'register',
@@ -120,8 +122,14 @@ function init_app() {
           sent_view_modal.render();
         },
         search: function () {
+            console.log('here');
             search_view.render();
         },
+        searchWithFilter: function (filter_type) {
+            console.log('here filter: ' + filter_type);
+            search_view.render(null, null, filter_type);
+        },
+
         edit_as_attendee: function (id, attendee_id) {
             var inviteX = (typeof(invite) != "undefined")?invite: null;
             var invite_attendeex = (typeof(invite_attendee) != "undefined")?invite_attendee: null;

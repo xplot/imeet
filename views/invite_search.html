@@ -11,51 +11,33 @@
         </div>
     </div>
 
+    <div class="row no-margin filter-row">
+        <div class="navigator">
+            <div><a href="" class="filter unread" data-filter="unread">Unread</a></div>
+            <div>|</div>
+            <div><a href="" class="filter accepted" data-filter="accepted">Accepted</a></div>
+            <div>|</div>
+            <div><a href="" class="filter denied" data-filter="denied">Denied</a></div>
+            <div>|</div>
+            <div><a href="" class="filter hosting" data-filter="host">Hosting</a> </div>
+            <div>|</div>
+            <div><a href="" class="filter all" data-filter="">All</a> </div>
+        </div>
+    </div>
+
     <div class="controls" id="search-result">
         <% if (invites.length == 0) { %>
             Your search didn't resolved any iMeets. <a href="/new" type="button" class="btn btn-success">Start sending!</a>
-        <% } %>
-
+        <%
+        } %>
         <% _.each( invites, function( item ){ %>
+            <% if (item.invite_attendee_role == 'organizer') { %>
+                <%= partial('attendee_host_list_item.html', item) %>
+            <%
+            } else { %>
+                <%= partial('attendee_list_item.html', item) %>
+            <% } %>
 
-            <div class="block block1 invite-background" data-id="<%- item.unique_id %>"
-                    <% if (item.poster_image_id != null) {
-                        print("style='background-image: url(/image/" + item.poster_image_id + ")'")
-                    }
-                    else {
-                        print("style='background-image: url(/img/default_image.jpg)'")
-                    } %>
-                >
-                <div class="center-block" data-id="<%- item.unique_id %>">
-                    <h1 class="main-h1" data-id="<%- item.unique_id %>"><%- item.title %></h1>
-
-                    <div class="actions">
-                        <div class="row">
-                            <% if (item.invite_attendee_role == 'organizer') { %>
-                                <div class="col-xs-6 col-md-6 no-padding">
-                                    <button type='button' class='btn btn-info form-control btn-duplicate' data-id="<%- item.unique_id %>">Duplicate</button>
-                                </div>
-
-                                <div class="col-xs-6 col-md-6 no-padding edit-btn">
-                                    <button type='button' class='btn btn-info form-control btn-edit' data-id="<%- item.unique_id %>">Edit</button>
-                                </div>
-                            <%
-                            }
-                            else { %>
-                                <div class="col-xs-6 col-md-6 no-padding btn-yes <% if ( item.invite_attendee_role == 'no') {%>confirmed-negative <%}%> <% if ( item.invite_attendee_role == 'yes') {%>confirmed-positive <%}%>" data-attendee_id="<%- item.invite_attendee_id %>">
-
-                                    <button type='button' class='btn form-control' data-attendee_id="<%- item.invite_attendee_id %>">Going <i class="fa fa-check-mark"></i> </button>
-                                </div>
-
-                                <div class="btn-group col-xs-6 col-md-6 no-padding btn-no <% if ( item.invite_attendee_role == 'yes') {%>confirmed-negative <%}%> <% if ( item.invite_attendee_role == 'no') {%>confirmed-positive <%}%>" data-attendee_id="<%- item.invite_attendee_id %>">
-                                    <button type='button' class='btn form-control' data-attendee_id="<%- item.invite_attendee_id %>">Not <i class="fa fa-check-mark"></i></button>
-                                </div>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         <% }); %>
     </div>
 </div>

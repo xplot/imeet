@@ -10,6 +10,130 @@ __p += '<div class="modal addGroup-modal" tabindex="-1" >\n    <div class="modal
 return __p
 };
 
+this["JST"]["attendee_host_list_item.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="block block1 invite-background" data-id="' +
+__e( unique_id ) +
+'"\n        ';
+ if (poster_image_id != null) {
+            print("style='background-image: url(/image/" + poster_image_id + ")'")
+        }
+        else {
+            print("style='background-image: url(/img/default_image.jpg)'")
+        } ;
+__p += '\n    >\n    <div class="center-block" data-id="' +
+__e( unique_id ) +
+'">\n        <h1 class="main-h1" data-id="' +
+__e( unique_id ) +
+'">' +
+__e( title ) +
+'</h1>\n\n        <div class="actions">\n            <div class="row">\n                ';
+ if (invite_attendee_role == 'organizer') { ;
+__p += '\n                    <div class="col-xs-6 col-md-6 no-padding">\n                        <button type=\'button\' class=\'btn btn-info form-control btn-duplicate\' data-id="' +
+__e( unique_id ) +
+'">Duplicate</button>\n                    </div>\n\n                    <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                        <button type=\'button\' class=\'btn btn-info form-control btn-edit\' data-id="' +
+__e( unique_id ) +
+'">Edit</button>\n                    </div>\n                ';
+
+                }
+                else { ;
+__p += '\n                    <div class="col-xs-6 col-md-6 no-padding btn-yes ';
+ if ( invite_attendee_role == 'no') {;
+__p += 'confirmed-negative ';
+};
+__p += ' ';
+ if ( invite_attendee_role == 'yes') {;
+__p += 'confirmed-positive ';
+};
+__p += '" data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">\n\n                        <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">Going <i class="fa fa-check-mark"></i> </button>\n                    </div>\n\n                    <div class="btn-group col-xs-6 col-md-6 no-padding btn-no ';
+ if ( invite_attendee_role == 'yes') {;
+__p += 'confirmed-negative ';
+};
+__p += ' ';
+ if ( invite_attendee_role == 'no') {;
+__p += 'confirmed-positive ';
+};
+__p += '" data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">\n                        <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">Not <i class="fa fa-check-mark"></i></button>\n                    </div>\n                ';
+ } ;
+__p += '\n            </div>\n        </div>\n    </div>\n\n</div>';
+
+}
+return __p
+};
+
+this["JST"]["attendee_list_item.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="block block1 invite-background" data-id="' +
+__e( unique_id ) +
+'"\n        ';
+ if (poster_image_id != null) {
+            print("style='background-image: url(/image/" + poster_image_id + ")'")
+        }
+        else {
+            print("style='background-image: url(/img/default_image.jpg)'")
+        } ;
+__p += '\n    >\n    <div class="center-block" data-id="' +
+__e( unique_id ) +
+'">\n        <h1 class="main-h1" data-id="' +
+__e( unique_id ) +
+'">' +
+__e( title ) +
+'</h1>\n\n        <div class="actions">\n            <div class="row">\n                ';
+ if (invite_attendee_role == 'organizer') { ;
+__p += '\n                    <div class="col-xs-6 col-md-6 no-padding">\n                        <button type=\'button\' class=\'btn btn-info form-control btn-duplicate\' data-id="' +
+__e( unique_id ) +
+'">Duplicate</button>\n                    </div>\n\n                    <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                        <button type=\'button\' class=\'btn btn-info form-control btn-edit\' data-id="' +
+__e( unique_id ) +
+'">Edit</button>\n                    </div>\n                ';
+
+                }
+                else { ;
+__p += '\n                    <div class="col-xs-6 col-md-6 no-padding btn-yes ';
+ if ( invite_attendee_role == 'no') {;
+__p += 'confirmed-negative ';
+};
+__p += ' ';
+ if ( invite_attendee_role == 'yes') {;
+__p += 'confirmed-positive ';
+};
+__p += '" data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">\n\n                        <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">Going <i class="fa fa-check-mark"></i> </button>\n                    </div>\n\n                    <div class="btn-group col-xs-6 col-md-6 no-padding btn-no ';
+ if ( invite_attendee_role == 'yes') {;
+__p += 'confirmed-negative ';
+};
+__p += ' ';
+ if ( invite_attendee_role == 'no') {;
+__p += 'confirmed-positive ';
+};
+__p += '" data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">\n                        <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
+__e( invite_attendee_id ) +
+'">Not <i class="fa fa-check-mark"></i></button>\n                    </div>\n                ';
+ } ;
+__p += '\n            </div>\n        </div>\n    </div>\n\n</div>';
+
+}
+return __p
+};
+
 this["JST"]["contact_details.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -522,64 +646,25 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '\n<div id="search-view">\n\n    <div class="row no-margin desktop">\n        <div class="col-sm-10 no-padding">\n            <input id="searchBox" type="text" class="form-control event-name" placeholder="Invite Title" data-validation="required">\n        </div>\n\n        <div class="col-sm-2 no-padding">\n            <button type="button" class="btn btn-success form-control search">Search</button>\n        </div>\n    </div>\n\n    <div class="controls" id="search-result">\n        ';
+__p += '\n<div id="search-view">\n\n    <div class="row no-margin desktop">\n        <div class="col-sm-10 no-padding">\n            <input id="searchBox" type="text" class="form-control event-name" placeholder="Invite Title" data-validation="required">\n        </div>\n\n        <div class="col-sm-2 no-padding">\n            <button type="button" class="btn btn-success form-control search">Search</button>\n        </div>\n    </div>\n\n    <div class="row no-margin filter-row">\n        <div class="navigator">\n            <div><a href="" class="filter unread" data-filter="unread">Unread</a></div>\n            <div>|</div>\n            <div><a href="" class="filter accepted" data-filter="accepted">Accepted</a></div>\n            <div>|</div>\n            <div><a href="" class="filter denied" data-filter="denied">Denied</a></div>\n            <div>|</div>\n            <div><a href="" class="filter hosting" data-filter="host">Hosting</a> </div>\n            <div>|</div>\n            <div><a href="" class="filter all" data-filter="">All</a> </div>\n        </div>\n    </div>\n\n    <div class="controls" id="search-result">\n        ';
  if (invites.length == 0) { ;
 __p += '\n            Your search didn\'t resolved any iMeets. <a href="/new" type="button" class="btn btn-success">Start sending!</a>\n        ';
+
+        } ;
+__p += '\n        ';
+ _.each( invites, function( item ){ ;
+__p += '\n            ';
+ if (item.invite_attendee_role == 'organizer') { ;
+__p += '\n                ' +
+((__t = ( partial('attendee_host_list_item.html', item) )) == null ? '' : __t) +
+'\n            ';
+
+            } else { ;
+__p += '\n                ' +
+((__t = ( partial('attendee_list_item.html', item) )) == null ? '' : __t) +
+'\n            ';
  } ;
 __p += '\n\n        ';
- _.each( invites, function( item ){ ;
-__p += '\n\n            <div class="block block1 invite-background" data-id="' +
-__e( item.unique_id ) +
-'"\n                    ';
- if (item.poster_image_id != null) {
-                        print("style='background-image: url(/image/" + item.poster_image_id + ")'")
-                    }
-                    else {
-                        print("style='background-image: url(/img/default_image.jpg)'")
-                    } ;
-__p += '\n                >\n                <div class="center-block" data-id="' +
-__e( item.unique_id ) +
-'">\n                    <h1 class="main-h1" data-id="' +
-__e( item.unique_id ) +
-'">' +
-__e( item.title ) +
-'</h1>\n\n                    <div class="actions">\n                        <div class="row">\n                            ';
- if (item.invite_attendee_role == 'organizer') { ;
-__p += '\n                                <div class="col-xs-6 col-md-6 no-padding">\n                                    <button type=\'button\' class=\'btn btn-info form-control btn-duplicate\' data-id="' +
-__e( item.unique_id ) +
-'">Duplicate</button>\n                                </div>\n\n                                <div class="col-xs-6 col-md-6 no-padding edit-btn">\n                                    <button type=\'button\' class=\'btn btn-info form-control btn-edit\' data-id="' +
-__e( item.unique_id ) +
-'">Edit</button>\n                                </div>\n                            ';
-
-                            }
-                            else { ;
-__p += '\n                                <div class="col-xs-6 col-md-6 no-padding btn-yes ';
- if ( item.invite_attendee_role == 'no') {;
-__p += 'confirmed-negative ';
-};
-__p += ' ';
- if ( item.invite_attendee_role == 'yes') {;
-__p += 'confirmed-positive ';
-};
-__p += '" data-attendee_id="' +
-__e( item.invite_attendee_id ) +
-'">\n\n                                    <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
-__e( item.invite_attendee_id ) +
-'">Going <i class="fa fa-check-mark"></i> </button>\n                                </div>\n\n                                <div class="btn-group col-xs-6 col-md-6 no-padding btn-no ';
- if ( item.invite_attendee_role == 'yes') {;
-__p += 'confirmed-negative ';
-};
-__p += ' ';
- if ( item.invite_attendee_role == 'no') {;
-__p += 'confirmed-positive ';
-};
-__p += '" data-attendee_id="' +
-__e( item.invite_attendee_id ) +
-'">\n                                    <button type=\'button\' class=\'btn form-control\' data-attendee_id="' +
-__e( item.invite_attendee_id ) +
-'">Not <i class="fa fa-check-mark"></i></button>\n                                </div>\n                            ';
- } ;
-__p += '\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n        ';
  }); ;
 __p += '\n    </div>\n</div>\n\n';
 

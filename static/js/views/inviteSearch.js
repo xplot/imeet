@@ -9,6 +9,8 @@ SearchView = SimpleView.extend({
         'keypress #searchBox' : 'type_key',
         'click .btn-duplicate' : 'duplicate',
 
+        'click .filter': 'filterClick',
+
         'click .btn-yes' : 'rsvpYes',
         'click .btn-no' : 'rsvpNo',
 
@@ -17,13 +19,19 @@ SearchView = SimpleView.extend({
         'click .invite-background': 'navigate'
     },
 
-    render: function(invites, search) {
+    render: function(invites, search, filter_type) {
+        console.log(invites);
+        console.log(search);
+        console.log(filter_type);
 
         var paletteView = new PaletteView();
         paletteView.clearPalette();
 
+        this.search_term = search;
+        this.filter = filter_type;
+
         this.hidePanels();
-        this.model = invites;
+        this.model = this.getFilteredList(invites, this.filter);
 
         if(this.model != null) {
             this.$el.html(this.template({
@@ -46,6 +54,40 @@ SearchView = SimpleView.extend({
         this.plugins();
     },
 
+    getFilteredList: function(inviteSource, filter_type){
+        if(inviteSource == null)
+            return null;
+
+        if(filter_type == null){
+            return inviteSource;
+        }
+
+        var filters = [];
+        if(filter_type == 'all')
+            filters = ['yes','no','no_response', 'organizer' ];
+        if(filter_type == 'unread')
+            filters = ['no_response'];
+        if(filter_type == 'accepted')
+            filters = ['yes'];
+        if(filter_type == 'denied')
+            filters = ['no'];
+        if(filter_type == 'host')
+            filters = ['organizer'];
+
+        var invite_list = new InviteList();
+
+        inviteSource.forEach(function(invite){
+            filters.forEach(function(filter){
+                console.log(filter);
+
+                if(invite.get('invite_attendee_role') == filter)
+                    invite_list.add(invite);
+            });
+        });
+
+        return invite_list;
+    },
+
     type_key: function(e){
         if (e.keyCode == 13) {
             var $searchBox = this.$el.find('#searchBox');
@@ -54,6 +96,7 @@ SearchView = SimpleView.extend({
             return false;
         }
     },
+
     search_value: function(evt){
         var $searchBox = this.$el.find('#searchBox');
 
@@ -81,9 +124,21 @@ SearchView = SimpleView.extend({
                         invite_list.add(new InviteModel(invite));
                     });
                 }
-                that.render(invite_list, value);
+                that.render(invite_list, value, that.filter);
             }
         });
+    },
+
+    filterClick: function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        var $btn = $(evt.target);
+        var filter = $btn.data('filter');
+        if(filter != '')
+            Backbone.history.navigate('search/' + filter, true);
+        else
+            Backbone.history.navigate('search', true);
     },
 
     duplicate: function(evt){

@@ -37,7 +37,7 @@ class IndexHandler(BaseHandler):
             location_enabled=True
         )
 
-    def search(self):
+    def search(self, filter=None):
         return self.render_template('index.html')
 
     @invite_permission_required(InvitePermission.Attendee)
@@ -115,6 +115,11 @@ class IndexHandler(BaseHandler):
             invite=invite_query.query(),
             invite_attendee=invite_attendee,
         )
+
+    def register(self):
+        if self.user:
+            return self.redirect_to('home')
+        return self.render_template('index.html')
 
     def blank(self):
         return self.render_template('blank.html')

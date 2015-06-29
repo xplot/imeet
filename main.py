@@ -36,6 +36,8 @@ app = webapp2.WSGIApplication([
     Route('/new/from/<source_invite_id>', html.IndexHandler, handler_method='new'),
     Route('/new/<invite_name>/from/<source_invite_id>', html.IndexHandler, handler_method='new'),
     Route('/search', html.IndexHandler, handler_method='search'),
+    Route('/search/<filter>', html.IndexHandler, handler_method='search'),
+
     Route('/invite', html.IndexHandler, handler_method='view_invite'),
 
     RedirectRoute('/invite/<invite_id>/edit', html.IndexHandler, name='edit', handler_method='edit_invite', methods=['GET']),
@@ -61,7 +63,7 @@ app = webapp2.WSGIApplication([
 
 
     # User Profile
-    Route('/register', html.IndexHandler, name='register', handler_method='default_method'),
+    Route('/register', html.IndexHandler, name='register', handler_method='register'),
     Route('/register/email/<email>', api.RegisterHandler, handler_method='register_email'),
     RedirectRoute('/activate/<user_id>/<token>', html.AccountActivationHandler, name='account-activation', strict_slash=True),
     Route('/login', html.LoginHandler, name='login'),
