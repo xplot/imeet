@@ -53,6 +53,7 @@ class RegisterBaseHandler(BaseHandler):
     def form(self):
         return forms.RegisterForm(self)
 
+
 class LoginHandler(BaseHandler):
     """
     Handler for authentication
@@ -389,7 +390,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                     auth_id, activated=True
                 )
             if not user_info[0]: #user is a tuple
-                message = _('The account %s is already in use.' % provider_display_name)
+                message = _('This email is already in use. Maybe Google?')
                 self.add_message(message, 'danger')
                 return self.redirect_to('register')
 
@@ -427,7 +428,7 @@ class CallbackSocialLoginHandler(BaseHandler):
                         'and logged in through {}.').format(provider_display_name)
             self.add_message(message, 'success')
         else:
-            message = _('This %s account is already in use.' % provider_display_name)
+            message = _('This email is already in use. Maybe Google?')
             self.add_message(message, 'danger')
 
         if social_sharing_request:

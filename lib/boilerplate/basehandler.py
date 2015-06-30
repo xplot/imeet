@@ -19,7 +19,7 @@ from main import JINJA_ENVIRONMENT
 from managers.subscriptions import SubscriptionManager
 from commands import CreateSessionTokenCommand
 from webob.exc import HTTPError, HTTPUnauthorized
-
+from urlparse import urlparse
 
 class ViewClass:
     """
@@ -70,6 +70,10 @@ class BaseHandler(webapp2.RequestHandler):
         finally:
             # Save all sessions.
             self.session_store.save_sessions(self.response)
+
+    @webapp2.cached_property
+    def host_url(self):
+        return urlparse(self.request.url).scheme + "://" + urlparse(self.request.url).netloc
 
     @webapp2.cached_property
     def user_model(self):

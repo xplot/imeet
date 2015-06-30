@@ -33,6 +33,8 @@ class User(User):
     #: Account activation verifies email
     activated = ndb.BooleanProperty(default=False)
 
+    picture = ndb.StringProperty(indexed=False)
+
     @classmethod
     def get_by_unique_id(cls, unique_id):
         """ Gets a Model by it' unique_id """

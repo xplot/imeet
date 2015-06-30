@@ -70,6 +70,11 @@ app = webapp2.WSGIApplication([
     Route('/logout', html.LogoutHandler, name='logout'),
     Route('/profile/edit', html.IndexHandler, name='edit-profile', handler_method='default_method'),
     Route('/api/profile/<user_id>', api.UserProfileHandler, name='get-profile'),
+
+    RedirectRoute('/login/social/<provider>', html.SocialLoginHandler2, handler_method='social_login', name='social-login-2', strict_slash=True),
+    RedirectRoute('/login/google/callback', html.SocialLoginHandler2, handler_method='google_social_login_callback', name='google_social_login_callback', strict_slash=True),
+    RedirectRoute('/login/facebook/callback', html.SocialLoginHandler2, handler_method='facebook_social_login_callback', name='facebook_social_login_callback', strict_slash=True),
+
     RedirectRoute('/social_login/<provider_name>', html.SocialLoginHandler, name='social-login', strict_slash=True),
     RedirectRoute('/social_login/<provider_name>/complete', html.CallbackSocialLoginHandler, name='social-login-complete', strict_slash=True),
     RedirectRoute('/social_login/<provider_name>/delete', html.DeleteSocialProviderHandler, name='delete-social-provider', strict_slash=True),

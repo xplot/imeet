@@ -34,7 +34,11 @@ config = {
 
     'google-client-id': 'secret',
     'google-client-secret' : 'secret',
-    'google-client-scope' : 'https://www.googleapis.com/auth/calendar',
+    'google-client-scope' : [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/calendar',
+    ],
 
     'salt': 'secret',
     'aes_key':'secret',

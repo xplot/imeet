@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="google-appengine-python" name="Google App Engine (Python)">
       <configuration>
-        <option name="rootFolder" value="$MODULE_DIR$" />
+        <option name="rootFolder" value="$USER_HOME$/Documents/imeet" />
         <option name="sdkFolder" value="$USER_HOME$/bin/google_appengine" />
         <option name="templatesFolder" value="" />
         <option name="email" value="ajadex@gmail.com" />
@@ -23,4 +23,3 @@
     <orderEntry type="module" module-name="src" />
   </component>
 </module>
-
