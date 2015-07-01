@@ -34,7 +34,7 @@ config = {
 
     'google_client_id': 'secret',
     'google_client_secret' : 'secret',
-    'google-client-scope' : [
+    'google_client_scope' : [
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/calendar',
