@@ -32,8 +32,8 @@ config = {
 
     'email_sender':'javi830810@gmail.com',
 
-    'google-client-id': 'secret',
-    'google-client-secret' : 'secret', 
+    'google_client_id': 'secret',
+    'google_client_secret' : 'secret',
     'google-client-scope' : [
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',

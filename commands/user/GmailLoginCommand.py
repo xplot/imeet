@@ -25,9 +25,9 @@ class GmailLoginCommand(object):
         redirect_url = self._callback_url()
 
         flow = OAuth2WebServerFlow(
-            client_id=config.get('google-client-id'),
-            client_secret=config.get('google-client-secret'),
-            scope=config.get('google-client-scope'),
+            client_id=config.get('google_client_id'),
+            client_secret=config.get('google_client_secret'),
+            scope=config.get('google_client_scope'),
             redirect_uri=redirect_url,
             state={} # Here you can include extra parameters to be returned in callback
         )
