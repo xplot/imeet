@@ -13,10 +13,8 @@ GroupsView = Backbone.View.extend({
     events: {
         'click .add-group' : 'addGroup',
         'click .navigate-to-contacts' : 'navigateToContacts',
-//       'dragover .group-drop-area': 'contactDragOver',
-//       'dragenter .group-drop-area': 'contactDragEnter',
-//       'dragleave .group-drop-area': 'contactDragLeave',
-//       'drop .group-drop-area': 'contactDropped',
+        'click .group-row' : "editRow",
+        'click .delete-group': "deleteRow"
     },
 
     newGroupView: null,
@@ -29,13 +27,9 @@ GroupsView = Backbone.View.extend({
         this.listenTo(this.groupList, 'remove', this.removeGroupHook);
         this.listenTo(this.groupList, 'change', this.changeGroupHook);
 
-        this.$el.html(this.template());
-
-        var groupTable = this.$el.find('#groups_table');
-
-        this.groupList.each(function(group){
-            groupTable.append(new GroupItemView({model: group}).render().el);
-        });
+        this.$el.html(this.template({
+            groups: this.groupList.collectionToJSON()
+        }));
 
         this.first_time = false;
     },
@@ -60,7 +54,34 @@ GroupsView = Backbone.View.extend({
         Backbone.history.navigate('contacts', true);
     },
 
-//    addContactToGroup: function(contact, group){
+    editRow: function(evt){
+        evt.preventDefault();
+
+        var id = $(evt.target).data('id');
+        if(id != null){
+            evt.stopPropagation();
+        }
+        else
+            return;
+
+        var groupModel = this.groupList.getById(id);
+        this.groupCreateView = groupCreateView();
+        this.groupCreateView.render(groupModel, null);
+    },
+
+    deleteRow: function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        var id = $(evt.target).data('id');
+
+        var groupModel = this.groupList.getById(id);
+        alert('Not implemented yet');
+
+
+        //groupModel.deleteGroup();
+        //$('.contact-row[data-id="' + id + '"]').remove();
+    }
 
 });
 
@@ -71,7 +92,8 @@ GroupDetailsView = Backbone.View.extend({
     mainGroupList: null,
 
     events: {
-       'click .new-group-btn' : 'newGroup',
+        'click .new-group-btn' : 'newGroup',
+        'keyup .group_input': 'inputEnter',
     },
 
     render: function(groupModel, mainGroupList) {
@@ -105,6 +127,13 @@ GroupDetailsView = Backbone.View.extend({
 
     hide: function () {
         this.$el.find('.addGroup-modal').modal('hide');
+    },
+
+    inputEnter: function(evt){
+        if (evt.keyCode != 13) {
+            return;
+        }
+        this.newGroup();
     },
 
     newGroup: function(){
@@ -161,7 +190,6 @@ GroupItemView = SimpleView.extend({
 //       'dragstart .contact-row': 'enterDragMode',
        'click .group-row' : "edit",
        'click .finish-edit' : "finishEditMode",
-       'click .delete-group' : 'deleteGroup'
     },
 
     render: function(){
@@ -183,14 +211,4 @@ GroupItemView = SimpleView.extend({
 
     },
 
-    deleteGroup: function(evt){
-        evt.preventDefault();
-        evt.stopPropagation();
-        this.model.deleteContact($.proxy(this.groupDeleted, this));
-    },
-
-    groupDeleted: function(unique_id){
-        //TODO
-        //Raise Event to Parent View here
-    }
 });

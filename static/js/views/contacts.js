@@ -14,12 +14,12 @@ ContactsView = SimpleView.extend({
         this.options = options || {};
     },
     events: {
-       'click .add-contact' : 'addContact',
-       'change #import-csv' : 'importFromCsv',
-       'click .navigate-to-groups' : 'navigateToGroups',
+        'click .add-contact' : 'addContact',
+        'change #import-csv' : 'importFromCsv',
+        'click .navigate-to-groups' : 'navigateToGroups',
         'click .add-to-group' : 'addToGroup',
-
-        'mouseup div': 'mouseUp',
+        'click .contact-row' : "editRow",
+        'click .delete-contact': "deleteRow"
     },
 
     render: function(options) {
@@ -31,13 +31,9 @@ ContactsView = SimpleView.extend({
         this.listenTo(this.contactList, 'remove', this.removeContactHook);
         this.listenTo(this.contactList, 'change', this.changeContactHook);
 
-        this.$el.html(this.template());
-
-        var contactTable = this.$el.find('#contacts_table');
-
-        contactList.each(function(contact){
-            contactTable.append(new ContactItemView({model: contact}).render().el);
-        });
+        this.$el.html(this.template({
+            contacts: this.contactList.collectionToJSON()
+        }));
 
         this.first_time = false;
     },
@@ -105,6 +101,34 @@ ContactsView = SimpleView.extend({
         Backbone.history.navigate('groups', true);
     },
 
+    editRow: function(evt){
+        evt.preventDefault();
+
+
+        var id = $(evt.target).data('id');
+        if(id != null){
+            evt.stopPropagation();
+        }
+        else
+            return;
+
+        var contactModel = this.contactList.getById(id);
+        this.contactCreateView = contactCreateView();
+        this.contactCreateView.render(contactModel, null);
+    },
+
+    deleteRow: function(evt){
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        var id = $(evt.target).data('id');
+
+        var contactModel = this.contactList.getById(id);
+        contactModel.deleteContact();
+
+        $('.contact-row[data-id="' + id + '"]').remove();
+    }
+
 });
 
 ContactDetailsView = Backbone.View.extend({
@@ -112,10 +136,28 @@ ContactDetailsView = Backbone.View.extend({
     el: "#new-contact-container",
     createMode: true,
     mainContactList: null,
+    groupSearchView : null,
 
     events: {
-       'click .new-contact-btn' : 'newContact',
+        'click .new-contact-btn' : 'newContact',
+        'keyup #nameInput': 'inputEnter',
+        'keyup #phoneInput': 'inputEnter',
+        'keyup #emailInput': 'inputEnter'
+    },
 
+    getGroupSearchView: function(){
+        if(this.groupSearchView == null)
+            this.groupSearchView = new GroupSearchView({
+                el: ".contact-groups"
+            });
+        else{
+            var groups = this.groupSearchView.all_groups;
+            this.groupSearchView = new GroupSearchView({
+                el: ".contact-groups"
+            });
+            this.groupSearchView.all_groups = groups;
+        }
+        return this.groupSearchView;
     },
 
     render: function(contactModel, mainContactList) {
@@ -131,12 +173,9 @@ ContactDetailsView = Backbone.View.extend({
         }));
 
         if(!this.createMode){ //Group management only on Update
-            var groupSearchView = new GroupSearchView({
-                el: ".contact-groups"
-            });
+            var groupSearchView = this.getGroupSearchView();
             groupSearchView.render(contactModel, false);
         }
-
 
         this.$el.find('.addContact-modal').modal({
             show: true,
@@ -157,6 +196,13 @@ ContactDetailsView = Backbone.View.extend({
 
     hide: function () {
         this.$el.find('.addContact-modal').modal('hide');
+    },
+
+    inputEnter: function(evt){
+        if (evt.keyCode != 13) {
+            return;
+        }
+        this.newContact();
     },
 
     newContact: function(){
@@ -230,23 +276,6 @@ ContactItemView = SimpleView.extend({
         var unique_id = this.model.get('unique_id');
         ev.originalEvent.dataTransfer.setData("contact_id", unique_id);
     },
-
-    edit: function(evt){
-        evt.preventDefault();
-        this.contactCreateView = contactCreateView();
-        this.contactCreateView.render(this.model);
-    },
-
-    deleteContact: function(evt){
-        evt.preventDefault();
-        evt.stopPropagation();
-        this.model.deleteContact($.proxy(this.contactDeleted, this));
-    },
-
-    contactDeleted: function(unique_id){
-        //TODO
-        //Raise Event to Parent View here
-    }
 });
 
 AttendeeDetailsView = Backbone.View.extend({
@@ -324,6 +353,7 @@ GroupSearchView = Backbone.View.extend({
     template: JST["group_search.html"],
     model: null,
     searchMode: false,
+    all_groups: null,
 
     events: {
         'click .add-to-group' : "addToGroup",
@@ -343,13 +373,19 @@ GroupSearchView = Backbone.View.extend({
         this.$newGroup = $('.group-input');
 
         var that = this;
-        var groupModel = new Group();
-        groupModel.fetchAllGroups(function(groups){
+        if(this.all_groups == null){
+            var groupModel = new Group();
+            groupModel.fetchAllGroups(function(groups){
 
-            that.all_groups = new GroupList(groups);
+                that.all_groups = new GroupList(groups);
+                that.setupGroupsTypeahead();
+                that.$newGroup.focus();
+            });
+        }
+        else{
             that.setupGroupsTypeahead();
             that.$newGroup.focus();
-        });
+        }
 
         return this;
     },

@@ -58,8 +58,7 @@ class ApiContactHandler(JsonHandler):
 
     @authentication_required
     def delete_contact(self, unique_id):
-        user = User.get_by_id(long(user_id))
-        command = DeleteContactCommand(user, unique_id)
+        command = DeleteContactCommand(self.user, unique_id)
         return command.execute()
 
     @authentication_required

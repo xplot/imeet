@@ -320,7 +320,6 @@ Group = Backbone.Model.extend({
         httpRequest({
             url: "/api/group",
             type: "GET",
-            data: JSON.stringify(post),
             success: function(groups) {
                 if(callback != null)
                     callback(groups);

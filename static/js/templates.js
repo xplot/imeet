@@ -175,11 +175,23 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="contact-row" data-id="' +
 __e( unique_id ) +
-'" draggable="true">\n    <div class="editable contact-picture" >\n        <i class="fa fa-person fa-2x"></i>\n    </div>\n\n    <div class="contact-row-container">\n        <div class="contact-name" >\n            ' +
+'" draggable="true">\n    <div class="editable contact-picture" data-id="' +
+__e( unique_id ) +
+'" >\n        <i class="fa fa-person fa-2x" data-id="' +
+__e( unique_id ) +
+'"></i>\n    </div>\n\n    <div class="contact-row-container" data-id="' +
+__e( unique_id ) +
+'">\n        <div class="contact-name" data-id="' +
+__e( unique_id ) +
+'">\n            ' +
 __e( name ) +
-'\n        </div>\n        <div class="contact-email" >\n            ' +
+'\n        </div>\n        <div class="contact-email" data-id="' +
+__e( unique_id ) +
+'">\n            ' +
 __e( email ) +
-'\n        </div>\n        <div class="contact-phone" >\n            ' +
+'\n        </div>\n        <div class="contact-phone" data-id="' +
+__e( unique_id ) +
+'">\n            ' +
 __e( phone ) +
 '\n        </div>\n    </div>\n\n    <a class="update-contact" href="#"><i class="fa-pen fa-1_2x"></i></a>\n\n    <div class="editable contact-actions">\n        <a class="delete-contact" href="#"><i data-id="' +
 __e( unique_id ) +
@@ -209,9 +221,16 @@ return __p
 
 this["JST"]["contacts.html"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div id="new-contact-container"></div>\n\n<div class="row no-margin contacts-header">\n\n    <h3 class="current-page">Contacts</h3>\n    <h3 ><a href="#" class="navigate-to-groups inactive-page">Groups</a></h3>\n\n    <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>\n    <!--<a class="btn add-group pull-right" href="#">New Group</a>-->\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="contacts_table" class="small-margin-top"></div>\n</div>';
+__p += '<div id="new-contact-container"></div>\n\n<div class="row no-margin contacts-header">\n\n    <h3 class="current-page">Contacts</h3>\n    <h3 ><a href="#" class="navigate-to-groups inactive-page">Groups</a></h3>\n\n    <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>\n    <!--<a class="btn add-group pull-right" href="#">New Group</a>-->\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="contacts_table" class="small-margin-top">\n        ';
+ _.each( contacts, function( contact ){ ;
+__p += '\n            ' +
+((__t = ( partial('contact_item.html', contact) )) == null ? '' : __t) +
+'\n        ';
+ }); ;
+__p += '\n    </div>\n</div>';
 
 }
 return __p
@@ -248,7 +267,13 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="group-row" data-id="' +
 __e( unique_id ) +
-'" draggable="true">\n    <div class="editable group-picture" >\n        <i class="fa fa-organization fa-2x"></i>\n    </div>\n\n    <div class="group-row-container">\n        <div class="group-name" >\n            ' +
+'" draggable="true">\n    <div class="editable group-picture" data-id="' +
+__e( unique_id ) +
+'">\n        <i class="fa fa-organization fa-2x"></i>\n    </div>\n\n    <div class="group-row-container" data-id="' +
+__e( unique_id ) +
+'">\n        <div class="group-name" data-id="' +
+__e( unique_id ) +
+'">\n            ' +
 __e( name ) +
 '\n        </div>\n    </div>\n\n    <a class="update-group" href="#"><i class="fa-pen fa-1_2x"></i></a>\n\n    <div class="editable group-actions">\n        <a class="delete-group" href="#"><i data-id="' +
 __e( unique_id ) +
@@ -297,9 +322,16 @@ return __p
 
 this["JST"]["groups.html"] = function(obj) {
 obj || (obj = {});
-var __t, __p = '', __e = _.escape;
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div id="new-group-container"></div>\n\n<div class="row no-margin groups-header">\n    <h3><a href="#" class="navigate-to-contacts inactive-page">Contacts</a></h3>\n    <h3 class="current-page">Groups</h3>\n\n    <a class="btn btn-success add-group pull-right" href="#">New Group</a>\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="groups_table" class="small-margin-top"></div>\n</div>';
+__p += '<div id="new-group-container"></div>\n\n<div class="row no-margin groups-header">\n    <h3><a href="#" class="navigate-to-contacts inactive-page">Contacts</a></h3>\n    <h3 class="current-page">Groups</h3>\n\n    <a class="btn btn-success add-group pull-right" href="#">New Group</a>\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="groups_table" class="small-margin-top">\n        ';
+ _.each( groups, function( group ){ ;
+__p += '\n            ' +
+((__t = ( partial('group_item.html', group) )) == null ? '' : __t) +
+'\n        ';
+ }); ;
+__p += '\n    </div>\n</div>';
 
 }
 return __p

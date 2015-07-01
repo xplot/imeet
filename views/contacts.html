@@ -10,5 +10,9 @@
 </div>
 
 <div class="row small-margin-top no-margin contacts-table-container">
-    <div id="contacts_table" class="small-margin-top"></div>
+    <div id="contacts_table" class="small-margin-top">
+        <% _.each( contacts, function( contact ){ %>
+            <%= partial('contact_item.html', contact) %>
+        <% }); %>
+    </div>
 </div>

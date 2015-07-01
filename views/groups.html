@@ -8,5 +8,9 @@
 </div>
 
 <div class="row small-margin-top no-margin contacts-table-container">
-    <div id="groups_table" class="small-margin-top"></div>
+    <div id="groups_table" class="small-margin-top">
+        <% _.each( groups, function( group ){ %>
+            <%= partial('group_item.html', group) %>
+        <% }); %>
+    </div>
 </div>

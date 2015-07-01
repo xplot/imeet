@@ -1,16 +1,16 @@
 <div class="contact-row" data-id="<%- unique_id %>" draggable="true">
-    <div class="editable contact-picture" >
-        <i class="fa fa-person fa-2x"></i>
+    <div class="editable contact-picture" data-id="<%- unique_id %>" >
+        <i class="fa fa-person fa-2x" data-id="<%- unique_id %>"></i>
     </div>
 
-    <div class="contact-row-container">
-        <div class="contact-name" >
+    <div class="contact-row-container" data-id="<%- unique_id %>">
+        <div class="contact-name" data-id="<%- unique_id %>">
             <%- name %>
         </div>
-        <div class="contact-email" >
+        <div class="contact-email" data-id="<%- unique_id %>">
             <%- email %>
         </div>
-        <div class="contact-phone" >
+        <div class="contact-phone" data-id="<%- unique_id %>">
             <%- phone %>
         </div>
     </div>
