@@ -1,5 +1,7 @@
+import logging
 from commands import GmailLoginCommand, FacebookLoginCommand
 from boilerplate.basehandler import BaseHandler
+
 
 class SocialLoginHandler2(BaseHandler):
     """
@@ -29,14 +31,11 @@ class SocialLoginHandler2(BaseHandler):
         error = self.request.get('error', None)
 
         if error:
-            message = (
-                "An Error happened while "
-                "trying to authenticate using Google"
-            )
+            message = "An Error happened while trying to authenticate using Google"
             self.add_message(message, 'danger')
             return self.redirect_to('login')
 
-        self.authenticate_user(GmailLoginCommand(
+        return self.authenticate_user(GmailLoginCommand(
             host_url=self.host_url,
             callback_code=code
         ))
@@ -58,15 +57,16 @@ class SocialLoginHandler2(BaseHandler):
             callback_code=code
         ))
 
-
     def authenticate_user(self, command):
         try:
             user = command.process_callback()
+
             self.auth.set_session(
                 self.auth.store.user_to_dict(user),
                 remember=True
             )
             return self.redirect_to('home')
         except Exception, ex:
-            self.add_message(ex.message, 'danger')
+            logging.exception(ex)
+            self.add_message("There was a problem authenticating your user", 'danger')
             return self.redirect_to('login')

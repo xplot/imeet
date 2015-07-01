@@ -89,9 +89,9 @@ class GmailLoginCommand(object):
     def get_credentials(self):
 
         flow = OAuth2WebServerFlow(
-            client_id=config.get('google-client-id'),
-            client_secret=config.get('google-client-secret'),
-            scope=config.get('google-client-scope'),
+            client_id=config.get('google_client_id'),
+            client_secret=config.get('google_client_secret'),
+            scope=config.get('google_client_scope'),
             redirect_uri=self._callback_url(),
         )
 
