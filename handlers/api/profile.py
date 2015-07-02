@@ -45,6 +45,7 @@ class RegisterHandler(JsonHandler):
         template_val = {
             "app_name": self.app.config.get('app_name'),
             "fullname": email,
+            "email": email,
             "activation_url": confirmation_url,
             "support_url": "no_support_url_as_of_yet"
         }
