@@ -7,6 +7,12 @@
     <a class="btn btn-success add-group pull-right" href="#">New Group</a>
 </div>
 
+<div class="row no-margin empty-groups text-center small-margin-top">
+    <% if (groups.length == 0) { %>
+        You dont have any groups. <a href="/new" type="button" class="btn add-group">Create New!</a>
+    <%} %>
+</div>
+
 <div class="row small-margin-top no-margin contacts-table-container">
     <div id="groups_table" class="small-margin-top">
         <% _.each( groups, function( group ){ %>

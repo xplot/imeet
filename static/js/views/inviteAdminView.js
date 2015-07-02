@@ -11,7 +11,7 @@ InviteAdminView = SimpleView.extend({
 
     events: {
         "keypress .invite-newComment": "addNewComment",
-        'click .notify-all': 'notifyAll',
+        'click .notify-all-btn': 'notifyAll',
         'change .share_to_facebook': 'share_on_facebook_auth',
     },
 
@@ -35,8 +35,7 @@ InviteAdminView = SimpleView.extend({
         this.model = invite;
         this.current_attendee = invite_attendee;
 
-        var invite_json = this.model.toJSON();
-        this.$el.html(this.template(invite_json));
+        this.$el.html(this.template());
 
         var invite_attendees_view = new InviteAttendeesView();
         var invite_description = new InviteDescriptionView({el: "#invite-description"});
@@ -66,8 +65,6 @@ InviteAdminView = SimpleView.extend({
             this.unique_id,
             invite_attendees
         );
-
-        $('.invite-description').html(invite.description);
 
         var invite_palette = this.model.get('palette');
         if(invite_palette != null)

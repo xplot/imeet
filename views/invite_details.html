@@ -46,7 +46,7 @@
          <%  if( !is_edit )  { %>
             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
             <div id="invite-location" class="title">
-                <%- where %>
+                <a href="https://www.google.com/maps/place/<%- where %>" target="_blank"><%- where %></a>
             </div>
          <% } else { %>
             <div class="title">Location</div>

@@ -224,7 +224,11 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div id="new-contact-container"></div>\n\n<div class="row no-margin contacts-header">\n\n    <h3 class="current-page">Contacts</h3>\n    <h3 ><a href="#" class="navigate-to-groups inactive-page">Groups</a></h3>\n\n    <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>\n    <!--<a class="btn add-group pull-right" href="#">New Group</a>-->\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="contacts_table" class="small-margin-top">\n        ';
+__p += '<div id="new-contact-container"></div>\n\n<div class="row no-margin contacts-header">\n\n    <h3 class="current-page">Contacts</h3>\n    <h3 ><a href="#" class="navigate-to-groups inactive-page">Groups</a></h3>\n\n    <a class="btn btn-success add-contact pull-right" href="contacts/new">New Contact</a>\n    <!--<a class="btn add-group pull-right" href="#">New Group</a>-->\n</div>\n\n<div class="row no-margin empty-contacts text-center small-margin-top">\n    ';
+ if (contacts.length == 0) { ;
+__p += '\n        You dont have any contacts. <a href="/new" type="button" class="btn add-contact">Create New!</a>\n    ';
+} ;
+__p += '\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n\n    <div id="contacts_table" class="small-margin-top">\n\n        ';
  _.each( contacts, function( contact ){ ;
 __p += '\n            ' +
 ((__t = ( partial('contact_item.html', contact) )) == null ? '' : __t) +
@@ -325,7 +329,11 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<div id="new-group-container"></div>\n\n<div class="row no-margin groups-header">\n    <h3><a href="#" class="navigate-to-contacts inactive-page">Contacts</a></h3>\n    <h3 class="current-page">Groups</h3>\n\n    <a class="btn btn-success add-group pull-right" href="#">New Group</a>\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="groups_table" class="small-margin-top">\n        ';
+__p += '<div id="new-group-container"></div>\n\n<div class="row no-margin groups-header">\n    <h3><a href="#" class="navigate-to-contacts inactive-page">Contacts</a></h3>\n    <h3 class="current-page">Groups</h3>\n\n    <a class="btn btn-success add-group pull-right" href="#">New Group</a>\n</div>\n\n<div class="row no-margin empty-groups text-center small-margin-top">\n    ';
+ if (groups.length == 0) { ;
+__p += '\n        You dont have any groups. <a href="/new" type="button" class="btn add-group">Create New!</a>\n    ';
+} ;
+__p += '\n</div>\n\n<div class="row small-margin-top no-margin contacts-table-container">\n    <div id="groups_table" class="small-margin-top">\n        ';
  _.each( groups, function( group ){ ;
 __p += '\n            ' +
 ((__t = ( partial('group_item.html', group) )) == null ? '' : __t) +
@@ -353,7 +361,7 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner palette-editable"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn btn btn btn-success\'>Notify All</div>\n            </div>\n\n            <div id="invite-new-attendee"></div>\n\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"/>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner palette-editable"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn btn btn btn-success\'>Notify All</div>\n            </div>\n\n            <div id="invite-new-attendee"></div>\n\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"></div>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n\n';
 
 }
 return __p
@@ -643,9 +651,11 @@ __e(end_time ) +
  } ;
 __p += '\n    </div>\n\n     <div class=\'col-md-4 col-xs-12 invite-location-container no-padding\'>\n         ';
   if( !is_edit )  { ;
-__p += '\n            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="title">\n                ' +
+__p += '\n            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="title">\n                <a href="https://www.google.com/maps/place/' +
 __e( where ) +
-'\n            </div>\n         ';
+'" target="_blank">' +
+__e( where ) +
+'</a>\n            </div>\n         ';
  } else { ;
 __p += '\n            <div class="title">Location</div>\n            <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\n         ';
  } ;

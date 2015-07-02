@@ -61,6 +61,9 @@ class SocialLoginHandler2(BaseHandler):
         try:
             user = command.process_callback()
 
+            logging.info(user)
+            logging.info(self.auth.store.user_to_dict(user))
+
             self.auth.set_session(
                 self.auth.store.user_to_dict(user),
                 remember=True

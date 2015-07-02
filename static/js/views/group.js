@@ -35,7 +35,10 @@ GroupsView = Backbone.View.extend({
     },
 
     addGroup: function(evt){
+        console.log("here");
         evt.preventDefault();
+
+
         this.groupCreateView = groupCreateView();
         this.groupCreateView.render(null, this.groupList);
     },
@@ -157,6 +160,8 @@ GroupDetailsView = Backbone.View.extend({
             alertType:'success',
             message: message
         }], 5);
+
+        this.$el.find('.empty-groups').remove();
 
         this.model.set("unique_id", data);
 

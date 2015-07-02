@@ -9,8 +9,18 @@ InviteDescriptionView = Backbone.View.extend({
         var that = this;
         this.model = model;
 
+        var description = that.model.get('description');
+        var empty = false;
+        if(description == null || description == ''){
+            if(this.is_editable )
+                description = 'Type a message...';
+            else
+                description = '';
+            empty = true;
+        }
+
         if(!edit_view){
-            var label = '<span class="editable invite-description-value">' + that.model.get('description') + '</span>';
+            var label = '<span class="editable invite-description-value {0}">{1}</span>'.format((empty) ?'italic_text': '', description);
             this.$el.html(label);
 
             if(this.is_editable) {
@@ -21,7 +31,7 @@ InviteDescriptionView = Backbone.View.extend({
             }
         }
         else{
-            var input = '<textarea type="text" class="edit-invite-description-input">' + that.model.get('description') +  '</textarea>';
+            var input = '<textarea type="text" class="edit-invite-description-input {0}">{1}</textarea>'.format((empty) ?'italic_text': '', description);
             this.$el.html(input);
             this.$input = this.$el.find('.edit-invite-description-input');
 

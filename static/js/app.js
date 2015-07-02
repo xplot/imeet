@@ -122,11 +122,9 @@ function init_app() {
           sent_view_modal.render();
         },
         search: function () {
-            console.log('here');
             search_view.render();
         },
         searchWithFilter: function (filter_type) {
-            console.log('here filter: ' + filter_type);
             search_view.render(null, null, filter_type);
         },
 

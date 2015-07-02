@@ -9,8 +9,16 @@
     <!--<a class="btn add-group pull-right" href="#">New Group</a>-->
 </div>
 
+<div class="row no-margin empty-contacts text-center small-margin-top">
+    <% if (contacts.length == 0) { %>
+        You dont have any contacts. <a href="/new" type="button" class="btn add-contact">Create New!</a>
+    <%} %>
+</div>
+
 <div class="row small-margin-top no-margin contacts-table-container">
+
     <div id="contacts_table" class="small-margin-top">
+
         <% _.each( contacts, function( contact ){ %>
             <%= partial('contact_item.html', contact) %>
         <% }); %>

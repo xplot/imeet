@@ -55,6 +55,8 @@ ContactsView = SimpleView.extend({
 
     addContact: function(evt){
         evt.preventDefault();
+
+
         this.contactCreateView = contactCreateView();
         this.contactCreateView.render(null, this.contactList);
     },
@@ -228,6 +230,8 @@ ContactDetailsView = Backbone.View.extend({
             alertType:'success',
             message: message
         }], 5);
+
+        this.$el.find('.empty-contacts').remove();
 
         this.model.set("unique_id", data);
 

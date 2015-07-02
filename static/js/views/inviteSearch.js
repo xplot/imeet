@@ -20,9 +20,6 @@ SearchView = SimpleView.extend({
     },
 
     render: function(invites, search, filter_type) {
-        console.log(invites);
-        console.log(search);
-        console.log(filter_type);
 
         var paletteView = new PaletteView();
         paletteView.clearPalette();
@@ -78,8 +75,6 @@ SearchView = SimpleView.extend({
 
         inviteSource.forEach(function(invite){
             filters.forEach(function(filter){
-                console.log(filter);
-
                 if(invite.get('invite_attendee_role') == filter)
                     invite_list.add(invite);
             });

@@ -69,12 +69,13 @@ class ValidateInvitePermissionsCommand(object):
                 )
                 if invite_attendee and invite_attendee.attendee_status == AttendeeStatus.ORGANIZER:
                     return True
+
             if self.current_user:
                 invite_attendee = InviteAttendee.get_by_invite_and_user_id(
                     invite=self.invite,
                     user=self.current_user
                 )
-                if invite_attendee:
+                if invite_attendee and invite_attendee.attendee_status == AttendeeStatus.ORGANIZER:
                     return True
 
         return False

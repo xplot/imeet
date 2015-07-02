@@ -43,10 +43,18 @@ class GmailLoginCommand(object):
         """
         user_info = self.get_user_info()
         provider_id = user_info['id']
+        import logging
+        logging.info(user_info)
+        logging.info(provider_id)
+
 
         social_user = SocialUser.get_by_provider_and_uid('google', provider_id)
         if social_user:
+            logging.info("not empty social user")
+
             user = social_user.user.get()
+
+            logging.info(user)
         else:
             user = self.create_user(user_info)
             self.create_social_user(user, user_info)

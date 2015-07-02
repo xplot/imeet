@@ -92,8 +92,6 @@ class IndexHandler(BaseHandler):
                 user=self.current_user
             ).query()
 
-        logging.info(invite_attendee)
-
         # Anonymous invite
         # We serve the organizer if None attendee is provided
         if not invite_attendee and not invite.user:

@@ -138,7 +138,6 @@ def invite_permission_required(permissions=None):
     def required_permission_handler(handler):
         @wraps(handler)
         def check_permissions(self, *args, **kwargs):
-            # If Anonymous is allowed no further check is done
 
             try:
                 invite_id = read_parameter_from_request('invite_id', self, kwargs=kwargs,safe=False)
@@ -157,9 +156,12 @@ def invite_permission_required(permissions=None):
 
                 session_token = read_token(self)
 
-                if session_token and ValidateSessionTokenCommand(session_token=session_token).execute():
-
-                    current_user = SessionToken.get_user_from_session_token(session_token_id=session_token)
+                if session_token and ValidateSessionTokenCommand(
+                    session_token=session_token
+                ).execute():
+                    current_user = SessionToken.get_user_from_session_token(
+                        session_token_id=session_token
+                    )
 
                 if not ValidateInvitePermissionsCommand(
                     invite,
