@@ -573,7 +573,7 @@ class ResendActivationEmailHandler(BaseHandler):
                     "confirmation_url": confirmation_url,
                     "support_url": self.uri_for("contact", _full=True)
                 }
-                body_path = "emails/account_activation.txt"
+                body_path = "emails/account_activation.html"
                 body = self.jinja2.render_template(body_path, **template_val)
 
                 email_url = self.uri_for('taskqueue-send-email')

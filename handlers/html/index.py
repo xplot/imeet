@@ -109,7 +109,7 @@ class IndexHandler(BaseHandler):
         ).query()
 
         return self.render_template(
-            'invite_email.html',
+            'emails/invite_email.html',
             invite=invite_query.query(),
             invite_attendee=invite_attendee,
         )
