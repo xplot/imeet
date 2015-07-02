@@ -99,7 +99,7 @@ SearchView = SimpleView.extend({
     },
 
     search: function(value){
-
+        showLoader();
         if(currentUser == null)
             console.error("Current User cannot be null on this view!");
 
@@ -120,6 +120,8 @@ SearchView = SimpleView.extend({
                     });
                 }
                 that.render(invite_list, value, that.filter);
+
+                hideLoader();
             }
         });
     },

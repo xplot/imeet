@@ -33,6 +33,14 @@ function guid(){
     });
 }
 
+function showLoader(){
+    $('body').addClass('loader');
+}
+
+function hideLoader(){
+    $('body').removeClass('loader');
+}
+
 function alert_notification(alerts, timeout, delay){
 
     var doit = function(){

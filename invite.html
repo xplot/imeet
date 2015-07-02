@@ -12,7 +12,7 @@
 
 {% block initScript %}
 <script type="text/javascript">
-    var invite = {{invite}};
+    var invite = {% if invite %}{{invite}}{%else %}null{% endif %};
     var invite_attendee = {% if invite_attendee %}{{invite_attendee}}{%else %}null{% endif %};
 </script>
 

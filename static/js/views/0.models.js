@@ -414,7 +414,6 @@ InviteModel = Backbone.Model.extend({
 
     fetch: function(callback){
         var that = this;
-        console.log('over here');
         httpRequest({
             url: "/api/invite/" + this.get('unique_id'),
             type: "GET",

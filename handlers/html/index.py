@@ -50,9 +50,9 @@ class IndexHandler(BaseHandler):
         invite_attendee = self._try_to_get_attendee(invite, invite_attendee_id)
 
         return self.render_template(
-            'invite.html',
-            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
-            invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder),
+            'invite.html'#,
+            #invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
+            #invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder),
         )
 
     @invite_permission_required(InvitePermission.Organizer)
@@ -74,9 +74,9 @@ class IndexHandler(BaseHandler):
 
         return self.render_template(
             'invite.html',
-            edit='True',
-            invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
-            invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder) if invite_attendee else None,
+            edit='True' #,
+            #invite=json.dumps(invite_query.query(), cls=DateTimeEncoder),
+            #invite_attendee=json.dumps(invite_attendee, cls=DateTimeEncoder) if invite_attendee else None,
         )
 
     def _try_to_get_attendee(self, invite, invite_attendee_id):

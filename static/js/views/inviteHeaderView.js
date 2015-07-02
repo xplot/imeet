@@ -90,7 +90,6 @@ InviteTitleView = Backbone.View.extend({
             this.$el.html(label);
 
             if(this.options.is_editable) {
-                console.log("Editable");
                 var $label = this.$el.find('.main-h1');
                 $label.addClass('editable');
                 $label.on('click', function () {

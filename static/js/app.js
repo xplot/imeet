@@ -118,8 +118,9 @@ function init_app() {
             this.new(null, id);
         },
         sent: function (id) {
-          sent_view_modal.childView.model = id;
-          sent_view_modal.render();
+
+            sent_view_modal.childView.model = id;
+            sent_view_modal.render();
         },
         search: function () {
             search_view.render();
