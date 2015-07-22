@@ -40,6 +40,8 @@ InviteAttendeesView = Backbone.View.extend({
         this.listenTo(this.model, 'remove', this.attendeeRemoved);
         this.listenTo(this.model, 'change', this.attendeeUpdated);
 
+        this.plugins();
+
         return this.$el.html();
     },
 
@@ -69,6 +71,8 @@ InviteAttendeesView = Backbone.View.extend({
                 that.no_response.add(item);
             }
         });
+
+
     },
 
     attendeeCreated: function(attendeeModel){
@@ -136,5 +140,9 @@ InviteAttendeesView = Backbone.View.extend({
 
         var attendeeEditView = this.attendeeDetailsView();
         attendeeEditView.render(this.invite_id, contactModel);
+    },
+
+    plugins: function(){
+
     }
 });

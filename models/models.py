@@ -221,13 +221,13 @@ class InviteAttendeeNotification(UniqueIDModel):
         ).fetch()
 
 
-
 class InviteIndex(ndb.Model):
     doc_id = ndb.StringProperty()
     title = ndb.StringProperty()
     invite_id = ndb.StringProperty()
     when = ndb.DateTimeProperty()
     language = ndb.StringProperty()
+
 
 class Subscription(UniqueIDModel):
     name = ndb.StringProperty(required=True)

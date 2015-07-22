@@ -77,7 +77,8 @@ Contact = Backbone.Model.extend({
         invite_attendee_id: '',
         name: '',
         email: '',
-        phone: ''
+        phone: '',
+        notified: false
     },
 
     includeInInvite: function(invite_id, callback){

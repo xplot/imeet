@@ -1,8 +1,9 @@
-<a href="#" class="edit-attendee" data-rowid="<%- invite_attendee_id %>" >
-    <div class="details">
+<a href="#" class="edit-attendee" data-rowid="<%- invite_attendee_id %>" <% if(!notified) {%> title="Not Notified!" <% } %> >
+    <div class="details <% if(!notified) {%> un_notified <% } %>">
         <% if(status == 'organizer') {%>
             <b><i>Host</i></b>
         <% } %>
         <i class="fa-pen fa-1x"></i>&nbsp;<b><%-name %></b> <%-email %> <%-phone %>
+        <p class="warning" title="Not notified Contact!">!</p>
     </div>
 </a>

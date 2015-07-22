@@ -21,7 +21,8 @@ class InviteAttendeesQuery(object):
                 'phone':
                 'email': '',
                 'status': '',
-                'response_on':''
+                'response_on':'',
+                'notified': True|False
             }
         ]
         """
@@ -31,7 +32,23 @@ class InviteAttendeesQuery(object):
         if not self.invite:
             raise InviteNotFoundException()
 
-        return [
-            InviteAttendeeQuery(x).query() for x in self.invite.get_attendees()
-        ]
+        invite_attendee_notifications = InviteAttendeeNotification.get_by_invite(
+            self.invite
+        )
 
+        result = []
+        for invite_attendee in self.invite.get_attendees():
+            invite_attendee_query = InviteAttendeeQuery(invite_attendee).query()
+            invite_attendee_query['notified'] = self._is_notified(
+                invite_attendee,
+                invite_attendee_notifications
+            )
+            result.append(invite_attendee_query)
+
+        return result
+
+    def _is_notified(self, invite_attendee, invite_attendee_notifications):
+        for notification in invite_attendee_notifications:
+            if notification.attendee == invite_attendee.key:
+                return True
+        return False

@@ -85,7 +85,24 @@
     }
 
   .edit-attendee{
+    .warning{
+      visibility:hidden;
+    }
 
+    .un_notified{
+        .warning{
+          display: inline-block;
+          float: right;
+          visibility:visible;
+          color: @btn-warning;
+          font-size:18px;
+        }
+    }
+
+
+    .notified{
+
+    }
   }
   .edit-attendee:hover{
     text-decoration: underline !important;

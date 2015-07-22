@@ -26,7 +26,8 @@ class CompleteInviteQuery(object):
                     'email': 'javi@javi.com',
                     'name': u'',
                     'status': '',
-                    'last_response_on': ''
+                    'last_response_on': '',
+                    'notified': True|False
                 }
             ],
             'email_template':{

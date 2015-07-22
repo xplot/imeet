@@ -395,7 +395,15 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<a href="#" class="edit-attendee" data-rowid="' +
 __e( invite_attendee_id ) +
-'" >\n    <div class="details">\n        ';
+'" ';
+ if(!notified) {;
+__p += ' title="Not Notified!" ';
+ } ;
+__p += ' >\n    <div class="details ';
+ if(!notified) {;
+__p += ' un_notified ';
+ } ;
+__p += '">\n        ';
  if(status == 'organizer') {;
 __p += '\n            <b><i>Host</i></b>\n        ';
  } ;
@@ -405,7 +413,7 @@ __e(name ) +
 __e(email ) +
 ' ' +
 __e(phone ) +
-'\n    </div>\n</a>';
+'\n        <p class="warning" title="Not notified Contact!">!</p>\n    </div>\n</a>';
 
 }
 return __p
