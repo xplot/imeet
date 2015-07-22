@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block css %}invite{% endblock %}
+{% block title %}Event{% endblock %}
+{% block content %}
+
+<div class="navbar-separator"></div>
+
+<div id="invite-body">
+    Great!! A confirmation email was sent to: {{organizer_email}}
+
+    Please check your email and follow the instructions.
+</div>
+
+{% endblock %}

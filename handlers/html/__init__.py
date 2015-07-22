@@ -11,5 +11,6 @@ from profile import (
     CallbackSocialLoginHandler,
     SocialSharingHandler
 )
+from invite_confirmation import InviteConfirmationHandler
 from profile_new import SocialLoginHandler2
 from base import SendEmailHandler

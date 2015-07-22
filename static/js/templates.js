@@ -585,6 +585,16 @@ __p += '\n    </div>\n</div>\n\n';
 return __p
 };
 
+this["JST"]["invite_confirmation.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div>\n    A confirmation email was sent to:\n\n    Check your email and follow the instructions.\n</div>';
+
+}
+return __p
+};
+
 this["JST"]["invite_create.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -596,6 +606,8 @@ __p += '\n        <div class="desktop row no-margin">\n            <div class="n
  } ;
 __p += '\n\n    <div class="row no-margin event-title-input-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n            <input type="text" class="form-control event-name-input valid-before-submit" placeholder="Event Title" autofocus data-validation="required" value="' +
 __e(title) +
+'" >\n        </div>\n    </div>\n\n    <div class="row no-margin organizer-email-input-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n            <input type="text" class="form-control organizer-email-input valid-before-submit" placeholder="Your Email" autofocus data-validation="required" value="' +
+__e(organizer_email) +
 '" >\n        </div>\n    </div>\n\n    <div class="row no-margin location-input-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n              <input type="text" class="form-control event-location-input" placeholder="Location...."  >\n        </div>\n    </div>\n\n    <div class="mobile tablet row no-margin from-event-date-row">\n        <div class="no-padding col-xs-12 col-md-2 text-center label-text text-center">\n            <h1>From</h1>\n        </div>\n    </div>\n\n    <div class="row no-margin event-date-row">\n        <div class="no-padding date-group col-xs-12 col-md-3 col-md-offset-2" id="start-date-group">\n            <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
 __e(start_date ) +
 '">\n            <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
