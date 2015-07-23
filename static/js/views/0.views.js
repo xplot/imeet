@@ -23,6 +23,11 @@ SimpleView = Backbone.View.extend({
             h = h;
 
         $(el).css('height',h);
+    },
+
+    destroy: function(){
+      this.remove();
+      this.unbind();
     }
 });
 

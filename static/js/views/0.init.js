@@ -99,7 +99,8 @@ var validator = {
                 passed = fieldValue.length > 0;
                 break;
             case "digits":
-                passed = validator.digitsRegex.test(fieldValue);
+                var temp = fieldValue.replace(' ', '');
+                passed = validator.digitsRegex.test(temp);
                 break;
             case "non_numerics":
                 passed = validator.charsRegex.test(fieldValue);
@@ -108,7 +109,10 @@ var validator = {
                 passed = fieldValue.length == 0 ||  validator.emailRegex.test(fieldValue);
                 break;
             case "phone":
-                passed = validator.digitsRegex.test(fieldValue) || fieldValue.length == 0 ;
+                var phone = fieldValue.replace(/\s/g, '');
+                console.log(fieldValue);
+                console.log(phone);
+                passed = validator.digitsRegex.test(phone) || phone.length == 0 ;
                 break;
             case "date":
                 var date = new Date(fieldValue);

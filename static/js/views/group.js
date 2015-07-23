@@ -1,10 +1,3 @@
-var _groupCreateView = null;
-function groupCreateView(){
-    if(_groupCreateView == null)
-        _groupCreateView = new GroupDetailsView();
-    return _groupCreateView;
-}
-
 GroupsView = Backbone.View.extend({
     first_time: true,
     el: "#contact-list",
@@ -39,7 +32,7 @@ GroupsView = Backbone.View.extend({
         evt.preventDefault();
 
 
-        this.groupCreateView = groupCreateView();
+        this.groupCreateView = new GroupDetailsView();
         this.groupCreateView.render(null, this.groupList);
     },
 
@@ -68,7 +61,7 @@ GroupsView = Backbone.View.extend({
             return;
 
         var groupModel = this.groupList.getById(id);
-        this.groupCreateView = groupCreateView();
+        this.groupCreateView = new GroupDetailsView();
         this.groupCreateView.render(groupModel, null);
     },
 

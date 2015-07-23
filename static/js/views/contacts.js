@@ -56,8 +56,7 @@ ContactsView = SimpleView.extend({
     addContact: function(evt){
         evt.preventDefault();
 
-
-        this.contactCreateView = contactCreateView();
+        this.contactCreateView = new ContactDetailsView();
         this.contactCreateView.render(null, this.contactList);
     },
 
@@ -106,7 +105,6 @@ ContactsView = SimpleView.extend({
     editRow: function(evt){
         evt.preventDefault();
 
-
         var id = $(evt.target).data('id');
         if(id != null){
             evt.stopPropagation();
@@ -115,7 +113,7 @@ ContactsView = SimpleView.extend({
             return;
 
         var contactModel = this.contactList.getById(id);
-        this.contactCreateView = contactCreateView();
+        this.contactCreateView = new ContactDetailsView();
         this.contactCreateView.render(contactModel, null);
     },
 
