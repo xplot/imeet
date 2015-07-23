@@ -13,4 +13,4 @@ before_script:
 script:  
 - python tools/travis/test.py
 #- python $HOME/appEngine/google_appengine/appcfg.py --oauth2_refresh_token=$GAE_OAUTH --version="$TRAVIS_BRANCH" update .
-- python tools/travis/deploy_to_google_app_engine.py
+- python tools/travis/deploy_to_google_app_engine.py $HOME $GAE_OAUTH $TRAVIS_BRANCH
