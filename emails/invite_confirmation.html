@@ -1,0 +1,110 @@
+<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#f3f3f3" style="color:#4a4a4a;font-family:'HelveticaNeue-Light',Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;border-collapse:collapse;border-spacing:0;margin:0 auto">
+    <tbody><tr>
+
+        <td style="padding-left:10px;padding-right:10px">
+            <table border="0" cellspacing="0" cellpadding="0" align="center" width="100%" style="width:100%;margin:0 auto;max-width:600px">
+                <tbody>
+                <tr style="height:40px;{% if invite['palette'] %} background-color: {{invite['palette']['main_bg_color']}}; color:{{invite['palette']['main_color']}}  {%else %} background-color: #01579B; color:#FFF {%endif %}">
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+                            <tbody>
+                                <tr>
+                                    <td width="80%" style="">
+                                         <h1 style="margin:40px 10px;float:left;font-size:30px;line-height:24px;padding-left:5%;{% if invite['palette'] %} color:{{invite['palette']['main_color']}}  {%else %} color:#FFF {%endif %}">
+                                            {{invite['title']}}
+                                        </h1>
+                                    </td>
+                                    <td width="20%" style="">
+                                        <img src="http://imeet.io/img/imeet-medium-icon.png" width="100px" height="100px" border="0" alt="imeet.io" style="float:right;display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; height: auto;" class="img-max">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td bgcolor="#ffffff" style="background-color:#ffffff;padding:5%">
+                        <table border="0" cellspacing="0" cellpadding="0" style="width:100%;padding-bottom:20px">
+                            <tbody>
+                                <tr>
+                                    <td width="100%" style="">
+                                        <p style="color:#888;font-size:15px;font-weight:normal;line-height:24px;margin:0">
+                                            Hi!,<br/><br/>
+                                            Please confirm your event by clicking the link below
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td dir="ltr" style="vertical-align:top;padding-top:20px" align="center">
+                                        <table border="0" cellspacing="0" cellpadding="0" style="line-height:22px;margin:0 auto;height:34px">
+                                            <tbody><tr>
+                                                <td>
+                                                    <p style="margin:0">
+                                                        <a href="{{activation_url}}" style="text-decoration: none;width: 100px;height: 50px;padding: 10px 30px;background-color: #01579B; color:#FFF"  target="_blank">
+                                                            Click to Activate
+                                                        </a>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody></table>
+                                    </td>
+                                </tr>
+                        </tbody></table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td border="0" cellspacing="0" cellpadding="0" width="100%" style="padding:20px 0">
+                        <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center" style="color:#808080;font-size:14px;line-height:18px;border-collapse:collapse">
+                            <tbody><tr>
+
+                                <td dir="ltr" width="50%" style="padding-bottom:5px;padding-left:5px">
+                                    <table border="0" cellspacing="0" cellpadding="0" align="right" style="line-height:22px;height:24px;margin:0 auto 10px 0; float:right">
+                                        <tbody><tr>
+                                            <td style="border: solid 1px lightgray;padding: 5px 15px;height: 40px">
+                                                <a style="color:#bbbbbb;font-weight:700;text-decoration:none;padding:0;font-size:10px" href="https://www.twitter.com/imeetio" target="_blank">
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <img alt="Follow us on Twitter" src="http://imeet.io/img/twitter-follow.png" style="margin-top: 5px;float:left;width:14px;min-height:13px;display:block;border:0" class="CToWUd">
+                                                                </td>
+                                                                <td>
+                                                                    <span style="padding-left: 5px;color:#bbbbbb;font-weight:700;text-decoration:none;font-size:10px">Follow us</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody></table>
+                                </td>
+                                <td dir="ltr" width="50%" style="padding-bottom:5px;padding-left:5px">
+                                    <table border="0" cellspacing="0" cellpadding="0" align="left" style="line-height:22px;height:24px;margin:0 auto 10px 0">
+                                        <tbody><tr>
+                                            <td style="border: solid 1px lightgray;padding: 5px 15px;height: 40px">
+                                                <a style="color:#bbbbbb;font-weight:700;text-decoration:none;padding:0;font-size:10px" href="https://www.facebook.com/pages/Imeetio/1504198159831838" target="_blank">
+                                                   <table border="0" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><img alt="Like us on Facebook" src="http://imeet.io/img/facebook-like.png" style="float:left;width:11px;min-height:14px;display:block;border:0" class="CToWUd"></td>
+                                                                <td><span style="padding-left: 5px;color:#bbbbbb;font-weight:700;text-decoration:none;font-size:10px">Like us</span></td>
+                                                            </tr>
+                                                        </tbody>
+                                                   </table>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody></table>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+    </tr>
+</tbody></table>
