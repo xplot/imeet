@@ -339,6 +339,7 @@ InviteModel = Backbone.Model.extend({
     defaults: {
         'unique_id': '',
         'title': '',
+        'organizer_email': '',
         'start_date': '',
         'start_time': '',
         'end_date': '',

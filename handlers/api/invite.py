@@ -39,7 +39,7 @@ class InviteHandler(JsonHandler):
     def create_invite(self):
         """Create a new Invite"""
         invite_dict = self._data()
-        return CreateInviteCommand.read_from_dict(invite_dict, self.user).execute()
+        return CreateInviteCommand.read_from_dict(invite_dict, self.user, self.request.host).execute()
 
     @invite_permission_required(InvitePermission.Organizer)
     def save_invite(self, invite_id):

@@ -48,6 +48,10 @@ function init_app() {
         el: "#invite-body"
     });
 
+    invite_confirmation_view = new InviteConfirmationView({
+       el: "#invite-body"
+    });
+
     sent_view = new SentView({
         el: "#modal_container"
     });
@@ -83,6 +87,7 @@ function init_app() {
             'profile/edit': 'edit_profile',
             'register': 'register',
 
+            'invite/confirmation/:id': null, //this is done to avoid processing of the url by other url router.
             'invite/:id/edit': 'edit_as_attendee',
             'invite/:id/:attendee_id/edit': 'edit_as_attendee',
             'invite/:id': 'view_as_attendee',
@@ -154,6 +159,9 @@ function init_app() {
             }
             else
                 invite_view.render(id, new InviteModel(inviteX), new Contact(invite_attendeex));
+        },
+        invite_confirmation: function(){
+            invite_confirmation_view.render();
         },
         contacts: function(){
             contacts_view.render({contactList: contactList, groupList: groupList});

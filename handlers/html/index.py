@@ -133,3 +133,4 @@ class IndexHandler(BaseHandler):
             raise Exception("Invite not found with id: %s" % invite_id)
 
         return InviteModel(invite_entity)
+

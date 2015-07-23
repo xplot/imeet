@@ -6,12 +6,14 @@ from managers.event import EventQueue
 from models import Invite, Image, AttendeeStatus
 from commands.invite.utils import index_invite
 from commands.invite.PostInviteToVoiceflowsCommand import PostInviteToVoiceflowsCommand
+from commands.invite.SendConfirmationInviteToOrganizerCommand import SendConfirmationInviteToOrganizerCommand
 from commands.attendee.AddInviteAttendeeCommand import AddInviteAttendeeCommand
 
 class CreateInviteCommand(object):
 
     def __init__(self,
                  title=None,
+                 organizer_email=None,
                  start=None,
                  end=None,
                  utc_offset=0,
@@ -23,8 +25,10 @@ class CreateInviteCommand(object):
                  sms_template=None,
                  user=None,
                  user_object=None,
+                 host=None
     ):
         self.title = title
+        self.organizer_email = organizer_email
         self.start = start
         self.end = end
         self.utc_offset = utc_offset
@@ -36,9 +40,10 @@ class CreateInviteCommand(object):
         self.sms_template = sms_template
         self.user = user
         self.user_object = user_object
+        self.host = host
 
     @classmethod
-    def read_from_dict(cls, data_dict, user=None):
+    def read_from_dict(cls, data_dict, user=None, host=None):
         """
         This is a valid data-format:
         {
@@ -53,6 +58,7 @@ class CreateInviteCommand(object):
             'utc_offset': 240,
             'where': 'Location',
             'title': 'Candle',
+            'organizer_email': 'optional@gmail.com',
             'sharing_options':{
                 'facebook':True,
             },
@@ -63,8 +69,8 @@ class CreateInviteCommand(object):
             description=data_dict.get('description', None),
             where=data_dict.get('where', None),
             share_on_facebook=data_dict.get('facebook_share', None),
-
-            utc_offset=data_dict.get('utc_offset', 0)
+            utc_offset=data_dict.get('utc_offset', 0),
+            organizer_email=data_dict.get('organizer_email', None)
         )
 
         email_template_model = TemplateModel()
@@ -85,13 +91,17 @@ class CreateInviteCommand(object):
             command.user_object = user
             command.user = user.key
 
+        if host:
+            command.host = host
+
         return command
 
     def execute(self):
         """
             1 - Will create the invite in database
             2 - Will insert the sender as attendee1
-            3 - Will post the invite to Voiceflows
+            3 - If is anonymous will send the invite for confirmation to the organizer
+            4 - Else will post the invite to Voiceflows
         """
 
         invite = Invite()
@@ -99,8 +109,14 @@ class CreateInviteCommand(object):
         invite.put()
         index_invite(invite)
 
-        organizer_attendee = self._get_organizer_attendee(invite)
-        organizer_attendee.execute()
+        addOrganizerCommand = self._get_organizer_attendee(invite)
+        addOrganizerCommand.execute()
+
+        if not self.user_object:
+            '''is anonymous'''
+            command = SendConfirmationInviteToOrganizerCommand(invite, self.host)
+            command.execute()
+            return invite.unique_id
 
         command = PostInviteToVoiceflowsCommand(invite)
         command.execute()

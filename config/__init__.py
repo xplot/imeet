@@ -11,4 +11,4 @@ if os.environ.get('imeet.testing') and "true" in os.environ['imeet.testing'].low
 elif os.path.isfile("config/settings.py"):
     from settings import config
 else:
-    raise ValueError("Environment undetected")
+    raise ValueError("Environment undetected. You are probably missing the config/settings.py file.")

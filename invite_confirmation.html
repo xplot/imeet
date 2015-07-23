@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block css %}invite{% endblock %}
+{% block title %}Event{% endblock %}
+{% block content %}
+
+<div class="navbar-separator"></div>
+
+<div id="register">
+    <div class="block block1 confirmation-background">
+        <div class="center-block">
+          <h1 class="main-h1">You're almost there!</h1>
+        </div>
+    </div>
+
+    <div class="medium-margin-top"></div>
+
+    <div class="row confirmation-box-parent">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            Check your email for a confirmation!
+        </div>
+    </div>
+
+    <div class="small-margin-top"></div>
+
+    <div class="row confirmation-box-parent">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <a href="/new" class="btn btn-home footer-btn">Create another Event</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+        function block(el, ratio) {
+            var h = $(window).height();
+            if (ratio === 'half')
+              h = h/2;
+            else if (ratio == 'quarter')
+              h = h/3;
+            else
+                h = h;
+
+            $(el).css('height',h);
+        }
+
+        $(function() {
+
+            block('.confirmation-background', 'half');
+            $('.home-slider').bxSlider({
+                controls: false,
+                captions: true,
+                pagerCustom: '#bx-pager',
+                infiniteLoop: true,
+                auto: true,
+                autoStart: true,
+                autoDirection: 'next',
+                autoHover: true,
+                pause: 8000,
+                autoControls: false,
+                pager: true,
+                pagerType: 'full',
+                speed: 500
+            });
+
+            $(window).resize(function () {
+                block('.body-background-1', 'full');
+                block('.home-imgs', 'full');
+                block('.body-background-2', 'half');
+            });
+        });
+
+</script>
+
+{% endblock %}

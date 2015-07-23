@@ -111,6 +111,7 @@ class Invite(UniqueIDModel):
     utc_offset = ndb.IntegerProperty(required=True, default=0)
 
     title = ndb.StringProperty(required=True,indexed=False)
+    organizer_email = ndb.StringProperty(required=False,indexed=False)
     description = ndb.StringProperty(required=False, indexed=False)
     user = ndb.KeyProperty(kind=User)
     where = ndb.StringProperty(required=False)

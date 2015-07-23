@@ -7,11 +7,12 @@ InviteCreateView = SimpleView.extend({
     },
     events: {
        'click .send': 'submitNew',
-       'change .share_to_facebook': 'share_on_facebook_auth',
+       'change .share_to_facebook': 'share_on_facebook_auth'
     },
     bindings: {
         '.event-name': 'title',
         '.event-name-input': 'title',
+        '.organizer-email-input': 'organizer_email',
         '.event-description': 'description',
         '.event-description-input': 'description',
         '.event-where': 'where',
@@ -33,8 +34,12 @@ InviteCreateView = SimpleView.extend({
         if(options.id != null)
             this.createFromInvite(options.id);
 
-        this.$el.html(this.template(this.model.toJSON()));
+        var model_json = this.model.toJSON();
+        model_json.anonymous = currentUser == null;
 
+        this.$el.html(this.template(model_json));
+
+        //this.showOrganizerEmailIfAnonymous();
         this.plugins();
         this.stickit();
         return this;
@@ -72,7 +77,12 @@ InviteCreateView = SimpleView.extend({
     },
 
     inviteSubmitted: function(result){
-        Backbone.history.navigate('invite/' + result + '/edit', true);
+        if(currentUser)
+            Backbone.history.navigate('invite/' + result + '/edit', true);
+        else {
+            window.location.href = 'invite/confirmation/' + result;
+            //Backbone.history.navigate('invite/confirmation/' + result, false);
+        }
     },
 
     share_on_facebook_auth: function(){
@@ -138,4 +148,9 @@ InviteCreateView = SimpleView.extend({
         });
       }
     },
+
+    showOrganizerEmailIfAnonymous: function(){
+        if(currentUser)
+            $('.organizer-email-input-row').hide();
+    }
 });

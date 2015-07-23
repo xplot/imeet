@@ -38,6 +38,8 @@ app = webapp2.WSGIApplication([
     Route('/search', html.IndexHandler, handler_method='search'),
     Route('/search/<filter>', html.IndexHandler, handler_method='search'),
 
+    Route('/invite/confirmation/<invite_id>', html.InviteConfirmationHandler, handler_method='view_confirmation'),
+    Route('/invite/confirm/<confirmation_id>', html.InviteConfirmationHandler, handler_method='confirm'),
     Route('/invite', html.IndexHandler, handler_method='view_invite'),
 
     RedirectRoute('/invite/<invite_id>/edit', html.IndexHandler, name='edit', handler_method='edit_invite', methods=['GET']),
