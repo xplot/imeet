@@ -7,9 +7,10 @@ python:
 before_script:
 - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.22.zip -nv -P $HOME
 - unzip -q $HOME/google_appengine_1.9.22.zip -d $HOME/appEngine
-- python tools/travis/deploy.py
+- python tools/travis/build_settings_file_from_env.py
 
 # command to run tests, e.g. python setup.py test
 script:  
 - python tools/travis/test.py
-- python $HOME/appEngine/google_appengine/appcfg.py --oauth2_refresh_token=$GAE_OAUTH --version="$TRAVIS_BRANCH" update .
+#- python $HOME/appEngine/google_appengine/appcfg.py --oauth2_refresh_token=$GAE_OAUTH --version="$TRAVIS_BRANCH" update .
+- python tools/travis/deploy_to_google_app_engine.py
