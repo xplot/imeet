@@ -1,6 +1,5 @@
-# Welcome to Invite!
+# Welcome to iMeet! [![Build Status](https://travis-ci.org/xplot/imeet.svg?branch=master)](https://travis-ci.org/xplot/imeet)
 
-   
 
 ###### Install
 
