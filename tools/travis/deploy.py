@@ -20,9 +20,10 @@ def get_existing_env_variable_in_line(line, imeet_dict):
             return key
     return None
 
-shutil.copy("../../config/settings.py.example", "../../config/settings.py")
+
+shutil.copy("config/settings.py.example", "config/settings.py")
 imeet_dict = environment_dict()
-for line in fileinput.input("../../config/settings.py", inplace=True):
+for line in fileinput.input("config/settings.py", inplace=True):
     env_variable = get_existing_env_variable_in_line(line, imeet_dict)
     if env_variable:
         print(line.replace(line[line.index(":"):-1], ":'" + imeet_dict[env_variable] + "',"))
