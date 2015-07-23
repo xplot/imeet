@@ -34,9 +34,12 @@ InviteCreateView = SimpleView.extend({
         if(options.id != null)
             this.createFromInvite(options.id);
 
-        this.$el.html(this.template(this.model.toJSON()));
+        var model_json = this.model.toJSON();
+        model_json.anonymous = currentUser == null;
 
-        this.showOrganizerEmailIfAnonymous();
+        this.$el.html(this.template(model_json));
+
+        //this.showOrganizerEmailIfAnonymous();
         this.plugins();
         this.stickit();
         return this;

@@ -601,14 +601,18 @@ var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<div id="invite-create">\n    <div class="row no-margin event-title-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2 text-center">\n            <h1>Create iMeet <i class="fa fa-paper-plane fa-1x"></i></h1>\n        </div>\n    </div>\n\n    ';
-  if( currentUser == null )  { ;
-__p += '\n        <div class="desktop row no-margin">\n            <div class="no-padding col-xs-12 col-md-8 col-md-offset-2 text-center">\n                <label class="small-text">\n                Note: For sms/calls to work, you have to be a registered\n                <br/>\n                Note2: Sms/calls will be free only during the beta phase. After that a subscription base fee will be offered\n                </label>\n            </div>\n        </div>\n    ';
+  if( anonymous )  { ;
+__p += '\n        <div class="desktop row no-margin">\n            <div class="no-padding col-xs-12 col-md-8 col-md-offset-2 text-center">\n                <label class="small-text">\n                Note: For sms/calls to work, you have to be a registered User\n                <br/>\n                Note1: Your email is required, because you\'re not logged in\n                <br/>\n                Note2: Sms/calls will be free only during the beta phase. After that a subscription base fee will be offered\n                </label>\n            </div>\n        </div>\n    ';
  } ;
 __p += '\n\n    <div class="row no-margin event-title-input-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n            <input type="text" class="form-control event-name-input valid-before-submit" placeholder="Event Title" autofocus data-validation="required" value="' +
 __e(title) +
-'" >\n        </div>\n    </div>\n\n    <div class="row no-margin organizer-email-input-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n            <input type="text" class="form-control organizer-email-input valid-before-submit" placeholder="Your Email" autofocus data-validation="required" value="' +
+'" >\n        </div>\n    </div>\n\n    ';
+  if( anonymous )  { ;
+__p += '\n        <div class="row no-margin organizer-email-input-row">\n            <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n                <input type="text" class="form-control organizer-email-input valid-before-submit" placeholder="Your Email" autofocus data-validation="required" value="' +
 __e(organizer_email) +
-'" >\n        </div>\n    </div>\n\n    <div class="row no-margin location-input-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n              <input type="text" class="form-control event-location-input" placeholder="Location...."  >\n        </div>\n    </div>\n\n    <div class="mobile tablet row no-margin from-event-date-row">\n        <div class="no-padding col-xs-12 col-md-2 text-center label-text text-center">\n            <h1>From</h1>\n        </div>\n    </div>\n\n    <div class="row no-margin event-date-row">\n        <div class="no-padding date-group col-xs-12 col-md-3 col-md-offset-2" id="start-date-group">\n            <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
+'" >\n            </div>\n        </div>\n    ';
+};
+__p += '\n\n    <div class="row no-margin location-input-row">\n        <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n              <input type="text" class="form-control event-location-input" placeholder="Location...."  >\n        </div>\n    </div>\n\n    <div class="mobile tablet row no-margin from-event-date-row">\n        <div class="no-padding col-xs-12 col-md-2 text-center label-text text-center">\n            <h1>From</h1>\n        </div>\n    </div>\n\n    <div class="row no-margin event-date-row">\n        <div class="no-padding date-group col-xs-12 col-md-3 col-md-offset-2" id="start-date-group">\n            <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
 __e(start_date ) +
 '">\n            <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="' +
 __e(start_time ) +
