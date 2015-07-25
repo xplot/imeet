@@ -608,7 +608,7 @@ __p += '\n\n    <div class="row no-margin event-title-input-row">\n        <div 
 __e(title) +
 '" >\n        </div>\n    </div>\n\n    ';
   if( anonymous )  { ;
-__p += '\n        <div class="row no-margin organizer-email-input-row">\n            <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n                <input type="text" class="form-control organizer-email-input valid-before-submit" placeholder="Your Email" autofocus data-validation="required" value="' +
+__p += '\n        <div class="row no-margin organizer-email-input-row">\n            <div class="no-padding col-xs-12 col-md-8 col-md-offset-2">\n                <input type="text" class="form-control organizer-email-input valid-before-submit" placeholder="Your Email" autofocus data-validation="required,email" value="' +
 __e(organizer_email) +
 '" >\n            </div>\n        </div>\n    ';
 };
