@@ -1,19 +1,6 @@
 
 
-<div id="invite-details-container" class="details-row <%  if( is_edit ) { %> clickable edit<% } %>">
-<%  if( is_admin )  { %>
-    <div class="row">
-        <div class='col-md-12 col-xs-12 edit_button_container'>
-        <%  if( !is_edit )  { %>
-            <button class="btn btn-success edit_invite">Edit iMeet</button>
-         <% } else { %>
-            <button class="btn btn-success save_invite">Save</button>
-         <% } %>
-    </div>
-<% } %>
 
-
-</div>
 
 <div class="row no-margin">
     <div class="col-md-2 no-padding"></div>
@@ -46,7 +33,11 @@
          <%  if( !is_edit )  { %>
             <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
             <div id="invite-location" class="title">
+                <% if (where) {%>
                 <a href="https://www.google.com/maps/place/<%- where %>" target="_blank"><%- where %></a>
+                <% } else {%>
+                Click to add location
+                <%}%>
             </div>
          <% } else { %>
             <div class="title">Location</div>
@@ -55,7 +46,22 @@
      </div>
 </div>
 
-<div id="palette-container" class="row no-margin small-margin-top"></div>
+    <%  if( !is_edit )  { %>
+        <div>colors</div>
+    <% } %>
+
+    <div id="palette-container" class="row no-margin small-margin-top"></div>
+
+    <div id="invite-details-container" class="details-row <%  if( is_edit ) { %> clickable edit<% } %>">
+    <%  if( is_admin )  { %>
+        <div class="row">
+            <div class='col-md-12 col-xs-12 edit_button_container'>
+            <%  if( is_edit )  { %>
+                <button class="btn btn-success save_invite">Save</button>
+             <% } %>
+        </div>
+    <% } %>
+    </div>
 
 </div>
 

@@ -81,11 +81,11 @@ class InviteAttendeeHandler(JsonHandler):
         """Send the invite out to some of the contacts"""
         attendees = self._data()
         invite_some = commands.BulkNotifyAttendeesCommand(
-            invite_unique_id=self.invite_id,
+            invite_unique_id=invite_id,
             attendees_unique_ids=attendees
         )
         invite_some.execute()
-        return invite_id
+        return attendees
 
     #@request_with_subscription
     @invite_permission_required(InvitePermission.Organizer)

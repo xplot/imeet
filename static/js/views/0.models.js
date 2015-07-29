@@ -504,6 +504,35 @@ InviteModel = Backbone.Model.extend({
         });
     },
 
+    notifySome: function(callback){
+        var attendees = this.get("attendees");
+        var attendeeIdList = attendees.filter(function(attendee){
+           return !attendee.get("notified") && attendee.get("status") != "organizer";
+        }).map(function(attendee){
+            return attendee.get("invite_attendee_id")
+        });
+
+        //var json = Backbone.Model.prototype.toJSON.apply(attendeeIdList);
+        httpRequest({
+            url: "/api/invite/" + this.get('unique_id') + "/attendees/notify",
+            type: "POST",
+            data: JSON.stringify(attendeeIdList),
+            success: function(notified_attendee_list) {
+                if(notified_attendee_list.length == attendees.length)
+                    attendees.each(function(attendee){
+                        attendee.set("notified", true);
+                    });
+                else
+                    attendees.each(function(attendee){
+                        if($.inArray(attendee.unique_id, notified_attendee_list))
+                            attendee.set("notified", true);
+                    });
+
+                callback(notified_attendee_list)
+            }
+        });
+    },
+
     tryToObtainAttendeeFromLoggedUser: function(callback){
         var that = this;
 

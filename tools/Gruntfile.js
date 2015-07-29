@@ -99,7 +99,7 @@ module.exports = function (grunt) {
                     '../static/js/external/backbone.js',
                     '../static/js/external/stickit.js',
 					'../static/js/external/moment.js',
-                    '../static/js/external/bootstrap.js',
+                    '../static/js/external/bootstrap.min.js',
 					'../static/js/external/datepicker.js',
                     '../static/js/external/jquery-xslider.js',
                     '../static/js/external/bootstrap-typeahead.js',
@@ -208,7 +208,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-directives');
+	//grunt.loadNpmTasks('grunt-directives');
 	grunt.loadNpmTasks('grunt-contrib-jst');
 
 /*
@@ -228,7 +228,7 @@ module.exports = function (grunt) {
 	task('assets:build:less', ['less', 'cssmin']);
 
 	desc('Build and minify JS files');
-	task('assets:build:js', ['directives', 'uglify']);
+	task('assets:build:js', ['uglify']);
 
 	desc('Precompiles underscore templates');
 	task('assets:templates', ['jst']);

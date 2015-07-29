@@ -361,7 +361,7 @@ this["JST"]["invite_admin.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner palette-editable"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div class="notify-all">\n                Want to let people know? <div class=\'notify-all-btn btn btn btn-success\'>Notify All</div>\n            </div>\n\n            <div id="invite-new-attendee"></div>\n\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"></div>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n\n';
+__p += '<div class="invite-view">\n    <div class="row">\n        <div id="invite-header"></div>\n    </div>\n    <div class="row no-margin">\n        <div id="invite-details" class="invite-subheader-banner palette-editable"></div>\n    </div>\n\n    <div class="row invite-body no-margin">\n        <div class="small-margin-top"></div>\n        <div class="col-md-1"/>\n        <div class="col-md-4 attendees">\n            <div id="invite-new-attendee"></div>\n\n            <div id="invite-attendees">\n                <!--using invite_attendees.html subview-->\n            </div>\n        </div>\n        <div class="col-md-1"/>\n        <div class="col-md-5 hangout">\n            <div class="row small-margin-top desktop desktop-description">\n                <div class="col-md-12">\n                    <h4>Message from the host</h4>\n                    <div id="invite-description"></div>\n                </div>\n            </div>\n\n            <div id="invite-comments"></div>\n\n        </div>\n        <div class="col-md-1"/>\n    </div>\n</div>\n\n\n\n\n';
 
 }
 return __p
@@ -397,7 +397,7 @@ __p += '<a href="#" class="edit-attendee" data-rowid="' +
 __e( invite_attendee_id ) +
 '" ';
  if(!notified) {;
-__p += ' title="Not Notified!" ';
+__p += ' title="Pending for notification!" ';
  } ;
 __p += ' >\n    <div class="details ';
  if(!notified) {;
@@ -413,7 +413,7 @@ __e(name ) +
 __e(email ) +
 ' ' +
 __e(phone ) +
-'\n        <p class="warning" title="Not notified Contact!">!</p>\n    </div>\n</a>';
+'\n        <p class="warning" title="Pending for notification">!</p>\n    </div>\n</a>';
 
 }
 return __p
@@ -507,7 +507,9 @@ __p += '\n            ' +
 } ;
 __p += '\n        ';
  }); ;
-__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited?\n\n      </div>\n      <div class="panel-body no-response-table">\n        ';
+__p += '\n      </div>\n   </div>\n\n    <div class="panel panel-default no-border">\n      <div class="panel-heading palette-editable">\n          Who is invited?\n          <button class="btn invited-recipients-notification pull-right hide" value="Notify !" data-toggle="tooltip" data-placement="bottom" title="We will only notify pending (!) attendees">\n              Notify <span id="total_pending_notifications">' +
+__e( pending_notifications.total) +
+'</span><span class="warning" title="Contacts pending for notification">!</span>\n          </button>\n      </div>\n      <div class="panel-body no-response-table">\n        ';
  _.each( no_response, function( item ){ ;
 __p += '\n          ';
  if(edit_view && attendee != null && attendee.status == 'organizer') {;
@@ -522,6 +524,23 @@ __p += '\n            ' +
 __p += '\n        ';
  }); ;
 __p += '\n      </div>\n   </div>\n\n\n</div>\n\n';
+
+}
+return __p
+};
+
+this["JST"]["invite_attendees_invited_list_actionBox.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<div class="modal addContact-modal" tabindex="-1" >\n    <div class="modal-dialog">\n        <div class="modal-content">\n            <div class="modal-header">\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>\n            <h4 class="modal-title" id="myModalLabel">\n                    Actions\n            </h4>\n            </div>\n            <div class="modal-body">\n                <div class="notify-all">\n                <div class=\'notify-all-btn btn btn btn-success\'>Notify again?</div>\n            </div>\n            </div>\n            <div class="modal-footer">\n                <button type="button" class="btn btn-default close-dialog" data-dismiss="modal">Close</button>\n                <button type="button" class="btn btn-primary new-contact-btn">\n                    ';
+ if(createMode) {;
+__p += '\n                            Create\n                      ';
+} else { ;
+__p += '\n                            Update\n                      ';
+} ;
+__p += '\n                </button>\n        </div>\n    </div>\n  </div>\n</div>';
 
 }
 return __p
@@ -556,7 +575,7 @@ this["JST"]["invite_comment_box.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row comment-box" >\n    <div class="col-md-12 no-margin">\n        <textarea class="invite-comment-input"  placeholder="Add comment"></textarea>\n    </div>\n</div>\n\n<div class="row comment-box">\n    <div class="col-md-6 no-margin">\n        <button type="button" class="btn form-control btn-success add-comment">Add Comment</button>\n    </div>\n</div>';
+__p += '<div class="row comment-box" >\n    <div class="col-md-12 no-margin">\n        <input type="text" class="invite-comment-input"  placeholder="Add comment"></input>\n    </div>\n</div>';
 
 }
 return __p
@@ -631,21 +650,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '\n\n<div id="invite-details-container" class="details-row ';
-  if( is_edit ) { ;
-__p += ' clickable edit';
- } ;
-__p += '">\n';
-  if( is_admin )  { ;
-__p += '\n    <div class="row">\n        <div class=\'col-md-12 col-xs-12 edit_button_container\'>\n        ';
-  if( !is_edit )  { ;
-__p += '\n            <button class="btn btn-success edit_invite">Edit iMeet</button>\n         ';
- } else { ;
-__p += '\n            <button class="btn btn-success save_invite">Save</button>\n         ';
- } ;
-__p += '\n    </div>\n';
- } ;
-__p += '\n\n\n</div>\n\n<div class="row no-margin">\n    <div class="col-md-2 no-padding"></div>\n\n    <div class=\'col-md-2 col-xs-12 no-padding\'>\n        <div class="title">Start</div>\n        ';
+__p += '\n\n\n\n<div class="row no-margin">\n    <div class="col-md-2 no-padding"></div>\n\n    <div class=\'col-md-2 col-xs-12 no-padding\'>\n        <div class="title">Start</div>\n        ';
   if( !is_edit )  { ;
 __p += '\n            <div class="details invite-date">' +
 __e( start_date ) +
@@ -675,15 +680,37 @@ __e(end_time ) +
  } ;
 __p += '\n    </div>\n\n     <div class=\'col-md-4 col-xs-12 invite-location-container no-padding\'>\n         ';
   if( !is_edit )  { ;
-__p += '\n            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="title">\n                <a href="https://www.google.com/maps/place/' +
+__p += '\n            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\n            <div id="invite-location" class="title">\n                ';
+ if (where) {;
+__p += '\n                <a href="https://www.google.com/maps/place/' +
 __e( where ) +
 '" target="_blank">' +
 __e( where ) +
-'</a>\n            </div>\n         ';
+'</a>\n                ';
+ } else {;
+__p += '\n                Click to add location\n                ';
+};
+__p += '\n            </div>\n         ';
  } else { ;
 __p += '\n            <div class="title">Location</div>\n            <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\n         ';
  } ;
-__p += '\n     </div>\n</div>\n\n<div id="palette-container" class="row no-margin small-margin-top"></div>\n\n</div>\n\n';
+__p += '\n     </div>\n</div>\n\n    ';
+  if( !is_edit )  { ;
+__p += '\n        <div>colors</div>\n    ';
+ } ;
+__p += '\n\n    <div id="palette-container" class="row no-margin small-margin-top"></div>\n\n    <div id="invite-details-container" class="details-row ';
+  if( is_edit ) { ;
+__p += ' clickable edit';
+ } ;
+__p += '">\n    ';
+  if( is_admin )  { ;
+__p += '\n        <div class="row">\n            <div class=\'col-md-12 col-xs-12 edit_button_container\'>\n            ';
+  if( is_edit )  { ;
+__p += '\n                <button class="btn btn-success save_invite">Save</button>\n             ';
+ } ;
+__p += '\n        </div>\n    ';
+ } ;
+__p += '\n    </div>\n\n</div>\n\n';
 
 }
 return __p

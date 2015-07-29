@@ -7,7 +7,7 @@ InviteCreateView = SimpleView.extend({
     },
     events: {
        'click .send': 'submitNew',
-       'change .share_to_facebook': 'share_on_facebook_auth'
+       //'change .share_to_facebook': 'share_on_facebook_auth'
     },
     bindings: {
         '.event-name': 'title',
@@ -85,7 +85,7 @@ InviteCreateView = SimpleView.extend({
         }
     },
 
-    share_on_facebook_auth: function(){
+    /*share_on_facebook_auth: function(){
         //var facebook_auth = window.open(api.url + "/social_sharing/facebook");
 
         if((currentUser != null && currentUser.social_sharing.facebook)
@@ -96,10 +96,10 @@ InviteCreateView = SimpleView.extend({
             "_blank",
             "toolbar=yes, scrollbars=no, resizable=yes, top=500, left=500"
         );
-    },
+    },*/
 
     plugins: function(){
-        $('#bt_toggle').bootstrapToggle();
+        //$('#bt_toggle').bootstrapToggle();
 
          //DatePicker
         this.$el.find('.event-start-date, .event-end-date').datetimepicker({

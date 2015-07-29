@@ -70,7 +70,9 @@
     <div class="panel panel-default no-border">
       <div class="panel-heading palette-editable">
           Who is invited?
-
+          <button class="btn invited-recipients-notification pull-right hide" value="Notify !" data-toggle="tooltip" data-placement="bottom" title="We will only notify pending (!) attendees">
+              Notify <span id="total_pending_notifications"><%- pending_notifications.total%></span><span class="warning" title="Contacts pending for notification">!</span>
+          </button>
       </div>
       <div class="panel-body no-response-table">
         <% _.each( no_response, function( item ){ %>

@@ -10,7 +10,7 @@ InviteCommentsView = Backbone.View.extend({
     },
 
     events: {
-        'click .add-comment': 'addComment',
+        //'click .add-comment': 'addComment',
         'keyup .invite-comment-input': 'addCommentEnter'
 
     },

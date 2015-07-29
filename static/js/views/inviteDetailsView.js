@@ -22,12 +22,22 @@ InviteDetailsView = SimpleView.extend({
     },
 
     events: {
-        'click .invite-date': 'edit_start_date',
-        'click .invite-end-date': 'edit_end_date',
-        'click .location-title': 'edit_location',
+        'click .invite-date': 'edit_invite',
+        'click .invite-end-date': 'edit_invite',
+        'click #invite-location': 'edit_invite',
 
-        'click .edit_invite': 'editInvite',
-        'click .save_invite': 'saveInvite'
+        //'click .edit_invite': 'editInvite',
+        'click .save_invite': 'save_invite'
+        //'click .event-location-input': 'edit_invite',
+        //'blur #detail_container': 'save_invite',
+        //'focusout #detail_container': 'save_invite',
+
+        /*'blur .event-start-date': 'save_invite',
+        'blur .event-start-time': 'save_invite',
+        'blur .event-end-date': 'save_invite',
+        'blur .event-end-time': 'save_invite',
+        'blur .event-location-input': 'save_invite'*/
+
     },
 
     render: function(invite_model, edit_view){
@@ -51,11 +61,11 @@ InviteDetailsView = SimpleView.extend({
 
     },
 
-    editInvite: function(){
+    edit_invite: function(){
       this.render(this.model, true);
     },
 
-    saveInvite: function(){
+    save_invite: function(){
         if(!validator.validateItems('.valid-before-submit')){
             alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
             return;
@@ -75,7 +85,7 @@ InviteDetailsView = SimpleView.extend({
     },
 
     read_plugins: function(){
-        $('#bt_toggle').bootstrapToggle();
+        //$('#bt_toggle').bootstrapToggle();
     },
 
     edit_plugins: function(){
@@ -88,7 +98,7 @@ InviteDetailsView = SimpleView.extend({
 
         this.initWhere();
 
-        $('#bt_toggle').bootstrapToggle();
+        //$('#bt_toggle').bootstrapToggle();
     },
 
     initWhere: function () {
@@ -142,7 +152,7 @@ InviteDetailsView = SimpleView.extend({
         );
     },
 
-    showPalette: function(){
+    showPalette: function(show){
         if(!this.edit_view)
             return;
 

@@ -47,6 +47,7 @@ InviteAdminView = SimpleView.extend({
         var invite_attendees = this.model.get('attendees');
 
         invite_attendees_view.render({
+            invite: this.model,
             invite_id: this.unique_id,
             attendees: invite_attendees,
             current_attendee: this.current_attendee,
@@ -81,6 +82,7 @@ InviteAdminView = SimpleView.extend({
     },
 
     notifyAllCallback:function(result){
+
         alert_notification([{
             alertType:'success',
             message: "Everyone in the invite is going to be notified in the next few minutes"
