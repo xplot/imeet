@@ -21,22 +21,25 @@ InviteDetailsView = SimpleView.extend({
         this.inviteId = this.options.id;
     },
 
-    events: {
-        'click .invite-date': 'edit_invite',
-        'click .invite-end-date': 'edit_invite',
-        'click #invite-location': 'edit_invite',
+    events: function(){
+        if(this.options.is_admin)
+            return {
+                'click .invite-date': 'edit_invite',
+                'click .invite-end-date': 'edit_invite',
+                'click #invite-location': 'edit_invite',
 
-        //'click .edit_invite': 'editInvite',
-        'click .save_invite': 'save_invite'
-        //'click .event-location-input': 'edit_invite',
-        //'blur #detail_container': 'save_invite',
-        //'focusout #detail_container': 'save_invite',
+                //'click .edit_invite': 'editInvite',
+                'click .save_invite': 'save_invite'
+                //'click .event-location-input': 'edit_invite',
+                //'blur #detail_container': 'save_invite',
+                //'focusout #detail_container': 'save_invite',
 
-        /*'blur .event-start-date': 'save_invite',
-        'blur .event-start-time': 'save_invite',
-        'blur .event-end-date': 'save_invite',
-        'blur .event-end-time': 'save_invite',
-        'blur .event-location-input': 'save_invite'*/
+                /*'blur .event-start-date': 'save_invite',
+                 'blur .event-start-time': 'save_invite',
+                 'blur .event-end-date': 'save_invite',
+                 'blur .event-end-time': 'save_invite',
+                 'blur .event-location-input': 'save_invite'*/
+            };
 
     },
 
@@ -62,7 +65,7 @@ InviteDetailsView = SimpleView.extend({
     },
 
     edit_invite: function(){
-      this.render(this.model, true);
+        this.render(this.model, true);
     },
 
     save_invite: function(){
