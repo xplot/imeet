@@ -59,13 +59,15 @@
     <div class="col-md-2 no-padding"></div>
 
     <div class='col-md-2 col-xs-12 no-padding invite-palette'>
-        <div class="title">Background</div>
+        <div class="title">Background</div>    
         <%  if( !is_edit )  { %>
-        <div class="palette-item" style="background-color: #607D8B"></div>
-        <div class="palette-item" style="background-color: #0D47A1"></div>
-        <div class="palette-item" style="background-color: #2196F3"></div>
-        <div class="palette-item" style="background-color: #A5D6A7"></div>
-        <% } %>
+        <div class=" <%- editable_class%> details pull-left">
+            <div class="palette-item pull-left" style="background-color: #607D8B"></div>
+            <div class="palette-item pull-left" style="background-color: #0D47A1"></div>
+            <div class="palette-item pull-left" style="background-color: #2196F3"></div>
+            <div class="palette-item pull-left" style="background-color: #A5D6A7"></div>
+            <% } %>
+        </div>    
     </div>
 </div>
 <div id="palette-container" class="row no-margin"></div>
