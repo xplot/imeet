@@ -7,20 +7,15 @@ def hex_to_rgb(value):
     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
 template = """.%(name)s{
-
   .navbar{
     background-color: %(bg_color)s;
-
     a:focus{
       color: %(color)s;
     }
-
-
   .beta{
     background-color: %(color)s !important;
     color: %(bg_color)s !important;
   }
-
   .palette-editable{
       background-color: %(bg_color)s !important;
       color: %(color)s !important;
@@ -29,41 +24,33 @@ template = """.%(name)s{
       background-color: %(color)s !important;
       color: %(bg_color)s !important;
   }
-
-
     .dropdown-menu{
       background-color: %(bg_color)s !important;
     }
   }
-
   .invite-title-container{
     .main-h1{
       background-color: %(rgb_color)s,0.7) !important;
       color: %(color)s !important;
     }
   }
-
   #invite-details{
     background-color: %(bg_color)s !important;
     color: %(color)s;
-
     .save_invite, .edit_invite{
       background-color: %(color)s !important;
       color: %(bg_color)s;
       border: solid 1px %(bg_color)s;
     }
-
     .save_invite:hover, .edit_invite:hover{
       background-color: %(bg_color)s !important;
       color: %(color)s;
       border: solid 1px %(color)s;
     }
-
     .date,.time{
       color: #000000;
     }
   }
-
   .btn{
     background-color: %(rgb_color)s,0.7) !important;
     color: %(color)s;
@@ -75,16 +62,24 @@ template = """.%(name)s{
     border: solid 1px %(bg_color)s;
   }
 
+  .invite-attendees-acknowledge-yes{
+    border: solid 1px #01579b !important;
+  }
+
+  .invite-attendees-acknowledge-no{
+    border: solid 1px #d50000 !important;
+  }
+
   .attendees{
     .panel-heading{
       background-color: %(rgb_color)s,0.7) !important;
       color:%(color)s;
     }
   }
-
   .edit-invite-description-input, .invite-comment-input{
     background-color: %(rgb_color)s,0.1) !important;
   }
+
 
 }"""
 
