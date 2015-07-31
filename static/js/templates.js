@@ -696,7 +696,7 @@ __e( where ) +
  } else {;
 __p += '\r\n                Click to add location\r\n                ';
 };
-__p += '\r\n            </div>\r\n            <i class="fa fa-pen pull-left"></i>\r\n        </div>\r\n        ';
+__p += '\r\n                <i class="fa fa-pen pull-right"></i>\r\n            </div>\r\n        </div>\r\n        ';
  } else { ;
 __p += '\r\n        <div class="title">Location</div>\r\n        <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\r\n        ';
  } ;
