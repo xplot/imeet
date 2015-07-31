@@ -652,11 +652,11 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '\r\n\r\n\r\n\r\n<div class="row no-margin">\r\n    <div class="col-md-2 no-padding"></div>\r\n\r\n    <div class=\'col-md-2 col-xs-12 no-padding\'>\r\n        <div class="title">Start</div>\r\n        ';
   if( !is_edit )  { ;
-__p += '\r\n            <div class="details invite-date">' +
+__p += '\r\n                <div class="editable details invite-date pull-left" style="">' +
 __e( start_date ) +
 ' ' +
 __e( start_time ) +
-'</div>\r\n        ';
+'\r\n                    <i class="fa fa-pen pull-right"></i>\r\n                </div>            \r\n        ';
  } else { ;
 __p += '\r\n            <div class="date-group" id="start-date-group">\r\n                <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="' +
 __e(start_date ) +
@@ -666,11 +666,11 @@ __e(start_time ) +
  } ;
 __p += '\r\n    </div>\r\n\r\n    <div class=\'col-md-2  col-xs-12 no-padding\'>\r\n        <div class="title">End</div>\r\n        ';
   if( !is_edit )  { ;
-__p += '\r\n            <div class="details invite-end-date">' +
+__p += '\r\n        <div class="editable details invite-end-date pull-left">' +
 __e( end_date ) +
 ' ' +
 __e( end_time ) +
-'</div>\r\n        ';
+'\r\n            <i class="fa fa-pen pull-right"></i>\r\n        </div>\r\n        ';
  } else { ;
 __p += '\r\n            <div class="date-group" id="end-date-group">\r\n                <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="' +
 __e(end_date ) +
@@ -680,17 +680,17 @@ __e(end_time ) +
  } ;
 __p += '\r\n    </div>\r\n\r\n     <div class=\'col-md-4 col-xs-12 invite-location-container no-padding\'>\r\n         ';
   if( !is_edit )  { ;
-__p += '\r\n            <div class="location-image"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\r\n            <div id="invite-location" class="title">\r\n                ';
+__p += '\r\n         <div class="editable details">\r\n             <div class="location-image pull-left"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\r\n             <div id="invite-location" class="title pull-left">\r\n                 ';
  if (where) {;
-__p += '\r\n                <a href="https://www.google.com/maps/place/' +
+__p += '\r\n                 <a href="https://www.google.com/maps/place/' +
 __e( where ) +
 '" target="_blank">' +
 __e( where ) +
-'</a>\r\n                ';
+'</a>\r\n                 ';
  } else {;
-__p += '\r\n                Click to add location\r\n                ';
+__p += '\r\n                 Click to add location\r\n                 ';
 };
-__p += '\r\n            </div>\r\n         ';
+__p += '\r\n             </div>\r\n             <i class="fa fa-pen pull-left"></i>\r\n         </div>\r\n         ';
  } else { ;
 __p += '\r\n            <div class="title">Location</div>\r\n            <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\r\n         ';
  } ;
