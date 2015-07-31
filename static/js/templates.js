@@ -652,7 +652,9 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '\r\n\r\n\r\n\r\n<div class="row no-margin">\r\n    <div class="col-md-2 no-padding"></div>\r\n\r\n    <div class=\'col-md-2 col-xs-12 no-padding\'>\r\n        <div class="title">Start</div>\r\n        ';
   if( !is_edit )  { ;
-__p += '\r\n        <div class="editable details invite-date pull-left" style="">' +
+__p += '\r\n        <div class="' +
+__e( editable_class) +
+' details invite-date pull-left" style="">' +
 __e( start_date ) +
 ' ' +
 __e( start_time ) +
@@ -666,7 +668,9 @@ __e(start_time ) +
  } ;
 __p += '\r\n    </div>\r\n\r\n    <div class=\'col-md-2  col-xs-12 no-padding\'>\r\n        <div class="title">End</div>\r\n        ';
   if( !is_edit )  { ;
-__p += '\r\n        <div class="editable details invite-end-date pull-left">' +
+__p += '\r\n        <div class="' +
+__e( editable_class) +
+' details invite-end-date pull-left">\r\n            ' +
 __e( end_date ) +
 ' ' +
 __e( end_time ) +
@@ -680,7 +684,9 @@ __e(end_time ) +
  } ;
 __p += '\r\n    </div>\r\n\r\n    <div class=\'col-md-4 col-xs-12 invite-location-container no-padding\'>\r\n        ';
   if( !is_edit )  { ;
-__p += '\r\n        <div class="editable details">\r\n            <div class="location-image pull-left"><i class="fa fa-map-pin-streamline fa-15x"></i></div>\r\n            <div id="invite-location" class="title pull-left">\r\n                ';
+__p += '\r\n        <div class="' +
+__e( editable_class) +
+' details">\r\n            <div class="location-image pull-left"><i class="fa fa-map-pin-streamline fa-1x"></i></div>\r\n            <div id="invite-location" class="title pull-left">\r\n                ';
  if (where) {;
 __p += '\r\n                <a href="https://www.google.com/maps/place/' +
 __e( where ) +
@@ -694,11 +700,15 @@ __p += '\r\n            </div>\r\n            <i class="fa fa-pen pull-left"></i
  } else { ;
 __p += '\r\n        <div class="title">Location</div>\r\n        <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>\r\n        ';
  } ;
-__p += '\r\n    </div>\r\n</div>\r\n\r\n<div class="row no-margin second-row">\r\n    <div class="col-md-2 no-padding"></div>\r\n\r\n    <div class=\'col-md-2 col-xs-12 no-padding invite-palette\'>\r\n        <div class="title">Background</div>\r\n        ';
+__p += '\r\n    </div>\r\n</div>\r\n\r\n';
+ if( is_admin ) { ;
+__p += '\r\n<div class="row no-margin second-row">\r\n    <div class="col-md-2 no-padding"></div>\r\n\r\n    <div class=\'col-md-2 col-xs-12 no-padding invite-palette\'>\r\n        <div class="title">Background</div>\r\n        ';
   if( !is_edit )  { ;
 __p += '\r\n        <div class="palette-item" style="background-color: #607D8B"></div>\r\n        <div class="palette-item" style="background-color: #0D47A1"></div>\r\n        <div class="palette-item" style="background-color: #2196F3"></div>\r\n        <div class="palette-item" style="background-color: #A5D6A7"></div>\r\n        ';
  } ;
-__p += '\r\n    </div>\r\n</div>\r\n\r\n<div id="palette-container" class="row no-margin"></div>\r\n\r\n<div id="invite-details-container" class="details-row ';
+__p += '\r\n    </div>\r\n</div>\r\n<div id="palette-container" class="row no-margin"></div>\r\n';
+ } ;
+__p += '\r\n\r\n\r\n<div id="invite-details-container" class="details-row ';
   if( is_edit ) { ;
 __p += ' clickable edit';
  } ;

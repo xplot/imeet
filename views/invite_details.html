@@ -8,7 +8,7 @@
     <div class='col-md-2 col-xs-12 no-padding'>
         <div class="title">Start</div>
         <%  if( !is_edit )  { %>
-        <div class="editable details invite-date pull-left" style=""><%- start_date %> <%- start_time %>
+        <div class="<%- editable_class%> details invite-date pull-left" style=""><%- start_date %> <%- start_time %>
             <i class="fa fa-pen pull-right"></i>
         </div>            
         <% } else { %>
@@ -22,7 +22,8 @@
     <div class='col-md-2  col-xs-12 no-padding'>
         <div class="title">End</div>
         <%  if( !is_edit )  { %>
-        <div class="editable details invite-end-date pull-left"><%- end_date %> <%- end_time %>
+        <div class="<%- editable_class%> details invite-end-date pull-left">
+            <%- end_date %> <%- end_time %>
             <i class="fa fa-pen pull-right"></i>
         </div>
         <% } else { %>
@@ -35,8 +36,8 @@
 
     <div class='col-md-4 col-xs-12 invite-location-container no-padding'>
         <%  if( !is_edit )  { %>
-        <div class="editable details">
-            <div class="location-image pull-left"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
+        <div class="<%- editable_class%> details">
+            <div class="location-image pull-left"><i class="fa fa-map-pin-streamline fa-1x"></i></div>
             <div id="invite-location" class="title pull-left">
                 <% if (where) {%>
                 <a href="https://www.google.com/maps/place/<%- where %>" target="_blank"><%- where %></a>
@@ -53,6 +54,7 @@
     </div>
 </div>
 
+<% if( is_admin ) { %>
 <div class="row no-margin second-row">
     <div class="col-md-2 no-padding"></div>
 
@@ -66,8 +68,9 @@
         <% } %>
     </div>
 </div>
-
 <div id="palette-container" class="row no-margin"></div>
+<% } %>
+
 
 <div id="invite-details-container" class="details-row <%  if( is_edit ) { %> clickable edit<% } %>">
     <%  if( is_admin )  { %>
