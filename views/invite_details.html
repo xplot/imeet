@@ -8,14 +8,14 @@
     <div class='col-md-2 col-xs-12 no-padding'>
         <div class="title">Start</div>
         <%  if( !is_edit )  { %>
-                <div class="editable details invite-date pull-left" style=""><%- start_date %> <%- start_time %>
-                    <i class="fa fa-pen pull-right"></i>
-                </div>            
+        <div class="editable details invite-date pull-left" style=""><%- start_date %> <%- start_time %>
+            <i class="fa fa-pen pull-right"></i>
+        </div>            
         <% } else { %>
-            <div class="date-group" id="start-date-group">
-                <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="<%-start_date %>">
-                <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="<%-start_time %>">
-            </div>
+        <div class="date-group" id="start-date-group">
+            <input readonly="true" required type="text" class="date event-start-date valid-before-submit" placeholder="01/01/2000" data-validation="required,date"  value="<%-start_date %>">
+            <input readonly="true" required type="int" class="time event-start-time  valid-before-submit" placeholder="00:00 AM" data-validation="required"  value="<%-start_time %>">
+        </div>
         <% } %>
     </div>
 
@@ -26,48 +26,58 @@
             <i class="fa fa-pen pull-right"></i>
         </div>
         <% } else { %>
-            <div class="date-group" id="end-date-group">
-                <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="<%-end_date %>">
-                <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation="required"  value="<%-end_time %>">
-            </div>
+        <div class="date-group" id="end-date-group">
+            <input readonly="true" required type="text" class="date event-end-date" placeholder="01/01/2000" data-validation="date"  value="<%-end_date %>">
+            <input readonly="true" required type="int" class="time event-end-time" placeholder="00:00 AM" data-validation="required"  value="<%-end_time %>">
+        </div>
         <% } %>
     </div>
 
-     <div class='col-md-4 col-xs-12 invite-location-container no-padding'>
-         <%  if( !is_edit )  { %>
-         <div class="editable details">
-             <div class="location-image pull-left"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
-             <div id="invite-location" class="title pull-left">
-                 <% if (where) {%>
-                 <a href="https://www.google.com/maps/place/<%- where %>" target="_blank"><%- where %></a>
-                 <% } else {%>
-                 Click to add location
-                 <%}%>
-             </div>
-             <i class="fa fa-pen pull-left"></i>
-         </div>
-         <% } else { %>
-            <div class="title">Location</div>
-            <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>
-         <% } %>
-     </div>
+    <div class='col-md-4 col-xs-12 invite-location-container no-padding'>
+        <%  if( !is_edit )  { %>
+        <div class="editable details">
+            <div class="location-image pull-left"><i class="fa fa-map-pin-streamline fa-15x"></i></div>
+            <div id="invite-location" class="title pull-left">
+                <% if (where) {%>
+                <a href="https://www.google.com/maps/place/<%- where %>" target="_blank"><%- where %></a>
+                <% } else {%>
+                Click to add location
+                <%}%>
+            </div>
+            <i class="fa fa-pen pull-left"></i>
+        </div>
+        <% } else { %>
+        <div class="title">Location</div>
+        <div><input type="text" class="form-control event-location-input" placeholder="Location...."  ></div>
+        <% } %>
+    </div>
 </div>
 
-    <%  if( !is_edit )  { %>
-        <div>colors</div>
-    <% } %>
+<div class="row no-margin second-row">
+    <div class="col-md-2 no-padding"></div>
 
-    <div id="palette-container" class="row no-margin small-margin-top"></div>
+    <div class='col-md-2 col-xs-12 no-padding invite-palette'>
+        <div class="title">Background</div>
+        <%  if( !is_edit )  { %>
+        <div class="palette-item" style="background-color: #607D8B"></div>
+        <div class="palette-item" style="background-color: #0D47A1"></div>
+        <div class="palette-item" style="background-color: #2196F3"></div>
+        <div class="palette-item" style="background-color: #A5D6A7"></div>
+        <% } %>
+    </div>
+</div>
 
-    <div id="invite-details-container" class="details-row <%  if( is_edit ) { %> clickable edit<% } %>">
+<div id="palette-container" class="row no-margin"></div>
+
+<div id="invite-details-container" class="details-row <%  if( is_edit ) { %> clickable edit<% } %>">
     <%  if( is_admin )  { %>
-        <div class="row">
-            <div class='col-md-12 col-xs-12 edit_button_container'>
+    <div class="row">
+        <div class='col-md-12 col-xs-12 edit_button_container'>
             <%  if( is_edit )  { %>
-                <button class="btn btn-success save_invite">Save</button>
-             <% } %>
+            <button class="btn btn-success save_invite">Save</button>
+            <% } %>
         </div>
-    <% } %>
+        <% } %>
     </div>
 
 </div>

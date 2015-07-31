@@ -27,9 +27,10 @@ InviteDetailsView = SimpleView.extend({
                 'click .invite-date': 'edit_invite',
                 'click .invite-end-date': 'edit_invite',
                 'click #invite-location': 'edit_invite',
+                'click .invite-palette .palette-item': 'edit_invite',
 
                 //'click .edit_invite': 'editInvite',
-                'click .save_invite': 'save_invite'
+                'click .save_invite': 'save_invite',
                 //'click .event-location-input': 'edit_invite',
                 //'blur #detail_container': 'save_invite',
                 //'focusout #detail_container': 'save_invite',
