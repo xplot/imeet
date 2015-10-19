@@ -16,8 +16,12 @@ class InviteAttendeeQuery(object):
         if not self.invite_attendee:
             self.invite_attendee = InviteAttendee.get_by_unique_id(self.invite_attendee_id)
 
+        invite_attendee_contact = None
+        if self.invite_attendee.contact:
+            invite_attendee_contact = self.invite_attendee.contact.get()
+
         return {
-            'unique_id': self.invite_attendee.contact.get().unique_id if self.invite_attendee.contact else '',
+            'unique_id': invite_attendee_contact.unique_id if invite_attendee_contact else '',
             'invite_attendee_id':    self.invite_attendee.unique_id,
             'user': self.invite_attendee.user.urlsafe() if self.invite_attendee.user else None,
             'name':         self.invite_attendee.name,
