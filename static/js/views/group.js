@@ -25,14 +25,12 @@ GroupsView = Backbone.View.extend({
         }));
 
         this.first_time = false;
+
+        this.groupCreateView = new GroupDetailsView();
     },
 
     addGroup: function(evt){
-        console.log("here");
         evt.preventDefault();
-
-
-        this.groupCreateView = new GroupDetailsView();
         this.groupCreateView.render(null, this.groupList);
     },
 
@@ -61,18 +59,17 @@ GroupsView = Backbone.View.extend({
             return;
 
         var groupModel = this.groupList.getById(id);
-        this.groupCreateView = new GroupDetailsView();
         this.groupCreateView.render(groupModel, null);
     },
 
     deleteRow: function(evt){
-        evt.preventDefault();
-        evt.stopPropagation();
-
-        var id = $(evt.target).data('id');
-
-        var groupModel = this.groupList.getById(id);
-        alert('Not implemented yet');
+//        evt.preventDefault();
+//        evt.stopPropagation();
+//
+//        var id = $(evt.target).data('id');
+//
+//        var groupModel = this.groupList.getById(id);
+//        alert('Not implemented yet');
 
 
         //groupModel.deleteGroup();
@@ -174,6 +171,11 @@ GroupDetailsView = Backbone.View.extend({
         }], 5);
 
         this.hide();
+    },
+
+    unbind: function() {
+        this.undelegateEvents();
+        this.$el.removeData().unbind();
     }
 });
 

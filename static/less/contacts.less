@@ -73,13 +73,13 @@ body{
       display: table-cell;
       width: 80%;
       color: @off-black;
-      box-shadow: 1px 1px 1px 1px #888888;
+      //box-shadow: 1px 1px 1px 1px #888888;
     }
   }
 
 .contact-row, .group-row {
     width: 100%;
-    border-bottom: 1px solid @invite-light-gray;
+    //border-bottom: 1px solid @invite-light-gray;
     float: left;
     margin: 5px 0px;
     cursor: pointer;
@@ -95,7 +95,10 @@ body{
         margin-left: 10px;
 
         .delete-contact{
-          color:@btn-danger;
+          color: 000;
+        }
+        .delete-contact:hover{
+          color: @btn-danger;
         }
 
         @media (max-width: 1024px) {

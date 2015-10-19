@@ -9,10 +9,8 @@
     <!--<a class="btn add-group pull-right" href="#">New Group</a>-->
 </div>
 
-<div class="row no-margin empty-contacts text-center small-margin-top">
-    <% if (contacts.length == 0) { %>
+<div class="row no-margin empty-contacts text-center small-margin-top <% if (contacts.length != 0) { %>hidden<%} %>">
         You dont have any contacts. <a href="/new" type="button" class="btn add-contact">Create New!</a>
-    <%} %>
 </div>
 
 <div class="row small-margin-top no-margin contacts-table-container">

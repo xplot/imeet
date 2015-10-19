@@ -1,8 +1,6 @@
 var _contactCreateView = null;
 function contactCreateView(){
-    if(_contactCreateView == null)
-        _contactCreateView = new ContactDetailsView();
-    return _contactCreateView;
+    return new ContactDetailsView();
 }
 
 ContactsView = SimpleView.extend({
@@ -35,29 +33,9 @@ ContactsView = SimpleView.extend({
             contacts: this.contactList.collectionToJSON()
         }));
 
-        this.first_time = false;
-    },
-
-    addContactHook: function(contact){
-        var contactTable =$('#contacts_table');
-        contactTable.append(new ContactItemView({model: contact}).render().el);
-    },
-
-    removeContactHook: function(data){
-        var $contact_row = $('div[data-id="'+ data.get('unique_id') + '"');
-        $contact_row.remove();
-    },
-
-    changeContactHook: function(contact){
-        var $contact_row = $('div[data-id="'+ contact.get('unique_id') + '"');
-        $contact_row.html($(JST['contact_item.html'](contact.toJSON())).html());
-    },
-
-    addContact: function(evt){
-        evt.preventDefault();
-
         this.contactCreateView = new ContactDetailsView();
-        this.contactCreateView.render(null, this.contactList);
+
+        this.first_time = false;
     },
 
     importFromCsv: function(evt){
@@ -102,19 +80,34 @@ ContactsView = SimpleView.extend({
         Backbone.history.navigate('groups', true);
     },
 
+    addContact: function(evt){
+        evt.preventDefault();
+        this.contactCreateView.render(null, this.contactList);
+    },
+
+    addContactHook: function(contact){
+
+        var contactTable =$('#contacts_table');
+        contactTable.append(new ContactItemView({model: contact}).render().el);
+        if(this.contactList.length == 1)
+            $('.empty-contacts').addClass('hidden');
+    },
+
     editRow: function(evt){
         evt.preventDefault();
+         evt.stopPropagation();
 
         var id = $(evt.target).data('id');
-        if(id != null){
-            evt.stopPropagation();
-        }
-        else
-            return;
 
         var contactModel = this.contactList.getById(id);
-        this.contactCreateView = new ContactDetailsView();
+
         this.contactCreateView.render(contactModel, null);
+    },
+
+    changeContactHook: function(contact){
+        var $contact_row = $('div[data-id="'+ contact.get('unique_id') + '"');
+        $contact_row.html($(JST['contact_item.html'](contact.toJSON())).html());
+
     },
 
     deleteRow: function(evt){
@@ -125,9 +118,16 @@ ContactsView = SimpleView.extend({
 
         var contactModel = this.contactList.getById(id);
         contactModel.deleteContact();
+        this.contactList.removeBy(id);
+    },
 
-        $('.contact-row[data-id="' + id + '"]').remove();
-    }
+    removeContactHook: function(data){
+        var $contact_row = $('div[data-id="'+ data.get('unique_id') + '"');
+        $contact_row.remove();
+
+        if(this.contactList.length == 0)
+            $('.empty-contacts').removeClass('hidden');
+    },
 
 });
 
@@ -205,9 +205,11 @@ ContactDetailsView = Backbone.View.extend({
         this.newContact();
     },
 
-    newContact: function(){
-        if(!validator.validateItems('.contact_input')){
-            alert_notification([{alertType: 'warning', message: 'You have incorrect or missing fields!'}]);
+    newContact: function() {
+        if (!validator.validateItems('.contact_input')) {
+            alert_notification([
+                {alertType: 'warning', message: 'You have incorrect or missing fields!'}
+            ]);
             return;
         }
 
@@ -215,7 +217,7 @@ ContactDetailsView = Backbone.View.extend({
         this.model.set('email', $("#emailInput").val());
         this.model.set('phone', $("#phoneInput").val());
 
-        if(this.createMode)
+        if (this.createMode)
             this.model.create($.proxy(this.contactCreated, this));
         else
             this.model.update($.proxy(this.contactUpdated, this));
@@ -249,7 +251,6 @@ ContactDetailsView = Backbone.View.extend({
 
         this.hide();
     },
-
 
 });
 
